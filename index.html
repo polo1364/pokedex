@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>專業寶可夢圖鑑 Pro</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #0f0f23;
+      --bg-secondary: #1a1a2e;
+      --bg-card: rgba(26, 26, 46, 0.8);
+      --accent-primary: #00d9ff;
+      --accent-secondary: #ff006e;
+      --accent-tertiary: #8338ec;
+      --text-primary: #ffffff;
+      --text-secondary: #b8b8d1;
+      --border-color: rgba(0, 217, 255, 0.2);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* 背景動畫 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 0, 110, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(131, 56, 236, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .app-container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* 側邊欄 */
+    .sidebar {
+      width: 280px;
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      border-right: 1px solid var(--border-color);
+      padding: 30px 20px;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--accent-primary);
+      border-radius: 3px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .filter-section {
+      margin-bottom: 30px;
+    }
+
+    .filter-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-secondary);
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+    }
+
+    .search-box::placeholder {
+      color: var(--text-secondary);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: left;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      color: white;
+      border-color: transparent;
+      font-weight: 600;
+    }
+
+    .type-filters {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .type-btn {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .type-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .type-btn.active {
+      border: 2px solid white;
+      transform: scale(1.05);
+    }
+
+    /* 主內容區 */
+    .main-content {
+      margin-left: 280px;
+      flex: 1;
+      padding: 30px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .stats-info {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      padding: 15px 25px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .view-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .view-btn {
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+
+    .view-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+    }
+
+    .view-btn.active {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+    }
+
+    /* 載入動畫 */
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      gap: 20px;
+    }
+
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(0, 217, 255, 0.2);
+      border-top-color: var(--accent-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .progress-container {
+      width: 300px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+      transition: width 0.3s ease;
+      border-radius: 3px;
+    }
+
+    .progress-text {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    /* 寶可夢網格 */
+    .pokemon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .pokemon-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pokemon-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .pokemon-card:hover::before {
+      opacity: 1;
+    }
+
+    .pokemon-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--accent-primary);
+      box-shadow: 0 12px 40px rgba(0, 217, 255, 0.3);
+    }
+
+    .pokemon-id {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .pokemon-image-container {
+      width: 100%;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    .pokemon-image {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+      transition: transform 0.3s ease;
+    }
+
+    .pokemon-card:hover .pokemon-image {
+      transform: scale(1.1);
+    }
+
+    .pokemon-name {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .pokemon-types {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .type-badge {
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* 載入更多按鈕 */
+    .load-more-container {
+      display: flex;
+      justify-content: center;
+      margin: 40px 0;
+    }
+
+    .load-more-btn {
+      padding: 14px 40px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      border: none;
+      border-radius: 25px;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 217, 255, 0.3);
+    }
+
+    .load-more-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(0, 217, 255, 0.5);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .modal-content::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .modal-content::-webkit-scrollbar-thumb {
+      background: var(--accent-primary);
+      border-radius: 4px;
+    }
+
+    .modal-header {
+      position: sticky;
+      top: 0;
+      background: var(--bg-secondary);
+      padding: 30px;
+      border-bottom: 1px solid var(--border-color);
+      z-index: 10;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .close-btn:hover {
+      background: var(--accent-secondary);
+      transform: rotate(90deg);
+    }
+
+    .modal-header-content {
+      text-align: center;
+    }
+
+    .modal-id {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+
+    .modal-name {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .modal-body {
+      padding: 30px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .detail-section {
+      background: var(--bg-card);
+      padding: 25px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--accent-primary);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .info-item {
+      text-align: center;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+    }
+
+    .info-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .info-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .description {
+      text-align: center;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin: 20px 0;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      border-left: 3px solid var(--accent-primary);
+    }
+
+    /* 種族值 */
+    .stat-item {
+      margin-bottom: 15px;
+    }
+
+    .stat-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .stat-name {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .stat-number {
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .stat-bar-container {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .stat-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+      border-radius: 4px;
+      transition: width 0.6s ease;
+    }
+
+    .stat-total {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    /* 標籤頁 */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .tab {
+      padding: 12px 24px;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-bottom: 2px solid transparent;
+    }
+
+    .tab:hover {
+      color: var(--text-primary);
+    }
+
+    .tab.active {
+      color: var(--accent-primary);
+      border-bottom-color: var(--accent-primary);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* 招式列表 */
+    .moves-category {
+      margin-bottom: 25px;
+    }
+
+    .category-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--accent-primary);
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .moves-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+
+    .move-item {
+      padding: 10px 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      transition: all 0.3s ease;
+    }
+
+    .move-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(5px);
+    }
+
+    .move-level {
+      background: var(--accent-primary);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* 進化鏈 */
+    .evolution-chain {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding: 20px;
+    }
+
+    .evolution-item {
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .evolution-item:hover {
+      transform: scale(1.05);
+    }
+
+    .evolution-image {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    }
+
+    .evolution-name {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .evolution-method {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .evolution-arrow {
+      font-size: 24px;
+      color: var(--accent-primary);
+    }
+
+    /* 版本標籤 */
+    .version-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .version-tag {
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .version-tag:hover {
+      background: rgba(0, 217, 255, 0.2);
+      border-color: var(--accent-primary);
+    }
+
+    /* 特性 */
+    .abilities-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ability-item {
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      border-left: 3px solid var(--accent-primary);
+    }
+
+    .ability-name {
+      font-weight: 600;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ability-hidden {
+      background: var(--accent-secondary);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .ability-description {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* 響應式設計 */
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .pokemon-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .pokemon-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 15px;
+      }
+
+      .stat-card {
+        padding: 12px 18px;
+      }
+
+      .stat-value {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- 側邊欄 -->
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-icon">🔮</div>
+        <div class="logo-text">Pokédex Pro</div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">搜尋</div>
+        <input type="text" class="search-box" id="searchBox" placeholder="輸入寶可夢名稱或編號...">
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">世代</div>
+        <div class="filter-group" id="genFilters">
+          <button class="filter-btn active" data-gen="all">所有世代</button>
+          <button class="filter-btn" data-gen="1">第 1 世代</button>
+          <button class="filter-btn" data-gen="2">第 2 世代</button>
+          <button class="filter-btn" data-gen="3">第 3 世代</button>
+          <button class="filter-btn" data-gen="4">第 4 世代</button>
+          <button class="filter-btn" data-gen="5">第 5 世代</button>
+          <button class="filter-btn" data-gen="6">第 6 世代</button>
+          <button class="filter-btn" data-gen="7">第 7 世代</button>
+          <button class="filter-btn" data-gen="8">第 8 世代</button>
+          <button class="filter-btn" data-gen="9">第 9 世代</button>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">屬性</div>
+        <div class="type-filters" id="typeFilters"></div>
+      </div>
+    </aside>
+
+    <!-- 主內容 -->
+    <main class="main-content">
+      <header class="header">
+        <div class="stats-info">
+          <div class="stat-card">
+            <div class="stat-label">總數</div>
+            <div class="stat-value" id="totalCount">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">顯示</div>
+            <div class="stat-value" id="displayCount">0</div>
+          </div>
+        </div>
+      </header>
+
+      <div id="loadingContainer" class="loading-container">
+        <div class="loader"></div>
+        <div class="progress-container">
+          <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+        </div>
+        <div class="progress-text" id="progressText">載入中... 0%</div>
+      </div>
+
+      <div class="pokemon-grid" id="pokemonGrid"></div>
+
+      <div class="load-more-container" id="loadMoreContainer" style="display: none;">
+        <button class="load-more-btn" onclick="loadMore()">載入更多寶可夢</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close-btn" onclick="closeModal()">×</button>
+        <div class="modal-header-content" id="modalHeader"></div>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const BASE_URL = 'https://pokeapi.co/api/v2';
+    const CACHE_PREFIX = 'pokedex_pro_zh_';
+    const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000;
+
+    let allPokemon = [];
+    let filteredPokemon = [];
+    let displayCount = 50;
+    let currentFilters = { gen: 'all', type: 'all', search: '' };
+
+    const typeColors = {
+      normal: '#A8A878', fire: '#F08030', water: '#6890F0', electric: '#F8D030',
+      grass: '#78C850', ice: '#98D8D8', fighting: '#C03028', poison: '#A040A0',
+      ground: '#E0C068', flying: '#A890F0', psychic: '#F85888', bug: '#A8B820',
+      rock: '#B8A038', ghost: '#705898', dragon: '#7038F8', dark: '#705848',
+      steel: '#B8B8D0', fairy: '#EE99AC'
+    };
+
+    const typeNamesCN = {
+      normal: '一般', fire: '火', water: '水', electric: '電',
+      grass: '草', ice: '冰', fighting: '格鬥', poison: '毒',
+      ground: '地面', flying: '飛行', psychic: '超能力', bug: '蟲',
+      rock: '岩石', ghost: '幽靈', dragon: '龍', dark: '惡',
+      steel: '鋼', fairy: '妖精'
+    };
+
+    const statNames = {
+      'hp': 'HP', 'attack': '攻擊', 'defense': '防禦',
+      'special-attack': '特攻', 'special-defense': '特防', 'speed': '速度'
+    };
+
+    const versionNamesCN = {
+      'red': '紅', 'blue': '藍', 'yellow': '黃', 'gold': '金', 'silver': '銀', 'crystal': '水晶',
+      'ruby': '紅寶石', 'sapphire': '藍寶石', 'emerald': '綠寶石',
+      'firered': '火紅', 'leafgreen': '葉綠',
+      'diamond': '鑽石', 'pearl': '珍珠', 'platinum': '白金',
+      'heartgold': '心金', 'soulsilver': '魂銀',
+      'black': '黑', 'white': '白', 'black-2': '黑2', 'white-2': '白2',
+      'x': 'X', 'y': 'Y',
+      'omega-ruby': '終極紅寶石', 'alpha-sapphire': '始源藍寶石',
+      'sun': '太陽', 'moon': '月亮',
+      'ultra-sun': '究極之日', 'ultra-moon': '究極之月',
+      'lets-go-pikachu': 'Let\'s Go 皮卡丘', 'lets-go-eevee': 'Let\'s Go 伊布',
+      'sword': '劍', 'shield': '盾',
+      'the-isle-of-armor': '鎧之孤島', 'the-crown-tundra': '冠之雪原',
+      'brilliant-diamond': '晶燦鑽石', 'shining-pearl': '明亮珍珠',
+      'legends-arceus': '傳說 阿爾宙斯',
+      'scarlet': '朱', 'violet': '紫',
+      'the-teal-mask': '碧之假面', 'the-indigo-disk': '藍之圓盤'
+    };
+
+    // 快取管理
+    function getCache(key) {
+      try {
+        const item = localStorage.getItem(CACHE_PREFIX + key);
+        if (!item) return null;
+        const { data, timestamp } = JSON.parse(item);
+        if (Date.now() - timestamp > CACHE_DURATION) {
+          localStorage.removeItem(CACHE_PREFIX + key);
+          return null;
+        }
+        return data;
+      } catch {
+        return null;
+      }
+    }
+
+    function setCache(key, data) {
+      try {
+        localStorage.setItem(CACHE_PREFIX + key, JSON.stringify({
+          data,
+          timestamp: Date.now()
+        }));
+      } catch (e) {
+        console.warn('Cache storage failed:', e);
+      }
+    }
+
+    async function fetchWithCache(url, cacheKey) {
+      const cached = getCache(cacheKey);
+      if (cached) return cached;
+      const response = await fetch(url);
+      const data = await response.json();
+      setCache(cacheKey, data);
+      return data;
+    }
+
+    function getGeneration(id) {
+      if (id <= 151) return 1;
+      if (id <= 251) return 2;
+      if (id <= 386) return 3;
+      if (id <= 493) return 4;
+      if (id <= 649) return 5;
+      if (id <= 721) return 6;
+      if (id <= 809) return 7;
+      if (id <= 905) return 8;
+      return 9;
+    }
+
+    function getChineseName(names) {
+      const zhHant = names.find(n => n.language.name === 'zh-Hant');
+      const zhHans = names.find(n => n.language.name === 'zh-Hans');
+      const en = names.find(n => n.language.name === 'en');
+      return (zhHant || zhHans || en)?.name || 'Unknown';
+    }
+
+    // 初始化
+    async function init() {
+      initTypeFilters();
+      initEventListeners();
+      await loadAllPokemon();
+    }
+
+    function initTypeFilters() {
+      const container = document.getElementById('typeFilters');
+      const types = Object.keys(typeColors);
+      
+      types.forEach(type => {
+        const btn = document.createElement('button');
+        btn.className = 'type-btn';
+        btn.textContent = typeNamesCN[type];
+        btn.style.background = typeColors[type];
+        btn.style.color = 'white';
+        btn.dataset.type = type;
+        btn.onclick = () => filterByType(type);
+        container.appendChild(btn);
+      });
+    }
+
+    function initEventListeners() {
+      document.getElementById('searchBox').addEventListener('input', (e) => {
+        currentFilters.search = e.target.value.toLowerCase();
+        applyFilters();
+      });
+
+      document.querySelectorAll('#genFilters .filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#genFilters .filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentFilters.gen = btn.dataset.gen;
+          applyFilters();
+        });
+      });
+    }
+
+    function filterByType(type) {
+      const btn = document.querySelector(`[data-type="${type}"]`);
+      const isActive = btn.classList.contains('active');
+      
+      document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+      
+      if (isActive) {
+        currentFilters.type = 'all';
+      } else {
+        btn.classList.add('active');
+        currentFilters.type = type;
+      }
+      
+      applyFilters();
+    }
+
+    async function loadAllPokemon() {
+      try {
+        const listData = await fetchWithCache(`${BASE_URL}/pokemon?limit=1025`, 'pokemon_list');
+        const total = listData.results.length;
+        
+        for (let i = 0; i < total; i++) {
+          const pokemon = await fetchWithCache(listData.results[i].url, `pokemon_${i + 1}`);
+          const speciesData = await fetchWithCache(pokemon.species.url, `species_${i + 1}`);
+          
+          pokemon.chineseName = getChineseName(speciesData.names);
+          pokemon.speciesData = speciesData;
+          allPokemon.push(pokemon);
+          
+          const progress = Math.round(((i + 1) / total) * 100);
+          document.getElementById('progressBar').style.width = progress + '%';
+          document.getElementById('progressText').textContent = `載入中... ${progress}%`;
+        }
+        
+        document.getElementById('loadingContainer').style.display = 'none';
+        applyFilters();
+      } catch (error) {
+        console.error('載入失敗:', error);
+        document.getElementById('progressText').textContent = '載入失敗，請重新整理頁面';
+      }
+    }
+
+    function applyFilters() {
+      filteredPokemon = allPokemon.filter(p => {
+        const matchGen = currentFilters.gen === 'all' || getGeneration(p.id) === parseInt(currentFilters.gen);
+        const matchType = currentFilters.type === 'all' || p.types.some(t => t.type.name === currentFilters.type);
+        const matchSearch = !currentFilters.search || 
+          p.chineseName.toLowerCase().includes(currentFilters.search) ||
+          p.id.toString().includes(currentFilters.search);
+        return matchGen && matchType && matchSearch;
+      });
+      
+      displayCount = 50;
+      renderPokemon();
+    }
+
+    function renderPokemon() {
+      const grid = document.getElementById('pokemonGrid');
+      const displayed = filteredPokemon.slice(0, displayCount);
+      
+      grid.innerHTML = displayed.map(p => {
+        const img = p.sprites.other?.['official-artwork']?.front_default || p.sprites.front_default;
+        return `
+          <div class="pokemon-card" onclick="showDetail(${p.id})">
+            <div class="pokemon-id">#${p.id.toString().padStart(4, '0')}</div>
+            <div class="pokemon-image-container">
+              <img class="pokemon-image" src="${img}" alt="${p.chineseName}" loading="lazy">
+            </div>
+            <div class="pokemon-name">${p.chineseName}</div>
+            <div class="pokemon-types">
+              ${p.types.map(t => `<span class="type-badge" style="background: ${typeColors[t.type.name]}">${typeNamesCN[t.type.name]}</span>`).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      document.getElementById('totalCount').textContent = allPokemon.length;
+      document.getElementById('displayCount').textContent = displayed.length;
+      document.getElementById('loadMoreContainer').style.display = 
+        displayCount < filteredPokemon.length ? 'flex' : 'none';
+    }
+
+    function loadMore() {
+      displayCount += 50;
+      renderPokemon();
+    }
+
+    async function showDetail(id) {
+      const pokemon = allPokemon.find(p => p.id === id);
+      if (!pokemon) return;
+
+      const modal = document.getElementById('modal');
+      const img = pokemon.sprites.other?.['official-artwork']?.front_default || pokemon.sprites.front_default;
+
+      document.getElementById('modalHeader').innerHTML = `
+        <div class="modal-id">#${pokemon.id.toString().padStart(4, '0')}</div>
+        <h2 class="modal-name">${pokemon.chineseName}</h2>
+        <div class="pokemon-types">
+          ${pokemon.types.map(t => `<span class="type-badge" style="background: ${typeColors[t.type.name]}">${typeNamesCN[t.type.name]}</span>`).join('')}
+        </div>
+      `;
+
+      const flavorText = pokemon.speciesData.flavor_text_entries.find(f => 
+        f.language.name === 'zh-Hant' || f.language.name === 'zh-Hans'
+      );
+
+      const maxStat = Math.max(...pokemon.stats.map(s => s.base_stat));
+      const totalStats = pokemon.stats.reduce((sum, s) => sum + s.base_stat, 0);
+
+      document.getElementById('modalBody').innerHTML = `
+        <div class="detail-grid">
+          <div class="detail-section">
+            <img src="${img}" style="width: 100%; max-width: 300px; display: block; margin: 0 auto;">
+            ${flavorText ? `<div class="description">${flavorText.flavor_text.replace(/\n/g, '')}</div>` : ''}
+            <div class="info-grid">
+              <div class="info-item">
+                <div class="info-label">身高</div>
+                <div class="info-value">${pokemon.height / 10}m</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">體重</div>
+                <div class="info-value">${pokemon.weight / 10}kg</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">世代</div>
+                <div class="info-value">${getGeneration(pokemon.id)}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3 class="section-title">種族值</h3>
+            ${pokemon.stats.map(s => `
+              <div class="stat-item">
+                <div class="stat-header">
+                  <span class="stat-name">${statNames[s.stat.name]}</span>
+                  <span class="stat-number">${s.base_stat}</span>
+                </div>
+                <div class="stat-bar-container">
+                  <div class="stat-bar-fill" style="width: ${(s.base_stat / maxStat) * 100}%"></div>
+                </div>
+              </div>
+            `).join('')}
+            <div class="stat-total">
+              <span>總和</span>
+              <span style="color: var(--accent-primary);">${totalStats}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3 class="section-title">特性</h3>
+          <div id="abilitiesSection">載入中...</div>
+        </div>
+
+        <div class="detail-section">
+          <h3 class="section-title">出現版本</h3>
+          <div id="versionsSection">載入中...</div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab('moves')">可學習招式</button>
+          <button class="tab" onclick="switchTab('evolution')">進化鏈</button>
+        </div>
+
+        <div class="tab-content active" id="movesTab">
+          <div id="movesList">載入中...</div>
+        </div>
+
+        <div class="tab-content" id="evolutionTab">
+          <div id="evolutionChain">載入中...</div>
+        </div>
+      `;
+
+      modal.classList.add('active');
+      loadAbilities(pokemon);
+      loadVersions(pokemon);
+      loadMoves(pokemon);
+      loadEvolution(pokemon);
+    }
+
+    async function loadAbilities(pokemon) {
+      try {
+        const abilitiesHTML = await Promise.all(pokemon.abilities.map(async a => {
+          const abilityData = await fetchWithCache(a.ability.url, `ability_${a.ability.name}`);
+          const chineseName = getChineseName(abilityData.names);
+          const description = abilityData.flavor_text_entries.find(f => 
+            f.language.name === 'zh-Hant' || f.language.name === 'zh-Hans'
+          );
+          return `
+            <div class="ability-item">
+              <div class="ability-name">
+                ${chineseName}
+                ${a.is_hidden ? '<span class="ability-hidden">隱藏</span>' : ''}
+              </div>
+              ${description ? `<div class="ability-description">${description.flavor_text.replace(/\n/g, '')}</div>` : ''}
+            </div>
+          `;
+        }));
+        document.getElementById('abilitiesSection').innerHTML = `<div class="abilities-list">${abilitiesHTML.join('')}</div>`;
+      } catch (error) {
+        document.getElementById('abilitiesSection').innerHTML = '<p style="text-align: center; color: var(--text-secondary);">無法載入特性資料</p>';
+      }
+    }
+
+    function loadVersions(pokemon) {
+      try {
+        const versions = pokemon.game_indices || [];
+        if (versions.length === 0) {
+          document.getElementById('versionsSection').innerHTML = '<p style="text-align: center; color: var(--text-secondary);">無版本資料</p>';
+          return;
+        }
+
+        const versionHTML = versions.map(v => {
+          const versionName = versionNamesCN[v.version.name] || v.version.name.toUpperCase();
+          return `<span class="version-tag">${versionName}</span>`;
+        }).join('');
+
+        document.getElementById('versionsSection').innerHTML = `<div class="version-tags">${versionHTML}</div>`;
+      } catch (error) {
+        document.getElementById('versionsSection').innerHTML = '<p style="text-align: center; color: var(--text-secondary);">無法載入版本資料</p>';
+      }
+    }
+
+    async function loadMoves(pokemon) {
+      try {
+        const methods = {
+          'level-up': '升級學習',
+          'machine': '技能機',
+          'egg': '遺傳',
+          'tutor': '教學招式'
+        };
+
+        let html = '';
+        for (const [method, label] of Object.entries(methods)) {
+          const moves = pokemon.moves.filter(m => 
+            m.version_group_details.some(v => v.move_learn_method.name === method)
+          );
+
+          if (moves.length > 0) {
+            const movePromises = moves.slice(0, 50).map(async m => {
+              const moveData = await fetchWithCache(m.move.url, `move_${m.move.name}`);
+              const chineseName = getChineseName(moveData.names);
+              const detail = m.version_group_details.find(v => v.move_learn_method.name === method);
+              return {
+                name: chineseName,
+                level: detail?.level_learned_at || 0
+              };
+            });
+
+            const movesList = await Promise.all(movePromises);
+            
+            html += `
+              <div class="moves-category">
+                <h4 class="category-title">${label} (${moves.length})</h4>
+                <div class="moves-grid">
+                  ${movesList.map(move => `
+                    <div class="move-item">
+                      <span>${move.name}</span>
+                      ${move.level > 0 ? `<span class="move-level">Lv. ${move.level}</span>` : ''}
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            `;
+          }
+        }
+
+        document.getElementById('movesList').innerHTML = html || '<p style="text-align: center; color: var(--text-secondary);">無招式資料</p>';
+      } catch (error) {
+        document.getElementById('movesList').innerHTML = '<p style="text-align: center; color: var(--text-secondary);">無法載入招式資料</p>';
+      }
+    }
+
+    async function loadEvolution(pokemon) {
+      try {
+        const evolutionData = await fetchWithCache(pokemon.speciesData.evolution_chain.url, `evolution_${pokemon.id}`);
+        const chain = [];
+
+        function processChain(evo) {
+          const speciesId = parseInt(evo.species.url.split('/').slice(-2, -1)[0]);
+          chain.push({
+            id: speciesId,
+            name: evo.species.name,
+            method: evo.evolution_details[0] || null
+          });
+          if (evo.evolves_to.length > 0) {
+            processChain(evo.evolves_to[0]);
+          }
+        }
+
+        processChain(evolutionData.chain);
+
+        const evolutionHTML = await Promise.all(chain.map(async (evo, index) => {
+          const evoData = allPokemon.find(p => p.id === evo.id);
+          if (!evoData) return '';
+
+          const img = evoData.sprites.other?.['official-artwork']?.front_default || evoData.sprites.front_default;
+          let methodText = '';
+          
+          if (evo.method) {
+            if (evo.method.min_level) methodText = `Lv. ${evo.method.min_level}`;
+            else if (evo.method.item) methodText = `使用 ${evo.method.item.name}`;
+            else if (evo.method.trigger) methodText = evo.method.trigger.name;
+          }
+
+          return `
+            ${index > 0 ? '<div class="evolution-arrow">→</div>' : ''}
+            <div class="evolution-item">
+              <img class="evolution-image" src="${img}" alt="${evoData.chineseName}">
+              <div class="evolution-name">${evoData.chineseName}</div>
+              ${methodText ? `<div class="evolution-method">${methodText}</div>` : ''}
+            </div>
+          `;
+        }));
+
+        document.getElementById('evolutionChain').innerHTML = `<div class="evolution-chain">${evolutionHTML.join('')}</div>`;
+      } catch (error) {
+        document.getElementById('evolutionChain').innerHTML = '<p style="text-align: center; color: var(--text-secondary);">無法載入進化鏈資料</p>';
+      }
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById(tabName + 'Tab').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
+
+    // 點擊 modal 外部關閉
+    document.getElementById('modal').addEventListener('click', (e) => {
+      if (e.target.id === 'modal') closeModal();
+    });
+
+    // ESC 鍵關閉
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // 啟動
+    init();
+  </script>
+</body>
+</html>
