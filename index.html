@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f0f23">
+  <meta name="description" content="專業繁體中文寶可夢圖鑑">
+  <link rel="manifest" href="./manifest.json">
+  <title>專業寶可夢圖鑑 Pro</title>
+</head>
+<body>
+  <div class="app-container">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-icon">🔮</div>
+        <div class="logo-text">Pokédex Pro</div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">搜尋</div>
+        <input type="text" class="search-box" id="searchBox" placeholder="輸入寶可夢名稱或編號...">
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">篩選</div>
+        <div class="filter-group">
+          <button type="button" class="filter-btn" id="favoritesFilter">★ 我的收藏</button>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">世代</div>
+        <div class="filter-group" id="genFilters">
+          <button type="button" class="filter-btn active" data-gen="all">所有世代</button>
+          <button type="button" class="filter-btn" data-gen="1">第 1 世代</button>
+          <button type="button" class="filter-btn" data-gen="2">第 2 世代</button>
+          <button type="button" class="filter-btn" data-gen="3">第 3 世代</button>
+          <button type="button" class="filter-btn" data-gen="4">第 4 世代</button>
+          <button type="button" class="filter-btn" data-gen="5">第 5 世代</button>
+          <button type="button" class="filter-btn" data-gen="6">第 6 世代</button>
+          <button type="button" class="filter-btn" data-gen="7">第 7 世代</button>
+          <button type="button" class="filter-btn" data-gen="8">第 8 世代</button>
+          <button type="button" class="filter-btn" data-gen="9">第 9 世代</button>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">屬性</div>
+        <div class="type-filters" id="typeFilters"></div>
+      </div>
+
+      <div class="sidebar-footer">
+        <button type="button" class="clear-cache-btn" id="clearCacheBtn">清除快取</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="header">
+        <button type="button" class="menu-btn" id="menuBtn" aria-label="開啟選單">☰</button>
+        <div class="stats-info">
+          <div class="stat-card">
+            <div class="stat-label">總數</div>
+            <div class="stat-value" id="totalCount">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">顯示</div>
+            <div class="stat-value" id="displayCount">0</div>
+          </div>
+        </div>
+        <div class="header-controls">
+          <select class="sort-select" id="sortSelect" aria-label="排序">
+            <option value="id">排序：編號</option>
+            <option value="name">排序：名稱</option>
+            <option value="total">排序：種族值總和</option>
+            <option value="speed">排序：速度</option>
+          </select>
+          <div class="view-controls">
+            <button type="button" class="view-btn" data-view="grid">網格</button>
+            <button type="button" class="view-btn" data-view="list">列表</button>
+          </div>
+        </div>
+      </header>
+
+      <div id="loadingContainer" class="loading-container">
+        <div class="loader"></div>
+        <div class="progress-container">
+          <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+        </div>
+        <div class="progress-text" id="progressText">載入中... 0%</div>
+      </div>
+
+      <div class="pokemon-grid" id="pokemonGrid"></div>
+
+      <div class="load-more-container" id="loadMoreContainer" style="display: none;">
+        <button type="button" class="load-more-btn" id="loadMoreBtn">載入更多寶可夢</button>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-btn" id="closeModalBtn" aria-label="關閉">×</button>
+        <div class="modal-header-content" id="modalHeader"></div>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="cache-toast" id="cacheToast" role="alert"></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
