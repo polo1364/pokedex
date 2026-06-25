@@ -1,7 +1,7 @@
 name: Deploy to Railway
 
 # 若已在 Railway Dashboard 連接 GitHub repo，push 後 Railway 會自動部署，
-# 通常不需要此 workflow。僅在要從 GitHub Actions 手動�觸發部署時使用。
+# 通常不需要此 workflow。僅在要從 GitHub Actions 手動觸發部署時使用。
 on:
   workflow_dispatch:
 
