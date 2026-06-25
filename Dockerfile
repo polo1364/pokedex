@@ -19,6 +19,8 @@ RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
 COPY server ./server
+COPY src/config.js ./src/config.js
+COPY src/data/versionGuides ./src/data/versionGuides
 
 EXPOSE 3001
 

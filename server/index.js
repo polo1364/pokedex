@@ -45,6 +45,10 @@ function rateLimit(req, res, next) {
 
 app.post('/api/chat', rateLimit, handleChat);
 
+app.get('/health', (_req, res) => {
+  res.status(200).json({ ok: true });
+});
+
 const distPath = path.join(__dirname, '..', 'dist');
 app.use(express.static(distPath));
 app.get('*', (req, res, next) => {
@@ -56,9 +60,9 @@ app.get('*', (req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   const keyOk = Boolean(process.env.DEEPSEEK_API_KEY?.trim());
-  console.log(`Server listening on http://localhost:${PORT}`);
+  console.log(`Server listening on http://0.0.0.0:${PORT}`);
   console.log(`DeepSeek API: ${keyOk ? '已設定' : '未設定（AI 問答將無法使用）'}`);
 }).on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
