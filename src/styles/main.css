@@ -235,6 +235,54 @@
       padding: 15px 25px;
       border-radius: 12px;
       border: 1px solid var(--border-color);
+      min-width: 120px;
+    }
+
+    .stat-card--filtered {
+      padding-top: 12px;
+    }
+
+    .stat-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .stat-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.4;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #d8d8ec;
+    }
+
+    .stat-tag--type {
+      border: none;
+      color: #fff;
+    }
+
+    .stat-tag--favorites {
+      background: rgba(255, 200, 64, 0.15);
+      border-color: rgba(255, 200, 64, 0.35);
+      color: #ffd966;
+    }
+
+    .stat-tag--search {
+      background: rgba(0, 217, 255, 0.1);
+      border-color: rgba(0, 217, 255, 0.25);
+      color: #9ef0ff;
+    }
+
+    .stat-tag--gen {
+      background: rgba(131, 56, 236, 0.15);
+      border-color: rgba(131, 56, 236, 0.35);
+      color: #d4b8ff;
     }
 
     .stat-label {

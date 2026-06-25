@@ -1,7 +1,6 @@
 import { store, getFavorites } from '../state/store.js';
 import { getGenerationFromSpecies } from '../utils/i18n.js';
 import { ensurePokemonLoaded } from '../data/pokemon.js';
-import { PAGE_SIZE } from '../config.js';
 
 let lastFilterKey = '';
 
@@ -33,9 +32,7 @@ export function applyFilters(resetDisplay = true) {
 
   sortFiltered();
 
-  if (resetDisplay && key !== lastFilterKey) {
-    store.displayCount = PAGE_SIZE;
-  }
+  store.displayCount = store.filteredPokemon.length;
   lastFilterKey = key;
 }
 

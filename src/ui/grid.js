@@ -15,10 +15,57 @@ export function renderPokemonGrid() {
     grid.innerHTML = displayed.map((entry) => renderCard(entry)).join('');
   }
 
-  document.getElementById('totalCount').textContent = store.speciesIndex.length;
-  document.getElementById('displayCount').textContent = displayed.length;
-  document.getElementById('loadMoreContainer').style.display =
-    store.displayCount < store.filteredPokemon.length ? 'flex' : 'none';
+  updateStatSummary(displayed.length);
+  document.getElementById('loadMoreContainer').style.display = 'none';
+}
+
+function getActiveFilterLabels() {
+  const { gen, type, favorites } = store.currentFilters;
+  const labels = [];
+  if (gen !== 'all') labels.push({ kind: 'gen', text: `第 ${gen} 世代` });
+  if (type !== 'all') labels.push({ kind: 'type', text: typeNamesCN[type] || type, typeKey: type });
+  const searchText = document.getElementById('searchBox')?.value?.trim();
+  if (searchText) labels.push({ kind: 'search', text: `搜尋：${searchText}` });
+  if (favorites) labels.push({ kind: 'favorites', text: '我的收藏' });
+  return labels;
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function updateStatSummary(shown) {
+  const total = store.speciesIndex.length;
+  const labels = getActiveFilterLabels();
+  const tagsEl = document.getElementById('statTags');
+  const countEl = document.getElementById('statCount');
+  const labelEl = document.getElementById('statLabel');
+  const cardEl = document.getElementById('statCard');
+
+  if (!labels.length) {
+    cardEl.classList.remove('stat-card--filtered');
+    tagsEl.hidden = true;
+    tagsEl.innerHTML = '';
+    countEl.textContent = String(total);
+    labelEl.textContent = '圖鑑';
+    labelEl.hidden = false;
+    return;
+  }
+
+  cardEl.classList.add('stat-card--filtered');
+  tagsEl.hidden = false;
+  tagsEl.innerHTML = labels.map((item) => {
+    if (item.kind === 'type') {
+      const bg = typeColors[item.typeKey] || '#666';
+      return `<span class="stat-tag stat-tag--type" style="background:${bg}">${escapeHtml(item.text)}</span>`;
+    }
+    return `<span class="stat-tag stat-tag--${item.kind}">${escapeHtml(item.text)}</span>`;
+  }).join('');
+  countEl.textContent = `${shown} / ${total}`;
+  labelEl.hidden = true;
 }
 
 function typeBadges(pokemon) {

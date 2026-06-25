@@ -2,7 +2,7 @@ export const BASE_URL = 'https://pokeapi.co/api/v2';
 export const CACHE_PREFIX = 'pokedex_pro_v4_';
 export const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000;
 export const CONCURRENCY_LIMIT = 10;
-export const PAGE_SIZE = 50;
+export const PAGE_SIZE = Infinity;
 export const MOVE_PAGE_SIZE = 50;
 export const DATA_STRATEGY = 'species'; // 'species' (1025) | 'all' (1350)
 
