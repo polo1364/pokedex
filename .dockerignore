@@ -1,0 +1,9 @@
+node_modules
+dist
+.env
+.git
+.github
+*.md
+battle-frontier-labels-debug.png
+hisui-labels-debug.png
+scripts
