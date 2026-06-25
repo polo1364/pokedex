@@ -1,9 +1,8 @@
 name: Deploy to Railway
 
+# 若已在 Railway Dashboard 連接 GitHub repo，push 後 Railway 會自動部署，
+# 通常不需要此 workflow。僅在要從 GitHub Actions 手動�觸發部署時使用。
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 concurrency:
@@ -15,6 +14,7 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     environment: production
+    if: ${{ secrets.RAILWAY_TOKEN != '' && secrets.RAILWAY_SERVICE_ID != '' }}
 
     steps:
       - name: Checkout
@@ -23,10 +23,20 @@ jobs:
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
-      # 需在 GitHub Repository Secrets 設定：
-      #   RAILWAY_TOKEN        — Railway Account Settings → Tokens
-      #   RAILWAY_SERVICE_ID   — 服務 Settings → Service ID
       - name: Deploy to Railway
         run: railway up --service "${{ secrets.RAILWAY_SERVICE_ID }}" --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+  secrets-missing:
+    name: Secrets not configured
+    runs-on: ubuntu-latest
+    if: ${{ secrets.RAILWAY_TOKEN == '' || secrets.RAILWAY_SERVICE_ID == '' }}
+    steps:
+      - name: Skip deploy
+        run: |
+          echo "略過部署：請在 GitHub → Settings → Secrets and variables → Actions 設定："
+          echo "  RAILWAY_TOKEN        — Railway → Account Settings → Tokens（需具 Deploy 權限）"
+          echo "  RAILWAY_SERVICE_ID   — Railway 服務 → Settings → Service ID"
+          echo ""
+          echo "若已在 Railway 連接 GitHub，直接 push 即可自動部署，無需執行此 workflow。"
