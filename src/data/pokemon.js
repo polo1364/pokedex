@@ -3,6 +3,7 @@ import { fetchJson, runPool } from '../api/client.js';
 import { store } from '../state/store.js';
 import { getChineseName } from '../utils/i18n.js';
 import { getPokemonImage } from '../utils/sprites.js';
+import { initFilterMeta } from '../utils/filterMeta.js';
 
 const pokemonCache = new Map();
 const speciesCache = new Map();
@@ -46,6 +47,7 @@ export async function bootstrapSpeciesIndex(onProgress) {
           loaded: true,
           pokemon: enrichPokemon(pokemon, speciesData),
           speciesData,
+          filterMeta: initFilterMeta(pokemon),
         };
       } catch (err) {
         report();
@@ -117,6 +119,7 @@ export async function ensurePokemonLoaded(entry) {
   enrichPokemon(pokemon, speciesData);
   entry.pokemon = pokemon;
   entry.loaded = true;
+  entry.filterMeta = initFilterMeta(pokemon);
   pokemonCache.set(pokemon.id, pokemon);
 
   if (!store.allPokemon.find((p) => p.id === pokemon.id)) {

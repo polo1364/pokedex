@@ -14,6 +14,21 @@ export function getChineseName(names) {
   return zhHant?.name || '（無繁中譯名）';
 }
 
+/** PokeAPI 有時以 ???／？？？ 佔位，視為無有效繁中譯名 */
+export function isPlaceholderTranslation(text) {
+  if (!text || text === '（無繁中譯名）') return true;
+  const stripped = String(text).replace(/[\s\u003F\uFF1F？?]/g, '');
+  return stripped.length === 0;
+}
+
+/** 有效繁中譯名；佔位符、非中文或星等代碼時回傳 null */
+export function getValidChineseName(names) {
+  const zh = getChineseName(names);
+  if (isPlaceholderTranslation(zh)) return null;
+  if (!/[\u4e00-\u9fff]/.test(zh)) return null;
+  return zh;
+}
+
 /** 圖鑑／特性說明：僅取繁中，並優先較新版本 */
 export function getLatestZhEntry(entries) {
   if (!entries?.length) return null;

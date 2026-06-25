@@ -14,6 +14,13 @@ export const typeColors = {
   steel: '#B8B8D0', fairy: '#EE99AC',
 };
 
+/** 圖鑑／相剋表常見屬性順序（3×6 格） */
+export const TYPE_ORDER = [
+  'normal', 'fire', 'water', 'electric', 'grass', 'ice',
+  'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug',
+  'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy',
+];
+
 export const typeNamesCN = {
   normal: '一般', fire: '火', water: '水', electric: '電',
   grass: '草', ice: '冰', fighting: '格鬥', poison: '毒',

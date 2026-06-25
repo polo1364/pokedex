@@ -63,9 +63,41 @@
         </div>
       </div>
 
-      <div class="filter-section">
-        <div class="filter-title">屬性</div>
-        <div class="type-filters" id="typeFilters"></div>
+      <div class="sidebar-drawer is-open" data-drawer="type">
+        <button type="button" class="sidebar-drawer-toggle" aria-expanded="true" aria-controls="typeDrawerBody">
+          <span>屬性</span>
+          <span class="drawer-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="sidebar-drawer-body" id="typeDrawerBody">
+          <div class="type-filters-wrap">
+            <button type="button" class="type-btn type-btn--all active" id="typeFilterAll" data-type="all">全部</button>
+            <div class="type-filters" id="typeFilters"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-section sidebar-catalog-section">
+        <div class="filter-title">延伸圖鑑</div>
+        <div class="sidebar-catalog-list">
+          <a href="./items.html" class="sidebar-catalog-link sidebar-catalog-link--items">
+            <span class="sidebar-catalog-icon" aria-hidden="true">🎒</span>
+            <span class="sidebar-catalog-text">
+              <span class="sidebar-catalog-label">道具圖鑑</span>
+              <span class="sidebar-catalog-desc">依世代瀏覽道具</span>
+            </span>
+            <span class="sidebar-catalog-arrow" aria-hidden="true">→</span>
+            <span class="sidebar-catalog-tip" role="tooltip">依世代瀏覽所有道具；點卡片可篩選持有該道具的寶可夢</span>
+          </a>
+          <a href="./machines.html" class="sidebar-catalog-link sidebar-catalog-link--machines">
+            <span class="sidebar-catalog-icon" aria-hidden="true">💿</span>
+            <span class="sidebar-catalog-text">
+              <span class="sidebar-catalog-label">招式機</span>
+              <span class="sidebar-catalog-desc">依世代瀏覽招式機</span>
+            </span>
+            <span class="sidebar-catalog-arrow" aria-hidden="true">→</span>
+            <span class="sidebar-catalog-tip" role="tooltip">依世代瀏覽招式學習器、秘傳機器與招式記錄；點卡片可篩選能學該招式的寶可夢</span>
+          </a>
+        </div>
       </div>
 
       <div class="sidebar-footer">

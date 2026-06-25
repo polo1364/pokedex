@@ -54,7 +54,9 @@ app.use(express.static(distPath));
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api')) return next();
   const guideMatch = req.path === '/guide' || req.path.startsWith('/guide/');
-  const htmlFile = guideMatch ? 'guide.html' : 'index.html';
+  const itemsMatch = req.path === '/items' || req.path.startsWith('/items/');
+  const machinesMatch = req.path === '/machines' || req.path.startsWith('/machines/');
+  const htmlFile = guideMatch ? 'guide.html' : itemsMatch ? 'items.html' : machinesMatch ? 'machines.html' : 'index.html';
   res.sendFile(path.join(distPath, htmlFile), (err) => {
     if (err) next();
   });

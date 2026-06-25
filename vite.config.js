@@ -8,6 +8,8 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         guide: resolve(__dirname, 'guide.html'),
+        items: resolve(__dirname, 'items.html'),
+        machines: resolve(__dirname, 'machines.html'),
       },
     },
   },

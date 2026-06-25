@@ -20,12 +20,14 @@ export function renderPokemonGrid() {
 }
 
 function getActiveFilterLabels() {
-  const { gen, type, favorites } = store.currentFilters;
+  const { gen, type, favorites, item, itemLabel, tm } = store.currentFilters;
   const labels = [];
   if (gen !== 'all') labels.push({ kind: 'gen', text: `第 ${gen} 世代` });
   if (type !== 'all') labels.push({ kind: 'type', text: typeNamesCN[type] || type, typeKey: type });
   const searchText = document.getElementById('searchBox')?.value?.trim();
   if (searchText) labels.push({ kind: 'search', text: `搜尋：${searchText}` });
+  if (item) labels.push({ kind: 'item', text: `道具：${itemLabel || item}` });
+  if (tm) labels.push({ kind: 'tm', text: `招式機：${tm}` });
   if (favorites) labels.push({ kind: 'favorites', text: '我的收藏' });
   return labels;
 }

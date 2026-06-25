@@ -10,7 +10,7 @@ export function onCacheError(callback) {
 function notifyCacheError(err) {
   if (!cacheErrorNotified) {
     cacheErrorNotified = true;
-    window.__onCacheError?.(err);
+    if (typeof window !== 'undefined') window.__onCacheError?.(err);
   }
 }
 

@@ -5,7 +5,7 @@ export const store = {
   speciesIndex: [],
   filteredPokemon: [],
   displayCount: PAGE_SIZE,
-  currentFilters: { gen: 'all', type: 'all', search: '', favorites: false },
+  currentFilters: { gen: 'all', type: 'all', search: '', favorites: false, item: '', itemLabel: '', tm: '' },
   sortBy: localStorage.getItem('pokedex_sort_by') || 'id',
   viewMode: localStorage.getItem('pokedex_view_mode') || 'grid',
   generationMap: {},

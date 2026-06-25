@@ -1,5 +1,5 @@
 import { store } from '../state/store.js';
-import { typeColors, typeNamesCN } from '../config.js';
+import { typeColors, typeNamesCN, TYPE_ORDER } from '../config.js';
 import { clearAllCache } from '../api/cache.js';
 
 const DRAWER_STORAGE_KEY = 'pokedex_drawer_state';
@@ -19,7 +19,7 @@ export function initDrawers() {
     const body = drawer.querySelector('.sidebar-drawer-body');
     if (!toggle || !body) return;
 
-    const defaultOpen = id === 'gen';
+    const defaultOpen = id === 'gen' || id === 'type';
     const isOpen = saved[id] !== undefined ? saved[id] : defaultOpen;
     setDrawerOpen(drawer, toggle, body, isOpen);
 
@@ -45,7 +45,7 @@ function setDrawerOpen(drawer, toggle, body, open) {
 function initTypeFilters(onFilterChange) {
   const container = document.getElementById('typeFilters');
   container.innerHTML = '';
-  Object.keys(typeColors).forEach((type) => {
+  TYPE_ORDER.forEach((type) => {
     const btn = document.createElement('button');
     btn.className = 'type-btn';
     btn.textContent = typeNamesCN[type];
@@ -58,16 +58,31 @@ function initTypeFilters(onFilterChange) {
     });
     container.appendChild(btn);
   });
+
+  document.getElementById('typeFilterAll')?.addEventListener('click', () => {
+    filterByType('all', onFilterChange);
+    closeMobileSidebar();
+  });
 }
 
 function filterByType(type, onFilterChange) {
-  const btn = document.querySelector(`[data-type="${type}"]`);
-  const isActive = btn?.classList.contains('active');
-  document.querySelectorAll('.type-btn').forEach((b) => b.classList.remove('active'));
-  if (isActive) store.currentFilters.type = 'all';
-  else {
-    btn.classList.add('active');
-    store.currentFilters.type = type;
+  const allBtn = document.getElementById('typeFilterAll');
+  document.querySelectorAll('.type-btn:not(.type-btn--all)').forEach((b) => b.classList.remove('active'));
+  allBtn?.classList.remove('active');
+
+  if (type === 'all') {
+    store.currentFilters.type = 'all';
+    allBtn?.classList.add('active');
+  } else {
+    const btn = document.querySelector(`.type-btn[data-type="${type}"]:not(.type-btn--all)`);
+    const isActive = btn?.classList.contains('active');
+    if (isActive) {
+      store.currentFilters.type = 'all';
+      allBtn?.classList.add('active');
+    } else {
+      btn?.classList.add('active');
+      store.currentFilters.type = type;
+    }
   }
   onFilterChange();
 }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f0f23">
+  <meta name="description" content="全世代道具圖鑑：依世代瀏覽、搜尋道具並篩選圖鑑">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.json">
+  <title>道具圖鑑｜寶可夢圖鑑</title>
+</head>
+<body class="items-page-body">
+  <div class="items-page">
+    <header class="items-page-header">
+      <div class="items-page-header-top">
+        <a href="./index.html" class="guide-back-link">← 返回圖鑑</a>
+      </div>
+      <h1 class="items-page-title">道具圖鑑</h1>
+      <p class="items-page-subtitle">依世代瀏覽所有道具，支援繁中或英文搜尋</p>
+      <div class="items-toolbar">
+        <input type="search" class="search-box items-search" id="itemSearchBox" placeholder="搜尋道具名稱（繁中或英文）..." autocomplete="off">
+        <p class="items-count" id="itemsCount" aria-live="polite"></p>
+      </div>
+      <nav class="items-gen-nav" id="itemsGenNav" aria-label="世代快速跳轉"></nav>
+    </header>
+
+    <main class="items-page-main">
+      <div id="itemsLoading" class="items-loading loading-container">
+        <div class="loader"></div>
+        <p id="itemsProgressText" class="progress-text">載入道具資料中...</p>
+        <div class="progress-container"><div class="progress-bar" id="itemsProgressBar"></div></div>
+      </div>
+      <div id="itemsContentRoot" class="items-content-root" hidden></div>
+    </main>
+  </div>
+
+  <script type="module" src="/src/items-main.js"></script>
+  <button type="button" id="itemsBackToTop" class="items-back-to-top back-to-top" aria-label="返回上方" hidden>↑</button>
+</body>
+</html>

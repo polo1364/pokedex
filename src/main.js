@@ -2,6 +2,7 @@ import './styles/main.css';
 import { clearAllCache, onCacheError } from './api/cache.js';
 import { bootstrapSpeciesIndex, loadGenerations, ensurePokemonLoaded } from './data/pokemon.js';
 import { applyFilters, preloadVisiblePokemon } from './data/filters.js';
+import { enrichFilterMetaForEntries } from './utils/filterMeta.js';
 import { loadVersionNames } from './utils/versions.js';
 import { store } from './state/store.js';
 import { renderPokemonGrid, loadMore } from './ui/grid.js';
@@ -15,6 +16,19 @@ async function refreshUI(resetDisplay = true) {
   applyFilters(resetDisplay);
   await preloadVisiblePokemon();
   renderPokemonGrid();
+}
+
+function applyHeldItemFromUrl(params) {
+  const slug = params.get('heldItemSlug') || params.get('heldItem') || params.get('item');
+  if (!slug) return;
+  store.currentFilters.item = slug.trim();
+  store.currentFilters.itemLabel = (params.get('heldItemLabel') || slug).trim();
+}
+
+function applyTmFromUrl(params) {
+  const tm = params.get('tm') || params.get('move');
+  if (!tm) return;
+  store.currentFilters.tm = tm.trim();
 }
 
 async function init() {
@@ -61,6 +75,8 @@ async function init() {
 
   const params = new URLSearchParams(location.search);
   const openId = params.get('id');
+  applyHeldItemFromUrl(params);
+  applyTmFromUrl(params);
 
   try {
     document.getElementById('loadingContainer').style.display = 'flex';
@@ -89,6 +105,10 @@ async function backgroundLoadRemaining() {
     try {
       await ensurePokemonLoaded(entry);
     } catch { /* partial recovery */ }
+  }
+  const { item, tm } = store.currentFilters;
+  if (item || tm) {
+    await enrichFilterMetaForEntries(store.speciesIndex.filter((e) => e.loaded));
   }
   await refreshUI(false);
 }

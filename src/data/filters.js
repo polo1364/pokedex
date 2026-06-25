@@ -1,17 +1,23 @@
 import { store, getFavorites } from '../state/store.js';
 import { getGenerationFromSpecies } from '../utils/i18n.js';
 import { ensurePokemonLoaded } from '../data/pokemon.js';
+import {
+  enrichFilterMetaForEntries,
+  matchesItemFilter,
+  matchesMachineMoveFilter,
+} from '../utils/filterMeta.js';
 
 let lastFilterKey = '';
 
 function filterKey() {
-  const { gen, type, search, favorites } = store.currentFilters;
-  return `${gen}|${type}|${search}|${favorites}`;
+  const { gen, type, search, favorites, item, tm } = store.currentFilters;
+  return `${gen}|${type}|${search}|${favorites}|${item}|${tm}`;
 }
 
 export function applyFilters(resetDisplay = true) {
   const favs = getFavorites();
   const key = filterKey();
+  const { item, tm } = store.currentFilters;
 
   store.filteredPokemon = store.speciesIndex.filter((entry) => {
     const gen = store.currentFilters.gen;
@@ -27,7 +33,9 @@ export function applyFilters(resetDisplay = true) {
     const matchSearch = !q ||
       entry.chineseName?.toLowerCase().includes(q) ||
       entry.id.toString().includes(q);
-    return matchGen && (store.currentFilters.type === 'all' || matchType) && matchFav && matchSearch;
+    const matchItem = !item || matchesItemFilter(entry, item);
+    const matchTm = !tm || matchesMachineMoveFilter(entry, tm);
+    return matchGen && (store.currentFilters.type === 'all' || matchType) && matchFav && matchSearch && matchItem && matchTm;
   });
 
   sortFiltered();
@@ -87,4 +95,11 @@ export async function preloadVisiblePokemon() {
       return null;
     })
   );
+
+  const { item, tm } = store.currentFilters;
+  if (item || tm) {
+    const toEnrich = store.filteredPokemon.filter((e) => e.loaded && !e.filterMeta?.namesLoaded);
+    await enrichFilterMetaForEntries(toEnrich.slice(0, 80));
+    applyFilters(false);
+  }
 }

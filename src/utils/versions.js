@@ -1,6 +1,7 @@
 import { BASE_URL } from '../config.js';
 import { fetchJson, runPool } from '../api/client.js';
 import { getChineseName } from './i18n.js';
+import { renderInfoCard } from './infoCards.js';
 
 /** 版本群組由舊到新（實際發售順序，非 API 列表順序） */
 export const VERSION_GROUP_ORDER = [
@@ -104,6 +105,44 @@ const POKEDEX_GAME_LABELS = {
   champions: '寶可夢 Champions',
 };
 
+const POKEDEX_SHORT_LABELS = {
+  national: '全國',
+  kanto: '關都',
+  'original-johto': '城都',
+  'updated-johto': '心金／魂銀',
+  hoenn: '豐緣',
+  'updated-hoenn': '新豐緣',
+  'original-sinnoh': '神奧',
+  'extended-sinnoh': '新神奧',
+  'original-unova': '合眾',
+  'updated-unova': '新合眾',
+  'conquest-gallery': '亂戰',
+  'kalos-central': '卡洛斯中部',
+  'kalos-coastal': '卡洛斯海岸',
+  'kalos-mountain': '卡洛斯山岳',
+  'original-alola': '阿羅拉',
+  'original-melemele': '美樂美樂',
+  'original-akala': '阿卡拉',
+  'original-ulaula': '烏拉烏拉',
+  'original-poni': '波尼',
+  'updated-alola': '新阿羅拉',
+  'updated-melemele': '新美樂美樂',
+  'updated-akala': '新阿卡拉',
+  'updated-ulaula': '新烏拉烏拉',
+  'updated-poni': '新波尼',
+  'letsgo-kanto': 'Let\'s Go 關都',
+  galar: '伽勒爾',
+  'isle-of-armor': '鎧島',
+  'crown-tundra': '王冠雪原',
+  hisui: '洗翠',
+  paldea: '帕底亞',
+  kitakami: '北上',
+  blueberry: '藍莓',
+  'lumiose-city': '密阿雷',
+  hyperspace: '超次元',
+  champions: 'Champions',
+};
+
 /** 圖鑑條目排序權重（愈大愈新，顯示愈前面） */
 const POKEDEX_RELEASE_RANK = {
   champions: 120,
@@ -140,6 +179,16 @@ const POKEDEX_RELEASE_RANK = {
   hoenn: 99,
   kanto: 98,
 };
+
+export function getPokedexFullLabel(key, { includeNational = false } = {}) {
+  if (key === 'national') return includeNational ? '全國圖鑑' : null;
+  return POKEDEX_GAME_LABELS[key] || null;
+}
+
+export function getPokedexRank(key) {
+  if (key === 'national') return -1;
+  return POKEDEX_RELEASE_RANK[key] ?? 0;
+}
 
 export function versionScore(name) {
   const i = VERSION_ORDER.indexOf(name);
@@ -180,6 +229,44 @@ export function getSpeciesAppearanceGames(speciesData) {
 
   games.sort((a, b) => b.rank - a.rank);
   return games.map((g) => g.label);
+}
+
+export function getRegionalPokedexEntries(speciesData) {
+  if (!speciesData?.pokedex_numbers?.length) return [];
+
+  return speciesData.pokedex_numbers
+    .map((entry) => {
+      const key = entry.pokedex?.name;
+      const fullLabel = getPokedexFullLabel(key, { includeNational: true });
+      if (!key || !fullLabel) return null;
+      return {
+        key,
+        label: POKEDEX_SHORT_LABELS[key] || fullLabel,
+        fullLabel,
+        number: entry.entry_number,
+        rank: getPokedexRank(key),
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.rank - a.rank || a.label.localeCompare(b.label, 'zh-Hant'));
+}
+
+export function renderPokedexNumbersHtml(speciesData) {
+  const entries = getRegionalPokedexEntries(speciesData);
+  if (!entries.length) return '';
+
+  const cards = entries.map((entry) => renderInfoCard({
+    label: entry.label,
+    value: `#${String(entry.number).padStart(3, '0')}`,
+    kind: 'pokedex',
+    tip: `${entry.fullLabel}的圖鑑編號`,
+    className: 'pokedex-card',
+  })).join('');
+
+  return `<div class="detail-panel detail-section pokedex-section">
+    <h3 class="section-title">各地區圖鑑編號</h3>
+    <div class="info-grid pokedex-grid">${cards}</div>
+  </div>`;
 }
 
 let versionNamesCache = null;
