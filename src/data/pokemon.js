@@ -126,6 +126,38 @@ export async function ensurePokemonLoaded(entry) {
   return pokemon;
 }
 
+export async function resolvePokemonById(id, speciesEntry = null) {
+  const entry = speciesEntry || store.speciesIndex.find((e) => e.id === id || e.speciesId === id)
+    || store.speciesIndex.find((e) => e.speciesData?.varieties?.some((v) => {
+      const vid = parseInt(v.pokemon.url.split('/').slice(-2, -1)[0], 10);
+      return vid === id;
+    }));
+
+  if (entry?.pokemon?.id === id) return entry.pokemon;
+
+  const pokemon = await ensurePokemonLoadedById(id);
+  const speciesData = entry?.speciesData
+    || pokemon.speciesData
+    || await fetchJson(pokemon.species.url, `species_${parseInt(pokemon.species.url.split('/').slice(-2, -1)[0], 10)}`);
+  if (!pokemon.speciesData) enrichPokemon(pokemon, speciesData);
+
+  await ensureDefaultVarietyCached(speciesData);
+  return pokemon;
+}
+
+async function ensureDefaultVarietyCached(speciesData) {
+  const def = speciesData?.varieties?.find((v) => v.is_default) || speciesData?.varieties?.[0];
+  if (!def) return;
+  const defId = parseInt(def.pokemon.url.split('/').slice(-2, -1)[0], 10);
+  if (store.allPokemon.some((p) => p.id === defId)) return;
+  try {
+    const defPokemon = await fetchJson(def.pokemon.url, `pokemon_${defId}`);
+    enrichPokemon(defPokemon, speciesData);
+    if (!store.allPokemon.some((p) => p.id === defId)) store.allPokemon.push(defPokemon);
+    pokemonCache.set(defId, defPokemon);
+  } catch { /* optional prefetch */ }
+}
+
 export async function ensurePokemonLoadedById(id) {
   let p = store.allPokemon.find((x) => x.id === id);
   if (p) return p;
@@ -134,7 +166,8 @@ export async function ensurePokemonLoadedById(id) {
   if (entry) return ensurePokemonLoaded(entry);
 
   const pokemon = await fetchJson(`${BASE_URL}/pokemon/${id}`, `pokemon_${id}`);
-  const speciesData = await fetchJson(pokemon.species.url, `species_${pokemon.id}`);
+  const speciesId = parseInt(pokemon.species.url.split('/').slice(-2, -1)[0], 10);
+  const speciesData = await fetchJson(pokemon.species.url, `species_${speciesId}`);
   enrichPokemon(pokemon, speciesData);
   if (!store.allPokemon.find((p) => p.id === pokemon.id)) store.allPokemon.push(pokemon);
   pokemonCache.set(pokemon.id, pokemon);

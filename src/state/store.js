@@ -6,9 +6,8 @@ export const store = {
   filteredPokemon: [],
   displayCount: PAGE_SIZE,
   currentFilters: { gen: 'all', type: 'all', search: '', favorites: false },
-  sortBy: 'id',
+  sortBy: localStorage.getItem('pokedex_sort_by') || 'id',
   viewMode: localStorage.getItem('pokedex_view_mode') || 'grid',
-  compareList: [],
   generationMap: {},
 };
 

@@ -6,15 +6,22 @@ export function buildEvolutionTree(evo) {
     speciesId,
     name: evo.species.name,
     methods: evo.evolution_details || [],
+    methodText: '',
     children: (evo.evolves_to || []).map((child) => buildEvolutionTree(child)),
   };
 }
 
+export async function annotateEvolutionTree(node) {
+  node.methodText = await formatEvolutionDetails(node.methods);
+  await Promise.all(node.children.map((child) => annotateEvolutionTree(child)));
+  return node;
+}
+
 export function renderEvolutionNode(node, getPokemonBySpeciesId, depth = 0) {
   const pokemon = getPokemonBySpeciesId(node.speciesId);
-  const methodText = formatEvolutionDetails(node.methods);
+  const methodText = node.methodText || '';
   const img = pokemon?.image || '';
-  const name = pokemon?.chineseName || node.name;
+  const name = pokemon?.chineseName || '（無繁中譯名）';
 
   let html = `<div class="evolution-branch" data-depth="${depth}">`;
   if (depth > 0) html += '<div class="evolution-arrow">→</div>';

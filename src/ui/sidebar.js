@@ -2,9 +2,44 @@ import { store } from '../state/store.js';
 import { typeColors, typeNamesCN } from '../config.js';
 import { clearAllCache } from '../api/cache.js';
 
+const DRAWER_STORAGE_KEY = 'pokedex_drawer_state';
+
 export function initSidebar(onFilterChange) {
   initTypeFilters(onFilterChange);
   bindMobileMenu();
+  initDrawers();
+}
+
+export function initDrawers() {
+  const saved = JSON.parse(localStorage.getItem(DRAWER_STORAGE_KEY) || '{}');
+
+  document.querySelectorAll('.sidebar-drawer').forEach((drawer) => {
+    const id = drawer.dataset.drawer;
+    const toggle = drawer.querySelector('.sidebar-drawer-toggle');
+    const body = drawer.querySelector('.sidebar-drawer-body');
+    if (!toggle || !body) return;
+
+    const defaultOpen = id === 'gen';
+    const isOpen = saved[id] !== undefined ? saved[id] : defaultOpen;
+    setDrawerOpen(drawer, toggle, body, isOpen);
+
+    toggle.addEventListener('click', () => {
+      const open = !drawer.classList.contains('is-open');
+      setDrawerOpen(drawer, toggle, body, open);
+      saved[id] = open;
+      localStorage.setItem(DRAWER_STORAGE_KEY, JSON.stringify(saved));
+    });
+  });
+}
+
+function setDrawerOpen(drawer, toggle, body, open) {
+  drawer.classList.toggle('is-open', open);
+  toggle.setAttribute('aria-expanded', String(open));
+  if (open) {
+    body.removeAttribute('hidden');
+  } else {
+    body.setAttribute('hidden', '');
+  }
 }
 
 function initTypeFilters(onFilterChange) {
@@ -98,6 +133,9 @@ export function initViewControls(onChange) {
 export function initSortControl(onChange) {
   document.getElementById('sortSelect')?.addEventListener('change', (e) => {
     store.sortBy = e.target.value;
+    localStorage.setItem('pokedex_sort_by', store.sortBy);
     onChange(false);
   });
+  const sortSelect = document.getElementById('sortSelect');
+  if (sortSelect && store.sortBy) sortSelect.value = store.sortBy;
 }

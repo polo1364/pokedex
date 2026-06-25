@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f0f23">
+  <meta name="description" content="寶可夢正作版本攻略：道館、四天王、冠軍隊伍與建議攜帶隊伍">
+  <link rel="manifest" href="./manifest.json">
+  <title>版本攻略｜寶可夢圖鑑</title>
+</head>
+<body class="guide-page-body">
+  <div class="guide-page">
+    <header class="guide-page-header">
+      <div class="guide-page-header-top">
+        <a href="./index.html" class="guide-back-link">← 返回圖鑑</a>
+        <label class="guide-version-select-wrap">
+          <span class="sr-only">選擇版本</span>
+          <select id="guideVersionSelect" class="guide-version-select" aria-label="選擇版本"></select>
+        </label>
+      </div>
+      <h1 class="guide-page-title" id="guidePageTitle">版本攻略</h1>
+      <p class="guide-page-subtitle">道館、四天王、冠軍隊伍與建議攜帶隊伍</p>
+    </header>
+
+    <main class="guide-page-main">
+      <div id="guideContentRoot" class="guide-content-root"></div>
+    </main>
+  </div>
+
+  <button type="button" id="guideBackToTop" class="guide-back-to-top" aria-label="返回上方" hidden>↑</button>
+
+  <script type="module" src="/src/guide-main.js"></script>
+</body>
+</html>

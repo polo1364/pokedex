@@ -27,7 +27,6 @@ export function applyFilters(resetDisplay = true) {
     const q = store.currentFilters.search;
     const matchSearch = !q ||
       entry.chineseName?.toLowerCase().includes(q) ||
-      entry.name?.toLowerCase().includes(q) ||
       entry.id.toString().includes(q);
     return matchGen && (store.currentFilters.type === 'all' || matchType) && matchFav && matchSearch;
   });
@@ -40,22 +39,47 @@ export function applyFilters(resetDisplay = true) {
   lastFilterKey = key;
 }
 
+function getStat(entry, statName) {
+  if (!entry.pokemon?.stats) return -1;
+  return entry.pokemon.stats.find((s) => s.stat.name === statName)?.base_stat ?? -1;
+}
+
+function getTotalStats(entry) {
+  if (!entry.pokemon?.stats) return -1;
+  return entry.pokemon.stats.reduce((sum, s) => sum + s.base_stat, 0);
+}
+
+function sortDesc(a, b, getValue) {
+  return getValue(b) - getValue(a);
+}
+
+function sortAsc(a, b, getValue) {
+  return getValue(a) - getValue(b);
+}
+
 export function sortFiltered() {
   const { sortBy } = store;
-  store.filteredPokemon.sort((a, b) => {
-    if (sortBy === 'name') return (a.chineseName || '').localeCompare(b.chineseName || '', 'zh-Hant');
-    if (sortBy === 'total') {
-      const ta = a.pokemon?.stats?.reduce((s, x) => s + x.base_stat, 0) || 0;
-      const tb = b.pokemon?.stats?.reduce((s, x) => s + x.base_stat, 0) || 0;
-      return tb - ta;
-    }
-    if (sortBy === 'speed') {
-      const sa = a.pokemon?.stats?.find((s) => s.stat.name === 'speed')?.base_stat || 0;
-      const sb = b.pokemon?.stats?.find((s) => s.stat.name === 'speed')?.base_stat || 0;
-      return sb - sa;
-    }
-    return a.id - b.id;
-  });
+  const sorters = {
+    id: (a, b) => a.id - b.id,
+    name: (a, b) => (a.chineseName || '').localeCompare(b.chineseName || '', 'zh-Hant'),
+    generation: (a, b) => {
+      const ga = getGenerationFromSpecies(a.speciesData, store.generationMap) ?? 99;
+      const gb = getGenerationFromSpecies(b.speciesData, store.generationMap) ?? 99;
+      return ga !== gb ? ga - gb : a.id - b.id;
+    },
+    total: (a, b) => sortDesc(a, b, getTotalStats),
+    hp: (a, b) => sortDesc(a, b, (e) => getStat(e, 'hp')),
+    attack: (a, b) => sortDesc(a, b, (e) => getStat(e, 'attack')),
+    defense: (a, b) => sortDesc(a, b, (e) => getStat(e, 'defense')),
+    'special-attack': (a, b) => sortDesc(a, b, (e) => getStat(e, 'special-attack')),
+    'special-defense': (a, b) => sortDesc(a, b, (e) => getStat(e, 'special-defense')),
+    speed: (a, b) => sortDesc(a, b, (e) => getStat(e, 'speed')),
+    height: (a, b) => sortDesc(a, b, (e) => e.pokemon?.height ?? -1),
+    weight: (a, b) => sortDesc(a, b, (e) => e.pokemon?.weight ?? -1),
+    capture_rate: (a, b) => sortAsc(a, b, (e) => e.speciesData?.capture_rate ?? 999),
+  };
+
+  store.filteredPokemon.sort(sorters[sortBy] || sorters.id);
 }
 
 export async function preloadVisiblePokemon() {

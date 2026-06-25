@@ -1,5 +1,5 @@
 export const BASE_URL = 'https://pokeapi.co/api/v2';
-export const CACHE_PREFIX = 'pokedex_pro_v2_';
+export const CACHE_PREFIX = 'pokedex_pro_v4_';
 export const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000;
 export const CONCURRENCY_LIMIT = 10;
 export const PAGE_SIZE = 50;
@@ -28,21 +28,29 @@ export const statNames = {
 };
 
 export const versionNamesCN = {
-  red: '紅', blue: '藍', yellow: '黃', gold: '金', silver: '銀', crystal: '水晶',
-  ruby: '紅寶石', sapphire: '藍寶石', emerald: '綠寶石',
-  firered: '火紅', leafgreen: '葉綠',
-  diamond: '鑽石', pearl: '珍珠', platinum: '白金',
-  heartgold: '心金', soulsilver: '魂銀',
-  black: '黑', white: '白', 'black-2': '黑2', 'white-2': '白2',
-  x: 'X', y: 'Y',
-  'omega-ruby': '終極紅寶石', 'alpha-sapphire': '始源藍寶石',
-  sun: '太陽', moon: '月亮',
-  'ultra-sun': '究極之日', 'ultra-moon': '究極之月',
-  'lets-go-pikachu': "Let's Go 皮卡丘", 'lets-go-eevee': "Let's Go 伊布",
-  sword: '劍', shield: '盾',
-  'the-isle-of-armor': '鎧之孤島', 'the-crown-tundra': '冠之雪原',
-  'brilliant-diamond': '晶燦鑽石', 'shining-pearl': '明亮珍珠',
-  'legends-arceus': '傳說 阿爾宙斯',
-  scarlet: '朱', violet: '紫',
-  'the-teal-mask': '碧之假面', 'the-indigo-disk': '藍之圓盤',
+  red: '寶可夢 紅', blue: '寶可夢 藍', yellow: '寶可夢 黃',
+  gold: '寶可夢 金', silver: '寶可夢 銀', crystal: '寶可夢 水晶',
+  ruby: '寶可夢 紅寶石', sapphire: '寶可夢 藍寶石', emerald: '寶可夢 綠寶石',
+  firered: '寶可夢 火紅', leafgreen: '寶可夢 葉綠',
+  diamond: '寶可夢 鑽石', pearl: '寶可夢 珍珠', platinum: '寶可夢 白金',
+  heartgold: '寶可夢 心金', soulsilver: '寶可夢 魂銀',
+  black: '寶可夢 黑', white: '寶可夢 白',
+  'black-2': '寶可夢 黑2', 'white-2': '寶可夢 白2',
+  x: '寶可夢 X', y: '寶可夢 Y',
+  'omega-ruby': '寶可夢 終極紅寶石', 'alpha-sapphire': '寶可夢 始源藍寶石',
+  sun: '寶可夢 太陽', moon: '寶可夢 月亮',
+  'ultra-sun': '寶可夢 究極之日', 'ultra-moon': '寶可夢 究極之月',
+  'lets-go-pikachu': '寶可夢 Let\'s Go 皮卡丘',
+  'lets-go-eevee': '寶可夢 Let\'s Go 伊布',
+  sword: '寶可夢 劍', shield: '寶可夢 盾',
+  'the-isle-of-armor': '寶可夢 劍 鎧之孤島',
+  'the-crown-tundra': '寶可夢 劍 冠之雪原',
+  'brilliant-diamond': '寶可夢 晶燦鑽石', 'shining-pearl': '寶可夢 明亮珍珠',
+  'legends-arceus': '寶可夢傳說 阿爾宙斯',
+  scarlet: '寶可夢 朱', violet: '寶可夢 紫',
+  'the-teal-mask': '寶可夢 朱 碧之假面',
+  'the-indigo-disk': '寶可夢 朱 藍之圓盤',
+  'legends-za': '寶可夢傳說 Z-A',
+  'mega-dimension': '超次元爆湧',
+  champions: '寶可夢 Champions',
 };

@@ -2,12 +2,14 @@ import './styles/main.css';
 import { clearAllCache, onCacheError } from './api/cache.js';
 import { bootstrapSpeciesIndex, loadGenerations, ensurePokemonLoaded } from './data/pokemon.js';
 import { applyFilters, preloadVisiblePokemon } from './data/filters.js';
+import { loadVersionNames } from './utils/versions.js';
 import { store } from './state/store.js';
 import { renderPokemonGrid, loadMore } from './ui/grid.js';
 import {
   initSidebar, bindSidebarFilters, initViewControls, initSortControl,
 } from './ui/sidebar.js';
-import { showDetail, openModal, initModalEvents, addToCompare } from './ui/modal.js';
+import { initVersionDrawer } from './ui/versionDrawer.js';
+import { showDetail, openModal, initModalEvents } from './ui/modal.js';
 
 async function refreshUI(resetDisplay = true) {
   applyFilters(resetDisplay);
@@ -27,8 +29,16 @@ async function init() {
 
   initSidebar(() => refreshUI());
   bindSidebarFilters(() => refreshUI());
+  initVersionDrawer();
   initViewControls(() => refreshUI(false));
   initSortControl((reset) => refreshUI(reset));
+
+  window.addEventListener('pageshow', (e) => {
+    const root = document.getElementById('versionDrawerRoot');
+    if (e.persisted || (root && root.childElementCount === 0)) {
+      initVersionDrawer();
+    }
+  });
 
   document.getElementById('loadMoreBtn')?.addEventListener('click', async () => {
     loadMore();
@@ -40,11 +50,6 @@ async function init() {
     const card = e.target.closest('[data-id]');
     if (!card) return;
     const id = parseInt(card.dataset.id, 10);
-    if (e.target.closest('.compare-add-btn')) {
-      const entry = store.speciesIndex.find((x) => x.id === id);
-      if (entry?.pokemon) addToCompare(entry.pokemon);
-      return;
-    }
     await showDetail(id);
   });
 
@@ -59,6 +64,7 @@ async function init() {
 
   try {
     document.getElementById('loadingContainer').style.display = 'flex';
+    await loadVersionNames();
     await loadGenerations();
     await bootstrapSpeciesIndex((pct, done, total) => {
       document.getElementById('progressBar').style.width = pct + '%';
@@ -90,5 +96,7 @@ async function backgroundLoadRemaining() {
 init();
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(() => {});
+  navigator.serviceWorker.register('./sw.js').then((reg) => {
+    reg.update();
+  }).catch(() => {});
 }

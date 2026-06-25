@@ -1,11 +1,13 @@
-import { BASE_URL, MOVE_PAGE_SIZE, statNames, typeColors, typeNamesCN, versionNamesCN } from '../config.js';
-import { fetchJson } from '../api/client.js';
+import { BASE_URL, MOVE_PAGE_SIZE, statNames, typeColors, typeNamesCN } from '../config.js';
+import { fetchJson, runPool } from '../api/client.js';
 import { store, toggleFavorite, getFavorites } from '../state/store.js';
 import { getChineseName, getLatestZhEntry, getGenerationFromSpecies } from '../utils/i18n.js';
-import { getPokemonImage } from '../utils/sprites.js';
+import { getPokemonImage, isUsingSpeciesImageFallback } from '../utils/sprites.js';
+import { getVarietyButtons, getVarietyButtonsSync } from '../utils/forms.js';
 import { buildTypeChartHtml } from '../utils/typeChart.js';
-import { buildEvolutionTree, renderEvolutionTree } from '../data/evolution.js';
-import { ensurePokemonLoadedById, ensurePokemonBySpeciesId, getPokemonBySpeciesId } from '../data/pokemon.js';
+import { getLatestVersionGroupDetail, getSpeciesAppearanceGames } from '../utils/versions.js';
+import { buildEvolutionTree, renderEvolutionTree, annotateEvolutionTree } from '../data/evolution.js';
+import { resolvePokemonById, ensurePokemonBySpeciesId, getPokemonBySpeciesId } from '../data/pokemon.js';
 
 let currentDetailId = null;
 let detailGeneration = 0;
@@ -17,15 +19,26 @@ export function openModal(id) {
   showDetail(id);
 }
 
+let currentSpeciesEntry = null;
+
+function findSpeciesEntry(id) {
+  return store.speciesIndex.find((e) => e.id === id || e.speciesId === id)
+    || store.speciesIndex.find((e) => e.speciesData?.varieties?.some((v) => {
+      const vid = parseInt(v.pokemon.url.split('/').slice(-2, -1)[0], 10);
+      return vid === id;
+    }));
+}
+
 export async function showDetail(id) {
-  const entry = store.speciesIndex.find((e) => e.id === id) || { id };
+  const speciesEntry = findSpeciesEntry(id);
   let pokemon;
   try {
-    pokemon = entry.pokemon || (await ensurePokemonLoadedById(id));
+    pokemon = await resolvePokemonById(id, speciesEntry);
   } catch {
     return;
   }
 
+  currentSpeciesEntry = speciesEntry;
   currentDetailId = pokemon.id;
   const gen = ++detailGeneration;
   currentPokemon = pokemon;
@@ -33,25 +46,98 @@ export async function showDetail(id) {
   shinyMode = false;
 
   const modal = document.getElementById('modal');
-  const modalContent = modal.querySelector('.modal-content');
-  modalContent.scrollTop = 0;
-
-  renderModalHeader(pokemon);
-  renderModalBody(pokemon);
-
+  modal.querySelector('.modal-content').scrollTop = 0;
   modal.classList.add('active');
   document.body.classList.add('modal-open');
 
+  renderModalContent(pokemon, gen);
+
   loadAbilities(pokemon, gen);
   loadVersions(pokemon, gen);
+  loadedTabs.add('moves');
+  loadMoves(pokemon, gen);
+  enrichFormSwitcher(pokemon, gen);
 }
 
-function renderModalHeader(pokemon) {
+async function switchForm(pokemonId) {
+  if (pokemonId === currentDetailId) return;
+
+  let pokemon;
+  try {
+    pokemon = await resolvePokemonById(pokemonId, currentSpeciesEntry);
+  } catch {
+    return;
+  }
+
+  currentDetailId = pokemon.id;
+  currentPokemon = pokemon;
+  const gen = detailGeneration;
+  loadedTabs = new Set();
+  shinyMode = false;
+
+  renderModalContent(pokemon, gen);
+  loadAbilities(pokemon, gen);
+  loadVersions(pokemon, gen);
+  loadedTabs.add('moves');
+  loadMoves(pokemon, gen);
+  updateFormSwitcherActive(pokemon.id);
+
+  const active = getVarietyButtonsSync(pokemon.speciesData, pokemon.id).find((b) => b.isActive);
+  if (active) {
+    const title = document.querySelector('.modal-name');
+    if (title) title.textContent = active.label;
+  }
+}
+function renderModalContent(pokemon, gen) {
+  const formButtons = getVarietyButtonsSync(pokemon.speciesData, pokemon.id);
+  const displayName = formButtons.find((b) => b.isActive)?.label || pokemon.chineseName;
+  renderModalHeader(pokemon, displayName);
+  renderModalBody(pokemon, gen, formButtons, displayName);
+}
+
+async function enrichFormSwitcher(pokemon, gen) {
+  const varieties = pokemon.speciesData?.varieties || [];
+  if (varieties.length <= 1) return;
+
+  const buttons = await getVarietyButtons(pokemon.speciesData, pokemon.id);
+  if (gen !== detailGeneration) return;
+
+  const switcher = document.getElementById('formSwitcher');
+  if (!switcher) return;
+
+  switcher.innerHTML = buttons.map((b) =>
+    `<button type="button" class="form-btn${b.isActive ? ' active' : ''}" data-pid="${b.pokemonId}">${b.label}</button>`
+  ).join('');
+  bindFormButtons();
+
+  const active = buttons.find((b) => b.isActive);
+  if (active) {
+    const title = document.querySelector('.modal-name');
+    if (title) title.textContent = active.label;
+  }
+}
+
+function updateFormSwitcherActive(pokemonId) {
+  document.querySelectorAll('.form-btn').forEach((btn) => {
+    btn.classList.toggle('active', parseInt(btn.dataset.pid, 10) === pokemonId);
+  });
+}
+
+function bindFormButtons() {
+  document.querySelectorAll('.form-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      switchForm(parseInt(btn.dataset.pid, 10));
+    });
+  });
+}
+
+function renderModalHeader(pokemon, displayName) {
   const favs = getFavorites();
   const isFav = favs.includes(pokemon.id);
+  const name = displayName || pokemon.chineseName;
   document.getElementById('modalHeader').innerHTML = `
     <div class="modal-id">#${pokemon.id.toString().padStart(4, '0')}</div>
-    <h2 class="modal-name">${pokemon.chineseName}</h2>
+    <h2 class="modal-name">${name}</h2>
     <div class="pokemon-types">
       ${pokemon.types.map((t) => `<span class="type-badge" style="background:${typeColors[t.type.name]}">${typeNamesCN[t.type.name]}</span>`).join('')}
     </div>
@@ -78,26 +164,27 @@ function renderModalHeader(pokemon) {
   });
 }
 
-function renderModalBody(pokemon) {
+function renderModalBody(pokemon, gen, formButtons, displayName) {
   const flavor = getLatestZhEntry(pokemon.speciesData?.flavor_text_entries);
   const maxStat = Math.max(...pokemon.stats.map((s) => s.base_stat), 1);
   const totalStats = pokemon.stats.reduce((sum, s) => sum + s.base_stat, 0);
-  const gen = getGenerationFromSpecies(pokemon.speciesData, store.generationMap) || '—';
+  const genNum = getGenerationFromSpecies(pokemon.speciesData, store.generationMap) || '—';
   const img = getPokemonImage(pokemon, { shiny: shinyMode });
-  const varieties = pokemon.speciesData?.varieties || [];
+  const imgFallback = isUsingSpeciesImageFallback(pokemon);
 
   document.getElementById('modalBody').innerHTML = `
-    ${varieties.length > 1 ? `<div class="form-switcher" id="formSwitcher">${varieties.map((v, i) =>
-      `<button type="button" class="form-btn${v.is_default ? ' active' : ''}" data-url="${v.pokemon.url}">形態 ${i + 1}</button>`
+    ${formButtons.length ? `<div class="form-switcher" id="formSwitcher">${formButtons.map((b) =>
+      `<button type="button" class="form-btn${b.isActive ? ' active' : ''}" data-pid="${b.pokemonId}">${b.label}</button>`
     ).join('')}</div>` : ''}
     <div class="detail-grid">
       <div class="detail-section">
-        <img id="modalMainImage" src="${img}" style="width:100%;max-width:300px;display:block;margin:0 auto" alt="${pokemon.chineseName}">
+        <img id="modalMainImage" class="${imgFallback ? 'form-img-fallback' : ''}" src="${img}" style="width:100%;max-width:300px;display:block;margin:0 auto" alt="${displayName}">
+        ${imgFallback ? '<p class="form-img-hint">此形態暫無獨立圖像，顯示預設外觀參考</p>' : ''}
         ${flavor ? `<div class="description">${flavor.flavor_text.replace(/\n/g, '')}</div>` : ''}
         <div class="info-grid">
           <div class="info-item"><div class="info-label">身高</div><div class="info-value">${pokemon.height / 10}m</div></div>
           <div class="info-item"><div class="info-label">體重</div><div class="info-value">${pokemon.weight / 10}kg</div></div>
-          <div class="info-item"><div class="info-label">世代</div><div class="info-value">${gen}</div></div>
+          <div class="info-item"><div class="info-label">世代</div><div class="info-value">${genNum}</div></div>
         </div>
       </div>
       <div class="detail-section">
@@ -116,29 +203,17 @@ function renderModalBody(pokemon) {
       <button type="button" class="tab active" data-tab="moves">可學習招式</button>
       <button type="button" class="tab" data-tab="evolution">進化鏈</button>
       <button type="button" class="tab" data-tab="typechart">屬性相剋</button>
-      <button type="button" class="tab" data-tab="compare">比較</button>
     </div>
-    <div class="tab-content active" id="movesTab"><div id="movesList"><p class="tab-hint">切換至此分頁載入招式</p></div></div>
+    <div class="tab-content active" id="movesTab"><div id="movesList"><p class="tab-hint">載入招式中...</p></div></div>
     <div class="tab-content" id="evolutionTab"><div id="evolutionChain"><p class="tab-hint">切換至此分頁載入進化鏈</p></div></div>
-    <div class="tab-content" id="typechartTab"><div id="typeChartSection"></div></div>
-    <div class="tab-content" id="compareTab"><div id="compareSection"><p>在列表中選擇寶可夢加入比較（最多 3 隻）</p><div id="compareList"></div></div></div>`;
+    <div class="tab-content" id="typechartTab"><div id="typeChartSection"></div></div>`;
 
   document.querySelectorAll('.tab').forEach((tab) => {
     tab.addEventListener('click', (e) => switchTab(e.currentTarget.dataset.tab, e.currentTarget, detailGeneration));
   });
 
-  document.querySelectorAll('.form-btn').forEach((btn) => {
-    btn.addEventListener('click', async () => {
-      document.querySelectorAll('.form-btn').forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      const url = btn.dataset.url;
-      const id = parseInt(url.split('/').slice(-2, -1)[0], 10);
-      await showDetail(id);
-    });
-  });
-
+  bindFormButtons();
   renderTypeChart(pokemon);
-  renderCompareSection();
 }
 
 function switchTab(tabName, tabEl, gen) {
@@ -160,29 +235,6 @@ function renderTypeChart(pokemon) {
   document.getElementById('typeChartSection').innerHTML = buildTypeChartHtml(types);
 }
 
-function renderCompareSection() {
-  const el = document.getElementById('compareList');
-  if (!el) return;
-  if (!store.compareList.length) {
-    el.innerHTML = '<p style="color:var(--text-secondary)">點擊卡片上的「比較」或從詳情加入</p>';
-    return;
-  }
-  el.innerHTML = store.compareList.map((p) => {
-    const total = p.stats?.reduce((s, x) => s + x.base_stat, 0) || 0;
-    return `<div class="compare-card">
-      <img src="${getPokemonImage(p)}" alt=""><div>${p.chineseName}</div>
-      <div class="compare-stats">${p.stats?.map((s) => `<span>${statNames[s.stat.name]}: ${s.base_stat}</span>`).join('')}</div>
-      <div>總和 ${total}</div>
-    </div>`;
-  }).join('');
-}
-
-export function addToCompare(pokemon) {
-  if (store.compareList.find((p) => p.id === pokemon.id)) return;
-  if (store.compareList.length >= 3) store.compareList.shift();
-  store.compareList.push(pokemon);
-}
-
 async function loadAbilities(pokemon, gen) {
   try {
     const html = await Promise.all(pokemon.abilities.map(async (a) => {
@@ -202,14 +254,16 @@ async function loadAbilities(pokemon, gen) {
 
 function loadVersions(pokemon, gen) {
   try {
-    const versions = pokemon.game_indices || [];
     if (gen !== detailGeneration) return;
-    if (!versions.length) {
+
+    const games = getSpeciesAppearanceGames(pokemon.speciesData);
+    if (!games.length) {
       document.getElementById('versionsSection').innerHTML = '<p class="empty-msg">無版本資料</p>';
       return;
     }
-    document.getElementById('versionsSection').innerHTML = `<div class="version-tags">${versions.map((v) =>
-      `<span class="version-tag">${versionNamesCN[v.version.name] || v.version.name}</span>`
+
+    document.getElementById('versionsSection').innerHTML = `<div class="version-tags">${games.map((label) =>
+      `<span class="version-tag">${label}</span>`
     ).join('')}</div>`;
   } catch {
     if (gen === detailGeneration) document.getElementById('versionsSection').innerHTML = '<p class="empty-msg">無法載入版本資料</p>';
@@ -218,34 +272,70 @@ function loadVersions(pokemon, gen) {
 
 const moveLimits = {};
 
+function getMoveLearnLevel(move, method) {
+  const detail = getLatestVersionGroupDetail(move.version_group_details, method);
+  return detail?.level_learned_at ?? 0;
+}
+
 async function loadMoves(pokemon, gen) {
+  const movesListEl = document.getElementById('movesList');
+  if (!movesListEl) return;
+  movesListEl.innerHTML = '<p class="tab-hint">載入招式中...</p>';
+
   const methods = { 'level-up': '升級學習', machine: '技能機', egg: '遺傳', tutor: '教學招式' };
   try {
-    let html = '';
-    for (const [method, label] of Object.entries(methods)) {
+    const sections = await Promise.all(Object.entries(methods).map(async ([method, label]) => {
       const moves = pokemon.moves.filter((m) =>
         m.version_group_details.some((v) => v.move_learn_method.name === method)
       );
-      if (!moves.length) continue;
+      if (!moves.length) return '';
+
+      if (method === 'level-up') {
+        moves.sort((a, b) => {
+          const diff = getMoveLearnLevel(a, method) - getMoveLearnLevel(b, method);
+          return diff !== 0 ? diff : a.move.name.localeCompare(b.move.name);
+        });
+      }
+
       const limit = moveLimits[`${pokemon.id}_${method}`] || MOVE_PAGE_SIZE;
       const slice = moves.slice(0, limit);
-      const list = await Promise.all(slice.map(async (m) => {
+      const list = await runPool(slice, async (m) => {
         const data = await fetchJson(m.move.url, `move_${m.move.name}`);
-        const detail = m.version_group_details.find((v) => v.move_learn_method.name === method);
-        return { name: getChineseName(data.names), level: detail?.level_learned_at || 0 };
-      }));
-      if (gen !== detailGeneration) return;
+        const detail = getLatestVersionGroupDetail(m.version_group_details, method);
+        return {
+          name: getChineseName(data.names),
+          level: detail?.level_learned_at || 0,
+          type: data.type?.name || '',
+        };
+      });
+
+      if (method === 'level-up') {
+        list.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name, 'zh-Hant'));
+      }
+
+      if (gen !== detailGeneration) return null;
+
       const moreBtn = moves.length > limit
         ? `<button type="button" class="show-more-moves" data-method="${method}" data-pid="${pokemon.id}">顯示更多 (${moves.length - limit})</button>`
         : '';
-      html += `<div class="moves-category"><h4 class="category-title">${label} (${moves.length})</h4>
-        <div class="moves-grid">${list.map((move) =>
-          `<div class="move-item"><span>${move.name}</span>${move.level > 0 ? `<span class="move-level">Lv. ${move.level}</span>` : ''}</div>`
-        ).join('')}</div>${moreBtn}</div>`;
-    }
+      return `<div class="moves-category"><h4 class="category-title">${label} (${moves.length})</h4>
+        <div class="moves-grid">${list.map((move) => {
+          const typeLabel = typeNamesCN[move.type] || move.type;
+          const typeBg = typeColors[move.type] || '#666';
+          return `<div class="move-item">
+            <div class="move-info">
+              <span class="move-name">${move.name}</span>
+              ${move.type ? `<span class="type-badge move-type" style="background:${typeBg}">${typeLabel}</span>` : ''}
+            </div>
+            ${move.level > 0 ? `<span class="move-level">${move.level}級</span>` : ''}
+          </div>`;
+        }).join('')}</div>${moreBtn}</div>`;
+    }));
+
     if (gen !== detailGeneration) return;
-    document.getElementById('movesList').innerHTML = html || '<p class="empty-msg">無招式資料</p>';
-    document.querySelectorAll('.show-more-moves').forEach((btn) => {
+    const html = sections.filter(Boolean).join('');
+    movesListEl.innerHTML = html || '<p class="empty-msg">無招式資料</p>';
+    movesListEl.querySelectorAll('.show-more-moves').forEach((btn) => {
       btn.addEventListener('click', () => {
         const key = `${btn.dataset.pid}_${btn.dataset.method}`;
         moveLimits[key] = (moveLimits[key] || MOVE_PAGE_SIZE) + MOVE_PAGE_SIZE;
@@ -255,7 +345,7 @@ async function loadMoves(pokemon, gen) {
       });
     });
   } catch {
-    if (gen === detailGeneration) document.getElementById('movesList').innerHTML = '<p class="empty-msg">無法載入招式資料</p>';
+    if (gen === detailGeneration) movesListEl.innerHTML = '<p class="empty-msg">無法載入招式資料</p>';
   }
 }
 
@@ -263,6 +353,7 @@ async function loadEvolution(pokemon, gen) {
   try {
     const evoData = await fetchJson(pokemon.speciesData.evolution_chain.url, `evolution_${pokemon.id}`);
     const tree = buildEvolutionTree(evoData.chain);
+    await annotateEvolutionTree(tree);
 
     const speciesIds = collectSpeciesIds(tree);
     await Promise.all(speciesIds.map((sid) => ensurePokemonBySpeciesId(sid).catch(() => null)));
@@ -294,6 +385,7 @@ export function closeModal() {
   document.getElementById('modal').classList.remove('active');
   document.body.classList.remove('modal-open');
   currentDetailId = null;
+  currentSpeciesEntry = null;
   detailGeneration++;
 }
 

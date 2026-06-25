@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0f0f23">
   <meta name="description" content="專業繁體中文寶可夢圖鑑">
   <link rel="manifest" href="./manifest.json">
-  <title>專業寶可夢圖鑑 Pro</title>
+  <title>寶可夢圖鑑</title>
 </head>
 <body>
   <div class="app-container">
@@ -15,7 +15,7 @@
     <aside class="sidebar">
       <div class="logo">
         <div class="logo-icon">🔮</div>
-        <div class="logo-text">Pokédex Pro</div>
+        <div class="logo-text">寶可夢圖鑑</div>
       </div>
 
       <div class="filter-section">
@@ -30,19 +30,34 @@
         </div>
       </div>
 
-      <div class="filter-section">
-        <div class="filter-title">世代</div>
-        <div class="filter-group" id="genFilters">
-          <button type="button" class="filter-btn active" data-gen="all">所有世代</button>
-          <button type="button" class="filter-btn" data-gen="1">第 1 世代</button>
-          <button type="button" class="filter-btn" data-gen="2">第 2 世代</button>
-          <button type="button" class="filter-btn" data-gen="3">第 3 世代</button>
-          <button type="button" class="filter-btn" data-gen="4">第 4 世代</button>
-          <button type="button" class="filter-btn" data-gen="5">第 5 世代</button>
-          <button type="button" class="filter-btn" data-gen="6">第 6 世代</button>
-          <button type="button" class="filter-btn" data-gen="7">第 7 世代</button>
-          <button type="button" class="filter-btn" data-gen="8">第 8 世代</button>
-          <button type="button" class="filter-btn" data-gen="9">第 9 世代</button>
+      <div class="sidebar-drawer is-open" data-drawer="gen">
+        <button type="button" class="sidebar-drawer-toggle" aria-expanded="true" aria-controls="genDrawerBody">
+          <span>世代</span>
+          <span class="drawer-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="sidebar-drawer-body" id="genDrawerBody">
+          <div class="filter-group" id="genFilters">
+            <button type="button" class="filter-btn active" data-gen="all">所有世代</button>
+            <button type="button" class="filter-btn" data-gen="1">第 1 世代</button>
+            <button type="button" class="filter-btn" data-gen="2">第 2 世代</button>
+            <button type="button" class="filter-btn" data-gen="3">第 3 世代</button>
+            <button type="button" class="filter-btn" data-gen="4">第 4 世代</button>
+            <button type="button" class="filter-btn" data-gen="5">第 5 世代</button>
+            <button type="button" class="filter-btn" data-gen="6">第 6 世代</button>
+            <button type="button" class="filter-btn" data-gen="7">第 7 世代</button>
+            <button type="button" class="filter-btn" data-gen="8">第 8 世代</button>
+            <button type="button" class="filter-btn" data-gen="9">第 9 世代</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-drawer" data-drawer="version">
+        <button type="button" class="sidebar-drawer-toggle" aria-expanded="false" aria-controls="versionDrawerBody">
+          <span>版本</span>
+          <span class="drawer-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="sidebar-drawer-body" id="versionDrawerBody" hidden>
+          <div id="versionDrawerRoot" class="version-drawer-root"></div>
         </div>
       </div>
 
@@ -71,10 +86,25 @@
         </div>
         <div class="header-controls">
           <select class="sort-select" id="sortSelect" aria-label="排序">
-            <option value="id">排序：編號</option>
-            <option value="name">排序：名稱</option>
-            <option value="total">排序：種族值總和</option>
-            <option value="speed">排序：速度</option>
+            <optgroup label="基本">
+              <option value="id">排序：編號</option>
+              <option value="name">排序：名稱</option>
+              <option value="generation">排序：世代</option>
+            </optgroup>
+            <optgroup label="種族值">
+              <option value="total">排序：種族值總和</option>
+              <option value="hp">排序：HP</option>
+              <option value="attack">排序：攻擊</option>
+              <option value="defense">排序：防禦</option>
+              <option value="special-attack">排序：特攻</option>
+              <option value="special-defense">排序：特防</option>
+              <option value="speed">排序：速度</option>
+            </optgroup>
+            <optgroup label="其他">
+              <option value="height">排序：身高（高→低）</option>
+              <option value="weight">排序：體重（重→輕）</option>
+              <option value="capture_rate">排序：捕獲率（難→易）</option>
+            </optgroup>
           </select>
           <div class="view-controls">
             <button type="button" class="view-btn" data-view="grid">網格</button>

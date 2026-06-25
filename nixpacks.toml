@@ -1,0 +1,14 @@
+# Nixpacks 建置設定（Railway 預設使用）
+# 確保建置階段能安裝 devDependencies（vite 等）
+
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["npm ci"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npm start"

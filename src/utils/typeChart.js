@@ -1,4 +1,5 @@
-// 攻擊方 → 防禦方倍率 (0, 0.5, 1, 2)
+import { typeNamesCN } from '../config.js';
+
 export const TYPE_CHART = {
   normal: { rock: 0.5, ghost: 0, steel: 0.5 },
   fire: { fire: 0.5, water: 0.5, grass: 2, ice: 2, bug: 2, rock: 0.5, dragon: 0.5, steel: 2 },
@@ -29,16 +30,28 @@ export function getEffectiveness(attackType, defenseTypes) {
   return mult;
 }
 
+function formatMultiplier(mult) {
+  if (mult === 0) return '無效';
+  if (mult === 0.25) return '效果不佳';
+  if (mult === 0.5) return '效果不好';
+  if (mult === 1) return '普通';
+  if (mult === 2) return '效果絕佳';
+  if (mult === 4) return '效果絕佳';
+  return `${mult}倍`;
+}
+
 export function buildTypeChartHtml(defenseTypes) {
   const types = Object.keys(TYPE_CHART);
-  let html = '<div class="type-chart-grid">';
+  let html = '<p class="type-chart-legend">攻擊屬性 → 防禦倍率（○普通 ●效果絕佳 ▲效果不好 ✕無效）</p>';
+  html += '<div class="type-chart-grid">';
   for (const atk of types) {
     const mult = getEffectiveness(atk, defenseTypes);
     let cls = 'neutral';
     if (mult === 0) cls = 'immune';
     else if (mult < 1) cls = 'weak';
     else if (mult > 1) cls = 'strong';
-    html += `<div class="type-chart-cell ${cls}"><span>${atk}</span><span>${mult === 0 ? '0' : mult + '×'}</span></div>`;
+    const label = typeNamesCN[atk] || atk;
+    html += `<div class="type-chart-cell ${cls}"><span>${label}</span><span>${formatMultiplier(mult)}</span></div>`;
   }
   html += '</div>';
   return html;

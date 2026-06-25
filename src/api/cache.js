@@ -46,5 +46,9 @@ export async function clearAllCache() {
   Object.keys(localStorage)
     .filter((k) => k.startsWith('pokedex_pro_zh_'))
     .forEach((k) => localStorage.removeItem(k));
+  if ('caches' in window) {
+    const cacheKeys = await caches.keys();
+    await Promise.all(cacheKeys.map((k) => caches.delete(k)));
+  }
   cacheErrorNotified = false;
 }
