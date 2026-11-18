@@ -64,6 +64,9 @@ export function matchesItemFilter(entry, query) {
   if (!entry.loaded || !entry.pokemon) return true;
   const meta = ensureFilterMeta(entry);
   if (!meta) return false;
+  // 道具頁連結帶的是完整代碼（如 potion），需精確比對，避免連 super-potion 也算進來
+  if (/^[a-z0-9]+(-[a-z0-9]+)*$/.test(q) && meta.heldSlugs.includes(q)) return true;
+  if (/^[a-z0-9]+(-[a-z0-9]+)*$/.test(q) && meta.heldSlugs.length) return false;
   if (meta.heldSlugs.some((slug) => slugMatchesQuery(slug, q))) return true;
   if (meta.heldNames.some((name) => nameMatchesQuery(name, q))) return true;
   return false;

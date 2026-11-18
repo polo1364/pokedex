@@ -149,7 +149,7 @@ def main():
             context.close()
 
         # Real IndexedDB: failed downloads must not be cached as complete catalogs.
-        for name, key, target in [('items', 'items_by_gen_v8', '/item/sitrus-berry/'),
+        for name, key, target in [('items', 'items_by_gen_v9', '/item/sitrus-berry/'),
                                   ('machines', 'machines_by_gen_v4', '/item/tm01/')]:
             context = browser.new_context(service_workers='block')
             fail = [True]

@@ -235,6 +235,13 @@ function renderSectionGrid(items, eagerRender) {
   return `<div class="items-grid" data-rendered="true">${items.map((item) => renderItemCard(item)).join('')}</div>`;
 }
 
+function renderHoldersLink(item) {
+  if (!item.heldByCount) return '';
+  const params = new URLSearchParams({ heldItem: item.slug, heldItemLabel: item.currentName || item.displayName });
+  return `<a class="machine-card-filter-link item-card-holders-link" href="./index.html?${escapeHtml(params.toString())}"
+    title="在主圖鑑列出野生時會攜帶此道具的寶可夢（跨版本）">查看攜帶者（${item.heldByCount} 種）→</a>`;
+}
+
 function renderItemCard(item) {
   const accent = getItemAccentColor(item.pocketSlug, item.categorySlug);
   const pocketClass = cssSafeSlug(item.pocketSlug);
@@ -275,6 +282,7 @@ function renderItemCard(item) {
         ${otherGens ? `<div>${escapeHtml(otherGens)}</div>` : ''}
       </div>
     </div>
+    ${renderHoldersLink(item)}
   </article>`;
 }
 
@@ -310,7 +318,8 @@ function bindCardInteractions(container) {
     for (const event of ['mouseenter', 'mouseleave', 'focus', 'blur']) {
       card.addEventListener(event, syncDetailAccessibility);
     }
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return;
       if (window.matchMedia('(hover: hover)').matches) return;
       card.classList.toggle('is-expanded');
       const detail = card.querySelector('.item-inline-detail');
@@ -318,6 +327,7 @@ function bindCardInteractions(container) {
     });
 
     card.addEventListener('keydown', (e) => {
+      if (e.target.closest('a')) return;
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         card.classList.toggle('is-expanded');

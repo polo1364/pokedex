@@ -16,7 +16,7 @@ import {
   POCKET_NAMES_CN,
 } from '../utils/items.js';
 
-const INDEX_CACHE_KEY = 'items_by_gen_v8';
+const INDEX_CACHE_KEY = 'items_by_gen_v9';
 const ITEMS_FETCH_CONCURRENCY = 25;
 const categoryCache = new Map();
 
@@ -60,7 +60,21 @@ export function buildItemView(itemData, slug, categoryMeta) {
     versionDetails: Object.fromEntries(generations.map((gen) => [gen, getItemVersionDetails(itemData, gen)])),
     attributes,
     generations,
+    heldByCount: countDefaultHolders(itemData),
   };
+}
+
+/**
+ * 野生時會攜帶此道具的寶可夢數（只算預設形態 id ≤ 1025，與主圖鑑網格一致；
+ * 形態專屬持有者如帽子皮卡丘在主圖鑑篩不到，不計入以免連過去是空結果）。
+ */
+function countDefaultHolders(itemData) {
+  const ids = new Set();
+  for (const holder of itemData.held_by_pokemon || []) {
+    const id = parseInt(holder.pokemon?.url?.split('/').filter(Boolean).pop(), 10);
+    if (id > 0 && id <= 1025) ids.add(id);
+  }
+  return ids.size;
 }
 
 function groupByGeneration(items) {
