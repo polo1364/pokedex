@@ -1,0 +1,124 @@
+.catalog-data-note, .catalog-source {
+  color: #bdc8d3;
+  font-size: 14px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.catalog-data-note { max-width: 920px; margin: 12px 0; }
+.catalog-data-note a { color: #aac9e3; }
+.catalog-notes { color: #bdc8d3; font-size: 14px; line-height: 1.7; margin: 12px 0; max-width: 920px; }
+.catalog-notes summary { cursor: pointer; width: fit-content; color: #aac9e3; padding: 5px 0; }
+.catalog-notes p { margin: 8px 0; }
+.catalog-notes a { color: #aac9e3; }
+.catalog-notes summary:focus-visible { outline: 2px solid #aac9e3; outline-offset: 3px; }
+.catalog-icon-missing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  min-height: 48px;
+  color: #bdc8d3;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
+}
+.items-page .item-card-sprite { object-fit: contain; image-rendering: pixelated; }
+.catalog-version-label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; font-size: 15px; }
+.catalog-version-select {
+  background: #242637;
+  color: #e4eef2;
+  border: 1px solid #687383;
+  border-radius: 8px;
+  padding: 9px;
+  max-width: 100%;
+  min-width: 0;
+  font-size: 16px;
+}
+.catalog-version-badge { color: #b7d8e4; background: #b7d8e412; border: 1px solid #b7d8e433; border-radius: 6px; padding: 3px 9px; font-size: 14px; line-height: 1.5; margin: 8px 0; }
+.catalog-version-detail + .catalog-version-detail { border-top: 1px solid #50505f; margin-top: 12px; padding-top: 12px; }
+.catalog-version-detail strong { color: #aac9e3; }
+.catalog-version-detail p { margin: 6px 0; line-height: 1.65; }
+.items-page .item-inline-detail { overflow-y: auto; }
+.machines-page .machines-kind-tip { display: none; }
+.machines-page .machines-kind-pill:hover .machines-kind-tip,
+.machines-page .machines-kind-pill:focus-visible .machines-kind-tip { display: block; }
+
+/* Readable catalog typography; keep these changes local to the two catalogs. */
+.items-page .items-page-subtitle,
+.items-page .items-search { font-size: 16px; }
+.items-page .items-search { min-height: 46px; }
+.items-page .items-count,
+.items-page .items-gen-count { font-size: 14px; color: #c2bfd0; }
+.items-page .items-gen-header { font-size: 18px; padding: 15px 16px; }
+.items-page .items-gen-title { color: #e5c5d0; }
+.items-page .items-gen-pill,
+.machines-page .machines-kind-pill { font-size: 14px; min-height: 42px; }
+.machines-page .machines-gen-sort-label,
+.machines-page .machines-gen-sort-btn,
+.machines-page .machines-gen-type-filter-btn,
+.machines-page .machines-kind-tip { font-size: 14px; }
+.machines-page .machines-gen-sort-btn,
+.machines-page .machines-gen-type-filter-btn { min-height: 40px; }
+.items-page .items-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 16px; }
+.items-page .item-card { min-width: 0; padding: 18px 16px 16px; }
+.items-page .item-card-name,
+.items-page .machine-card-move {
+  font-size: 18px;
+  line-height: 1.5;
+  color: #f4ede4;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.items-page .item-card-effect,
+.items-page .item-detail-effect,
+.items-page .catalog-version-detail p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #dedbe4;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.items-page .item-card-effect { display: block; overflow: visible; }
+.items-page .item-card-category,
+.items-page .machine-card-kind,
+.items-page .machine-card-type { font-size: 14px; padding: 3px 10px; line-height: 1.6; max-width: 100%; }
+.items-page .item-card-category {
+  color: color-mix(in srgb, var(--item-accent, #8b949e) 35%, white);
+  background: color-mix(in srgb, var(--item-accent, #8b949e) 16%, #242333);
+  border: 1px solid color-mix(in srgb, var(--item-accent, #8b949e) 45%, transparent);
+}
+.items-page .machine-card-kind {
+  color: color-mix(in srgb, var(--machine-kind-accent) 35%, white);
+  background: color-mix(in srgb, var(--machine-kind-accent) 16%, #242333);
+  border: 1px solid color-mix(in srgb, var(--machine-kind-accent) 45%, transparent);
+}
+.items-page .machine-card-type {
+  color: color-mix(in srgb, var(--machine-type-accent) 35%, white);
+  background: color-mix(in srgb, var(--machine-type-accent) 16%, #242333);
+  border: 1px solid color-mix(in srgb, var(--machine-type-accent) 45%, transparent);
+}
+.items-page .item-detail-title { font-size: 15px; color: #b8d4c1; margin-bottom: 8px; }
+.items-page .catalog-version-detail strong { font-size: 15px; color: #b7d8e4; }
+.items-page .catalog-version-detail .item-card-cost { color: #f1bc9e; font-weight: 600; font-variant-numeric: tabular-nums; }
+.items-page .item-detail-meta { font-size: 14px; line-height: 1.75; color: #c2bfd0; overflow-wrap: anywhere; }
+.items-page .machine-card-filter-link { font-size: 15px; min-height: 46px; color: #b7d8e4; background: #b7d8e412; border-color: #b7d8e455; }
+.items-page .items-empty-msg { font-size: 16px; }
+.machines-page-body .learners-modal-title { font-size: 21px; line-height: 1.5; color: #f4ede4; }
+.machines-page-body .learners-modal-subtitle { font-size: 15px; color: #b7d8e4; }
+.machines-page-body .learners-modal-count { font-size: 16px; color: #b8d4c1; }
+.machines-page-body .learners-modal-body { overflow-y: auto; }
+.machines-page-body .learners-modal-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 130px), 1fr)); gap: 10px; flex-shrink: 0; }
+.machines-page-body .learners-chip-btn { padding: 12px 8px; gap: 6px; }
+.machines-page-body .learners-chip-name { font-size: 16px; line-height: 1.5; white-space: normal; overflow-wrap: anywhere; }
+.machines-page-body .learners-chip-types { font-size: 14px; line-height: 1.5; flex-wrap: wrap; }
+.machines-page-body .learners-modal-dex-link { font-size: 15px; }
+.machines-page-body .machines-type-drawer-hint,
+.machines-page-body .machines-type-grid .type-btn { font-size: 14px; }
+
+@media (max-width: 600px) {
+  .machines-page .machines-kind-nav { position: relative; }
+  .machines-page .machines-kind-pill { position: static; }
+  .machines-page .machines-kind-tip { left: 0; right: 0; width: auto; max-width: 100%; transform: none !important; }
+  .catalog-version-label { width: 100%; }
+  .catalog-version-select { flex: 1; width: 0; }
+}

@@ -1,14 +1,14 @@
 import { BASE_URL } from '../config.js';
 import { fetchJson, runPool } from '../api/client.js';
 import { getCache, setCache } from '../api/cache.js';
-import { isMachineItem } from '../utils/items.js';
+import { isMachineItem, VERSION_GROUP_TO_GEN } from '../utils/items.js';
+import { BDSP_TM_MOVES, BDSP_VERSION } from './bdspMachines.js';
 import {
   buildMachineEntry,
   parseMachineSlug,
-  pickMachineForGen,
 } from '../utils/machines.js';
 
-const INDEX_CACHE_KEY = 'machines_by_gen_v3';
+const INDEX_CACHE_KEY = 'machines_by_gen_v4';
 const FETCH_CONCURRENCY = 25;
 
 function machineCacheKey(url) {
@@ -44,36 +44,37 @@ async function resolveMoveFromMachine(machineRef, moveCache) {
     return moveCache.get(machineUrl);
   }
 
-  try {
-    const machineData = await fetchJson(machineUrl, machineCacheKey(machineUrl));
-    const moveUrl = machineData?.move?.url;
-    if (!moveUrl) {
-      moveCache.set(machineUrl, null);
-      return null;
-    }
-    const moveSlug = moveUrl.split('/').filter(Boolean).pop();
-    const moveData = await fetchJson(moveUrl, `move_${moveSlug}`);
-    moveCache.set(machineUrl, moveData);
-    return moveData;
-  } catch {
-    moveCache.set(machineUrl, null);
-    return null;
-  }
+  const machineData = await fetchJson(machineUrl, machineCacheKey(machineUrl));
+  const moveUrl = machineData?.move?.url;
+  if (!moveUrl || machineData.version_group?.name !== machineRef.version_group?.name) throw new Error('招式機版本資料不符');
+  const moveSlug = moveUrl.split('/').filter(Boolean).pop();
+  const moveData = await fetchJson(moveUrl, `move_${moveSlug}`);
+  moveCache.set(machineUrl, moveData);
+  return moveData;
 }
 
-async function buildEntriesForItem(itemData, slug, moveCache) {
+export async function buildEntriesForItem(itemData, slug, moveCache) {
   if (!parseMachineSlug(slug)) return [];
 
   const entries = [];
-  for (let gen = 1; gen <= 9; gen += 1) {
-    const picked = pickMachineForGen(itemData.machines, gen);
-    if (!picked) continue;
+  for (const picked of itemData.machines || []) {
+    if (picked.version_group?.name === BDSP_VERSION) continue;
+    const gen = VERSION_GROUP_TO_GEN[picked.version_group?.name];
+    if (!gen) continue;
 
     const moveData = await resolveMoveFromMachine(picked, moveCache);
-    if (!moveData) continue;
+    if (!moveData) throw new Error('招式資料未提供');
 
     const entry = buildMachineEntry(itemData, slug, gen, picked, moveData);
     if (entry) entries.push(entry);
+  }
+  const parsed = parseMachineSlug(slug);
+  const bdspMove = parsed.kind === 'TM' ? BDSP_TM_MOVES[parsed.number - 1] : null;
+  if (bdspMove) {
+    const moveData = await fetchJson(`${BASE_URL}/move/${bdspMove}/`, `move_${bdspMove}`);
+    const entry = buildMachineEntry(itemData, slug, 8, { version_group: { name: BDSP_VERSION } }, moveData);
+    entry.mappingSource = 'BDSP 對照表（Serebii／Pokémon Database）';
+    entries.push(entry);
   }
   return entries;
 }
@@ -96,11 +97,12 @@ async function fetchAllMachineEntries(onProgress) {
 
   const moveCache = new Map();
   const allEntries = [];
+  const failures = [];
 
   await runPool(machineSlugs, async (entry) => {
     try {
       const slug = entry.name;
-      const itemData = await fetchJson(entry.url, `item_${slug}`);
+      const itemData = await fetchJson(entry.url, `catalog_item_v2_${slug}`);
       if (!isMachineItem(itemData, slug)) {
         report();
         return;
@@ -109,10 +111,12 @@ async function fetchAllMachineEntries(onProgress) {
       allEntries.push(...entries);
       report();
     } catch {
+      failures.push(entry.name);
       report();
     }
   }, FETCH_CONCURRENCY);
 
+  if (failures.length) throw new Error(`招式機資料未完整載入（${failures.length} 項），請重新整理重試`);
   return allEntries;
 }
 

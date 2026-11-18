@@ -401,11 +401,46 @@ export const EXPANSION_MAP_ID = {
 };
 
 export function getGuideMap(versionId) {
+  // The remade atlas owns both drawing and hit positions for every version.
+  if (ATLAS_VERSION_IDS.has(versionId)) {
+    return { atlas: versionId, alt: '分版地區地圖' };
+  }
   const mapId = VERSION_MAP_ID[versionId];
   return mapId ? GUIDE_MAPS[mapId] : null;
 }
 
-export function getExpansionMap(expansionId) {
+const ATLAS_VERSION_IDS = new Set([
+  'pokemmo',
+  'red-blue', 'yellow', 'firered-leafgreen', 'gold-silver', 'crystal',
+  'ruby-sapphire', 'emerald', 'diamond-pearl', 'platinum', 'heartgold-soulsilver',
+  'black-white', 'black-2-white-2', 'x-y', 'omega-ruby-alpha-sapphire',
+  'sun-moon', 'ultra-sun-ultra-moon', 'sword-shield',
+  'brilliant-diamond-shining-pearl', 'legends-arceus', 'scarlet-violet', 'legends-za',
+]);
+
+export function getExpansionMap(expansionId, versionId) {
+  const atlasMaps = {
+    pokemmo: { kanto: 'pokemmo-kanto', johto: 'pokemmo-johto', hoenn: 'pokemmo-hoenn', sinnoh: 'pokemmo-sinnoh', unova: 'pokemmo-unova' },
+    'firered-leafgreen': { sevii: 'sevii' },
+    'gold-silver': { kanto: 'gold-silver-kanto' },
+    crystal: { kanto: 'crystal-kanto' },
+    emerald: { 'battle-frontier': 'battle-frontier' },
+    'diamond-pearl': { 'battle-zone': 'battle-zone' },
+    platinum: { 'distortion-world': 'distortion-world', 'battle-frontier': 'platinum-battle-frontier' },
+    'heartgold-soulsilver': { kanto: 'heartgold-soulsilver-kanto' },
+    'brilliant-diamond-shining-pearl': { 'battle-zone': 'brilliant-diamond-shining-pearl' },
+    'omega-ruby-alpha-sapphire': { 'delta-episode': 'delta-episode' },
+    'ultra-sun-ultra-moon': { 'ultra-wormhole': 'ultra-wormhole' },
+    'sword-shield': { 'isle-of-armor': 'isle-of-armor', 'crown-tundra': 'crown-tundra' },
+    'legends-arceus': { daybreak: 'hisui-daybreak', requests: 'hisui' },
+    'scarlet-violet': { 'teal-mask': 'kitakami', 'indigo-disk': 'terarium' },
+    'legends-za': { 'mega-dimension': 'lumiose-za' },
+  };
+  // Retain the three original single-argument callers; new calls are version scoped.
+  const atlas = versionId || { sevii: 'firered-leafgreen', 'battle-frontier': 'emerald', daybreak: 'legends-arceus' }[expansionId];
+  const atlasMapId = atlasMaps[atlas]?.[expansionId];
+  if (atlasMapId) return { atlas, mapId: atlasMapId };
+  if (versionId) return null;
   const mapId = EXPANSION_MAP_ID[expansionId];
   return mapId ? GUIDE_MAPS[mapId] : null;
 }

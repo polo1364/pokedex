@@ -1,0 +1,1388 @@
+{
+  "sources": [
+    "https://www.serebii.net/blackwhite/gyms.shtml",
+    "https://www.serebii.net/blackwhite/elitefour.shtml",
+    "https://www.serebii.net/black2white2/gyms.shtml",
+    "https://www.serebii.net/black2white2/elitefour.shtml",
+    "https://www.serebii.net/xy/gyms.shtml",
+    "https://www.serebii.net/xy/elitefour.shtml",
+    "https://www.serebii.net/omegarubyalphasapphire/gyms.shtml",
+    "https://www.serebii.net/omegarubyalphasapphire/elitefour.shtml"
+  ],
+  "trainerParties": [
+    {
+      "version": "black-white",
+      "battle": "天桐／伯特／寇恩",
+      "expected": [
+        {
+          "name": "小約克",
+          "level": 12
+        },
+        {
+          "name": "花椰猴",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "version": "black-white",
+      "battle": "蘆薈",
+      "expected": [
+        {
+          "name": "哈約克",
+          "level": 18
+        },
+        {
+          "name": "步哨鼠",
+          "level": 20
+        }
+      ]
+    },
+    {
+      "version": "black-white",
+      "battle": "亞堤",
+      "expected": [
+        {
+          "name": "車輪毬",
+          "level": 21
+        },
+        {
+          "name": "石居蟹",
+          "level": 21
+        },
+        {
+          "name": "保母蟲",
+          "level": 23
+        }
+      ]
+    },
+    {
+      "version": "black-white",
+      "battle": "小菊兒",
+      "expected": [
+        {
+          "name": "電飛鼠",
+          "level": 25
+        },
+        {
+          "name": "電飛鼠",
+          "level": 25
+        },
+        {
+          "name": "雷電斑馬",
+          "level": 27
+        }
+      ]
+    },
+    {
+      "version": "black-white",
+      "battle": "菊老大",
+      "expected": [
+        {
+          "name": "混混鱷",
+          "level": 29
+        },
+        {
+          "name": "藍蟾蜍",
+          "level": 29
+        },
+        {
+          "name": "龍頭地鼠",
+          "level": 31
+        }
+      ]
+    },
+    {
+      "version": "black-white",
+      "battle": "風露",
+      "expected": [
+        {
+          "name": "心蝙蝠",
+          "level": 33
+        },
+        {
+          "name": "高傲雉雞",
+          "level": 33
+        },
+        {
+          "name": "舞天鵝",
+          "level": 35
+        }
+      ]
+    },
+    {
+      "version": "black-white",
+      "battle": "哈奇庫",
+      "expected": [
+        {
+          "name": "多多冰",
+          "level": 37
+        },
+        {
+          "name": "幾何雪花",
+          "level": 37
+        },
+        {
+          "name": "凍原熊",
+          "level": 39
+        }
+      ]
+    },
+    {
+      "version": "black-white",
+      "battle": "夏卡／艾莉絲",
+      "expected": [
+        {
+          "name": "斧牙龍",
+          "level": 41
+        },
+        {
+          "name": "赤面龍",
+          "level": 41
+        },
+        {
+          "name": "雙斧戰龍",
+          "level": 43
+        }
+      ]
+    },
+    {
+      "version": "black-white",
+      "battle": "婉龍",
+      "expected": [
+        {
+          "name": "死神棺",
+          "level": 48
+        },
+        {
+          "name": "胖嘟嘟",
+          "level": 48
+        },
+        {
+          "name": "泥偶巨人",
+          "level": 48
+        },
+        {
+          "name": "水晶燈火靈",
+          "level": 50
+        }
+      ]
+    },
+    {
+      "version": "black-white",
+      "battle": "連武",
+      "expected": [
+        {
+          "name": "投摔鬼",
+          "level": 48
+        },
+        {
+          "name": "打擊鬼",
+          "level": 48
+        },
+        {
+          "name": "修建老匠",
+          "level": 48
+        },
+        {
+          "name": "師父鼬",
+          "level": 50
+        }
+      ]
+    },
+    {
+      "version": "black-white",
+      "battle": "越橘",
+      "expected": [
+        {
+          "name": "頭巾混混",
+          "level": 48
+        },
+        {
+          "name": "酷豹",
+          "level": 48
+        },
+        {
+          "name": "流氓鱷",
+          "level": 48
+        },
+        {
+          "name": "劈斬司令",
+          "level": 50
+        }
+      ]
+    },
+    {
+      "version": "black-white",
+      "battle": "嘉德麗雅",
+      "expected": [
+        {
+          "name": "人造細胞卵",
+          "level": 48
+        },
+        {
+          "name": "夢夢蝕",
+          "level": 48
+        },
+        {
+          "name": "象徵鳥",
+          "level": 48
+        },
+        {
+          "name": "哥德小姐",
+          "level": 50
+        }
+      ]
+    },
+    {
+      "version": "black-white",
+      "battle": "阿戴克",
+      "expected": [
+        {
+          "name": "敏捷蟲",
+          "level": 75
+        },
+        {
+          "name": "爆炸頭水牛",
+          "level": 75
+        },
+        {
+          "name": "赤面龍",
+          "level": 75
+        },
+        {
+          "name": "雙倍多多冰",
+          "level": 75
+        },
+        {
+          "name": "騎士蝸牛",
+          "level": 75
+        },
+        {
+          "name": "火神蛾",
+          "level": 77
+        }
+      ]
+    },
+    {
+      "version": "black-2-white-2",
+      "battle": "黑連",
+      "expected": [
+        {
+          "name": "探探鼠",
+          "level": 11
+        },
+        {
+          "name": "小約克",
+          "level": 13
+        }
+      ]
+    },
+    {
+      "version": "black-2-white-2",
+      "battle": "霍米加",
+      "expected": [
+        {
+          "name": "瓦斯彈",
+          "level": 16
+        },
+        {
+          "name": "車輪毬",
+          "level": 18
+        }
+      ]
+    },
+    {
+      "version": "black-2-white-2",
+      "battle": "亞堤",
+      "expected": [
+        {
+          "name": "寶包繭",
+          "level": 22
+        },
+        {
+          "name": "石居蟹",
+          "level": 22
+        },
+        {
+          "name": "保母蟲",
+          "level": 24
+        }
+      ]
+    },
+    {
+      "version": "black-2-white-2",
+      "battle": "小菊兒",
+      "expected": [
+        {
+          "name": "電飛鼠",
+          "level": 28
+        },
+        {
+          "name": "茸茸羊",
+          "level": 28
+        },
+        {
+          "name": "雷電斑馬",
+          "level": 30
+        }
+      ]
+    },
+    {
+      "version": "black-2-white-2",
+      "battle": "菊老大",
+      "expected": [
+        {
+          "name": "混混鱷",
+          "level": 31
+        },
+        {
+          "name": "穿山王",
+          "level": 31
+        },
+        {
+          "name": "龍頭地鼠",
+          "level": 33
+        }
+      ]
+    },
+    {
+      "version": "black-2-white-2",
+      "battle": "風露",
+      "expected": [
+        {
+          "name": "心蝙蝠",
+          "level": 37
+        },
+        {
+          "name": "盔甲鳥",
+          "level": 37
+        },
+        {
+          "name": "舞天鵝",
+          "level": 39
+        }
+      ]
+    },
+    {
+      "version": "black-2-white-2",
+      "battle": "夏卡",
+      "expected": [
+        {
+          "name": "赤面龍",
+          "level": 46
+        },
+        {
+          "name": "沙漠蜻蜓",
+          "level": 46
+        },
+        {
+          "name": "雙斧戰龍",
+          "level": 48
+        }
+      ]
+    },
+    {
+      "version": "black-2-white-2",
+      "battle": "西子伊",
+      "expected": [
+        {
+          "name": "肋骨海龜",
+          "level": 49
+        },
+        {
+          "name": "吼鯨王",
+          "level": 49
+        },
+        {
+          "name": "胖嘟嘟",
+          "level": 51
+        }
+      ]
+    },
+    {
+      "version": "black-2-white-2",
+      "battle": "婉龍",
+      "expected": [
+        {
+          "name": "死神棺",
+          "level": 56
+        },
+        {
+          "name": "隨風球",
+          "level": 56
+        },
+        {
+          "name": "泥偶巨人",
+          "level": 56
+        },
+        {
+          "name": "水晶燈火靈",
+          "level": 58
+        }
+      ]
+    },
+    {
+      "version": "black-2-white-2",
+      "battle": "連武",
+      "expected": [
+        {
+          "name": "投摔鬼",
+          "level": 56
+        },
+        {
+          "name": "打擊鬼",
+          "level": 56
+        },
+        {
+          "name": "師父鼬",
+          "level": 56
+        },
+        {
+          "name": "修建老匠",
+          "level": 58
+        }
+      ]
+    },
+    {
+      "version": "black-2-white-2",
+      "battle": "越橘",
+      "expected": [
+        {
+          "name": "酷豹",
+          "level": 56
+        },
+        {
+          "name": "頭巾混混",
+          "level": 56
+        },
+        {
+          "name": "流氓鱷",
+          "level": 56
+        },
+        {
+          "name": "劈斬司令",
+          "level": 58
+        }
+      ]
+    },
+    {
+      "version": "black-2-white-2",
+      "battle": "嘉德麗雅",
+      "expected": [
+        {
+          "name": "夢夢蝕",
+          "level": 56
+        },
+        {
+          "name": "人造細胞卵",
+          "level": 56
+        },
+        {
+          "name": "象徵鳥",
+          "level": 56
+        },
+        {
+          "name": "哥德小姐",
+          "level": 58
+        }
+      ]
+    },
+    {
+      "version": "black-2-white-2",
+      "battle": "艾莉絲",
+      "expected": [
+        {
+          "name": "三首惡龍",
+          "level": 57
+        },
+        {
+          "name": "赤面龍",
+          "level": 57
+        },
+        {
+          "name": "始祖大鳥",
+          "level": 57
+        },
+        {
+          "name": "波士可多拉",
+          "level": 57
+        },
+        {
+          "name": "拉普拉斯",
+          "level": 57
+        },
+        {
+          "name": "雙斧戰龍",
+          "level": 59
+        }
+      ]
+    },
+    {
+      "version": "x-y",
+      "battle": "紫羅蘭",
+      "expected": [
+        {
+          "name": "溜溜糖球",
+          "level": 10
+        },
+        {
+          "name": "彩粉蝶",
+          "level": 12
+        }
+      ]
+    },
+    {
+      "version": "x-y",
+      "battle": "查克洛",
+      "expected": [
+        {
+          "name": "寶寶暴龍",
+          "level": 25
+        },
+        {
+          "name": "冰雪龍",
+          "level": 25
+        }
+      ]
+    },
+    {
+      "version": "x-y",
+      "battle": "可爾妮",
+      "expected": [
+        {
+          "name": "功夫鼬",
+          "level": 29
+        },
+        {
+          "name": "摔角鷹人",
+          "level": 32
+        },
+        {
+          "name": "豪力",
+          "level": 28
+        }
+      ]
+    },
+    {
+      "version": "x-y",
+      "battle": "福爺",
+      "expected": [
+        {
+          "name": "毽子棉",
+          "level": 30
+        },
+        {
+          "name": "坐騎山羊",
+          "level": 34
+        },
+        {
+          "name": "口呆花",
+          "level": 31
+        }
+      ]
+    },
+    {
+      "version": "x-y",
+      "battle": "希特隆",
+      "expected": [
+        {
+          "name": "電飛鼠",
+          "level": 35
+        },
+        {
+          "name": "三合一磁怪",
+          "level": 35
+        },
+        {
+          "name": "光電傘蜥",
+          "level": 37
+        }
+      ]
+    },
+    {
+      "version": "x-y",
+      "battle": "瑪綉",
+      "expected": [
+        {
+          "name": "大嘴娃",
+          "level": 38
+        },
+        {
+          "name": "魔牆人偶",
+          "level": 39
+        },
+        {
+          "name": "仙子伊布",
+          "level": 42
+        }
+      ]
+    },
+    {
+      "version": "x-y",
+      "battle": "葛吉花",
+      "expected": [
+        {
+          "name": "象徵鳥",
+          "level": 44
+        },
+        {
+          "name": "呆呆王",
+          "level": 45
+        },
+        {
+          "name": "超能妙喵",
+          "level": 48
+        }
+      ]
+    },
+    {
+      "version": "x-y",
+      "battle": "得撫",
+      "expected": [
+        {
+          "name": "暴雪王",
+          "level": 56
+        },
+        {
+          "name": "幾何雪花",
+          "level": 55
+        },
+        {
+          "name": "冰岩怪",
+          "level": 59
+        }
+      ]
+    },
+    {
+      "version": "x-y",
+      "battle": "帕琦拉",
+      "expected": [
+        {
+          "name": "火炎獅",
+          "level": 63
+        },
+        {
+          "name": "煤炭龜",
+          "level": 63
+        },
+        {
+          "name": "水晶燈火靈",
+          "level": 63
+        },
+        {
+          "name": "烈箭鷹",
+          "level": 65
+        }
+      ]
+    },
+    {
+      "version": "x-y",
+      "battle": "志米",
+      "expected": [
+        {
+          "name": "鋼炮臂蝦",
+          "level": 63
+        },
+        {
+          "name": "寶石海星",
+          "level": 63
+        },
+        {
+          "name": "暴鯉龍",
+          "level": 63
+        },
+        {
+          "name": "龜足巨鎧",
+          "level": 65
+        }
+      ]
+    },
+    {
+      "version": "x-y",
+      "battle": "雁鎧",
+      "expected": [
+        {
+          "name": "鑰圈兒",
+          "level": 63
+        },
+        {
+          "name": "大朝北鼻",
+          "level": 63
+        },
+        {
+          "name": "巨鉗螳螂",
+          "level": 63
+        },
+        {
+          "name": "堅盾劍怪",
+          "level": 65
+        }
+      ]
+    },
+    {
+      "version": "x-y",
+      "battle": "朵拉塞娜",
+      "expected": [
+        {
+          "name": "毒藻龍",
+          "level": 63
+        },
+        {
+          "name": "七夕青鳥",
+          "level": 63
+        },
+        {
+          "name": "赤面龍",
+          "level": 63
+        },
+        {
+          "name": "音波龍",
+          "level": 65
+        }
+      ]
+    },
+    {
+      "version": "x-y",
+      "battle": "卡露妮",
+      "expected": [
+        {
+          "name": "摔角鷹人",
+          "level": 64
+        },
+        {
+          "name": "怪顎龍",
+          "level": 65
+        },
+        {
+          "name": "冰雪巨龍",
+          "level": 65
+        },
+        {
+          "name": "南瓜怪人",
+          "level": 65
+        },
+        {
+          "name": "黏美龍",
+          "level": 66
+        },
+        {
+          "name": "沙奈朵",
+          "level": 68
+        }
+      ]
+    },
+    {
+      "version": "omega-ruby-alpha-sapphire",
+      "battle": "杜娟",
+      "expected": [
+        {
+          "name": "小拳石",
+          "level": 12
+        },
+        {
+          "name": "朝北鼻",
+          "level": 14
+        }
+      ]
+    },
+    {
+      "version": "omega-ruby-alpha-sapphire",
+      "battle": "藤樹",
+      "expected": [
+        {
+          "name": "腕力",
+          "level": 14
+        },
+        {
+          "name": "幕下力士",
+          "level": 16
+        }
+      ]
+    },
+    {
+      "version": "omega-ruby-alpha-sapphire",
+      "battle": "鐵旋",
+      "expected": [
+        {
+          "name": "小磁怪",
+          "level": 19
+        },
+        {
+          "name": "霹靂電球",
+          "level": 19
+        },
+        {
+          "name": "三合一磁怪",
+          "level": 21
+        }
+      ]
+    },
+    {
+      "version": "omega-ruby-alpha-sapphire",
+      "battle": "亞莎",
+      "expected": [
+        {
+          "name": "熔岩蟲",
+          "level": 26
+        },
+        {
+          "name": "呆火駝",
+          "level": 26
+        },
+        {
+          "name": "煤炭龜",
+          "level": 28
+        }
+      ]
+    },
+    {
+      "version": "omega-ruby-alpha-sapphire",
+      "battle": "千里",
+      "expected": [
+        {
+          "name": "請假王",
+          "level": 28
+        },
+        {
+          "name": "過動猿",
+          "level": 28
+        },
+        {
+          "name": "請假王",
+          "level": 30
+        }
+      ]
+    },
+    {
+      "version": "omega-ruby-alpha-sapphire",
+      "battle": "娜琪",
+      "expected": [
+        {
+          "name": "大王燕",
+          "level": 33
+        },
+        {
+          "name": "大嘴鷗",
+          "level": 33
+        },
+        {
+          "name": "盔甲鳥",
+          "level": 33
+        },
+        {
+          "name": "七夕青鳥",
+          "level": 35
+        }
+      ]
+    },
+    {
+      "version": "omega-ruby-alpha-sapphire",
+      "battle": "小楓與小南",
+      "expected": [
+        {
+          "name": "月石",
+          "level": 45
+        },
+        {
+          "name": "太陽岩",
+          "level": 45
+        }
+      ]
+    },
+    {
+      "version": "omega-ruby-alpha-sapphire",
+      "battle": "米可利",
+      "expected": [
+        {
+          "name": "愛心魚",
+          "level": 44
+        },
+        {
+          "name": "鯰魚王",
+          "level": 44
+        },
+        {
+          "name": "海魔獅",
+          "level": 44
+        },
+        {
+          "name": "金魚王",
+          "level": 44
+        },
+        {
+          "name": "美納斯",
+          "level": 46
+        }
+      ]
+    },
+    {
+      "version": "omega-ruby-alpha-sapphire",
+      "battle": "花月",
+      "expected": [
+        {
+          "name": "大狼犬",
+          "level": 50
+        },
+        {
+          "name": "狡猾天狗",
+          "level": 50
+        },
+        {
+          "name": "夢歌仙人掌",
+          "level": 50
+        },
+        {
+          "name": "巨牙鯊",
+          "level": 50
+        },
+        {
+          "name": "阿勃梭魯",
+          "level": 52
+        }
+      ]
+    },
+    {
+      "version": "omega-ruby-alpha-sapphire",
+      "battle": "芙蓉",
+      "expected": [
+        {
+          "name": "彷徨夜靈",
+          "level": 51
+        },
+        {
+          "name": "詛咒娃娃",
+          "level": 51
+        },
+        {
+          "name": "勾魂眼",
+          "level": 51
+        },
+        {
+          "name": "詛咒娃娃",
+          "level": 51
+        },
+        {
+          "name": "黑夜魔靈",
+          "level": 53
+        }
+      ]
+    },
+    {
+      "version": "omega-ruby-alpha-sapphire",
+      "battle": "波妮",
+      "expected": [
+        {
+          "name": "冰鬼護",
+          "level": 52
+        },
+        {
+          "name": "雪妖女",
+          "level": 52
+        },
+        {
+          "name": "冰鬼護",
+          "level": 52
+        },
+        {
+          "name": "雪妖女",
+          "level": 52
+        },
+        {
+          "name": "帝牙海獅",
+          "level": 54
+        }
+      ]
+    },
+    {
+      "version": "omega-ruby-alpha-sapphire",
+      "battle": "源治",
+      "expected": [
+        {
+          "name": "七夕青鳥",
+          "level": 53
+        },
+        {
+          "name": "沙漠蜻蜓",
+          "level": 53
+        },
+        {
+          "name": "刺龍王",
+          "level": 53
+        },
+        {
+          "name": "沙漠蜻蜓",
+          "level": 53
+        },
+        {
+          "name": "暴飛龍",
+          "level": 55
+        }
+      ]
+    },
+    {
+      "version": "omega-ruby-alpha-sapphire",
+      "battle": "大吾",
+      "expected": [
+        {
+          "name": "盔甲鳥",
+          "level": 57
+        },
+        {
+          "name": "念力土偶",
+          "level": 57
+        },
+        {
+          "name": "波士可多拉",
+          "level": 57
+        },
+        {
+          "name": "搖籃百合",
+          "level": 57
+        },
+        {
+          "name": "太古盔甲",
+          "level": 57
+        },
+        {
+          "name": "巨金怪",
+          "level": 59
+        }
+      ]
+    }
+  ],
+  "frontierSource": "https://github.com/pret/pokeemerald/blob/master/src/frontier_util.c",
+  "frontierParties": [
+    {
+      "battle": "【銀】莉拉",
+      "expected": [
+        {
+          "name": "胡地",
+          "types": [
+            "psychic"
+          ],
+          "level": 50
+        },
+        {
+          "name": "炎帝",
+          "types": [
+            "fire"
+          ],
+          "level": 50
+        },
+        {
+          "name": "卡比獸",
+          "types": [
+            "normal"
+          ],
+          "level": 50
+        }
+      ]
+    },
+    {
+      "battle": "【金】莉拉",
+      "expected": [
+        {
+          "name": "雷公",
+          "types": [
+            "electric"
+          ],
+          "level": 50
+        },
+        {
+          "name": "拉帝歐斯",
+          "types": [
+            "dragon",
+            "psychic"
+          ],
+          "level": 50
+        },
+        {
+          "name": "卡比獸",
+          "types": [
+            "normal"
+          ],
+          "level": 50
+        }
+      ]
+    },
+    {
+      "battle": "【銀】希爾斯",
+      "expected": [
+        {
+          "name": "巨沼怪",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "level": 50
+        },
+        {
+          "name": "暴飛龍",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 50
+        },
+        {
+          "name": "噴火龍",
+          "types": [
+            "fire",
+            "flying"
+          ],
+          "level": 50
+        }
+      ]
+    },
+    {
+      "battle": "【金】希爾斯",
+      "expected": [
+        {
+          "name": "巨沼怪",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "level": 50
+        },
+        {
+          "name": "巨金怪",
+          "types": [
+            "steel",
+            "psychic"
+          ],
+          "level": 50
+        },
+        {
+          "name": "拉帝亞斯",
+          "types": [
+            "dragon",
+            "psychic"
+          ],
+          "level": 50
+        }
+      ]
+    },
+    {
+      "battle": "【銀】宇康",
+      "expected": [
+        {
+          "name": "叉字蝠",
+          "types": [
+            "poison",
+            "flying"
+          ],
+          "level": 50
+        },
+        {
+          "name": "請假王",
+          "types": [
+            "normal"
+          ],
+          "level": 50
+        },
+        {
+          "name": "拉普拉斯",
+          "types": [
+            "water",
+            "ice"
+          ],
+          "level": 50
+        }
+      ]
+    },
+    {
+      "battle": "【金】宇康",
+      "expected": [
+        {
+          "name": "風速狗",
+          "types": [
+            "fire"
+          ],
+          "level": 50
+        },
+        {
+          "name": "請假王",
+          "types": [
+            "normal"
+          ],
+          "level": 50
+        },
+        {
+          "name": "水君",
+          "types": [
+            "water"
+          ],
+          "level": 50
+        }
+      ]
+    },
+    {
+      "battle": "【銀】黃瓜香",
+      "expected": [
+        {
+          "name": "赫拉克羅斯",
+          "types": [
+            "bug",
+            "fighting"
+          ],
+          "level": 50
+        },
+        {
+          "name": "月亮伊布",
+          "types": [
+            "dark"
+          ],
+          "level": 50
+        },
+        {
+          "name": "脫殼忍者",
+          "types": [
+            "bug",
+            "ghost"
+          ],
+          "level": 50
+        }
+      ]
+    },
+    {
+      "battle": "【金】黃瓜香",
+      "expected": [
+        {
+          "name": "月亮伊布",
+          "types": [
+            "dark"
+          ],
+          "level": 50
+        },
+        {
+          "name": "耿鬼",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 50
+        },
+        {
+          "name": "斗笠菇",
+          "types": [
+            "grass",
+            "fighting"
+          ],
+          "level": 50
+        }
+      ]
+    },
+    {
+      "battle": "【銀】小薊",
+      "expected": [
+        {
+          "name": "飯匙蛇",
+          "types": [
+            "poison"
+          ],
+          "level": 50
+        },
+        {
+          "name": "壺壺",
+          "types": [
+            "bug",
+            "rock"
+          ],
+          "level": 50
+        },
+        {
+          "name": "美納斯",
+          "types": [
+            "water"
+          ],
+          "level": 50
+        }
+      ]
+    },
+    {
+      "battle": "【金】小薊",
+      "expected": [
+        {
+          "name": "飯匙蛇",
+          "types": [
+            "poison"
+          ],
+          "level": 50
+        },
+        {
+          "name": "大鋼蛇",
+          "types": [
+            "steel",
+            "ground"
+          ],
+          "level": 50
+        },
+        {
+          "name": "暴鯉龍",
+          "types": [
+            "water",
+            "flying"
+          ],
+          "level": 50
+        }
+      ]
+    },
+    {
+      "battle": "【銀】神代",
+      "expected": [
+        {
+          "name": "雷吉洛克",
+          "types": [
+            "rock"
+          ],
+          "level": 50
+        },
+        {
+          "name": "雷吉斯奇魯",
+          "types": [
+            "steel"
+          ],
+          "level": 50
+        },
+        {
+          "name": "雷吉艾斯",
+          "types": [
+            "ice"
+          ],
+          "level": 50
+        }
+      ]
+    },
+    {
+      "battle": "【金】神代",
+      "expected": [
+        {
+          "name": "急凍鳥",
+          "types": [
+            "ice",
+            "flying"
+          ],
+          "level": 50
+        },
+        {
+          "name": "閃電鳥",
+          "types": [
+            "electric",
+            "flying"
+          ],
+          "level": 50
+        },
+        {
+          "name": "火焰鳥",
+          "types": [
+            "fire",
+            "flying"
+          ],
+          "level": 50
+        }
+      ]
+    }
+  ]
+}

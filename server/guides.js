@@ -255,6 +255,8 @@ export function getGuideContext(versionId, battleRef, partId = 'main') {
   const guide = getVersionGuide(versionId);
   if (!guide) return null;
 
+  if (versionId === 'pokemmo') return formatPokeMmoContext(guide, battleRef, partId);
+
   const activePartId = partId && partId !== 'main' ? partId : 'main';
 
   const parts = [`版本：${guide.title}`];
@@ -326,4 +328,40 @@ export function getGuideContext(versionId, battleRef, partId = 'main') {
   }
 
   return parts.filter(Boolean).join('\n');
+}
+
+// Region-scoped refs must never select a battle from another PokeMMO region.
+function formatPokeMmoContext(guide, battleRef, partId) {
+  const part = partId === 'main' ? guide : guide.expansions.find(e => e.id === partId);
+  if (!part) return null;
+  const lines = [`版本：PokeMMO；目前分頁：${partId === 'main' ? guide.mainPartLabel : part.title}`, guide.notes];
+  if (part !== guide) lines.push('共通入門規則：', formatPokeMmoSections(guide));
+  lines.push(`目前分頁攻略：`, formatPokeMmoSections(part));
+  if (battleRef) {
+    if (!battleRef.startsWith(`expansion:${partId}:`)) return null;
+    const battle = resolveBattle(battleRef, guide);
+    if (!battle) return null;
+    lines.push(formatPokeMmoBattle(battle));
+  } else {
+    for (const battle of part.gyms || []) lines.push(formatPokeMmoBattle(battle));
+  }
+  lines.push('資料來源：', ...(part.sources || []).map(s => `${s.title}：${s.url}`));
+  return lines.filter(Boolean).join('\n\n');
+}
+
+function formatPokeMmoSections(part) {
+  // The existing compact cartridge summaries truncate flows; PokeMMO needs
+  // the last step too (it often unlocks the next story event).
+  return (part.sections || []).map(section => section.type === 'island'
+    ? [section.title, section.intro, ...(section.flows || []), ...(section.tips || [])].join('\n')
+    : formatExpansionSection(section)).join('\n\n');
+}
+
+function formatPokeMmoBattle(battle) {
+  const lines = [formatGymBattle(battle), battle.partyNote, battle.strategy?.level, battle.strategy?.summary,
+    ...(battle.strategy?.tips || [])];
+  for (const team of battle.recommendedTeams || []) {
+    for (const pokemon of team.pokemon) lines.push(`${pokemon.name}：${pokemon.obtain}；${pokemon.moveNote || ''}`);
+  }
+  return lines.filter(Boolean).join('\n');
 }

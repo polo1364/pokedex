@@ -1,0 +1,170 @@
+[
+  {
+    "version": "red-blue",
+    "item": "tm01",
+    "move": "mega-punch",
+    "id": 2,
+    "url": "https://pokeapi.co/api/v2/machine/2/"
+  },
+  {
+    "version": "yellow",
+    "item": "tm01",
+    "move": "mega-punch",
+    "id": 3,
+    "url": "https://pokeapi.co/api/v2/machine/3/"
+  },
+  {
+    "version": "gold-silver",
+    "item": "tm01",
+    "move": "dynamic-punch",
+    "id": 4,
+    "url": "https://pokeapi.co/api/v2/machine/4/"
+  },
+  {
+    "version": "crystal",
+    "item": "tm01",
+    "move": "dynamic-punch",
+    "id": 5,
+    "url": "https://pokeapi.co/api/v2/machine/5/"
+  },
+  {
+    "version": "ruby-sapphire",
+    "item": "tm01",
+    "move": "focus-punch",
+    "id": 6,
+    "url": "https://pokeapi.co/api/v2/machine/6/"
+  },
+  {
+    "version": "emerald",
+    "item": "tm01",
+    "move": "focus-punch",
+    "id": 7,
+    "url": "https://pokeapi.co/api/v2/machine/7/"
+  },
+  {
+    "version": "firered-leafgreen",
+    "item": "tm01",
+    "move": "focus-punch",
+    "id": 8,
+    "url": "https://pokeapi.co/api/v2/machine/8/"
+  },
+  {
+    "version": "diamond-pearl",
+    "item": "tm01",
+    "move": "focus-punch",
+    "id": 9,
+    "url": "https://pokeapi.co/api/v2/machine/9/"
+  },
+  {
+    "version": "platinum",
+    "item": "tm01",
+    "move": "focus-punch",
+    "id": 10,
+    "url": "https://pokeapi.co/api/v2/machine/10/"
+  },
+  {
+    "version": "heartgold-soulsilver",
+    "item": "tm01",
+    "move": "focus-punch",
+    "id": 11,
+    "url": "https://pokeapi.co/api/v2/machine/11/"
+  },
+  {
+    "version": "black-white",
+    "item": "tm01",
+    "move": "hone-claws",
+    "id": 12,
+    "url": "https://pokeapi.co/api/v2/machine/12/"
+  },
+  {
+    "version": "colosseum",
+    "item": "tm01",
+    "move": "focus-punch",
+    "id": 13,
+    "url": "https://pokeapi.co/api/v2/machine/13/"
+  },
+  {
+    "version": "xd",
+    "item": "tm01",
+    "move": "focus-punch",
+    "id": 14,
+    "url": "https://pokeapi.co/api/v2/machine/14/"
+  },
+  {
+    "version": "black-2-white-2",
+    "item": "tm01",
+    "move": "hone-claws",
+    "id": 15,
+    "url": "https://pokeapi.co/api/v2/machine/15/"
+  },
+  {
+    "version": "x-y",
+    "item": "tm01",
+    "move": "hone-claws",
+    "id": 16,
+    "url": "https://pokeapi.co/api/v2/machine/16/"
+  },
+  {
+    "version": "omega-ruby-alpha-sapphire",
+    "item": "tm01",
+    "move": "hone-claws",
+    "id": 17,
+    "url": "https://pokeapi.co/api/v2/machine/17/"
+  },
+  {
+    "version": "sun-moon",
+    "item": "tm01",
+    "move": "work-up",
+    "id": 18,
+    "url": "https://pokeapi.co/api/v2/machine/18/"
+  },
+  {
+    "version": "ultra-sun-ultra-moon",
+    "item": "tm01",
+    "move": "work-up",
+    "id": 19,
+    "url": "https://pokeapi.co/api/v2/machine/19/"
+  },
+  {
+    "version": "lets-go-pikachu-lets-go-eevee",
+    "item": "tm01",
+    "move": "headbutt",
+    "id": 20,
+    "url": "https://pokeapi.co/api/v2/machine/20/"
+  },
+  {
+    "version": "sword-shield",
+    "item": "tm01",
+    "move": "mega-kick",
+    "id": 21,
+    "url": "https://pokeapi.co/api/v2/machine/21/"
+  },
+  {
+    "version": "red-green-japan",
+    "item": "tm01",
+    "move": "mega-punch",
+    "id": 22,
+    "url": "https://pokeapi.co/api/v2/machine/22/"
+  },
+  {
+    "version": "blue-japan",
+    "item": "tm01",
+    "move": "mega-punch",
+    "id": 23,
+    "url": "https://pokeapi.co/api/v2/machine/23/"
+  },
+  {
+    "version": "scarlet-violet",
+    "item": "tm01",
+    "move": "take-down",
+    "id": 1816,
+    "url": "https://pokeapi.co/api/v2/machine/1816/"
+  },
+  {
+    "version": "legends-za",
+    "item": "tm01",
+    "move": "headbutt",
+    "id": 2213,
+    "url": "https://pokeapi.co/api/v2/machine/2213/"
+  }
+]

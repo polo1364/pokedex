@@ -67,6 +67,7 @@ function initTypeFilters(onFilterChange) {
 
 function filterByType(type, onFilterChange) {
   const allBtn = document.getElementById('typeFilterAll');
+  const isActive = store.currentFilters.type === type;
   document.querySelectorAll('.type-btn:not(.type-btn--all)').forEach((b) => b.classList.remove('active'));
   allBtn?.classList.remove('active');
 
@@ -75,7 +76,6 @@ function filterByType(type, onFilterChange) {
     allBtn?.classList.add('active');
   } else {
     const btn = document.querySelector(`.type-btn[data-type="${type}"]:not(.type-btn--all)`);
-    const isActive = btn?.classList.contains('active');
     if (isActive) {
       store.currentFilters.type = 'all';
       allBtn?.classList.add('active');

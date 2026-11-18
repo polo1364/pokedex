@@ -1,7 +1,8 @@
 import { typeNamesCN } from '../config.js';
-import { getValidChineseName, isPlaceholderTranslation } from './i18n.js';
+import { getValidChineseName } from './i18n.js';
 import { formatSlug, getItemSpriteUrl, VERSION_GROUP_TO_GEN } from './items.js';
 import { versionGroupScore } from './versions.js';
+import { getVersionedFlavor } from './catalogText.js';
 
 export const KIND_LABELS_CN = {
   TM: '招式學習器',
@@ -16,7 +17,7 @@ export const KIND_COLORS = {
 };
 
 export const KIND_TIPS_CN = {
-  TM: '單次使用的招式學習器，教會相容寶可夢對應招式',
+  TM: '教會相容寶可夢對應招式；是否消耗依遊戲版本而異',
   HM: '可反覆使用的秘傳機器，部分世代需取得對應徽章',
   TR: '第八世代劍盾的招式記錄，使用後消失',
 };
@@ -41,17 +42,6 @@ export function formatMachineLabel(kind, number) {
   return `${label} ${padNumber(kind, number)}`;
 }
 
-export function pickMachineForGen(machines, gen) {
-  const inGen = (machines || []).filter(
-    (m) => VERSION_GROUP_TO_GEN[m.version_group?.name] === gen,
-  );
-  if (!inGen.length) return null;
-  return inGen.reduce((best, cur) => (
-    versionGroupScore(cur.version_group.name) >= versionGroupScore(best.version_group.name)
-      ? cur : best
-  ));
-}
-
 function resolveMoveNames(moveData, moveSlug) {
   const zh = getValidChineseName(moveData?.names);
   const enFormatted = formatSlug(moveSlug);
@@ -65,24 +55,17 @@ function resolveMoveNames(moveData, moveSlug) {
   };
 }
 
-/** 招式 flavor 說明（繁中，取最新 version group） */
-export function getMoveEffectText(moveData) {
-  const entries = moveData?.flavor_text_entries?.filter(
-    (entry) => entry.language?.name?.toLowerCase() === 'zh-hant',
-  ) || [];
-  if (!entries.length) return '無繁中效果說明';
+export function getMoveEffectText(moveData, versionGroup) {
+  return getVersionedFlavor(moveData?.flavor_text_entries, versionGroup, 'flavor_text').text;
+}
 
-  const latest = entries.reduce((best, cur) => {
-    const curScore = versionGroupScore(cur.version_group?.name);
-    const bestScore = versionGroupScore(best.version_group?.name);
-    return curScore >= bestScore ? cur : best;
-  });
-
-  const text = latest.flavor_text
-    .replace(/\s+/g, ' ')
-    .replace(/\[VAR[^\]]*]/gi, '對手')
-    .trim();
-  return isPlaceholderTranslation(text) ? '無繁中效果說明' : text;
+export function getMoveTypeForVersion(moveData, versionGroup) {
+  const score = versionGroupScore(versionGroup);
+  if (score < 0) return '';
+  const changes = (moveData?.past_values || [])
+    .filter((change) => change.type && versionGroupScore(change.version_group?.name) > score)
+    .sort((a, b) => versionGroupScore(a.version_group.name) - versionGroupScore(b.version_group.name));
+  return changes[0]?.type?.name || moveData?.type?.name || '';
 }
 
 export function buildMachineEntry(itemData, slug, gen, machineRef, moveData) {
@@ -91,11 +74,12 @@ export function buildMachineEntry(itemData, slug, gen, machineRef, moveData) {
 
   const { kind, number } = parsed;
   const moveSlug = moveData?.name || '';
-  const type = moveData?.type?.name || 'normal';
+  const type = getMoveTypeForVersion(moveData, machineRef?.version_group?.name);
   const names = resolveMoveNames(moveData, moveSlug);
   const sprite = getItemSpriteUrl(itemData, slug);
   const hasSprite = Boolean(itemData?.sprites?.default);
-  const moveEffect = getMoveEffectText(moveData);
+  const effect = getVersionedFlavor(moveData?.flavor_text_entries, machineRef?.version_group?.name, 'flavor_text');
+  const moveEffect = effect.text;
 
   return {
     kind,
@@ -109,8 +93,9 @@ export function buildMachineEntry(itemData, slug, gen, machineRef, moveData) {
     hasChineseMoveName: names.hasChineseMoveName,
     moveNameEn: names.moveNameEn,
     moveEffect,
+    effectLanguage: effect.language,
     type,
-    typeLabel: typeNamesCN[type] || type,
+    typeLabel: typeNamesCN[type] || type || '屬性未提供',
     generation: gen,
     versionGroup: machineRef?.version_group?.name || '',
     sprite: hasSprite ? sprite : '',

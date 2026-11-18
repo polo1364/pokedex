@@ -1,10 +1,11 @@
 import { getValidChineseName, isPlaceholderTranslation } from './i18n.js';
 import { versionGroupScore } from './versions.js';
+import { getVersionedFlavor } from './catalogText.js';
 
 export const VERSION_GROUP_TO_GEN = {
   'red-blue': 1, 'red-green-japan': 1, 'blue-japan': 1, yellow: 1,
   'gold-silver': 2, crystal: 2,
-  'ruby-sapphire': 3, emerald: 3, 'firered-leafgreen': 3,
+  'ruby-sapphire': 3, emerald: 3, 'firered-leafgreen': 3, colosseum: 3, xd: 3,
   'diamond-pearl': 4, platinum: 4, 'heartgold-soulsilver': 4,
   'black-white': 5, 'black-2-white-2': 5,
   'x-y': 6, 'omega-ruby-alpha-sapphire': 6,
@@ -130,43 +131,6 @@ export const GEN_ACCENT_COLORS = {
   9: '#00d9ff',
 };
 
-/** 第三世代起才登場的精靈球（不溯及第 1、2 世代） */
-export const GEN3_DEBUT_BALLS = new Set([
-  'net-ball', 'dive-ball', 'nest-ball', 'repeat-ball', 'timer-ball',
-  'luxury-ball', 'premier-ball', 'dusk-ball', 'heal-ball', 'quick-ball', 'cherish-ball',
-]);
-
-/** 第二世代登場的精靈球 */
-export const GEN2_DEBUT_BALLS = new Set([
-  'lure-ball', 'level-ball', 'heavy-ball', 'love-ball', 'friend-ball', 'moon-ball', 'sport-ball',
-]);
-
-/**
- * PokeAPI id > 185 但第一世代即存在的道具（索引僅從第三世代開始記錄）
- * 來源：紅／綠／藍／黃經典道具
- */
-export const GEN1_LEGACY_SLUGS = new Set([
-  'bicycle', 'coin-case', 'good-rod', 'super-rod', 'ss-ticket', 'gold-teeth',
-  'silph-scope', 'parcel', 'card-key', 'lift-key', 'basement-key', 'storage-key',
-  'secret-potion', 'item-finder', 'dowsing-machine', 'poke-flute', 'old-amber',
-  'escape-rope', 'repel', 'super-repel', 'max-repel', 'fresh-water', 'soda-pop',
-  'lemonade', 'x-accuracy', 'x-attack', 'x-defense', 'x-sp-atk', 'x-sp-def', 'x-speed',
-  'guard-spec', 'rare-candy', 'moon-stone', 'fire-stone', 'water-stone', 'thunder-stone',
-  'leaf-stone', 'nugget', 'tiny-mushroom', 'big-mushroom', 'pearl', 'big-pearl',
-  'stardust', 'star-piece', 'gold-leaf', 'silver-leaf', 'berry-juice', 'berserk-gene',
-]);
-
-/** PokeAPI 未建立 generation-ix 索引的第八世代道具 */
-export const GEN_8_UNINDEXED_SLUGS = new Set([
-  'adamant-crystal',
-  'lustrous-globe',
-  'griseous-core',
-  'strange-ball',
-]);
-
-/** 此 ID 之後且無其他線索的道具，預設歸於第九世代 */
-export const GEN_9_UNINDEXED_MIN_ID = 1659;
-
 export const POCKET_PLACEHOLDER_ICONS = {
   pokeballs: '⚪',
   medicine: '💊',
@@ -222,7 +186,7 @@ export function isDynamaxCrystal(slug = '') {
 }
 
 export function parseGenerationNumber(name) {
-  const match = /^generation-([ix]+|\d+)$/i.exec(name || '');
+  const match = /^generation-([ivx]+|\d+)$/i.exec(name || '');
   if (!match) return null;
   const token = match[1].toLowerCase();
   const roman = { i: 1, ii: 2, iii: 3, iv: 4, v: 5, vi: 6, vii: 7, viii: 8, ix: 9 };
@@ -250,80 +214,51 @@ export function getLatestItemEffect(itemData) {
   return isPlaceholderTranslation(text) ? '無繁中效果說明' : text;
 }
 
-export function inferGenerationFromItemId(itemData, slug) {
-  const id = itemData?.id;
-  if (!Number.isFinite(id) || id < GEN_9_UNINDEXED_MIN_ID) return null;
-  if (GEN_8_UNINDEXED_SLUGS.has(slug)) return 8;
-  return 9;
-}
-
-/** PokeAPI 道具索引自第三世代起才完整，補回第一、第二世代歸屬 */
-export function inferRetroactiveEarlyGenerations(itemData, slug, gens) {
-  const idxNames = [...new Set((itemData.game_indices || []).map((i) => i.generation?.name))];
-  const hasGen3Index = (itemData.game_indices || []).some(
-    (i) => parseGenerationNumber(i.generation?.name) === 3,
-  );
-
-  // 僅有第三世代索引 → 第三世代新道具（郵件等）
-  if (idxNames.length === 1 && idxNames[0] === 'generation-iii') return;
-  if (!hasGen3Index) return;
-  if (GEN3_DEBUT_BALLS.has(slug)) return;
-
-  const id = itemData.id ?? 0;
-
-  if (GEN2_DEBUT_BALLS.has(slug)) {
-    gens.add(2);
-    return;
+/** Index presence is not proof that an item is obtainable in that game. Never guess from IDs. */
+export function getItemGenerations(itemData) {
+  const gens = new Set((itemData?.game_indices || [])
+    .map((index) => parseGenerationNumber(index.generation?.name))
+    .filter((gen) => gen >= 1 && gen <= 9));
+  for (const entry of [...(itemData?.flavor_text_entries || []), ...(itemData?.prices || [])]) {
+    const gen = VERSION_GROUP_TO_GEN[entry.version_group?.name];
+    if (gen) gens.add(gen);
   }
-
-  if (slug.endsWith('-berry')) {
-    gens.add(2);
-    return;
-  }
-
-  if (id <= 185 || GEN1_LEGACY_SLUGS.has(slug)) {
-    gens.add(1);
-    gens.add(2);
-    return;
-  }
-
-  if (id < 515) {
-    gens.add(2);
-  }
-}
-
-export function inferGenerationFromFlavor(itemData) {
-  const entries = itemData?.flavor_text_entries || [];
-  if (!entries.length) return null;
-
-  const sorted = entries
-    .filter((e) => e.version_group?.name && VERSION_GROUP_TO_GEN[e.version_group.name])
-    .sort((a, b) => versionGroupScore(a.version_group.name) - versionGroupScore(b.version_group.name));
-
-  if (!sorted.length) return null;
-  return VERSION_GROUP_TO_GEN[sorted[0].version_group.name] || null;
-}
-
-export function getItemGenerations(itemData, slug = itemData?.name || '') {
-  const gens = new Set();
-  for (const idx of itemData?.game_indices || []) {
-    const num = parseGenerationNumber(idx.generation?.name);
-    if (num) gens.add(num);
-  }
-
-  if (!gens.size) {
-    const fallback = inferGenerationFromFlavor(itemData);
-    if (fallback) gens.add(fallback);
-  }
-
-  inferRetroactiveEarlyGenerations(itemData, slug, gens);
-
-  if (!gens.size) {
-    const idGen = inferGenerationFromItemId(itemData, slug);
-    if (idGen) gens.add(idGen);
-  }
-
   return [...gens].sort((a, b) => a - b);
+}
+
+export function getItemVersionDetails(itemData, gen) {
+  const flavors = itemData?.flavor_text_entries || [];
+  const prices = itemData?.prices || [];
+  const versions = [...new Set([...flavors, ...prices].map((entry) => entry.version_group?.name))]
+    .filter((version) => VERSION_GROUP_TO_GEN[version] === gen)
+    .sort((a, b) => versionGroupScore(b) - versionGroupScore(a));
+  return versions.map((versionGroup) => ({
+    ...getVersionedFlavor(flavors, versionGroup),
+    prices: prices.filter((price) => price.version_group?.name === versionGroup),
+  }));
+}
+
+// PokeAPI merges Gen II berries into their successors. Preserve the original
+// identities by verified Gen II item index, not by assuming every berry existed.
+// https://github.com/pret/pokecrystal/blob/master/constants/item_constants.asm
+const GEN2_BERRY_NAMES = {
+  74: 'PSNCUREBERRY', 78: 'PRZCUREBERRY', 79: 'BURNT BERRY', 80: 'ICE BERRY',
+  83: 'BITTER BERRY', 84: 'MINT BERRY', 109: 'MIRACLEBERRY', 150: 'MYSTERYBERRY',
+  173: 'BERRY', 174: 'GOLD BERRY',
+};
+
+export function getHistoricalItemName(itemData, gen) {
+  if (gen !== 2) return '';
+  const index = itemData?.game_indices?.find((entry) => entry.generation?.name === 'generation-ii');
+  return GEN2_BERRY_NAMES[index?.game_index] || '';
+}
+
+export function formatItemPrice(price) {
+  const currency = { 'poke-dollar': '寶可元', 'battle-point': 'BP', 'league-point': 'LP' };
+  const unit = currency[price.currency?.name] || price.currency?.name || '貨幣未提供';
+  const amount = (key, unavailable) => price[key] === null ? unavailable
+    : Number.isFinite(price[key]) && price[key] >= 0 ? `${price[key]} ${unit}` : '未提供';
+  return `買價：${amount('purchase_price', '不可購買')} · 賣價：${amount('sell_price', '不可出售')}`;
 }
 
 export function getItemSpriteUrl(itemData, slug) {
@@ -367,5 +302,5 @@ export function formatAttributeLabels(attributes = []) {
 export function formatOtherGenerations(allGenerations, currentGen) {
   const others = allGenerations.filter((g) => g !== currentGen);
   if (!others.length) return '';
-  return `亦見於：${others.map((g) => `第 ${g} 世代`).join('、')}`;
+  return `其他有資料的世代：${others.map((g) => `第 ${g} 世代`).join('、')}`;
 }

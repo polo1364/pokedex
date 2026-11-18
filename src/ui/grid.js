@@ -36,7 +36,8 @@ function escapeHtml(text) {
   return String(text)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 function updateStatSummary(shown) {
@@ -70,8 +71,17 @@ function updateStatSummary(shown) {
   labelEl.hidden = true;
 }
 
+const ARTWORK_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork';
+
+/** 尚未載入完整資料時，先以物種編號推得官方立繪，避免整片「?」佔位圖。 */
+function entryImage(entry) {
+  if (entry.pokemon) return getPokemonImage(entry.pokemon);
+  if (entry.id > 0 && entry.id <= 1025) return `${ARTWORK_BASE}/${entry.id}.png`;
+  return getPokemonImage(null);
+}
+
 function typeBadges(pokemon) {
-  if (!pokemon?.types) return '<span class="type-badge" style="opacity:0.5">載入中</span>';
+  if (!pokemon?.types) return '<span class="type-badge type-badge--skeleton" aria-label="載入中"></span>';
   return pokemon.types
     .map((t) => `<span class="type-badge" style="background:${typeColors[t.type.name] || '#666'}">${typeNamesCN[t.type.name] || t.type.name}</span>`)
     .join('');
@@ -79,13 +89,13 @@ function typeBadges(pokemon) {
 
 function renderCard(entry) {
   const p = entry.pokemon;
-  const img = p ? getPokemonImage(p) : getPokemonImage(null);
-  const name = entry.chineseName || entry.name;
+  const img = entryImage(entry);
+  const name = escapeHtml(entry.chineseName || entry.name);
   return `
     <div class="pokemon-card" data-id="${entry.id}" role="button" tabindex="0">
       <div class="pokemon-id">#${entry.id.toString().padStart(4, '0')}</div>
       <div class="pokemon-image-container">
-        <img class="pokemon-image" src="${img}" alt="${name}" loading="lazy">
+        <img class="pokemon-image" src="${img}" alt="${name}" loading="lazy" decoding="async">
       </div>
       <div class="pokemon-name">${name}</div>
       <div class="pokemon-types">${typeBadges(p)}</div>
@@ -94,8 +104,8 @@ function renderCard(entry) {
 
 function renderListRow(entry) {
   const p = entry.pokemon;
-  const img = p ? getPokemonImage(p) : getPokemonImage(null);
-  const name = entry.chineseName || entry.name;
+  const img = entryImage(entry);
+  const name = escapeHtml(entry.chineseName || entry.name);
   const total = p?.stats?.reduce((s, x) => s + x.base_stat, 0) || '—';
   return `
     <div class="pokemon-list-row" data-id="${entry.id}" role="button" tabindex="0">
@@ -105,6 +115,21 @@ function renderListRow(entry) {
       <span class="list-types">${typeBadges(p)}</span>
       <span class="list-total">種族值 ${total}</span>
     </div>`;
+}
+
+/** 單張卡片資料載入完成後就地更新，不重繪整個網格（保留捲動位置與已載入圖片）。 */
+export function patchPokemonCard(entry) {
+  const grid = document.getElementById('pokemonGrid');
+  const el = grid?.querySelector(`[data-id="${entry.id}"]`);
+  if (!el) return;
+  const html = store.viewMode === 'list' ? renderListRow(entry) : renderCard(entry);
+  const tpl = document.createElement('template');
+  tpl.innerHTML = html.trim();
+  const next = tpl.content.firstElementChild;
+  if (!next) return;
+  const hadFocus = document.activeElement === el;
+  el.replaceWith(next);
+  if (hadFocus) next.focus();
 }
 
 export function loadMore() {

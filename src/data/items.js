@@ -9,13 +9,14 @@ import {
   getItemGenerations,
   getItemPlaceholderIcon,
   getItemSpriteUrl,
-  getLatestItemEffect,
+  getItemVersionDetails,
+  getHistoricalItemName,
   isDynamaxCrystal,
   isMachineItem,
   POCKET_NAMES_CN,
 } from '../utils/items.js';
 
-const INDEX_CACHE_KEY = 'items_by_gen_v6';
+const INDEX_CACHE_KEY = 'items_by_gen_v8';
 const ITEMS_FETCH_CONCURRENCY = 25;
 const categoryCache = new Map();
 
@@ -24,23 +25,17 @@ async function loadCategoryMeta(categoryRef) {
   if (!slug) return { categorySlug: 'unknown', categoryZh: '未知', pocketSlug: 'misc', pocketZh: POCKET_NAMES_CN.misc };
   if (categoryCache.has(slug)) return categoryCache.get(slug);
 
-  try {
-    const data = await fetchJson(categoryRef.url, `item_category_${slug}`);
-    const categoryZhRaw = getValidChineseName(data.names);
-    const categoryZh = categoryZhRaw || getCategoryDisplayName(slug);
-    const pocketSlug = data.pocket?.name || 'misc';
-    const pocketZh = POCKET_NAMES_CN[pocketSlug] || '其他';
-    const meta = { categorySlug: slug, categoryZh, pocketSlug, pocketZh };
-    categoryCache.set(slug, meta);
-    return meta;
-  } catch {
-    const meta = { categorySlug: slug, categoryZh: getCategoryDisplayName(slug), pocketSlug: 'misc', pocketZh: POCKET_NAMES_CN.misc };
-    categoryCache.set(slug, meta);
-    return meta;
-  }
+  const data = await fetchJson(categoryRef.url, `item_category_${slug}`);
+  const categoryZhRaw = getValidChineseName(data.names);
+  const categoryZh = categoryZhRaw || getCategoryDisplayName(slug);
+  const pocketSlug = data.pocket?.name || 'misc';
+  const pocketZh = POCKET_NAMES_CN[pocketSlug] || '其他';
+  const meta = { categorySlug: slug, categoryZh, pocketSlug, pocketZh };
+  categoryCache.set(slug, meta);
+  return meta;
 }
 
-function buildItemView(itemData, slug, categoryMeta) {
+export function buildItemView(itemData, slug, categoryMeta) {
   const attributes = (itemData.attributes || []).map((a) => a.name);
   const generations = getItemGenerations(itemData, slug);
   const zhName = getValidChineseName(itemData.names);
@@ -53,6 +48,8 @@ function buildItemView(itemData, slug, categoryMeta) {
     hasChineseName: Boolean(zhName),
     enName: formatSlug(slug),
     displayName,
+    currentName: displayName,
+    historicalNames: Object.fromEntries(generations.map((gen) => [gen, getHistoricalItemName(itemData, gen)])),
     sprite: itemData.sprites?.default ? spriteUrl : '',
     spriteFallback: spriteUrl,
     placeholderIcon: getItemPlaceholderIcon(categoryMeta.pocketSlug, categoryMeta.categorySlug),
@@ -60,8 +57,7 @@ function buildItemView(itemData, slug, categoryMeta) {
     categoryZh: categoryMeta.categoryZh,
     pocketSlug: categoryMeta.pocketSlug,
     pocketZh: categoryMeta.pocketZh,
-    effect: getLatestItemEffect(itemData),
-    cost: itemData.cost ?? 0,
+    versionDetails: Object.fromEntries(generations.map((gen) => [gen, getItemVersionDetails(itemData, gen)])),
     attributes,
     generations,
   };
@@ -75,12 +71,19 @@ function groupByGeneration(items) {
 
   for (const item of items) {
     if (!item.generations.length) {
-      uncategorized.push(item);
+      uncategorized.push({ ...item, versionDetails: [], effect: '世代及版本效果資料尚未提供' });
       continue;
     }
     for (const gen of item.generations) {
       if (gen >= 1 && gen <= 9) {
-        byGen[gen].push({ ...item, currentGen: gen });
+        const versionDetails = item.versionDetails[gen] || [];
+        const summary = versionDetails.find((detail) => detail.language);
+        byGen[gen].push({ ...item, currentGen: gen, versionDetails,
+          displayName: item.historicalNames[gen] || item.displayName,
+          historicalName: item.historicalNames[gen] || '',
+          effect: summary?.text || '此世代尚無效果說明',
+          effectVersion: summary?.versionGroup || '', effectLanguage: summary?.language || '',
+        });
       }
     }
   }
@@ -99,6 +102,7 @@ async function fetchAllItemViews(onProgress) {
   const listData = await fetchJson(`${BASE_URL}/item?limit=${total}`, 'items_list');
 
   let completed = 0;
+  const failures = [];
   const report = () => {
     completed += 1;
     onProgress?.(Math.round((completed / total) * 100), completed, total);
@@ -107,7 +111,8 @@ async function fetchAllItemViews(onProgress) {
   const views = await runPool(listData.results, async (entry) => {
     try {
       const slug = entry.name;
-      const itemData = await fetchJson(entry.url);
+      if (isMachineItem(null, slug) || isDynamaxCrystal(slug)) { report(); return null; }
+      const itemData = await fetchJson(entry.url, `catalog_item_v2_${slug}`);
       if (isMachineItem(itemData, slug) || isDynamaxCrystal(slug)) {
         report();
         return null;
@@ -116,12 +121,14 @@ async function fetchAllItemViews(onProgress) {
       report();
       return buildItemView(itemData, slug, categoryMeta);
     } catch {
+      failures.push(entry.name);
       report();
       return null;
     }
   }, ITEMS_FETCH_CONCURRENCY);
 
-  return views.filter(Boolean);
+  if (failures.length) throw new Error(`道具資料未完整載入（${failures.length} 項），請重新整理重試`);
+  return views.filter((view) => view && !view.error);
 }
 
 export async function loadItemsCatalog(onProgress) {
@@ -152,6 +159,7 @@ export function countVisibleCards(catalog, query = '') {
   const match = (item) => {
     if (!q) return true;
     return item.displayName.toLowerCase().includes(q)
+      || (item.currentName || '').toLowerCase().includes(q)
       || item.slug.includes(q)
       || item.enName.toLowerCase().includes(q)
       || item.categoryZh.toLowerCase().includes(q);

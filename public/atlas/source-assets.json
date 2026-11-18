@@ -1,0 +1,117 @@
+[
+  {
+    "file": "gsc-johto.png",
+    "sourceFile": "gsc-johto-reference.png",
+    "sha256": "6f0be0aa9d11bc45c4cbf80e0f1488b6ec997a18b6f7d8835701778fc5ffc68f"
+  },
+  {
+    "file": "gsc-kanto.png",
+    "sourceFile": "gsc-kanto-reference.png",
+    "sha256": "cf76145dceface9fdadf6f22ba6693158b764da555447773c8d7de36805f4ec4"
+  },
+  {
+    "file": "johto.png",
+    "sourceFile": "johto-reference.png",
+    "sha256": "17f26483a42a992e1a53ee17ad36977b01060484200c51f2dbefb57370c9a63a"
+  },
+  {
+    "file": "kanto-remake.png",
+    "sourceFile": "kanto-remake-reference.png",
+    "sha256": "38cc35f3ef711bbbf14b094eb373438ca513d51d9ba33027d1629781c993015f"
+  },
+  {
+    "file": "sevii.png",
+    "sourceFile": "sevii-reference.png",
+    "sha256": "324874e9a2ae7092909763b9bceaf92b5363cf0cf63c3ecd98407eee3260c6be"
+  },
+  {
+    "file": "hoenn-source.png",
+    "sourceFile": "hoenn-source.png",
+    "sha256": "5cdd7dc63072cfee06907bf0be9f77797cbd2e090bf9ebc7063a1f4744c529c3"
+  },
+  {
+    "file": "sinnoh.png",
+    "sourceFile": "sinnoh-reference.png",
+    "sha256": "27fbffb17a1fd1e05e87b9921c26f8647ac5ea7eb6e046372b0d5ecce09e9889"
+  },
+  {
+    "file": "unova.png",
+    "sourceFile": "unova-reference.png",
+    "sha256": "5497dac47d82df1800f4116c56d4bd4ffe9d9b75bdc2f18d58836a58e00be061"
+  },
+  {
+    "file": "kalos.png",
+    "sourceFile": "kalos-reference.png",
+    "sha256": "8f292616138ee3a1dbfba51478b67f1f8bf518f4396fc2fc247ceaac3492096f"
+  },
+  {
+    "file": "unova-bw.png",
+    "sourceFile": "Unova.png",
+    "sha256": "4add69b033cd5be8082b47ca1a36a4f27fddca66f264ffc673dc3f8d684e07bb"
+  },
+  {
+    "file": "galar.jpg",
+    "sourceFile": "galar-reference.jpg",
+    "sha256": "cdffcc27cc116621adf978b746ee5acf12c985abc9b3d10a9785038b14711409"
+  },
+  {
+    "file": "hisui.jpg",
+    "sourceFile": "hisui-reference.jpg",
+    "sha256": "f4085ab879374f29c55385bb377f1c0d7d571f2ddaad0bab1be864b9e8e6624a"
+  },
+  {
+    "file": "paldea.png",
+    "sourceFile": "paldea-reference.png",
+    "sha256": "c0fd935803dd63cbb6edcc0fb82b0105eabc455a5cc31cfb53265f961c6d9a2a"
+  },
+  {
+    "file": "kitakami.png",
+    "sourceFile": "kitakami-reference.png",
+    "sha256": "95be279d70451caf08e1cda2c7c870704ce497a7aa8430b1467fd1540b0597ac"
+  },
+  {
+    "file": "terarium.png",
+    "sourceFile": "terarium-reference.png",
+    "sha256": "b07ccb46a7b02ad25fb6249b9b64fa24c3495eedd9c3eea7132b44a493aff133"
+  },
+  {
+    "file": "lumiose-za.png",
+    "sourceFile": "lumiosecity-reference.png",
+    "sha256": "e7e4e33978125779ee46a7c2bee16fa298392d8527f9cdfe5304ee52e061bde2"
+  },
+  {
+    "file": "alola-melemele.png",
+    "sourceFile": "Melemele_Island_Map.png",
+    "sha256": "789a698286ecb91a92ebbeaf036cc59183af92eb83751cfa9f76f19613da8287"
+  },
+  {
+    "file": "alola-akala.png",
+    "sourceFile": "Akala_Island_Map.png",
+    "sha256": "5a66697b562ca0afa08e690204e225d3c4d16fb08d53d999eaa5c1e0dc910ea4"
+  },
+  {
+    "file": "alola-ulaula.png",
+    "sourceFile": "Ulaula_Island_Map.png",
+    "sha256": "95ed960bbe840107cfd60f160387c6be9ff901db2986aeda5c80b9994bc84bc6"
+  },
+  {
+    "file": "alola-poni.png",
+    "sourceFile": "Poni_Island_Map.png",
+    "sha256": "befa2d57df8c7956136b5bf08d2ff420c806b6275075810fac0ee2121c68f027"
+  },
+  {
+    "file": "alola-aether.png",
+    "sourceFile": "Aether_Paradise_Map.png",
+    "sha256": "07edc8ff1c03009f51ba5eaddde7801431f7713c5e682709e9189876f924ea2c"
+  },
+  {
+    "file": "battle-frontier.png",
+    "sourceFile": "battle-frontier-full-reference.png",
+    "sha256": "f7176994082ffbdbc67f7dc65cc02237d904a5b306ff581a482664b9409108d8"
+  },
+  {
+    "file": "platinum-battle-frontier.png",
+    "sourceFile": "platinum-frontier-full.png",
+    "sha256": "5c1d6e3391dbd09ada1229d6bab1a313faaa8c8cc0252a5d10d9f0b69fffc448"
+  }
+]

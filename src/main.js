@@ -5,17 +5,25 @@ import { applyFilters, preloadVisiblePokemon } from './data/filters.js';
 import { enrichFilterMetaForEntries } from './utils/filterMeta.js';
 import { loadVersionNames } from './utils/versions.js';
 import { store } from './state/store.js';
-import { renderPokemonGrid, loadMore } from './ui/grid.js';
+import { renderPokemonGrid, patchPokemonCard, loadMore } from './ui/grid.js';
 import {
   initSidebar, bindSidebarFilters, initViewControls, initSortControl,
 } from './ui/sidebar.js';
 import { initVersionDrawer } from './ui/versionDrawer.js';
 import { showDetail, openModal, initModalEvents } from './ui/modal.js';
 
+let refreshSeq = 0;
+
+// 先立即渲染（未載入的卡片顯示骨架），再逐張補上屬性資料，
+// 避免載入條結束後整個網格空白、計數顯示 0。
 async function refreshUI(resetDisplay = true) {
+  const seq = ++refreshSeq;
   applyFilters(resetDisplay);
-  await preloadVisiblePokemon();
   renderPokemonGrid();
+  await preloadVisiblePokemon((entry) => {
+    if (seq === refreshSeq) patchPokemonCard(entry);
+  });
+  if (seq === refreshSeq) renderPokemonGrid();
 }
 
 function applyHeldItemFromUrl(params) {
@@ -56,8 +64,7 @@ async function init() {
 
   document.getElementById('loadMoreBtn')?.addEventListener('click', async () => {
     loadMore();
-    await preloadVisiblePokemon();
-    renderPokemonGrid();
+    await refreshUI(false);
   });
 
   document.getElementById('pokemonGrid')?.addEventListener('click', async (e) => {
@@ -68,8 +75,9 @@ async function init() {
   });
 
   document.getElementById('pokemonGrid')?.addEventListener('keydown', async (e) => {
-    if (e.key !== 'Enter') return;
+    if (e.key !== 'Enter' && e.key !== ' ') return;
     const card = e.target.closest('[data-id]');
+    if (card) e.preventDefault();
     if (card) await showDetail(parseInt(card.dataset.id, 10));
   });
 

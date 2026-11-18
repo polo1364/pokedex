@@ -1,0 +1,1569 @@
+{
+  "sources": [
+    {
+      "version": "red-blue",
+      "url": "https://github.com/pret/pokered/blob/master/data/trainers/parties.asm",
+      "sha256": "61eac58fe43a181fcd936d5366457a940cf805ee15c787ff5957e175f83b217d"
+    },
+    {
+      "version": "yellow",
+      "url": "https://github.com/pret/pokeyellow/blob/master/data/trainers/parties.asm",
+      "sha256": "ebb66129bb01bacd957dd7408506e8fa06bf78f1e53d98c0e0b0115fd45566e2"
+    },
+    {
+      "version": "firered-leafgreen",
+      "url": "https://github.com/pret/pokefirered/blob/master/src/data/trainer_parties.h",
+      "sha256": "cb135d9cbdfc52c87066374d582506830a8c93561eab2033d847331c2de00299"
+    }
+  ],
+  "versions": {
+    "red-blue": {
+      "battles": {
+        "小剛": [
+          {
+            "name": "小拳石",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "level": 12
+          },
+          {
+            "name": "大岩蛇",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "level": 14
+          }
+        ],
+        "小霞": [
+          {
+            "name": "海星星",
+            "types": [
+              "water"
+            ],
+            "level": 18
+          },
+          {
+            "name": "寶石海星",
+            "types": [
+              "water",
+              "psychic"
+            ],
+            "level": 21
+          }
+        ],
+        "馬志士": [
+          {
+            "name": "霹靂電球",
+            "types": [
+              "electric"
+            ],
+            "level": 21
+          },
+          {
+            "name": "皮卡丘",
+            "types": [
+              "electric"
+            ],
+            "level": 18
+          },
+          {
+            "name": "雷丘",
+            "types": [
+              "electric"
+            ],
+            "level": 24
+          }
+        ],
+        "莉佳": [
+          {
+            "name": "大食花",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "level": 29
+          },
+          {
+            "name": "蔓藤怪",
+            "types": [
+              "grass"
+            ],
+            "level": 24
+          },
+          {
+            "name": "霸王花",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "level": 29
+          }
+        ],
+        "娜姿": [
+          {
+            "name": "勇基拉",
+            "types": [
+              "psychic"
+            ],
+            "level": 38
+          },
+          {
+            "name": "魔牆人偶",
+            "types": [
+              "psychic"
+            ],
+            "level": 37
+          },
+          {
+            "name": "摩魯蛾",
+            "types": [
+              "bug",
+              "poison"
+            ],
+            "level": 38
+          },
+          {
+            "name": "胡地",
+            "types": [
+              "psychic"
+            ],
+            "level": 43
+          }
+        ],
+        "阿桔": [
+          {
+            "name": "瓦斯彈",
+            "types": [
+              "poison"
+            ],
+            "level": 37
+          },
+          {
+            "name": "臭臭泥",
+            "types": [
+              "poison"
+            ],
+            "level": 39
+          },
+          {
+            "name": "瓦斯彈",
+            "types": [
+              "poison"
+            ],
+            "level": 37
+          },
+          {
+            "name": "雙彈瓦斯",
+            "types": [
+              "poison"
+            ],
+            "level": 43
+          }
+        ],
+        "夏伯": [
+          {
+            "name": "卡蒂狗",
+            "types": [
+              "fire"
+            ],
+            "level": 42
+          },
+          {
+            "name": "小火馬",
+            "types": [
+              "fire"
+            ],
+            "level": 40
+          },
+          {
+            "name": "烈焰馬",
+            "types": [
+              "fire"
+            ],
+            "level": 42
+          },
+          {
+            "name": "風速狗",
+            "types": [
+              "fire"
+            ],
+            "level": 47
+          }
+        ],
+        "坂木": [
+          {
+            "name": "獨角犀牛",
+            "types": [
+              "ground",
+              "rock"
+            ],
+            "level": 45
+          },
+          {
+            "name": "三地鼠",
+            "types": [
+              "ground"
+            ],
+            "level": 42
+          },
+          {
+            "name": "尼多后",
+            "types": [
+              "poison",
+              "ground"
+            ],
+            "level": 44
+          },
+          {
+            "name": "尼多王",
+            "types": [
+              "poison",
+              "ground"
+            ],
+            "level": 45
+          },
+          {
+            "name": "鑽角犀獸",
+            "types": [
+              "ground",
+              "rock"
+            ],
+            "level": 50
+          }
+        ],
+        "科拿": [
+          {
+            "name": "白海獅",
+            "types": [
+              "water",
+              "ice"
+            ],
+            "level": 54
+          },
+          {
+            "name": "刺甲貝",
+            "types": [
+              "water",
+              "ice"
+            ],
+            "level": 53
+          },
+          {
+            "name": "呆殼獸",
+            "types": [
+              "water",
+              "psychic"
+            ],
+            "level": 54
+          },
+          {
+            "name": "迷唇姐",
+            "types": [
+              "ice",
+              "psychic"
+            ],
+            "level": 56
+          },
+          {
+            "name": "拉普拉斯",
+            "types": [
+              "water",
+              "ice"
+            ],
+            "level": 56
+          }
+        ],
+        "希巴": [
+          {
+            "name": "大岩蛇",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "level": 53
+          },
+          {
+            "name": "快拳郎",
+            "types": [
+              "fighting"
+            ],
+            "level": 55
+          },
+          {
+            "name": "飛腿郎",
+            "types": [
+              "fighting"
+            ],
+            "level": 55
+          },
+          {
+            "name": "大岩蛇",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "level": 56
+          },
+          {
+            "name": "怪力",
+            "types": [
+              "fighting"
+            ],
+            "level": 58
+          }
+        ],
+        "菊子": [
+          {
+            "name": "耿鬼",
+            "types": [
+              "ghost",
+              "poison"
+            ],
+            "level": 56
+          },
+          {
+            "name": "大嘴蝠",
+            "types": [
+              "poison",
+              "flying"
+            ],
+            "level": 56
+          },
+          {
+            "name": "鬼斯通",
+            "types": [
+              "ghost",
+              "poison"
+            ],
+            "level": 55
+          },
+          {
+            "name": "阿柏怪",
+            "types": [
+              "poison"
+            ],
+            "level": 58
+          },
+          {
+            "name": "耿鬼",
+            "types": [
+              "ghost",
+              "poison"
+            ],
+            "level": 60
+          }
+        ],
+        "渡": [
+          {
+            "name": "暴鯉龍",
+            "types": [
+              "water",
+              "flying"
+            ],
+            "level": 58
+          },
+          {
+            "name": "哈克龍",
+            "types": [
+              "dragon"
+            ],
+            "level": 56
+          },
+          {
+            "name": "哈克龍",
+            "types": [
+              "dragon"
+            ],
+            "level": 56
+          },
+          {
+            "name": "化石翼龍",
+            "types": [
+              "rock",
+              "flying"
+            ],
+            "level": 60
+          },
+          {
+            "name": "快龍",
+            "types": [
+              "dragon",
+              "flying"
+            ],
+            "level": 62
+          }
+        ]
+      },
+      "champion": {
+        "charmander": [
+          {
+            "name": "大比鳥",
+            "types": [
+              "normal",
+              "flying"
+            ],
+            "level": 61
+          },
+          {
+            "name": "胡地",
+            "types": [
+              "psychic"
+            ],
+            "level": 59
+          },
+          {
+            "name": "鑽角犀獸",
+            "types": [
+              "ground",
+              "rock"
+            ],
+            "level": 61
+          },
+          {
+            "name": "風速狗",
+            "types": [
+              "fire"
+            ],
+            "level": 61
+          },
+          {
+            "name": "椰蛋樹",
+            "types": [
+              "grass",
+              "psychic"
+            ],
+            "level": 63
+          },
+          {
+            "name": "水箭龜",
+            "types": [
+              "water"
+            ],
+            "level": 65
+          }
+        ],
+        "squirtle": [
+          {
+            "name": "大比鳥",
+            "types": [
+              "normal",
+              "flying"
+            ],
+            "level": 61
+          },
+          {
+            "name": "胡地",
+            "types": [
+              "psychic"
+            ],
+            "level": 59
+          },
+          {
+            "name": "鑽角犀獸",
+            "types": [
+              "ground",
+              "rock"
+            ],
+            "level": 61
+          },
+          {
+            "name": "暴鯉龍",
+            "types": [
+              "water",
+              "flying"
+            ],
+            "level": 61
+          },
+          {
+            "name": "風速狗",
+            "types": [
+              "fire"
+            ],
+            "level": 63
+          },
+          {
+            "name": "妙蛙花",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "level": 65
+          }
+        ],
+        "bulbasaur": [
+          {
+            "name": "大比鳥",
+            "types": [
+              "normal",
+              "flying"
+            ],
+            "level": 61
+          },
+          {
+            "name": "胡地",
+            "types": [
+              "psychic"
+            ],
+            "level": 59
+          },
+          {
+            "name": "鑽角犀獸",
+            "types": [
+              "ground",
+              "rock"
+            ],
+            "level": 61
+          },
+          {
+            "name": "椰蛋樹",
+            "types": [
+              "grass",
+              "psychic"
+            ],
+            "level": 61
+          },
+          {
+            "name": "暴鯉龍",
+            "types": [
+              "water",
+              "flying"
+            ],
+            "level": 63
+          },
+          {
+            "name": "噴火龍",
+            "types": [
+              "fire",
+              "flying"
+            ],
+            "level": 65
+          }
+        ]
+      }
+    },
+    "yellow": {
+      "battles": {
+        "小剛": [
+          {
+            "name": "小拳石",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "level": 10
+          },
+          {
+            "name": "大岩蛇",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "level": 12
+          }
+        ],
+        "小霞": [
+          {
+            "name": "海星星",
+            "types": [
+              "water"
+            ],
+            "level": 18
+          },
+          {
+            "name": "寶石海星",
+            "types": [
+              "water",
+              "psychic"
+            ],
+            "level": 21
+          }
+        ],
+        "馬志士": [
+          {
+            "name": "雷丘",
+            "types": [
+              "electric"
+            ],
+            "level": 28
+          }
+        ],
+        "莉佳": [
+          {
+            "name": "蔓藤怪",
+            "types": [
+              "grass"
+            ],
+            "level": 30
+          },
+          {
+            "name": "口呆花",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "level": 32
+          },
+          {
+            "name": "臭臭花",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "level": 32
+          }
+        ],
+        "娜姿": [
+          {
+            "name": "凱西",
+            "types": [
+              "psychic"
+            ],
+            "level": 50
+          },
+          {
+            "name": "勇基拉",
+            "types": [
+              "psychic"
+            ],
+            "level": 50
+          },
+          {
+            "name": "胡地",
+            "types": [
+              "psychic"
+            ],
+            "level": 50
+          }
+        ],
+        "阿桔": [
+          {
+            "name": "毛球",
+            "types": [
+              "bug",
+              "poison"
+            ],
+            "level": 44
+          },
+          {
+            "name": "毛球",
+            "types": [
+              "bug",
+              "poison"
+            ],
+            "level": 46
+          },
+          {
+            "name": "毛球",
+            "types": [
+              "bug",
+              "poison"
+            ],
+            "level": 48
+          },
+          {
+            "name": "摩魯蛾",
+            "types": [
+              "bug",
+              "poison"
+            ],
+            "level": 50
+          }
+        ],
+        "夏伯": [
+          {
+            "name": "九尾",
+            "types": [
+              "fire"
+            ],
+            "level": 48
+          },
+          {
+            "name": "烈焰馬",
+            "types": [
+              "fire"
+            ],
+            "level": 50
+          },
+          {
+            "name": "風速狗",
+            "types": [
+              "fire"
+            ],
+            "level": 54
+          }
+        ],
+        "坂木": [
+          {
+            "name": "三地鼠",
+            "types": [
+              "ground"
+            ],
+            "level": 50
+          },
+          {
+            "name": "貓老大",
+            "types": [
+              "normal"
+            ],
+            "level": 53
+          },
+          {
+            "name": "尼多后",
+            "types": [
+              "poison",
+              "ground"
+            ],
+            "level": 53
+          },
+          {
+            "name": "尼多王",
+            "types": [
+              "poison",
+              "ground"
+            ],
+            "level": 55
+          },
+          {
+            "name": "鑽角犀獸",
+            "types": [
+              "ground",
+              "rock"
+            ],
+            "level": 55
+          }
+        ],
+        "科拿": [
+          {
+            "name": "白海獅",
+            "types": [
+              "water",
+              "ice"
+            ],
+            "level": 54
+          },
+          {
+            "name": "刺甲貝",
+            "types": [
+              "water",
+              "ice"
+            ],
+            "level": 53
+          },
+          {
+            "name": "呆殼獸",
+            "types": [
+              "water",
+              "psychic"
+            ],
+            "level": 54
+          },
+          {
+            "name": "迷唇姐",
+            "types": [
+              "ice",
+              "psychic"
+            ],
+            "level": 56
+          },
+          {
+            "name": "拉普拉斯",
+            "types": [
+              "water",
+              "ice"
+            ],
+            "level": 56
+          }
+        ],
+        "希巴": [
+          {
+            "name": "大岩蛇",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "level": 53
+          },
+          {
+            "name": "快拳郎",
+            "types": [
+              "fighting"
+            ],
+            "level": 55
+          },
+          {
+            "name": "飛腿郎",
+            "types": [
+              "fighting"
+            ],
+            "level": 55
+          },
+          {
+            "name": "大岩蛇",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "level": 56
+          },
+          {
+            "name": "怪力",
+            "types": [
+              "fighting"
+            ],
+            "level": 58
+          }
+        ],
+        "菊子": [
+          {
+            "name": "耿鬼",
+            "types": [
+              "ghost",
+              "poison"
+            ],
+            "level": 56
+          },
+          {
+            "name": "大嘴蝠",
+            "types": [
+              "poison",
+              "flying"
+            ],
+            "level": 56
+          },
+          {
+            "name": "鬼斯通",
+            "types": [
+              "ghost",
+              "poison"
+            ],
+            "level": 55
+          },
+          {
+            "name": "阿柏怪",
+            "types": [
+              "poison"
+            ],
+            "level": 58
+          },
+          {
+            "name": "耿鬼",
+            "types": [
+              "ghost",
+              "poison"
+            ],
+            "level": 60
+          }
+        ],
+        "渡": [
+          {
+            "name": "暴鯉龍",
+            "types": [
+              "water",
+              "flying"
+            ],
+            "level": 58
+          },
+          {
+            "name": "哈克龍",
+            "types": [
+              "dragon"
+            ],
+            "level": 56
+          },
+          {
+            "name": "哈克龍",
+            "types": [
+              "dragon"
+            ],
+            "level": 56
+          },
+          {
+            "name": "化石翼龍",
+            "types": [
+              "rock",
+              "flying"
+            ],
+            "level": 60
+          },
+          {
+            "name": "快龍",
+            "types": [
+              "dragon",
+              "flying"
+            ],
+            "level": 62
+          }
+        ]
+      },
+      "champion": {
+        "jolteon": [
+          {
+            "name": "穿山王",
+            "types": [
+              "ground"
+            ],
+            "level": 61
+          },
+          {
+            "name": "胡地",
+            "types": [
+              "psychic"
+            ],
+            "level": 59
+          },
+          {
+            "name": "椰蛋樹",
+            "types": [
+              "grass",
+              "psychic"
+            ],
+            "level": 61
+          },
+          {
+            "name": "刺甲貝",
+            "types": [
+              "water",
+              "ice"
+            ],
+            "level": 61
+          },
+          {
+            "name": "九尾",
+            "types": [
+              "fire"
+            ],
+            "level": 63
+          },
+          {
+            "name": "雷伊布",
+            "types": [
+              "electric"
+            ],
+            "level": 65
+          }
+        ],
+        "flareon": [
+          {
+            "name": "穿山王",
+            "types": [
+              "ground"
+            ],
+            "level": 61
+          },
+          {
+            "name": "胡地",
+            "types": [
+              "psychic"
+            ],
+            "level": 59
+          },
+          {
+            "name": "椰蛋樹",
+            "types": [
+              "grass",
+              "psychic"
+            ],
+            "level": 61
+          },
+          {
+            "name": "三合一磁怪",
+            "types": [
+              "electric"
+            ],
+            "level": 61
+          },
+          {
+            "name": "刺甲貝",
+            "types": [
+              "water",
+              "ice"
+            ],
+            "level": 63
+          },
+          {
+            "name": "火伊布",
+            "types": [
+              "fire"
+            ],
+            "level": 65
+          }
+        ],
+        "vaporeon": [
+          {
+            "name": "穿山王",
+            "types": [
+              "ground"
+            ],
+            "level": 61
+          },
+          {
+            "name": "胡地",
+            "types": [
+              "psychic"
+            ],
+            "level": 59
+          },
+          {
+            "name": "椰蛋樹",
+            "types": [
+              "grass",
+              "psychic"
+            ],
+            "level": 61
+          },
+          {
+            "name": "九尾",
+            "types": [
+              "fire"
+            ],
+            "level": 61
+          },
+          {
+            "name": "三合一磁怪",
+            "types": [
+              "electric"
+            ],
+            "level": 63
+          },
+          {
+            "name": "水伊布",
+            "types": [
+              "water"
+            ],
+            "level": 65
+          }
+        ]
+      }
+    },
+    "firered-leafgreen": {
+      "battles": {
+        "小剛": [
+          {
+            "name": "小拳石",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "level": 12
+          },
+          {
+            "name": "大岩蛇",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "level": 14
+          }
+        ],
+        "小霞": [
+          {
+            "name": "海星星",
+            "types": [
+              "water"
+            ],
+            "level": 18
+          },
+          {
+            "name": "寶石海星",
+            "types": [
+              "water",
+              "psychic"
+            ],
+            "level": 21
+          }
+        ],
+        "馬志士": [
+          {
+            "name": "霹靂電球",
+            "types": [
+              "electric"
+            ],
+            "level": 21
+          },
+          {
+            "name": "皮卡丘",
+            "types": [
+              "electric"
+            ],
+            "level": 18
+          },
+          {
+            "name": "雷丘",
+            "types": [
+              "electric"
+            ],
+            "level": 24
+          }
+        ],
+        "莉佳": [
+          {
+            "name": "大食花",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "level": 29
+          },
+          {
+            "name": "蔓藤怪",
+            "types": [
+              "grass"
+            ],
+            "level": 24
+          },
+          {
+            "name": "霸王花",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "level": 29
+          }
+        ],
+        "娜姿": [
+          {
+            "name": "勇基拉",
+            "types": [
+              "psychic"
+            ],
+            "level": 38
+          },
+          {
+            "name": "魔牆人偶",
+            "types": [
+              "psychic"
+            ],
+            "level": 37
+          },
+          {
+            "name": "摩魯蛾",
+            "types": [
+              "bug",
+              "poison"
+            ],
+            "level": 38
+          },
+          {
+            "name": "胡地",
+            "types": [
+              "psychic"
+            ],
+            "level": 43
+          }
+        ],
+        "阿桔": [
+          {
+            "name": "瓦斯彈",
+            "types": [
+              "poison"
+            ],
+            "level": 37
+          },
+          {
+            "name": "臭臭泥",
+            "types": [
+              "poison"
+            ],
+            "level": 39
+          },
+          {
+            "name": "瓦斯彈",
+            "types": [
+              "poison"
+            ],
+            "level": 37
+          },
+          {
+            "name": "雙彈瓦斯",
+            "types": [
+              "poison"
+            ],
+            "level": 43
+          }
+        ],
+        "夏伯": [
+          {
+            "name": "卡蒂狗",
+            "types": [
+              "fire"
+            ],
+            "level": 42
+          },
+          {
+            "name": "小火馬",
+            "types": [
+              "fire"
+            ],
+            "level": 40
+          },
+          {
+            "name": "烈焰馬",
+            "types": [
+              "fire"
+            ],
+            "level": 42
+          },
+          {
+            "name": "風速狗",
+            "types": [
+              "fire"
+            ],
+            "level": 47
+          }
+        ],
+        "坂木": [
+          {
+            "name": "獨角犀牛",
+            "types": [
+              "ground",
+              "rock"
+            ],
+            "level": 45
+          },
+          {
+            "name": "三地鼠",
+            "types": [
+              "ground"
+            ],
+            "level": 42
+          },
+          {
+            "name": "尼多后",
+            "types": [
+              "poison",
+              "ground"
+            ],
+            "level": 44
+          },
+          {
+            "name": "尼多王",
+            "types": [
+              "poison",
+              "ground"
+            ],
+            "level": 45
+          },
+          {
+            "name": "獨角犀牛",
+            "types": [
+              "ground",
+              "rock"
+            ],
+            "level": 50
+          }
+        ],
+        "科拿": [
+          {
+            "name": "白海獅",
+            "types": [
+              "water",
+              "ice"
+            ],
+            "level": 52
+          },
+          {
+            "name": "刺甲貝",
+            "types": [
+              "water",
+              "ice"
+            ],
+            "level": 51
+          },
+          {
+            "name": "呆殼獸",
+            "types": [
+              "water",
+              "psychic"
+            ],
+            "level": 52
+          },
+          {
+            "name": "迷唇姐",
+            "types": [
+              "ice",
+              "psychic"
+            ],
+            "level": 54
+          },
+          {
+            "name": "拉普拉斯",
+            "types": [
+              "water",
+              "ice"
+            ],
+            "level": 54
+          }
+        ],
+        "希巴": [
+          {
+            "name": "大岩蛇",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "level": 51
+          },
+          {
+            "name": "快拳郎",
+            "types": [
+              "fighting"
+            ],
+            "level": 53
+          },
+          {
+            "name": "飛腿郎",
+            "types": [
+              "fighting"
+            ],
+            "level": 53
+          },
+          {
+            "name": "大岩蛇",
+            "types": [
+              "rock",
+              "ground"
+            ],
+            "level": 54
+          },
+          {
+            "name": "怪力",
+            "types": [
+              "fighting"
+            ],
+            "level": 56
+          }
+        ],
+        "菊子": [
+          {
+            "name": "耿鬼",
+            "types": [
+              "ghost",
+              "poison"
+            ],
+            "level": 54
+          },
+          {
+            "name": "大嘴蝠",
+            "types": [
+              "poison",
+              "flying"
+            ],
+            "level": 54
+          },
+          {
+            "name": "鬼斯通",
+            "types": [
+              "ghost",
+              "poison"
+            ],
+            "level": 53
+          },
+          {
+            "name": "阿柏怪",
+            "types": [
+              "poison"
+            ],
+            "level": 56
+          },
+          {
+            "name": "耿鬼",
+            "types": [
+              "ghost",
+              "poison"
+            ],
+            "level": 58
+          }
+        ],
+        "渡": [
+          {
+            "name": "暴鯉龍",
+            "types": [
+              "water",
+              "flying"
+            ],
+            "level": 56
+          },
+          {
+            "name": "哈克龍",
+            "types": [
+              "dragon"
+            ],
+            "level": 54
+          },
+          {
+            "name": "哈克龍",
+            "types": [
+              "dragon"
+            ],
+            "level": 54
+          },
+          {
+            "name": "化石翼龍",
+            "types": [
+              "rock",
+              "flying"
+            ],
+            "level": 58
+          },
+          {
+            "name": "快龍",
+            "types": [
+              "dragon",
+              "flying"
+            ],
+            "level": 60
+          }
+        ]
+      },
+      "champion": {
+        "bulbasaur": [
+          {
+            "name": "大比鳥",
+            "types": [
+              "normal",
+              "flying"
+            ],
+            "level": 59
+          },
+          {
+            "name": "胡地",
+            "types": [
+              "psychic"
+            ],
+            "level": 57
+          },
+          {
+            "name": "鑽角犀獸",
+            "types": [
+              "ground",
+              "rock"
+            ],
+            "level": 59
+          },
+          {
+            "name": "椰蛋樹",
+            "types": [
+              "grass",
+              "psychic"
+            ],
+            "level": 59
+          },
+          {
+            "name": "暴鯉龍",
+            "types": [
+              "water",
+              "flying"
+            ],
+            "level": 61
+          },
+          {
+            "name": "噴火龍",
+            "types": [
+              "fire",
+              "flying"
+            ],
+            "level": 63
+          }
+        ],
+        "charmander": [
+          {
+            "name": "大比鳥",
+            "types": [
+              "normal",
+              "flying"
+            ],
+            "level": 59
+          },
+          {
+            "name": "胡地",
+            "types": [
+              "psychic"
+            ],
+            "level": 57
+          },
+          {
+            "name": "鑽角犀獸",
+            "types": [
+              "ground",
+              "rock"
+            ],
+            "level": 59
+          },
+          {
+            "name": "風速狗",
+            "types": [
+              "fire"
+            ],
+            "level": 59
+          },
+          {
+            "name": "椰蛋樹",
+            "types": [
+              "grass",
+              "psychic"
+            ],
+            "level": 61
+          },
+          {
+            "name": "水箭龜",
+            "types": [
+              "water"
+            ],
+            "level": 63
+          }
+        ],
+        "squirtle": [
+          {
+            "name": "大比鳥",
+            "types": [
+              "normal",
+              "flying"
+            ],
+            "level": 59
+          },
+          {
+            "name": "胡地",
+            "types": [
+              "psychic"
+            ],
+            "level": 57
+          },
+          {
+            "name": "鑽角犀獸",
+            "types": [
+              "ground",
+              "rock"
+            ],
+            "level": 59
+          },
+          {
+            "name": "暴鯉龍",
+            "types": [
+              "water",
+              "flying"
+            ],
+            "level": 59
+          },
+          {
+            "name": "風速狗",
+            "types": [
+              "fire"
+            ],
+            "level": 61
+          },
+          {
+            "name": "妙蛙花",
+            "types": [
+              "grass",
+              "poison"
+            ],
+            "level": 63
+          }
+        ]
+      }
+    }
+  }
+}

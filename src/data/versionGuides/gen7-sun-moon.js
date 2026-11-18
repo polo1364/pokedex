@@ -1,422 +1,938 @@
-import { pm, rec, assertBattle, assertLeague } from './helpers.js';
+import { assertBattle, assertLeague } from './helpers.js';
 import { sunMoonLeague } from './gen7-sun-moon-league.js';
 
-const trialIlima = {
-  order: 1,
-  role: 'gym',
-  name: '伊利馬',
-  location: '美樂美樂島',
-  badge: '一般 Z',
-  badgeType: 'normal',
-  notes: '試煉圖騰為阿羅拉拉達（體型增大、召喚小拉達援軍）。以下為試煉後與伊利馬的對戰隊伍。',
-  party: [
-    pm('貓鼬少', ['normal'], 11),
-    pm('圖圖犬', ['normal'], 11),
-  ],
-  recommendedTeams: [
-    rec('格鬥剋制隊', '美樂美樂洞穴可抓好勝蟹，格鬥系對一般效果絕佳；御三家火斑喵或木木梟早期亦可輸出。', [
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('火斑喵', ['fire']),
-      pm('木木梟', ['grass', 'flying']),
-      pm('球球海獅', ['water']),
-      pm('小篤兒', ['normal', 'flying']),
-    ]),
-    rec('飛行補刀隊', '小篤兒進化銃嘴大鳥後飛行系穩定；圖圖犬會輔助，優先秒殺貓鼬少。', [
-      pm('小篤兒', ['normal', 'flying']),
-      pm('火斑喵', ['fire']),
-      pm('球球海獅', ['water']),
-      pm('木木梟', ['grass', 'flying']),
-      pm('好勝蟹', ['fighting', 'ice']),
-    ]),
-  ],
-};
-assertBattle(trialIlima);
-
-const grandTrialHala = {
-  order: 2,
-  role: 'gym',
-  name: '哈拉',
-  location: '美樂美樂島',
-  badge: '格鬥 Z',
-  badgeType: 'fighting',
-  notes: '大試煉；對戰哈拉的格鬥系隊伍，無圖騰寶可夢。',
-  party: [
-    pm('猴怪', ['fighting'], 13),
-    pm('幕下力士', ['fighting'], 13),
-    pm('好勝蟹', ['fighting', 'ice'], 14),
-  ],
-  recommendedTeams: [
-    rec('飛行超能隊', '木木梟飛行系對格鬥效果絕佳；小篤兒線亦可。好勝蟹冰系可反打好勝蟹。', [
-      pm('木木梟', ['grass', 'flying']),
-      pm('小篤兒', ['normal', 'flying']),
-      pm('球球海獅', ['water']),
-      pm('火斑喵', ['fire']),
-      pm('好勝蟹', ['fighting', 'ice']),
-    ]),
-    rec('妖精前代飛行隊', '第七世代前期以飛行與超能為主；投羽梟或花漾海獅補刀。', [
-      pm('投羽梟', ['grass', 'flying']),
-      pm('花漾海獅', ['water']),
-      pm('炎熱喵', ['fire']),
-      pm('喇叭啄鳥', ['normal', 'flying']),
-      pm('好勝蟹', ['fighting', 'ice']),
-    ]),
-  ],
-};
-assertBattle(grandTrialHala);
-
-const trialLana = {
-  order: 3,
-  role: 'gym',
-  name: '水蓮',
-  location: '阿卡拉島',
-  badge: '水 Z',
-  badgeType: 'water',
-  notes: '試煉圖騰滴蛛霸（水蟲，召喚滴蛛）；建議帶電系或草系打試煉。',
-  party: [
-    pm('弱丁魚', ['water'], 14),
-    pm('鐵螯龍蝦', ['water', 'dark'], 15),
-    pm('滴蛛霸', ['water', 'bug'], 16),
-  ],
-  recommendedTeams: [
-    rec('草電剋制隊', '木木梟或狙射樹梟草系打滴蛛霸；電系打弱丁魚與鐵螯龍蝦。', [
-      pm('木木梟', ['grass', 'flying']),
-      pm('小篤兒', ['normal', 'flying']),
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('球球海獅', ['water']),
-      pm('火斑喵', ['fire']),
-    ]),
-    rec('電系補刀隊', '阿卡拉島可抓落雷獸線；電系穩定突破水試煉隊伍。', [
-      pm('落雷獸', ['electric']),
-      pm('木木梟', ['grass', 'flying']),
-      pm('球球海獅', ['water']),
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('炎熱喵', ['fire']),
-    ]),
-  ],
-};
-assertBattle(trialLana);
-
-const trialKiawe = {
-  order: 4,
-  role: 'gym',
-  name: '卡奇',
-  location: '阿卡拉島',
-  badge: '火 Z',
-  badgeType: 'fire',
-  notes: '試煉圖騰焰后蜥（火毒，召喚夜盜火蜥）；阿羅拉嘎啦嘎啦為火幽靈。',
-  party: [
-    pm('嘎啦嘎啦', ['fire', 'ghost'], 18),
-    pm('鴨嘴火獸', ['fire'], 18),
-  ],
-  recommendedTeams: [
-    rec('水地面隊', '球球海獅水招對火效果絕佳；好勝蟹冰系亦可打嘎啦嘎啦。', [
-      pm('球球海獅', ['water']),
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('木木梟', ['grass', 'flying']),
-      pm('小篤兒', ['normal', 'flying']),
-      pm('岩狗狗', ['rock']),
-    ]),
-    rec('岩石水系隊', '岩狗狗進化鬃岩狼人；水替補可用球球海獅或鯉魚王進化暴鯉龍。', [
-      pm('球球海獅', ['water']),
-      pm('岩狗狗', ['rock']),
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('木木梟', ['grass', 'flying']),
-      pm('暴鯉龍', ['water', 'dark']),
-    ]),
-  ],
-};
-assertBattle(trialKiawe);
-
-const trialMallow = {
-  order: 5,
-  role: 'gym',
-  name: '瑪奧',
-  location: '阿卡拉島',
-  badge: '草 Z',
-  badgeType: 'grass',
-  notes: '試煉圖騰蘭螳花（草，召喚投球鼠）；飛行與火系為最佳對策。',
-  party: [
-    pm('甜竹竹', ['grass'], 18),
-    pm('甜舞妮', ['grass'], 18),
-    pm('甜冷美后', ['grass'], 19),
-  ],
-  recommendedTeams: [
-    rec('火飛剋制隊', '火斑喵或炎熱喵火系對草效果絕佳；銃嘴大鳥飛行系補刀。', [
-      pm('火斑喵', ['fire']),
-      pm('小篤兒', ['normal', 'flying']),
-      pm('球球海獅', ['water']),
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('岩狗狗', ['rock']),
-    ]),
-    rec('飛行毒隊', '投羽梟飛行＋火；甜冷美后物攻高，優先用飛行系秒殺。', [
-      pm('投羽梟', ['grass', 'flying']),
-      pm('炎熱喵', ['fire']),
-      pm('喇叭啄鳥', ['normal', 'flying']),
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('岩狗狗', ['rock']),
-    ]),
-  ],
-};
-assertBattle(trialMallow);
-
-const grandTrialOlivia = {
-  order: 6,
-  role: 'gym',
-  name: '麗姿',
-  location: '阿卡拉島',
-  badge: '岩石 Z',
-  badgeType: 'rock',
-  notes: '大試煉；隊伍含化石寶可夢觸手百合、太古羽蟲與大朝北鼻。',
-  party: [
-    pm('太古羽蟲', ['rock', 'bug'], 23),
-    pm('觸手百合', ['rock', 'grass'], 23),
-    pm('大朝北鼻', ['rock', 'steel'], 24),
-  ],
-  recommendedTeams: [
-    rec('水草雙剋隊', '球球海獅或西獅海壬水招打岩石；木木梟草系打觸手百合。', [
-      pm('球球海獅', ['water']),
-      pm('木木梟', ['grass', 'flying']),
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('炎熱喵', ['fire']),
-      pm('岩狗狗', ['rock']),
-    ]),
-    rec('格鬥水隊', '好勝蟹格鬥打大朝北鼻；水招覆蓋全隊。', [
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('花漾海獅', ['water']),
-      pm('投羽梟', ['grass', 'flying']),
-      pm('鬃岩狼人', ['rock']),
-      pm('暴鯉龍', ['water', 'dark']),
-    ]),
-  ],
-};
-assertBattle(grandTrialOlivia);
-
-const trialSophocles = {
-  order: 7,
-  role: 'gym',
-  name: '馬瑪內',
-  location: '烏拉烏拉島',
-  badge: '電 Z',
-  badgeType: 'electric',
-  notes: '試煉圖騰鍬農炮蟲（電蟲，召喚蟲電寶）；地面系免疫電且效果絕佳。',
-  party: [
-    pm('蟲電寶', ['bug', 'electric'], 26),
-    pm('托戈德瑪爾', ['electric', 'steel'], 26),
-    pm('鍬農炮蟲', ['bug', 'electric'], 28),
-  ],
-  recommendedTeams: [
-    rec('地面剋制隊', '岩狗狗進化鬃岩狼人，地面系穩定；好勝蟹冰系亦可補刀。', [
-      pm('鬃岩狼人', ['rock']),
-      pm('岩狗狗', ['rock']),
-      pm('木木梟', ['grass', 'flying']),
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('球球海獅', ['water']),
-    ]),
-    rec('地面主力隊', '地鼠線或地面招 TM；木木梟草系免疫電系招式。', [
-      pm('鬃岩狼人', ['rock']),
-      pm('木木梟', ['grass', 'flying']),
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('西獅海壬', ['water', 'fairy']),
-      pm('熾焰咆哮虎', ['fire', 'dark']),
-    ]),
-  ],
-};
-assertBattle(trialSophocles);
-
-const trialAcerola = {
-  order: 8,
-  role: 'gym',
-  name: '阿塞蘿拉',
-  location: '烏拉烏拉島',
-  badge: '幽靈 Z',
-  badgeType: 'ghost',
-  notes: '試煉圖騰謎擬Ｑ（幽靈妖精，召喚謎擬Ｑ援軍）；惡系與幽靈系效果佳。',
-  party: [
-    pm('勾魂眼', ['dark', 'ghost'], 26),
-    pm('詛咒娃娃', ['ghost'], 26),
-    pm('噬沙堡爺', ['ghost', 'ground'], 28),
-  ],
-  recommendedTeams: [
-    rec('惡幽靈隊', '好勝蟹惡格鬥或木木梟暗影爪；惡系打幽靈效果絕佳。', [
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('木木梟', ['grass', 'flying']),
-      pm('熾焰咆哮虎', ['fire', 'dark']),
-      pm('西獅海壬', ['water', 'fairy']),
-      pm('鬃岩狼人', ['rock']),
-    ]),
-    rec('妖精補刀隊', '西獅海壬妖精招打謎擬Ｑ；投羽梟飛行補刀。', [
-      pm('西獅海壬', ['water', 'fairy']),
-      pm('投羽梟', ['grass', 'flying']),
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('熾焰咆哮虎', ['fire', 'dark']),
-      pm('銃嘴大鳥', ['normal', 'flying']),
-    ]),
-  ],
-};
-assertBattle(trialAcerola);
-
-const grandTrialNanu = {
-  order: 9,
-  role: 'gym',
-  name: '默丹',
-  location: '烏拉烏拉島',
-  badge: '惡 Z',
-  badgeType: 'dark',
-  notes: '大試煉；貓老大為惡系，格鬥與妖精效果佳。',
-  party: [
-    pm('勾魂眼', ['dark', 'ghost'], 30),
-    pm('混混鱷', ['ground', 'dark'], 30),
-    pm('貓老大', ['dark'], 31),
-  ],
-  recommendedTeams: [
-    rec('格鬥妖精隊', '好勝蟹格鬥打惡系；西獅海壬妖精招穩定突破貓老大。', [
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('西獅海壬', ['water', 'fairy']),
-      pm('木木梟', ['grass', 'flying']),
-      pm('熾焰咆哮虎', ['fire', 'dark']),
-      pm('銃嘴大鳥', ['normal', 'flying']),
-    ]),
-    rec('格鬥飛行隊', '銃嘴大鳥飛行打格鬥系；好勝蟹對拼混混鱷。', [
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('銃嘴大鳥', ['normal', 'flying']),
-      pm('狙射樹梟', ['grass', 'ghost']),
-      pm('西獅海壬', ['water', 'fairy']),
-      pm('鬃岩狼人', ['rock']),
-    ]),
-  ],
-};
-assertBattle(grandTrialNanu);
-
-const grandTrialHapu = {
-  order: 10,
-  role: 'gym',
-  name: '哈普烏',
-  location: '波尼島',
-  badge: '大地 Z',
-  badgeType: 'ground',
-  notes: '大試煉；重泥挽馬地面系物攻高，草系與水招為最佳對策。',
-  party: [
-    pm('泥偶巨人', ['ground', 'ghost'], 45),
-    pm('沙漠蜻蜓', ['ground', 'dragon'], 45),
-    pm('重泥挽馬', ['ground'], 46),
-  ],
-  recommendedTeams: [
-    rec('水草雙剋隊', '西獅海壬或狙射樹梟草系打重泥挽馬；水招穩定。', [
-      pm('西獅海壬', ['water', 'fairy']),
-      pm('狙射樹梟', ['grass', 'ghost']),
-      pm('銃嘴大鳥', ['normal', 'flying']),
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('熾焰咆哮虎', ['fire', 'dark']),
-    ]),
-    rec('冰水系隊', '好勝蟹冰凍拳打沙漠蜻蜓；水招打泥偶巨人。', [
-      pm('西獅海壬', ['water', 'fairy']),
-      pm('好勝蟹', ['fighting', 'ice']),
-      pm('銃嘴大鳥', ['normal', 'flying']),
-      pm('狙射樹梟', ['grass', 'ghost']),
-      pm('穿著熊', ['normal', 'fighting']),
-    ]),
-  ],
-};
-assertBattle(grandTrialHapu);
-
-const eliteHala = {
-  order: 1,
-  role: 'eliteFour',
-  name: '哈拉',
-  specialty: 'fighting',
-  party: [
-    pm('蚊香泳士', ['water', 'fighting'], 54),
-    pm('鐵掌力士', ['fighting'], 54),
-    pm('穿著熊', ['normal', 'fighting'], 55),
-    pm('音波龍', ['dragon', 'flying'], 55),
-    pm('好勝毛蟹', ['fighting', 'ice'], 56),
-  ],
-};
-assertBattle(eliteHala);
-
-const eliteOlivia = {
-  order: 2,
-  role: 'eliteFour',
-  name: '麗姿',
-  specialty: 'rock',
-  party: [
-    pm('古空棘魚', ['water', 'rock'], 54),
-    pm('小碎鑽', ['rock', 'fairy'], 54),
-    pm('隆隆岩', ['rock', 'ground'], 55),
-    pm('鬃岩狼人', ['rock'], 55),
-    pm('大朝北鼻', ['rock', 'steel'], 56),
-  ],
-};
-assertBattle(eliteOlivia);
-
-const eliteAcerola = {
-  order: 3,
-  role: 'eliteFour',
-  name: '阿塞蘿拉',
-  specialty: 'ghost',
-  party: [
-    pm('勾魂眼', ['dark', 'ghost'], 54),
-    pm('飄飄球', ['ghost', 'flying'], 54),
-    pm('噬沙堡爺', ['ghost', 'ground'], 55),
-    pm('耿鬼', ['ghost', 'poison'], 55),
-    pm('謎擬Ｑ', ['ghost', 'fairy'], 56),
-  ],
-};
-assertBattle(eliteAcerola);
-
-const eliteKahili = {
-  order: 4,
-  role: 'eliteFour',
-  name: '卡希麗',
-  specialty: 'flying',
-  party: [
-    pm('勇士雄鷹', ['normal', 'flying'], 54),
-    pm('鐵掌力士', ['fighting'], 54),
-    pm('銃嘴大鳥', ['normal', 'flying'], 55),
-    pm('雷丘', ['electric', 'psychic'], 55),
-    pm('禿鷹娜', ['dark', 'flying'], 56),
-  ],
-};
-assertBattle(eliteKahili);
-
-const championHau = {
-  role: 'champion',
-  name: '哈烏',
-  specialty: 'normal',
-  notes: '成為冠軍後的首次衛冕戰；皮卡丘持有電氣球為飛行系。',
-  party: [
-    pm('皮卡丘', ['electric'], 58),
-    pm('音波龍', ['dragon', 'flying'], 58),
-    pm('雷丘', ['electric', 'psychic'], 59),
-    pm('卡比獸', ['normal'], 59),
-    pm('怪力', ['fighting'], 59),
-    pm('御三家', ['normal'], 60),
-  ],
-};
-assertBattle(championHau);
-
-const league = sunMoonLeague;
-assertLeague(league);
-
+// 首次主線；來源與逐項覆核記錄見 output/guide-review/all-generations/gen7-8-corrections.json。
 export const sunMoonGuide = {
-  id: 'sun-moon',
-  title: '寶可夢 太陽／月亮',
-  displayGeneration: 7,
-  status: 'complete',
-  notes: '阿羅拉以島嶼試煉取代傳統道館（10 場試煉／大試煉）。馬睿因妖精試煉為通關後。四天王為哈拉、麗姿、阿塞蘿拉、卡希麗；衛冕戰對手為哈烏。',
-  gyms: [
-    trialIlima,
-    grandTrialHala,
-    trialLana,
-    trialKiawe,
-    trialMallow,
-    grandTrialOlivia,
-    trialSophocles,
-    trialAcerola,
-    grandTrialNanu,
-    grandTrialHapu,
+  "id": "sun-moon",
+  "title": "寶可夢 太陽／月亮",
+  "displayGeneration": 7,
+  "status": "complete",
+  "quickNavigation": true,
+  "gymSectionTitle": "諸島試煉與大試煉",
+  "notes": "首次聯盟四天王可自由選擇順序；擊敗四人後挑戰庫庫伊博士。哈烏屬通關後的衛冕挑戰者，不能替代首次主線。",
+  "gyms": [
+    {
+      "location": "美樂美樂島",
+      "badge": "一般 Z",
+      "badgeType": "normal",
+      "order": 1,
+      "role": "gym",
+      "name": "伊利馬試煉（霸主）",
+      "notes": "太陽為貓鼬探長，月亮為阿羅拉拉達；霸主與SOS援軍分開標示。格鬥對月亮拉達為4倍。",
+      "party": [
+        {
+          "name": "貓鼬探長",
+          "types": [
+            "normal"
+          ],
+          "level": 12
+        }
+      ],
+      "strategy": {
+        "level": "對手最高 Lv.12；依隊伍能力調整",
+        "summary": "太陽為貓鼬探長，月亮為阿羅拉拉達；霸主與SOS援軍分開標示。格鬥對月亮拉達為4倍。",
+        "tips": [
+          "推薦為可替換候選；御三家僅在你選擇該開局時可用，不假設交換取得另外兩隻。"
+        ]
+      },
+      "recommendedTeams": [
+        {
+          "label": "可取得的對策候選",
+          "reason": "太陽為貓鼬探長，月亮為阿羅拉拉達；霸主與SOS援軍分開標示。格鬥對月亮拉達為4倍。",
+          "pokemon": [
+            {
+              "name": "好勝蟹",
+              "types": [
+                "fighting"
+              ],
+              "obtain": "2號道路等地的樹果堆遭遇",
+              "moveNote": "純格鬥；學會碎岩後用格鬥招，勿誤標冰系"
+            },
+            {
+              "name": "小篤兒",
+              "types": [
+                "normal",
+                "flying"
+              ],
+              "obtain": "1號道路",
+              "moveNote": "啄；之後按等級進化，不要求早期銃嘴大鳥"
+            }
+          ]
+        }
+      ],
+      "roleLabel": "試煉",
+      "variants": [
+        {
+          "label": "太陽",
+          "party": [
+            {
+              "name": "貓鼬探長",
+              "types": [
+                "normal"
+              ],
+              "level": 12
+            }
+          ],
+          "tips": [
+            "太陽為貓鼬探長，月亮為阿羅拉拉達；霸主與SOS援軍分開標示。格鬥對月亮拉達為4倍。"
+          ]
+        },
+        {
+          "label": "月亮",
+          "party": [
+            {
+              "name": "拉達（阿羅拉）",
+              "types": [
+                "dark",
+                "normal"
+              ],
+              "level": 12
+            }
+          ],
+          "tips": [
+            "太陽為貓鼬探長，月亮為阿羅拉拉達；霸主與SOS援軍分開標示。格鬥對月亮拉達為4倍。"
+          ]
+        }
+      ]
+    },
+    {
+      "location": "美樂美樂島",
+      "badge": "格鬥 Z",
+      "badgeType": "fighting",
+      "order": 2,
+      "role": "gym",
+      "name": "哈拉大試煉",
+      "notes": "飛行或妖精招打格鬥；好勝蟹不是冰系。",
+      "party": [
+        {
+          "name": "猴怪",
+          "types": [
+            "fighting"
+          ],
+          "level": 14
+        },
+        {
+          "name": "幕下力士",
+          "types": [
+            "fighting"
+          ],
+          "level": 14
+        },
+        {
+          "name": "好勝蟹",
+          "types": [
+            "fighting"
+          ],
+          "level": 15
+        }
+      ],
+      "strategy": {
+        "level": "對手最高 Lv.15；依隊伍能力調整",
+        "summary": "飛行或妖精招打格鬥；好勝蟹不是冰系。",
+        "tips": [
+          "推薦為可替換候選；御三家僅在你選擇該開局時可用，不假設交換取得另外兩隻。"
+        ]
+      },
+      "recommendedTeams": [
+        {
+          "label": "可取得的對策候選",
+          "reason": "飛行或妖精招打格鬥；好勝蟹不是冰系。",
+          "pokemon": [
+            {
+              "name": "小篤兒",
+              "types": [
+                "normal",
+                "flying"
+              ],
+              "obtain": "1號道路",
+              "moveNote": "啄；之後按等級進化，不要求早期銃嘴大鳥"
+            },
+            {
+              "name": "萌虻",
+              "types": [
+                "bug",
+                "fairy"
+              ],
+              "obtain": "2號道路或3號道路",
+              "moveNote": "妖精之風；25級進化蝶結萌虻"
+            }
+          ]
+        }
+      ],
+      "roleLabel": "大試煉"
+    },
+    {
+      "location": "阿卡拉島",
+      "badge": "水 Z",
+      "badgeType": "water",
+      "order": 3,
+      "role": "gym",
+      "name": "水蓮試煉（霸主）",
+      "notes": "日月是魚群形態弱丁魚；可召喚保母曼波或弱丁魚。電與草招有效，避免只打會再出現的援軍。",
+      "party": [
+        {
+          "name": "弱丁魚",
+          "types": [
+            "water"
+          ],
+          "level": 20
+        }
+      ],
+      "strategy": {
+        "level": "對手最高 Lv.20；依隊伍能力調整",
+        "summary": "日月是魚群形態弱丁魚；可召喚保母曼波或弱丁魚。電與草招有效，避免只打會再出現的援軍。",
+        "tips": [
+          "推薦為可替換候選；御三家僅在你選擇該開局時可用，不假設交換取得另外兩隻。"
+        ]
+      },
+      "recommendedTeams": [
+        {
+          "label": "可取得的對策候選",
+          "reason": "日月是魚群形態弱丁魚；可召喚保母曼波或弱丁魚。電與草招有效，避免只打會再出現的援軍。",
+          "pokemon": [
+            {
+              "name": "小磁怪",
+              "types": [
+                "electric",
+                "steel"
+              ],
+              "obtain": "訓練家學校草叢",
+              "moveNote": "電擊；後期用電光或鋼系鏡光射擊"
+            },
+            {
+              "name": "投羽梟",
+              "types": [
+                "grass",
+                "flying"
+              ],
+              "obtain": "木木梟開局17級進化",
+              "moveNote": "飛葉快刀"
+            }
+          ]
+        }
+      ],
+      "roleLabel": "試煉"
+    },
+    {
+      "location": "阿卡拉島",
+      "badge": "火 Z",
+      "badgeType": "fire",
+      "order": 4,
+      "role": "gym",
+      "name": "卡奇試煉（霸主）",
+      "notes": "水或地面打焰后蜥；地面4倍弱點，注意中毒與援軍。",
+      "party": [
+        {
+          "name": "焰后蜥",
+          "types": [
+            "poison",
+            "fire"
+          ],
+          "level": 22
+        }
+      ],
+      "strategy": {
+        "level": "對手最高 Lv.22；依隊伍能力調整",
+        "summary": "水或地面打焰后蜥；地面4倍弱點，注意中毒與援軍。",
+        "tips": [
+          "推薦為可替換候選；御三家僅在你選擇該開局時可用，不假設交換取得另外兩隻。"
+        ]
+      },
+      "recommendedTeams": [
+        {
+          "label": "可取得的對策候選",
+          "reason": "水或地面打焰后蜥；地面4倍弱點，注意中毒與援軍。",
+          "pokemon": [
+            {
+              "name": "長翅鷗",
+              "types": [
+                "water",
+                "flying"
+              ],
+              "obtain": "1號道路等沿海草叢",
+              "moveNote": "水之波動；25級進化大嘴鷗"
+            },
+            {
+              "name": "泥驢仔",
+              "types": [
+                "ground"
+              ],
+              "obtain": "4號道路或歐哈納牧場",
+              "moveNote": "重踏；30級進化重泥挽馬"
+            }
+          ]
+        }
+      ],
+      "roleLabel": "試煉"
+    },
+    {
+      "location": "阿卡拉島",
+      "badge": "草 Z",
+      "badgeType": "grass",
+      "order": 5,
+      "role": "gym",
+      "name": "瑪奧試煉（霸主）",
+      "notes": "火與飛行招有效；援軍漂浮泡泡會影響天氣，光合作用會回血。",
+      "party": [
+        {
+          "name": "蘭螳花",
+          "types": [
+            "grass"
+          ],
+          "level": 24
+        }
+      ],
+      "strategy": {
+        "level": "對手最高 Lv.24；依隊伍能力調整",
+        "summary": "火與飛行招有效；援軍漂浮泡泡會影響天氣，光合作用會回血。",
+        "tips": [
+          "推薦為可替換候選；御三家僅在你選擇該開局時可用，不假設交換取得另外兩隻。"
+        ]
+      },
+      "recommendedTeams": [
+        {
+          "label": "可取得的對策候選",
+          "reason": "火與飛行招有效；援軍漂浮泡泡會影響天氣，光合作用會回血。",
+          "pokemon": [
+            {
+              "name": "卡蒂狗",
+              "types": [
+                "fire"
+              ],
+              "obtain": "2號道路",
+              "moveNote": "火焰輪；進化前確認需要的等級招式"
+            },
+            {
+              "name": "喇叭啄鳥",
+              "types": [
+                "normal",
+                "flying"
+              ],
+              "obtain": "小篤兒14級進化",
+              "moveNote": "啄食或其他已學飛行招"
+            }
+          ]
+        }
+      ],
+      "roleLabel": "試煉"
+    },
+    {
+      "location": "阿卡拉島",
+      "badge": "岩石 Z",
+      "badgeType": "rock",
+      "order": 6,
+      "role": "gym",
+      "name": "麗姿大試煉",
+      "notes": "水、草、格鬥或地面招有效；注意結實，不宣稱一擊清場。",
+      "party": [
+        {
+          "name": "朝北鼻",
+          "types": [
+            "rock"
+          ],
+          "level": 26
+        },
+        {
+          "name": "地幔岩",
+          "types": [
+            "rock"
+          ],
+          "level": 26
+        },
+        {
+          "name": "鬃岩狼人（黑夜）",
+          "types": [
+            "rock"
+          ],
+          "level": 27
+        }
+      ],
+      "strategy": {
+        "level": "對手最高 Lv.27；依隊伍能力調整",
+        "summary": "水、草、格鬥或地面招有效；注意結實，不宣稱一擊清場。",
+        "tips": [
+          "推薦為可替換候選；御三家僅在你選擇該開局時可用，不假設交換取得另外兩隻。"
+        ]
+      },
+      "recommendedTeams": [
+        {
+          "label": "可取得的對策候選",
+          "reason": "水、草、格鬥或地面招有效；注意結實，不宣稱一擊清場。",
+          "pokemon": [
+            {
+              "name": "泥驢仔",
+              "types": [
+                "ground"
+              ],
+              "obtain": "4號道路或歐哈納牧場",
+              "moveNote": "重踏；30級進化重泥挽馬"
+            },
+            {
+              "name": "大嘴鷗",
+              "types": [
+                "water",
+                "flying"
+              ],
+              "obtain": "長翅鷗25級進化",
+              "moveNote": "水之波動"
+            }
+          ]
+        }
+      ],
+      "roleLabel": "大試煉"
+    },
+    {
+      "location": "烏拉烏拉島",
+      "badge": "電 Z",
+      "badgeType": "electric",
+      "order": 7,
+      "role": "gym",
+      "name": "馬瑪內試煉（霸主）",
+      "notes": "日月是鍬農炮蟲，飄浮使地面招無效；改用火或岩石。",
+      "party": [
+        {
+          "name": "鍬農炮蟲",
+          "types": [
+            "bug",
+            "electric"
+          ],
+          "level": 29
+        }
+      ],
+      "strategy": {
+        "level": "對手最高 Lv.29；依隊伍能力調整",
+        "summary": "日月是鍬農炮蟲，飄浮使地面招無效；改用火或岩石。",
+        "tips": [
+          "推薦為可替換候選；御三家僅在你選擇該開局時可用，不假設交換取得另外兩隻。"
+        ]
+      },
+      "recommendedTeams": [
+        {
+          "label": "可取得的對策候選",
+          "reason": "日月是鍬農炮蟲，飄浮使地面招無效；改用火或岩石。",
+          "pokemon": [
+            {
+              "name": "卡蒂狗",
+              "types": [
+                "fire"
+              ],
+              "obtain": "2號道路",
+              "moveNote": "火焰輪；進化前確認需要的等級招式"
+            },
+            {
+              "name": "鬃岩狼人",
+              "types": [
+                "rock"
+              ],
+              "obtain": "十克拉山丘岩狗狗25級依版本時段進化",
+              "moveNote": "岩石封鎖等已學岩石招"
+            }
+          ]
+        }
+      ],
+      "roleLabel": "試煉"
+    },
+    {
+      "location": "烏拉烏拉島",
+      "badge": "幽靈 Z",
+      "badgeType": "ghost",
+      "order": 8,
+      "role": "gym",
+      "name": "阿塞蘿拉試煉（霸主）",
+      "notes": "先打破畫皮，再用鋼或幽靈招；惡招僅等倍，一般與格鬥招無效。",
+      "party": [
+        {
+          "name": "謎擬Ｑ",
+          "types": [
+            "ghost",
+            "fairy"
+          ],
+          "level": 33
+        }
+      ],
+      "strategy": {
+        "level": "對手最高 Lv.33；依隊伍能力調整",
+        "summary": "先打破畫皮，再用鋼或幽靈招；惡招僅等倍，一般與格鬥招無效。",
+        "tips": [
+          "推薦為可替換候選；御三家僅在你選擇該開局時可用，不假設交換取得另外兩隻。"
+        ]
+      },
+      "recommendedTeams": [
+        {
+          "label": "可取得的對策候選",
+          "reason": "先打破畫皮，再用鋼或幽靈招；惡招僅等倍，一般與格鬥招無效。",
+          "pokemon": [
+            {
+              "name": "三合一磁怪",
+              "types": [
+                "electric",
+                "steel"
+              ],
+              "obtain": "小磁怪30級進化",
+              "moveNote": "鏡光射擊；注意自身血量"
+            },
+            {
+              "name": "臭泥（阿羅拉）",
+              "types": [
+                "poison",
+                "dark"
+              ],
+              "obtain": "好奧樂市商業區等草叢",
+              "moveNote": "咬住；38級進化臭臭泥，惡系招打幽靈"
+            }
+          ]
+        }
+      ],
+      "roleLabel": "試煉"
+    },
+    {
+      "location": "烏拉烏拉島",
+      "badge": "惡 Z",
+      "badgeType": "dark",
+      "order": 9,
+      "role": "gym",
+      "name": "默丹大試煉",
+      "notes": "勾魂眼只弱妖精，格鬥無效；混混鱷與貓老大再以格鬥或妖精處理。",
+      "party": [
+        {
+          "name": "勾魂眼",
+          "types": [
+            "dark",
+            "ghost"
+          ],
+          "level": 38
+        },
+        {
+          "name": "混混鱷",
+          "types": [
+            "ground",
+            "dark"
+          ],
+          "level": 38
+        },
+        {
+          "name": "貓老大（阿羅拉）",
+          "types": [
+            "dark"
+          ],
+          "level": 39
+        }
+      ],
+      "strategy": {
+        "level": "對手最高 Lv.39；依隊伍能力調整",
+        "summary": "勾魂眼只弱妖精，格鬥無效；混混鱷與貓老大再以格鬥或妖精處理。",
+        "tips": [
+          "推薦為可替換候選；御三家僅在你選擇該開局時可用，不假設交換取得另外兩隻。"
+        ]
+      },
+      "recommendedTeams": [
+        {
+          "label": "可取得的對策候選",
+          "reason": "勾魂眼只弱妖精，格鬥無效；混混鱷與貓老大再以格鬥或妖精處理。",
+          "pokemon": [
+            {
+              "name": "蝶結萌虻",
+              "types": [
+                "bug",
+                "fairy"
+              ],
+              "obtain": "萌虻25級進化",
+              "moveNote": "吸取之吻"
+            },
+            {
+              "name": "穿著熊",
+              "types": [
+                "normal",
+                "fighting"
+              ],
+              "obtain": "8號道路童偶熊27級進化",
+              "moveNote": "格鬥招只用於混混鱷/貓老大"
+            }
+          ]
+        }
+      ],
+      "roleLabel": "大試煉"
+    },
+    {
+      "location": "波尼島",
+      "badge": "大地 Z",
+      "badgeType": "ground",
+      "order": 10,
+      "role": "gym",
+      "name": "哈普烏大試煉",
+      "notes": "草打海兔獸，冰打沙漠蜻蜓；草打地龍僅等倍。水隊注意海兔獸引水。",
+      "party": [
+        {
+          "name": "三地鼠（阿羅拉）",
+          "types": [
+            "ground",
+            "steel"
+          ],
+          "level": 47
+        },
+        {
+          "name": "海兔獸",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "level": 47
+        },
+        {
+          "name": "沙漠蜻蜓",
+          "types": [
+            "ground",
+            "dragon"
+          ],
+          "level": 47
+        },
+        {
+          "name": "重泥挽馬",
+          "types": [
+            "ground"
+          ],
+          "level": 48
+        }
+      ],
+      "strategy": {
+        "level": "對手最高 Lv.48；依隊伍能力調整",
+        "summary": "草打海兔獸，冰打沙漠蜻蜓；草打地龍僅等倍。水隊注意海兔獸引水。",
+        "tips": [
+          "推薦為可替換候選；御三家僅在你選擇該開局時可用，不假設交換取得另外兩隻。"
+        ]
+      },
+      "recommendedTeams": [
+        {
+          "label": "可取得的對策候選",
+          "reason": "草打海兔獸，冰打沙漠蜻蜓；草打地龍僅等倍。水隊注意海兔獸引水。",
+          "pokemon": [
+            {
+              "name": "大嘴鷗",
+              "types": [
+                "water",
+                "flying"
+              ],
+              "obtain": "長翅鷗25級進化",
+              "moveNote": "水招打三地鼠/重泥挽馬"
+            },
+            {
+              "name": "狙射樹梟",
+              "types": [
+                "grass",
+                "ghost"
+              ],
+              "obtain": "木木梟開局34級進化",
+              "moveNote": "葉刃打海兔獸"
+            }
+          ]
+        }
+      ],
+      "roleLabel": "大試煉"
+    },
+    {
+      "location": "波尼大峽谷",
+      "badge": "龍 Z",
+      "badgeType": "dragon",
+      "order": 11,
+      "role": "gym",
+      "name": "波尼大峽谷龍試煉（霸主）",
+      "notes": "日月也有此主線試煉；妖精4倍，飛行、冰、超能2倍。SOS援軍鱗甲龍/巨鉗螳螂不應列成雙霸主。",
+      "party": [
+        {
+          "name": "杖尾鱗甲龍",
+          "types": [
+            "dragon",
+            "fighting"
+          ],
+          "level": 45
+        }
+      ],
+      "strategy": {
+        "level": "對手最高 Lv.45；依隊伍能力調整",
+        "summary": "日月也有此主線試煉；妖精4倍，飛行、冰、超能2倍。SOS援軍鱗甲龍/巨鉗螳螂不應列成雙霸主。",
+        "tips": [
+          "推薦為可替換候選；御三家僅在你選擇該開局時可用，不假設交換取得另外兩隻。"
+        ]
+      },
+      "recommendedTeams": [
+        {
+          "label": "可取得的對策候選",
+          "reason": "日月也有此主線試煉；妖精4倍，飛行、冰、超能2倍。SOS援軍鱗甲龍/巨鉗螳螂不應列成雙霸主。",
+          "pokemon": [
+            {
+              "name": "蝶結萌虻",
+              "types": [
+                "bug",
+                "fairy"
+              ],
+              "obtain": "萌虻25級進化",
+              "moveNote": "魔法閃耀等已學妖精招"
+            },
+            {
+              "name": "西獅海壬",
+              "types": [
+                "water",
+                "fairy"
+              ],
+              "obtain": "球球海獅開局34級進化",
+              "moveNote": "月亮之力；若尚未學會用已取得妖精招"
+            }
+          ]
+        }
+      ],
+      "roleLabel": "試煉"
+    }
   ],
-  eliteFour: [eliteHala, eliteOlivia, eliteAcerola, eliteKahili],
-  champion: championHau,
-  league,
+  "eliteFour": [
+    {
+      "order": 1,
+      "role": "eliteFour",
+      "name": "哈拉",
+      "party": [
+        {
+          "name": "鐵掌力士",
+          "types": [
+            "fighting"
+          ],
+          "level": 54
+        },
+        {
+          "name": "火爆猴",
+          "types": [
+            "fighting"
+          ],
+          "level": 54
+        },
+        {
+          "name": "穿著熊",
+          "types": [
+            "normal",
+            "fighting"
+          ],
+          "level": 54
+        },
+        {
+          "name": "蚊香泳士",
+          "types": [
+            "water",
+            "fighting"
+          ],
+          "level": 54
+        },
+        {
+          "name": "好勝毛蟹",
+          "types": [
+            "fighting",
+            "ice"
+          ],
+          "level": 55
+        }
+      ],
+      "notes": "飛行、妖精或超能招處理格鬥；飛行手別硬接好勝毛蟹冰招。",
+      "specialty": "fighting"
+    },
+    {
+      "order": 2,
+      "role": "eliteFour",
+      "name": "麗姿",
+      "party": [
+        {
+          "name": "古空棘魚",
+          "types": [
+            "water",
+            "rock"
+          ],
+          "level": 54
+        },
+        {
+          "name": "小碎鑽",
+          "types": [
+            "rock",
+            "fairy"
+          ],
+          "level": 54
+        },
+        {
+          "name": "隆隆岩（阿羅拉）",
+          "types": [
+            "rock",
+            "electric"
+          ],
+          "level": 54
+        },
+        {
+          "name": "大朝北鼻",
+          "types": [
+            "rock",
+            "steel"
+          ],
+          "level": 54
+        },
+        {
+          "name": "鬃岩狼人（黑夜）",
+          "types": [
+            "rock"
+          ],
+          "level": 55
+        }
+      ],
+      "notes": "古空棘魚4倍弱草；阿羅拉隆隆岩4倍弱地面；小碎鑽不弱格鬥，改水/草/鋼。",
+      "specialty": "rock"
+    },
+    {
+      "order": 3,
+      "role": "eliteFour",
+      "name": "阿塞蘿拉",
+      "party": [
+        {
+          "name": "勾魂眼",
+          "types": [
+            "dark",
+            "ghost"
+          ],
+          "level": 54
+        },
+        {
+          "name": "隨風球",
+          "types": [
+            "ghost",
+            "flying"
+          ],
+          "level": 54
+        },
+        {
+          "name": "破破舵輪",
+          "types": [
+            "ghost",
+            "grass"
+          ],
+          "level": 54
+        },
+        {
+          "name": "雪妖女",
+          "types": [
+            "ice",
+            "ghost"
+          ],
+          "level": 54
+        },
+        {
+          "name": "噬沙堡爺",
+          "types": [
+            "ghost",
+            "ground"
+          ],
+          "level": 55
+        }
+      ],
+      "notes": "惡或幽靈打大部分；勾魂眼只弱妖精。不要用格鬥打幽靈。",
+      "specialty": "ghost"
+    },
+    {
+      "order": 4,
+      "role": "eliteFour",
+      "name": "卡希麗",
+      "party": [
+        {
+          "name": "盔甲鳥",
+          "types": [
+            "steel",
+            "flying"
+          ],
+          "level": 54
+        },
+        {
+          "name": "叉字蝠",
+          "types": [
+            "poison",
+            "flying"
+          ],
+          "level": 54
+        },
+        {
+          "name": "花舞鳥（熱辣熱辣）",
+          "types": [
+            "fire",
+            "flying"
+          ],
+          "level": 54
+        },
+        {
+          "name": "禿鷹娜",
+          "types": [
+            "dark",
+            "flying"
+          ],
+          "level": 54
+        },
+        {
+          "name": "銃嘴大鳥",
+          "types": [
+            "normal",
+            "flying"
+          ],
+          "level": 55
+        }
+      ],
+      "notes": "全隊弱電；盔甲鳥不弱冰，花舞鳥4倍弱岩。",
+      "specialty": "flying"
+    }
+  ],
+  "champion": {
+    "role": "champion",
+    "name": "庫庫伊博士",
+    "party": [
+      {
+        "name": "鬃岩狼人（白晝）",
+        "types": [
+          "rock"
+        ],
+        "level": 57
+      },
+      {
+        "name": "九尾（阿羅拉）",
+        "types": [
+          "ice",
+          "fairy"
+        ],
+        "level": 56
+      },
+      {
+        "name": "勇士雄鷹",
+        "types": [
+          "normal",
+          "flying"
+        ],
+        "level": 56
+      },
+      {
+        "name": "自爆磁怪",
+        "types": [
+          "electric",
+          "steel"
+        ],
+        "level": 56
+      },
+      {
+        "name": "卡比獸",
+        "types": [
+          "normal"
+        ],
+        "level": 56
+      },
+      {
+        "name": "熾焰咆哮虎",
+        "types": [
+          "fire",
+          "dark"
+        ],
+        "level": 58
+      }
+    ],
+    "notes": "首次聯盟最後是庫庫伊；御三家對玩家有利。阿羅拉九尾4倍弱鋼，自爆磁怪4倍弱地面，卡比獸用格鬥。"
+  },
+  league: sunMoonLeague
 };
+
+sunMoonGuide.gyms.forEach(assertBattle);
+assertLeague(sunMoonLeague);

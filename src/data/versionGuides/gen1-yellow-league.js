@@ -1,59 +1,155 @@
-import { pm, rec, mup } from './helpers.js';
+import { pm, rec, mup, mv } from './helpers.js';
 import { redBlueLeague } from './gen1-red-blue-league.js';
 
-/** 黃版聯盟攻略（固定隨行皮卡丘、冠軍隊伍不同） */
+/** 黃版：初代規則；依勁敵伊布進化分支顯示完整冠軍隊伍。 */
 export const yellowLeague = {
   ...redBlueLeague,
   intro:
-    '四天王與冠軍為連續五場，入場後無法回寶可夢中心也不能換隊。'
-    + '黃版固定隨行皮卡丘，建議納入 6 人編成；電系核心可讓皮卡丘擔任。',
+    '聯盟連續五場，建議主力約 Lv.55～60 並備足回復道具；冠軍最高 Lv.65。皮卡丘可擔任電系核心，但不是必須留在隊伍。冠軍依前期勁敵戰結果有三種分支。',
   recommendedTeams: [
     rec(
-      '皮卡丘核心聯盟隊',
-      '皮卡丘十萬伏特打科拿與暴鯉龍；拉普拉斯水冰雙核；引夢貘人免交換超能；卡比獸坦克；三地鼠地面補盲，第六格放御三家或耿鬼。',
+      '皮卡丘核心免交換範例',
+      '皮卡丘打水／飛行，拉普拉斯打水／冰弱點，引夢貘人打格鬥／毒，卡比獸打胡地，三地鼠補地面；第六格選已培養的贈送御三家。',
       [
-        pm('皮卡丘', ['electric']),
-        pm('拉普拉斯', ['water', 'ice']),
-        pm('引夢貘人', ['psychic']),
-        pm('卡比獸', ['normal']),
-        pm('三地鼠', ['ground']),
-        pm('御三家', ['normal']),
-      ],
-    ),
-    rec(
-      '地面剋電聯盟隊',
-      '隆隆岩或三地鼠剋冠軍雷伊布；拉普拉斯打渡與希巴；胡地或引夢貘人打格鬥與幽靈；皮卡丘仍建議保留以處理水系。',
-      [
-        pm('皮卡丘', ['electric']),
-        pm('拉普拉斯', ['water', 'ice']),
-        pm('引夢貘人', ['psychic']),
-        pm('卡比獸', ['normal']),
-        pm('三地鼠', ['ground']),
-        pm('隆隆岩', ['rock', 'ground']),
+        { ...pm('皮卡丘', ['electric']), obtain: '開局取得，Lv.26 學十萬伏特。' },
+        ...redBlueLeague.recommendedTeams[0].pokemon.filter(
+          (p) => !['雷伊布', '你的御三家'].includes(p.name),
+        ),
+        {
+          ...pm('已培養的贈送御三家', []),
+          obtain: '妙蛙種子：華藍市親密度事件；小火龍：24 號道路；傑尼龜：擊敗馬志士後在枯葉市領取。',
+        },
       ],
     ),
   ],
   battles: {
     ...redBlueLeague.battles,
-    champion: {
-      intro: '黃版青綠隊伍固定，最大威脅為雷伊布；與紅／藍御三家分支冠軍完全不同。',
+    'eliteFour:1': {
+      ...redBlueLeague.battles['eliteFour:1'],
       tips: [
-        '雷伊布是最大威脅，地面系（三地鼠、隆隆岩）幾乎必備且優先處理。',
-        '刺甲貝水冰雙屬，皮卡丘十萬伏特或拉普拉斯冰招皆可穩定突破。',
-        '胡地特攻高但脆，卡比獸或耿鬼換上；椰蛋樹用火系或冰系遠程削血。',
+        '皮卡丘用電招打四隻水系；迷唇姐交給卡比獸物攻。',
+        '刺甲貝、拉普拉斯受到冰招僅四分之一傷害；皮卡丘較脆，上場前補好血。',
       ],
       matchups: [
-        mup('穿山王', '拉普拉斯／水箭龜'),
-        mup('胡地', '卡比獸／耿鬼'),
-        mup('椰蛋樹', '噴火龍／冰系／卡比獸'),
-        mup('刺甲貝', '皮卡丘／拉普拉斯'),
-        mup('九尾', '拉普拉斯／水箭龜'),
-        mup('雷伊布', '三地鼠／隆隆岩'),
+        mup('白海獅', '皮卡丘'),
+        mup('刺甲貝', '皮卡丘'),
+        mup('呆殼獸', '皮卡丘'),
+        mup('迷唇姐', '卡比獸'),
+        mup('拉普拉斯', '皮卡丘'),
+      ],
+    },
+    'eliteFour:3': {
+      ...redBlueLeague.battles['eliteFour:3'],
+      matchups: redBlueLeague.battles['eliteFour:3'].matchups.map((m) => ({
+        ...m,
+        counters: m.counters.replaceAll('雷伊布', '皮卡丘'),
+      })),
+    },
+    'eliteFour:4': {
+      ...redBlueLeague.battles['eliteFour:4'],
+      tips: [
+        '保留電招打暴鯉龍、冰凍光束打龍系；化石翼龍可用衝浪或電招。',
+        '黃版其中一隻哈克龍帶十萬伏特，快龍帶打雷。拉普拉斯弱電，避免直接換入吃招，先補好血量。',
+      ],
+      matchups: redBlueLeague.battles['eliteFour:4'].matchups.map((m) => ({
+        ...m,
+        counters: m.counters.replaceAll('雷伊布', '皮卡丘'),
+      })),
+    },
+    champion: {
+      intro: '依你目前看到的勁敵伊布進化形態選擇分支。穿山王、胡地、椰蛋樹相同，後三格的種類或等級會變動。',
+      variants: [
+        {
+          id: 'jolteon',
+          label: '勁敵：雷伊布',
+          subtitle: '刺甲貝 Lv.61／九尾 Lv.63',
+          party: [
+            pm('穿山王', ['ground'], 61),
+            pm('胡地', ['psychic'], 59),
+            pm('椰蛋樹', ['grass', 'psychic'], 61),
+            pm('刺甲貝', ['water', 'ice'], 61),
+            pm('九尾', ['fire'], 63),
+            pm('雷伊布', ['electric'], 65),
+          ],
+          tips: ['分支條件：研究所首戰獲勝，且首次 22 號道路勁敵戰也獲勝。', '用三地鼠地面招處理雷伊布；刺甲貝用電招，冰招只有四分之一效果。'],
+          matchups: [
+            mup('穿山王', '拉普拉斯衝浪'),
+            mup('胡地', '卡比獸物攻'),
+            mup('椰蛋樹', '火招／拉普拉斯冰招'),
+            mup('刺甲貝', '皮卡丘電招'),
+            mup('九尾', '拉普拉斯衝浪'),
+            mup('雷伊布', '三地鼠地震'),
+          ],
+        },
+        {
+          id: 'flareon',
+          label: '勁敵：火伊布',
+          subtitle: '三合一磁怪 Lv.61／刺甲貝 Lv.63',
+          party: [
+            pm('穿山王', ['ground'], 61),
+            pm('胡地', ['psychic'], 59),
+            pm('椰蛋樹', ['grass', 'psychic'], 61),
+            pm('三合一磁怪', ['electric'], 61),
+            pm('刺甲貝', ['water', 'ice'], 63),
+            pm('火伊布', ['fire'], 65),
+          ],
+          tips: ['分支條件：研究所首戰獲勝，但首次 22 號道路勁敵戰落敗或跳過。', '初代三合一磁怪是純電系，地面招兩倍；火伊布交給衝浪。'],
+          matchups: [
+            mup('穿山王', '拉普拉斯衝浪'),
+            mup('胡地', '卡比獸物攻'),
+            mup('椰蛋樹', '火招／拉普拉斯冰招'),
+            mup('三合一磁怪', '三地鼠地震'),
+            mup('刺甲貝', '皮卡丘電招'),
+            mup('火伊布', '拉普拉斯衝浪'),
+          ],
+        },
+        {
+          id: 'vaporeon',
+          label: '勁敵：水伊布',
+          subtitle: '九尾 Lv.61／三合一磁怪 Lv.63',
+          party: [
+            pm('穿山王', ['ground'], 61),
+            pm('胡地', ['psychic'], 59),
+            pm('椰蛋樹', ['grass', 'psychic'], 61),
+            pm('九尾', ['fire'], 61),
+            pm('三合一磁怪', ['electric'], 63),
+            pm('水伊布', ['water'], 65),
+          ],
+          tips: ['分支條件：研究所首戰落敗；不論首次 22 號道路勁敵戰勝敗或是否挑戰，都維持此分支。', '水伊布用電招，九尾用水招，三合一磁怪用地面招。'],
+          matchups: [
+            mup('穿山王', '拉普拉斯衝浪'),
+            mup('胡地', '卡比獸物攻'),
+            mup('椰蛋樹', '火招／拉普拉斯冰招'),
+            mup('九尾', '拉普拉斯衝浪'),
+            mup('三合一磁怪', '三地鼠地震'),
+            mup('水伊布', '皮卡丘電招'),
+          ],
+        },
       ],
     },
   },
+  battleOrder: [
+    { battle: '科拿', leads: '皮卡丘', backup: '卡比獸打迷唇姐' },
+    { battle: '希巴', leads: '拉普拉斯', backup: '引夢貘人打格鬥系' },
+    { battle: '菊子', leads: '引夢貘人', backup: '皮卡丘打大嘴蝠' },
+    { battle: '渡', leads: '皮卡丘', backup: '拉普拉斯冰招' },
+    { battle: '冠軍', leads: '拉普拉斯打穿山王', backup: '依伊布進化分支輪換' },
+  ],
   starterLineups: undefined,
+  moveSets: [
+    {
+      pokemon: '皮卡丘',
+      role: '電系主力',
+      moves: [
+        mv('十萬伏特', 'Lv.26；打水系與飛行系', 'level'),
+        mv('電磁波', 'Lv.8；控速', 'level'),
+        mv('電光一閃', 'Lv.11；收尾', 'level'),
+        mv('光牆', 'Lv.50；減輕特殊攻擊傷害', 'level'),
+      ],
+      note: '保留早期招式；不需把唯一 TM24 用在已學會十萬伏特的皮卡丘上。',
+    },
+    ...redBlueLeague.moveSets.filter((set) => set.pokemon !== '雷伊布'),
+  ],
   conclusion:
-    '黃版懶人答案：皮卡丘＋拉普拉斯＋引夢貘人＋卡比獸＋三地鼠＋御三家（或耿鬼）。'
-    + '最關鍵是電系（科拿、暴鯉龍）、地面系（冠軍雷伊布）、拉普拉斯（渡與冰系輸出）。',
+    '水、冰、電、超能力先備齊；冠軍不是固定雷伊布隊。依分支保留地面或電招的 PP，皮卡丘血量不足時先回復再上場。',
 };

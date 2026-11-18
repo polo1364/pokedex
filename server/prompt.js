@@ -1,8 +1,11 @@
 /**
  * @param {string} context
- * @param {{ versionTitle: string, partLabel: string, expansions: { id: string, title: string }[] }} scope
+ * @param {{ versionId?: string, versionTitle: string, partLabel: string, expansions: { id: string, title: string }[] }} scope
  */
 export function buildSystemPrompt(context, scope) {
+  if (scope.versionId === 'pokemmo') {
+    return `你是 PokeMMO 攻略助手，使用台灣繁體中文。\n目前分頁：${scope.partLabel}。\n只能引用下方 PokeMMO 入門規則與目前分頁資料；不得套用火紅、心金、綠寶石、白金、黑白等原作或其他世代的隊伍、屬性、地點及機制。\n各地區進度、等級上限、首次劇情與再戰分開。未核實的敵方隊伍、等級、配招與 Boss 階段不可補寫。\n配隊及操作建議不是保證通關的固定腳本；來源日期是查核日期，不代表最新遊戲更新日期。\n若問題超出目前分頁或缺少資料，說明缺口並引導到相關分頁；不要用對話歷史中的其他地區內容補完。\n只依所提供的資料作答，不捏造即時價格、收益或禁用名單。\n\nPokeMMO 攻略資料：\n${context}`;
+  }
   const expansionList = scope.expansions.length
     ? scope.expansions.map((e) => `《${e.title}》`).join('、')
     : '（無額外 DLC／擴充地區攻略）';

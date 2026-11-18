@@ -1,3 +1,4 @@
+import { getVersionGroupDisplayName } from '../utils/versions.js';
 import { typeColors, typeNamesCN } from '../config.js';
 import { findMoveLearners } from '../data/moveLearners.js';
 import { escapeHtml } from '../utils/infoCards.js';
@@ -22,7 +23,7 @@ function renderTypeLine(types) {
 
 function renderLearnersList(learners) {
   if (!learners.length) {
-    return '<p class="learners-modal-empty">沒有寶可夢可透過招式機學會此招式</p>';
+    return '<p class="learners-modal-empty">來源尚未列出此版本可透過招式機學習的寶可夢</p>';
   }
 
   return `<div class="learners-modal-grid" role="list">
@@ -60,13 +61,14 @@ function setResultState({ count, learners, moveSlug }) {
   if (!body) return;
 
   body.innerHTML = `
-    <p class="learners-modal-count">共 ${count} 隻寶可夢可學習</p>
+    <p class="learners-modal-count">可學習：${count} 種（含形態）</p>
+    <details class="catalog-notes"><summary>名單說明</summary><p>僅列出此版本有招式機學習記錄的寶可夢與形態。寶可夢屬性顯示目前資料。</p></details>
     ${renderLearnersList(learners)}
   `;
 
   if (footer) {
     footer.innerHTML = count
-      ? `<a href="./index.html?tm=${encodeURIComponent(moveSlug)}" class="learners-modal-dex-link">在主圖鑑中篩選 →</a>`
+      ? `<a href="./index.html?tm=${encodeURIComponent(moveSlug)}" class="learners-modal-dex-link">在主圖鑑查看跨版本結果 →</a>`
       : '';
   }
 }
@@ -112,7 +114,7 @@ async function onLearnerClick(e) {
   await showDetail(id);
 }
 
-export async function openMachineLearnersModal({ moveName, moveSlug, displayLabel, typeLabel }) {
+export async function openMachineLearnersModal({ moveName, moveSlug, displayLabel, typeLabel, versionGroup }) {
   initMachineLearnersModal();
   if (!modalEl || !moveSlug) return;
 
@@ -128,14 +130,14 @@ export async function openMachineLearnersModal({ moveName, moveSlug, displayLabe
   updateMachinesBackToTop();
 
   modalEl.querySelector('.learners-modal-title').textContent = `可學習「${moveName || moveSlug}」的寶可夢`;
-  const subtitleParts = [displayLabel, typeLabel ? `屬性 ${typeLabel}` : ''].filter(Boolean);
+  const subtitleParts = [getVersionGroupDisplayName(versionGroup), displayLabel, typeLabel ? `屬性 ${typeLabel}` : ''].filter(Boolean);
   modalEl.querySelector('.learners-modal-subtitle').textContent = subtitleParts.join(' · ');
   modalEl.querySelector('.learners-modal-footer').innerHTML = '';
   setLoadingState('正在比對可學習寶可夢…');
 
   try {
     const result = await findMoveLearners(
-      { moveSlug },
+      { moveSlug, versionGroup },
       {
         signal,
         onProgress: (progress) => {
@@ -150,7 +152,7 @@ export async function openMachineLearnersModal({ moveName, moveSlug, displayLabe
   } catch (err) {
     if (requestId !== activeRequestId || signal.aborted) return;
     console.error(err);
-    setLoadingState('載入失敗，請稍後再試');
+    setLoadingState('資料未完整載入，請關閉後重試；未顯示不完整結果。');
   }
 }
 

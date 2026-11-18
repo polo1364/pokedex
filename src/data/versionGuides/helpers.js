@@ -1,4 +1,5 @@
-/** @typedef {{ name: string, types: string[], level?: number }} GuidePokemon */
+/** @typedef {{ name: string, types: string[], level?: number, teraType?: string, obtain?: string, moveNote?: string }} GuidePokemon */
+/** @typedef {{ level: string, summary: string, tips: string[] }} GymStrategy */
 /** @typedef {{ label: string, reason: string, pokemon: GuidePokemon[] }} RecommendedTeam */
 /** @typedef {'gym'|'eliteFour'|'champion'|'trainer'|'wild'|'legendary'|'noble'} BattleRole */
 /** @typedef {'fixed'|'suggested'} BattleSequenceMode */
@@ -45,6 +46,7 @@ export function mup(opponent, counters) {
  *   id?: string,
  *   label: string,
  *   subtitle?: string,
+ *   party?: GuidePokemon[],
  *   tips?: string[],
  *   essentials?: BattleEssential[],
  *   matchups?: MatchupEntry[]

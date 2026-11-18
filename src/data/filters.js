@@ -1,6 +1,8 @@
 import { store, getFavorites } from '../state/store.js';
 import { getGenerationFromSpecies } from '../utils/i18n.js';
 import { ensurePokemonLoaded } from '../data/pokemon.js';
+import { runPool } from '../api/client.js';
+import { matchesSearch } from '../utils/search.js';
 import {
   enrichFilterMetaForEntries,
   matchesItemFilter,
@@ -29,10 +31,7 @@ export function applyFilters(resetDisplay = true) {
       entry.pokemon?.types?.some((t) => t.type.name === store.currentFilters.type) ?? !entry.loaded
     );
     const matchFav = !store.currentFilters.favorites || favs.includes(entry.id) || favs.includes(entry.speciesId);
-    const q = store.currentFilters.search;
-    const matchSearch = !q ||
-      entry.chineseName?.toLowerCase().includes(q) ||
-      entry.id.toString().includes(q);
+    const matchSearch = matchesSearch(entry, store.currentFilters.search);
     const matchItem = !item || matchesItemFilter(entry, item);
     const matchTm = !tm || matchesMachineMoveFilter(entry, tm);
     return matchGen && (store.currentFilters.type === 'all' || matchType) && matchFav && matchSearch && matchItem && matchTm;
@@ -87,19 +86,20 @@ export function sortFiltered() {
   store.filteredPokemon.sort(sorters[sortBy] || sorters.id);
 }
 
-export async function preloadVisiblePokemon() {
+export async function preloadVisiblePokemon(onLoaded) {
   const visible = store.filteredPokemon.slice(0, store.displayCount);
-  await Promise.all(
-    visible.map((entry) => {
-      if (!entry.loaded) return ensurePokemonLoaded(entry).catch(() => null);
-      return null;
-    })
-  );
+  await runPool(visible.filter((entry) => !entry.loaded), async (entry) => {
+    const pokemon = await ensurePokemonLoaded(entry);
+    onLoaded?.(entry);
+    return pokemon;
+  });
 
   const { item, tm } = store.currentFilters;
   if (item || tm) {
     const toEnrich = store.filteredPokemon.filter((e) => e.loaded && !e.filterMeta?.namesLoaded);
     await enrichFilterMetaForEntries(toEnrich.slice(0, 80));
-    applyFilters(false);
   }
+  // Types and stat values may have been unknown when filtering first ran.
+  // Use the current selection in case it changed while requests were pending.
+  applyFilters(false);
 }

@@ -3485,6 +3485,19 @@
       overflow: visible;
     }
 
+    .guide-atlas-frame {
+      display: block;
+      width: 100%;
+      height: 1000px;
+      border: 1px solid var(--border-color, #48665f);
+      border-radius: 12px;
+      background: #172f34;
+    }
+
+    @media (max-width: 650px) {
+      .guide-atlas-frame { height: 1120px; }
+    }
+
     .guide-region-map-frame {
       position: relative;
       border-radius: 12px;
@@ -6052,6 +6065,16 @@
       margin-bottom: 24px;
     }
 
+    .guide-page--pokemmo .guide-part-tabs {
+      flex-wrap: wrap;
+    }
+
+    .guide-page--pokemmo .guide-part-tabs .tab {
+      flex: 0 0 auto;
+      padding: 10px 14px;
+      white-space: nowrap;
+    }
+
     /* AI 問答懸浮按鈕與模態 */
     .guide-chat-fab {
       position: fixed;
@@ -6391,4 +6414,308 @@
       clip: rect(0, 0, 0, 0);
       white-space: nowrap;
       border: 0;
+    }
+
+/* Kanto walkthrough: readable summaries and compact, obtainable alternatives. */
+.guide-page--kanto .guide-quick-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0 28px;
+}
+.guide-page--kanto .guide-quick-nav button {
+  border: 1px solid var(--border-color, #d8dee9);
+  border-radius: 10px;
+  padding: 11px 15px;
+  min-height: 44px;
+  background: var(--bg-button);
+  color: var(--text-primary, #263247);
+  font: inherit;
+  cursor: pointer;
+}
+.guide-page--kanto .guide-quick-nav button:hover,
+.guide-page--kanto .guide-quick-nav button:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+#guideContentRoot .guide-gym-strategy {
+  padding: 16px;
+  background: var(--bg-secondary, #f2f5fa);
+  border-left: 4px solid var(--accent-primary);
+  border-radius: 8px;
+}
+#guideContentRoot .guide-strategy-level { font-weight: 700; margin: 8px 0; }
+#guideContentRoot .guide-strategy-summary { margin: 8px 0; }
+#guideContentRoot .guide-strategy-level,
+#guideContentRoot .guide-strategy-summary,
+#guideContentRoot .guide-pokemon-note,
+#guideContentRoot .guide-team-reason,
+#guideContentRoot .guide-opponent-summary,
+#guideContentRoot .guide-battle-tip { font-size: 16px; line-height: 1.7; }
+#guideContentRoot .guide-team-reason--before { margin: 8px 0 12px; padding: 0; border: 0; }
+#guideContentRoot .guide-pokemon-note { display: block; flex-basis: 100%; color: var(--text-secondary, #536077); }
+#guideContentRoot .guide-team-row { flex-direction: row; text-align: left; justify-content: flex-start; gap: 6px 10px; }
+#guideContentRoot .guide-team-row .guide-type-badges { margin-left: auto; }
+#guideContentRoot .type-badge { font-size: 14px; }
+#guideContentRoot .guide-section-title,
+#guideContentRoot .guide-variant-subtitle { font-size: 17px; }
+#guideContentRoot .guide-party-grid-name,
+#guideContentRoot .guide-league-table td,
+#guideContentRoot .guide-variant-label { font-size: 16px; }
+#guideContentRoot .guide-party-grid-row .guide-level,
+#guideContentRoot .guide-variant-sub { font-size: 14px; }
+.guide-chapter-nav,
+.guide-sources { margin: 20px 0; font-size: 16px; line-height: 1.7; }
+.guide-chapter-nav { padding: 16px; border: 1px solid var(--border-color, #34405b); border-radius: 10px; }
+.guide-chapter-nav summary { cursor: pointer; font-weight: 700; }
+.guide-expansion-guide--navigable .guide-expansion-island { scroll-margin-top: 100px; }
+.guide-chapter-nav li,
+.guide-sources li { margin: 8px 0; }
+.guide-chapter-nav a,
+.guide-sources a { color: var(--accent-primary, #54d4ef); overflow-wrap: anywhere; }
+/* PokeMMO reading roles: keep text labels alongside the color cues. */
+#guideContentRoot.guide-page--pokemmo {
+  --reading-flow: #79d9ef;
+  --reading-warning: #f5ce82;
+  --reading-battle: #ffb2a1;
+  --reading-obtain: #91ddbc;
+  --reading-place: #c5b9f4;
+}
+.guide-page--pokemmo .guide-expansion-island {
+  border-color: #354455;
+  border-top: 3px solid var(--reading-flow);
+  background: #1b2132;
+}
+.guide-page--pokemmo .guide-expansion-island-title,
+.guide-page--pokemmo .guide-expansion-island-num,
+.guide-page--pokemmo .guide-expansion-subtitle {
+  color: var(--reading-flow);
+}
+.guide-page--pokemmo .guide-expansion-island-num {
+  background: #203846;
+  border-color: #4b8696;
+}
+.guide-page--pokemmo .guide-expansion-island-intro {
+  padding: 10px 12px;
+  border-left: 3px solid var(--reading-place);
+  border-radius: 0 6px 6px 0;
+  background: #29283e;
+  color: #e0d9f5;
+}
+.guide-page--pokemmo .guide-expansion-flow-list li {
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+.guide-page--pokemmo .guide-expansion-flow-list li::marker {
+  color: var(--reading-flow);
+  font-weight: 700;
+}
+.guide-page--pokemmo .guide-expansion-subtitle:has(+ .guide-expansion-tips) {
+  color: var(--reading-warning);
+}
+.guide-page--pokemmo .guide-expansion-tips {
+  padding: 12px 14px 12px 32px;
+  border-left: 3px solid var(--reading-warning);
+  border-radius: 0 8px 8px 0;
+  background: #302b29;
+  color: #f3dfb8;
+}
+.guide-page--pokemmo .guide-expansion-tips li::marker {
+  color: var(--reading-warning);
+}
+.guide-page--pokemmo .guide-annotate--place,
+.guide-page--pokemmo .guide-expansion-legend-chip--place {
+  color: var(--reading-place);
+  border-color: #78679e;
+}
+#guideContentRoot.guide-page--pokemmo .guide-battle-toggle {
+  border-color: #825850;
+  background: #30232e;
+}
+#guideContentRoot.guide-page--pokemmo .guide-battle-toggle:is(:hover, .is-open) {
+  border-color: var(--reading-battle);
+  background: #3b2c36;
+}
+.guide-page--pokemmo .guide-battle-toggle .guide-opponent-name,
+.guide-page--pokemmo .guide-leader-name,
+.guide-page--pokemmo .guide-gym-strategy .guide-section-title {
+  color: var(--reading-battle);
+}
+#guideContentRoot.guide-page--pokemmo .guide-battle-detail {
+  border-color: #825850;
+}
+#guideContentRoot.guide-page--pokemmo .guide-gym-strategy {
+  background: #30232e;
+  border-left-color: var(--reading-battle);
+}
+.guide-page--pokemmo .guide-battle-tip {
+  border-left-color: var(--reading-battle);
+  color: #f0dce0;
+}
+.guide-page--pokemmo .guide-strategy-level,
+.guide-page--pokemmo .guide-battle-notes {
+  color: var(--reading-warning);
+}
+.guide-page--pokemmo .guide-battle-notes {
+  padding: 10px 12px;
+  background: #302b29;
+  border-left: 3px solid var(--reading-warning);
+  border-radius: 0 6px 6px 0;
+}
+#guideContentRoot.guide-page--pokemmo .guide-team-block {
+  background: #192e30;
+  border-color: #427566;
+}
+.guide-page--pokemmo .guide-team-label,
+.guide-page--pokemmo .guide-pokemon-name,
+.guide-page--pokemmo .guide-pokemon-note strong {
+  color: var(--reading-obtain);
+}
+#guideContentRoot.guide-page--pokemmo .guide-pokemon-note {
+  color: #d1e6db;
+}
+.guide-page--pokemmo .guide-sources {
+  padding-top: 16px;
+  border-top: 1px solid #354455;
+  color: #bec8da;
+}
+#guideContentRoot .guide-expansion-guide--navigable .guide-expansion-island-intro,
+#guideContentRoot .guide-expansion-guide--navigable .guide-expansion-flow-list li,
+#guideContentRoot .guide-expansion-guide--navigable .guide-expansion-tips li,
+#guideContentRoot .guide-expansion-guide--navigable td { font-size: 16px; line-height: 1.7; }
+@media (max-width: 600px) {
+  #guideContentRoot .guide-team-block { padding: 12px; }
+  #guideContentRoot .guide-team-row { padding: 10px; }
+  #guideContentRoot .guide-gym-strategy { padding: 12px; }
+  #guideContentRoot .guide-quick-nav { gap: 8px; }
+  #guideContentRoot .guide-quick-nav button { flex: 1 1 140px; }
+}
+
+    /* ==== 圖鑑網格：載入骨架、焦點、效能與質感微調 ==== */
+    ::selection {
+      background: rgba(0, 217, 255, 0.35);
+      color: #fff;
+    }
+
+    html {
+      scrollbar-color: rgba(0, 217, 255, 0.4) rgba(255, 255, 255, 0.04);
+    }
+
+    @media (min-width: 1025px) {
+      .pokemon-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 18px;
+      }
+    }
+
+    .pokemon-card {
+      /* 1000+ 張卡片同時套 backdrop-filter 會拖慢捲動；底色已近不透明，改用漸層 */
+      backdrop-filter: none;
+      background:
+        linear-gradient(160deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 45%),
+        var(--bg-card);
+      border-color: rgba(0, 217, 255, 0.18);
+      padding: 18px 16px 16px;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      content-visibility: auto;
+      contain-intrinsic-size: auto 260px;
+    }
+
+    .pokemon-card:hover,
+    .pokemon-card:focus-visible {
+      transform: translateY(-6px);
+      border-color: var(--accent-primary);
+      box-shadow: 0 14px 36px rgba(0, 217, 255, 0.22), 0 0 0 1px rgba(0, 217, 255, 0.25) inset;
+    }
+
+    .pokemon-card:focus-visible,
+    .pokemon-list-row:focus-visible {
+      outline: 2px solid var(--accent-primary);
+      outline-offset: 3px;
+    }
+
+    .pokemon-card:active {
+      transform: translateY(-2px) scale(0.99);
+    }
+
+    .pokemon-image-container::after {
+      content: '';
+      position: absolute;
+      inset: 18% 14% 4%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.07) 0%, transparent 70%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .pokemon-image {
+      position: relative;
+      z-index: 1;
+    }
+
+    .pokemon-card:hover .pokemon-image,
+    .pokemon-card:focus-visible .pokemon-image {
+      transform: scale(1.08);
+    }
+
+    .pokemon-id {
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.5px;
+    }
+
+    .pokemon-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pokemon-types {
+      min-height: 26px;
+    }
+
+    .type-badge--skeleton {
+      display: inline-block;
+      width: 64px;
+      height: 24px;
+      padding: 0;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.16) 50%, rgba(255, 255, 255, 0.06) 100%);
+      background-size: 200% 100%;
+      animation: skeleton-shimmer 1.3s ease-in-out infinite;
+    }
+
+    @keyframes skeleton-shimmer {
+      from { background-position: 100% 0; }
+      to { background-position: -100% 0; }
+    }
+
+    .pokemon-list-row {
+      transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+      content-visibility: auto;
+      contain-intrinsic-size: auto 74px;
+    }
+
+    .pokemon-list-row:hover,
+    .pokemon-list-row:focus-visible {
+      background-color: rgba(0, 217, 255, 0.06);
+    }
+
+    .list-id,
+    .list-total {
+      font-variant-numeric: tabular-nums;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pokemon-card,
+      .pokemon-list-row,
+      .pokemon-image {
+        transition: none;
+      }
+      .pokemon-card:hover,
+      .pokemon-card:focus-visible,
+      .pokemon-list-row:hover {
+        transform: none;
+      }
+      .type-badge--skeleton {
+        animation: none;
+      }
     }

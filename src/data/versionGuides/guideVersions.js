@@ -4,7 +4,7 @@
  * @typedef {object} GuideVersionMeta
  * @property {string} id
  * @property {string} title
- * @property {number} displayGeneration
+ * @property {number|null} displayGeneration - null for games spanning generations
  * @property {GuideStatus} status
  */
 
@@ -38,5 +38,6 @@ export const GUIDE_VERSIONS = [
   { id: 'legends-arceus', title: '寶可夢傳說 阿爾宙斯', displayGeneration: 8, status: 'complete' },
 
   { id: 'scarlet-violet', title: '寶可夢 朱／紫', displayGeneration: 9, status: 'complete' },
-  { id: 'legends-za', title: '寶可夢傳說 Z-A', displayGeneration: 9, status: 'placeholder' },
+  { id: 'legends-za', title: '寶可夢傳說 Z-A', displayGeneration: 9, status: 'complete' },
+  { id: 'pokemmo', title: 'PokeMMO', displayGeneration: null, status: 'complete' },
 ];

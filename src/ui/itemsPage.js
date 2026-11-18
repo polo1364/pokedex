@@ -1,8 +1,12 @@
+import { getItemIcon, renderCatalogIcon, bindCatalogIconFallbacks } from '../utils/catalogIcons.js';
+import '../styles/catalogs.css';
+import { getVersionGroupDisplayName } from '../utils/versions.js';
 import { loadItemsCatalog, countVisibleCards } from '../data/items.js';
 import { escapeHtml } from '../utils/infoCards.js';
 import {
   cssSafeSlug,
   formatAttributeLabels,
+  formatItemPrice,
   formatOtherGenerations,
   GEN_ACCENT_COLORS,
   getItemAccentColor,
@@ -50,7 +54,7 @@ async function loadAndRender() {
     renderCatalog();
   } catch (err) {
     console.error(err);
-    if (progressText) progressText.textContent = '載入失敗，請重新整理頁面';
+    if (progressText) progressText.textContent = err.message || '載入失敗，請重新整理頁面';
   }
 }
 
@@ -61,6 +65,7 @@ function bindSearch() {
     renderedSections.clear();
     renderCatalog();
     updateCount();
+    renderGenNav();
   });
 }
 
@@ -70,7 +75,7 @@ function renderGenNav() {
 
   nav.innerHTML = '';
   for (let gen = 1; gen <= 9; gen += 1) {
-    const count = catalog.byGen[gen]?.length || 0;
+    const count = (catalog.byGen[gen] || []).filter(itemMatches).length;
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'items-gen-pill';
@@ -86,7 +91,7 @@ function renderGenNav() {
     btn.type = 'button';
     btn.className = 'items-gen-pill items-gen-pill--muted';
     btn.dataset.gen = 'uncategorized';
-    btn.textContent = `未分類 (${catalog.uncategorized.length})`;
+    btn.textContent = `未分類 (${catalog.uncategorized.filter(itemMatches).length})`;
     btn.addEventListener('click', () => scrollToGen('uncategorized'));
     nav.appendChild(btn);
   }
@@ -96,6 +101,7 @@ function scrollToGen(gen) {
   const section = document.getElementById(gen === 'uncategorized' ? 'items-gen-uncategorized' : `items-gen-${gen}`);
   if (!section) return;
   section.classList.add('is-open');
+  section.querySelector('.items-gen-header')?.setAttribute('aria-expanded', 'true');
   const body = section.querySelector('.items-gen-body');
   body?.removeAttribute('hidden');
   ensureSectionRendered(section);
@@ -110,23 +116,14 @@ function getDefaultOpenGen() {
 }
 
 function renderItemSprite(item) {
-  const icon = escapeHtml(item.placeholderIcon || '📦');
-  if (item.currentGen === 1 || item.currentGen === 2) {
-    return `<span class="item-card-sprite-placeholder" aria-hidden="true">${icon}</span>`;
-  }
-  if (item.sprite) {
-    return `<img class="item-card-sprite" src="${escapeHtml(item.sprite)}" alt="" loading="lazy" width="48" height="48">`;
-  }
-  if (item.spriteFallback) {
-    return `<img class="item-card-sprite" src="${escapeHtml(item.spriteFallback)}" alt="" loading="lazy" width="48" height="48" data-placeholder="${icon}">`;
-  }
-  return `<span class="item-card-sprite-placeholder" aria-hidden="true">${icon}</span>`;
+  return renderCatalogIcon(getItemIcon(item), item.displayName, { historical: Boolean(item.historicalName) });
 }
 
 function itemMatches(item) {
   if (!searchQuery) return true;
   const q = searchQuery.toLowerCase();
   return item.displayName.toLowerCase().includes(q)
+    || (item.currentName || '').toLowerCase().includes(q)
     || item.slug.includes(q)
     || (item.enName || '').toLowerCase().includes(q)
     || (item.categoryZh || '').toLowerCase().includes(q);
@@ -193,7 +190,7 @@ function renderGenSection(gen, items) {
   const visibleItems = items.filter(itemMatches);
   const hidden = searchQuery && !visibleItems.length;
   const defaultOpenGen = getDefaultOpenGen();
-  const defaultOpen = gen === defaultOpenGen && !searchQuery;
+  const defaultOpen = searchQuery ? visibleItems.length > 0 : gen === defaultOpenGen;
   const eagerRender = defaultOpen || Boolean(searchQuery);
 
   return `<section class="items-gen-section${defaultOpen ? ' is-open' : ''}${hidden ? ' is-hidden' : ''}" id="items-gen-${gen}" data-gen="${gen}">
@@ -204,7 +201,6 @@ function renderGenSection(gen, items) {
       <span class="drawer-chevron" aria-hidden="true">▼</span>
     </button>
     <div class="items-gen-body"${defaultOpen ? '' : ' hidden'}>
-      ${gen === 8 && !searchQuery ? '<p class="items-note">極巨化水晶共 300 種（依星座星等命名、無官方圖示），未逐項列出。</p>' : ''}
       ${visibleItems.length
     ? renderSectionGrid(visibleItems, eagerRender)
     : '<p class="items-empty-msg">此世代沒有符合的道具</p>'}
@@ -217,15 +213,14 @@ function renderUncategorizedSection(items) {
   const hidden = searchQuery && !visibleItems.length;
   const eagerRender = Boolean(searchQuery);
 
-  return `<section class="items-gen-section items-gen-section--uncategorized${hidden ? ' is-hidden' : ''}" id="items-gen-uncategorized" data-gen="uncategorized">
-    <button type="button" class="items-gen-header" aria-expanded="false">
+  return `<section class="items-gen-section items-gen-section--uncategorized${searchQuery && visibleItems.length ? ' is-open' : ''}${hidden ? ' is-hidden' : ''}" id="items-gen-uncategorized" data-gen="uncategorized">
+    <button type="button" class="items-gen-header" aria-expanded="${Boolean(searchQuery && visibleItems.length)}">
       <span class="items-gen-accent" style="--gen-accent:#8b949e"></span>
       <span class="items-gen-title">未分類</span>
       <span class="items-gen-count">${visibleItems.length}${searchQuery ? ` / ${items.length}` : ''} 項</span>
       <span class="drawer-chevron" aria-hidden="true">▼</span>
     </button>
-    <div class="items-gen-body" hidden>
-      <p class="items-note">部分道具在 PokeAPI 缺少世代索引，暫列於此。</p>
+    <div class="items-gen-body"${searchQuery && visibleItems.length ? '' : ' hidden'}>
       ${visibleItems.length
     ? renderSectionGrid(visibleItems.map((item) => ({ ...item, currentGen: null })), eagerRender)
     : '<p class="items-empty-msg">沒有符合的道具</p>'}
@@ -245,7 +240,13 @@ function renderItemCard(item) {
   const pocketClass = cssSafeSlug(item.pocketSlug);
   const categoryClass = cssSafeSlug(item.categorySlug);
   const isMatch = !searchQuery || itemMatches(item);
-  const costText = item.cost > 0 ? `售價 ${item.cost}` : '';
+  const hasEffect = Boolean(item.effectLanguage);
+  const details = (item.versionDetails || []).filter((detail) => detail.language || detail.prices.length)
+    .map((detail) => `<div class="catalog-version-detail">
+    <strong>${escapeHtml(getVersionGroupDisplayName(detail.versionGroup))}</strong>
+    ${detail.language ? `<p>${escapeHtml(detail.text)}</p>` : ''}
+    ${detail.prices.length ? `<p class="item-card-cost">${detail.prices.map((price) => escapeHtml(formatItemPrice(price))).join('<br>')}</p>` : ''}
+  </div>`).join('');
   const attrs = formatAttributeLabels(item.attributes);
   const otherGens = item.currentGen ? formatOtherGenerations(item.generations, item.currentGen) : '';
   const englishRow = item.hasChineseName
@@ -259,18 +260,18 @@ function renderItemCard(item) {
     </div>
     <div class="item-card-name" title="${escapeHtml(item.displayName)}">${escapeHtml(item.displayName)}</div>
     <span class="item-card-category">${escapeHtml(item.categoryZh)}</span>
-    <p class="item-card-effect">${escapeHtml(item.effect)}</p>
-    ${costText ? `<div class="item-card-cost">${escapeHtml(costText)}</div>` : ''}
+    ${hasEffect ? `<p class="item-card-effect">${escapeHtml(item.effect)}</p>
+    <p class="catalog-version-badge">${escapeHtml(getVersionGroupDisplayName(item.effectVersion))}</p>` : ''}
     <div class="item-inline-detail" aria-hidden="true">
-      <div class="item-detail-section">
-        <div class="item-detail-title">道具效果</div>
-        <p class="item-detail-effect">${escapeHtml(item.effect)}</p>
-      </div>
+      ${details ? `<div class="item-detail-section">
+        <div class="item-detail-title">各版本效果與價格</div>
+        ${details}
+      </div>` : ''}
       <div class="item-detail-meta">
         ${englishRow}
+        ${item.historicalName ? `<div>後續對應道具：${escapeHtml(item.currentName)}</div>` : ''}
         <div>分類 ${escapeHtml(item.categoryZh)} · ${escapeHtml(item.pocketZh)}</div>
         ${attrs.length ? `<div>${escapeHtml(attrs.join(' · '))}</div>` : ''}
-        ${costText ? `<div>${escapeHtml(costText)}</div>` : ''}
         ${otherGens ? `<div>${escapeHtml(otherGens)}</div>` : ''}
       </div>
     </div>
@@ -296,18 +297,19 @@ function bindSectionToggles(root) {
 }
 
 function bindCardInteractions(container) {
-  container.querySelectorAll('.item-card-sprite[data-placeholder]').forEach((img) => {
-    img.addEventListener('error', () => {
-      const icon = img.dataset.placeholder || '📦';
-      const placeholder = document.createElement('span');
-      placeholder.className = 'item-card-sprite-placeholder';
-      placeholder.setAttribute('aria-hidden', 'true');
-      placeholder.textContent = icon;
-      img.replaceWith(placeholder);
-    }, { once: true });
-  });
+  bindCatalogIconFallbacks(container);
 
   container.querySelectorAll('.item-card').forEach((card) => {
+    if (card.dataset.bound) return;
+    card.dataset.bound = 'true';
+    const syncDetailAccessibility = () => {
+      const visible = card.classList.contains('is-expanded') || card.matches(':focus-visible')
+        || (window.matchMedia('(hover: hover)').matches && card.matches(':hover'));
+      card.querySelector('.item-inline-detail')?.setAttribute('aria-hidden', String(!visible));
+    };
+    for (const event of ['mouseenter', 'mouseleave', 'focus', 'blur']) {
+      card.addEventListener(event, syncDetailAccessibility);
+    }
     card.addEventListener('click', () => {
       if (window.matchMedia('(hover: hover)').matches) return;
       card.classList.toggle('is-expanded');

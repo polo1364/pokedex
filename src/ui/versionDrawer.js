@@ -13,13 +13,13 @@ export function initVersionDrawer() {
   });
 
   root.innerHTML = '';
-  [...byGen.keys()].sort((a, b) => a - b).forEach((gen) => {
+  [...byGen.keys()].sort((a, b) => (a ?? Infinity) - (b ?? Infinity)).forEach((gen) => {
     const group = document.createElement('div');
     group.className = 'version-drawer-gen';
 
     const label = document.createElement('div');
     label.className = 'version-drawer-gen-label';
-    label.textContent = `第 ${gen} 世代`;
+    label.textContent = gen == null ? '線上遊戲' : `第 ${gen} 世代`;
     group.appendChild(label);
 
     const list = document.createElement('div');

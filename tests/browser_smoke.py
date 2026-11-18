@@ -1,0 +1,87 @@
+"""Run against Vite: python tests/browser_smoke.py [http://127.0.0.1:5173].
+
+Requires Python Playwright and Chromium. PokéAPI is stubbed so these UI checks
+are deterministic and never invoke the paid chat API.
+"""
+import json
+import sys
+from urllib.parse import urlparse
+from playwright.sync_api import sync_playwright, expect
+
+BASE = sys.argv[1] if len(sys.argv) > 1 else 'http://127.0.0.1:5173'
+API = 'https://pokeapi.co/api/v2'
+
+
+def pokeapi(route):
+    path = urlparse(route.request.url).path.rstrip('/')
+    resource = path.split('/')[-1]
+    if resource in ('version', 'generation'):
+        data = {'results': []}
+    elif resource == 'pokemon-species':
+        data = {'count': 30, 'results': [
+            {'name': f'pokemon-{i}', 'url': f'{API}/pokemon-species/{i}/'}
+            for i in range(1, 31)
+        ]}
+    elif '/pokemon-species/' in path:
+        i = int(resource)
+        data = {
+            'id': i, 'names': [{'language': {'name': 'zh-hant'}, 'name': f'測試寶可夢{i}'}],
+            'generation': {'url': f'{API}/generation/1/'},
+            'varieties': [{'is_default': True, 'pokemon': {'url': f'{API}/pokemon/{i}/'}}],
+        }
+    elif '/pokemon/' in path:
+        i = int(resource)
+        data = {
+            'id': i, 'name': f'pokemon-{i}', 'species': {'url': f'{API}/pokemon-species/{i}/'},
+            'types': [{'type': {'name': 'fire' if i % 2 else 'water'}}],
+            'stats': [{'stat': {'name': 'hp'}, 'base_stat': i}], 'held_items': [], 'moves': [],
+        }
+    else:
+        raise AssertionError(f'Unexpected API request: {route.request.url}')
+    route.fulfill(content_type='application/json', body=json.dumps(data))
+
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)
+    for width, height in [(1440, 900), (390, 844)]:
+        context = browser.new_context(viewport={'width': width, 'height': height},
+                                      service_workers='block')
+        context.route('https://pokeapi.co/**', pokeapi)
+        page = context.new_page()
+        errors = []
+        page.on('pageerror', lambda error: errors.append(str(error)))
+        page.goto(BASE)
+        page.wait_for_load_state('networkidle')
+        cards = page.locator('.pokemon-card')
+        expect(cards).to_have_count(30)
+
+        def open_sidebar():
+            if width < 768:
+                page.locator('#menuBtn').click()
+
+        open_sidebar()
+        page.locator('[data-type="fire"]').click()
+        expect(cards).to_have_count(15)
+        open_sidebar()
+        page.locator('[data-type="fire"]').click()
+        expect(cards).to_have_count(30)
+        expect(page.locator('#typeFilterAll')).to_have_class('type-btn type-btn--all active')
+
+        page.locator('#sortSelect').select_option('hp')
+        expect(cards.first).to_have_attribute('data-id', '30')
+        open_sidebar()
+        page.locator('#searchBox').fill('測試寶可夢25')
+        expect(cards).to_have_count(1)
+        expect(cards.first).to_have_attribute('data-id', '25')
+        page.locator('#searchBox').fill('')
+        if width < 768:
+            page.locator('#sidebarOverlay').click(position={'x': width - 5, 'y': 200})
+        page.get_by_role('button', name='列表', exact=True).click()
+        expect(page.locator('.pokemon-list-row')).to_have_count(30)
+        assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), 'Horizontal overflow'
+        page.get_by_role('button', name='網格', exact=True).click()
+        expect(cards).to_have_count(30)
+        assert not errors, errors
+        print(f'PASS {width}x{height}: type toggle, sort, search, list/grid, layout, no JS errors')
+        context.close()
+    browser.close()

@@ -3,15 +3,14 @@ import { fetchJson, runPool } from '../api/client.js';
 import { getChineseName } from './i18n.js';
 import { renderInfoCard } from './infoCards.js';
 
-/** 版本群組由舊到新（實際發售順序，非 API 列表順序） */
+/** 版本群組依 PokéAPI version_groups.order 排序，非資源 ID 順序。 */
 export const VERSION_GROUP_ORDER = [
-  'red-blue', 'red-green-japan', 'blue-japan', 'yellow',
+  'red-green-japan', 'blue-japan', 'red-blue', 'yellow',
   'gold-silver', 'crystal',
-  'ruby-sapphire', 'emerald', 'firered-leafgreen',
+  'ruby-sapphire', 'emerald', 'colosseum', 'xd', 'firered-leafgreen',
   'diamond-pearl', 'platinum',
   'heartgold-soulsilver',
   'black-white', 'black-2-white-2',
-  'colosseum', 'xd',
   'x-y', 'omega-ruby-alpha-sapphire',
   'sun-moon', 'ultra-sun-ultra-moon',
   'lets-go-pikachu-lets-go-eevee',
@@ -21,6 +20,25 @@ export const VERSION_GROUP_ORDER = [
   'scarlet-violet', 'the-teal-mask', 'the-indigo-disk',
   'legends-za', 'mega-dimension', 'champions',
 ];
+
+const VERSION_GROUP_NAMES_CN = {
+  'red-green-japan': '紅／綠（日版）', 'blue-japan': '藍（日版）',
+  'red-blue': '紅／藍（國際版）', yellow: '黃', 'gold-silver': '金／銀', crystal: '水晶',
+  'ruby-sapphire': '紅寶石／藍寶石', emerald: '綠寶石', 'firered-leafgreen': '火紅／葉綠',
+  colosseum: 'Colosseum', xd: 'XD', 'diamond-pearl': '鑽石／珍珠', platinum: '白金',
+  'heartgold-soulsilver': '心金／魂銀', 'black-white': '黑／白', 'black-2-white-2': '黑2／白2',
+  'x-y': 'X／Y', 'omega-ruby-alpha-sapphire': '終極紅寶石／始源藍寶石',
+  'sun-moon': '太陽／月亮', 'ultra-sun-ultra-moon': '究極之日／究極之月',
+  'lets-go-pikachu-lets-go-eevee': 'Let’s Go 皮卡丘／伊布', 'sword-shield': '劍／盾',
+  'the-isle-of-armor': '鎧之孤島', 'the-crown-tundra': '冠之雪原',
+  'brilliant-diamond-shining-pearl': '晶燦鑽石／明亮珍珠', 'legends-arceus': '傳說 阿爾宙斯',
+  'scarlet-violet': '朱／紫', 'the-teal-mask': '碧之假面', 'the-indigo-disk': '藍之圓盤',
+  'legends-za': '傳說 Z-A', 'mega-dimension': '超次元爆湧', champions: 'Champions',
+};
+
+export function getVersionGroupDisplayName(key) {
+  return VERSION_GROUP_NAMES_CN[key] || key || '版本未提供';
+}
 
 /** 單一版本由新到舊（圖鑑說明等用途） */
 export const VERSION_ORDER = [

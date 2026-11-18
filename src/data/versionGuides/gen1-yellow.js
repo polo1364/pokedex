@@ -12,31 +12,16 @@ const gymBrock = {
     pm('小拳石', ['rock', 'ground'], 10),
     pm('大岩蛇', ['rock', 'ground'], 12),
   ],
+  strategy: {
+    level: '10～13',
+    summary: '先補猴怪的踢倒或巴大蝶的念力；皮卡丘的電招對地面系無效。',
+    tips: ['大岩蛇使用忍耐時避免連續攻擊，先調整狀態。'],
+  },
   recommendedTeams: [
-    rec(
-      '草系剋制隊',
-      '黃版僅有皮卡丘起步，可抓綠毛蟲進化或尼多家族以剋岩石；水槍系在取得傑尼龜前可用角金魚補位',
-      [
-        pm('皮卡丘', ['electric']),
-        pm('綠毛蟲', ['bug', 'poison']),
-        pm('尼多朗', ['poison']),
-        pm('角金魚', ['water']),
-        pm('波波', ['normal', 'flying']),
-        pm('小拉達', ['normal']),
-      ],
-    ),
-    rec(
-      '格鬥系速攻隊',
-      '猴怪在 3 號道路可取得，格鬥技對岩石效果絕佳；搭配飛行系補盲點',
-      [
-        pm('皮卡丘', ['electric']),
-        pm('猴怪', ['fighting']),
-        pm('比比鳥', ['normal', 'flying']),
-        pm('小拉達', ['normal']),
-        pm('阿柏蛇', ['poison']),
-        pm('綠毛蟲', ['bug', 'poison']),
-      ],
-    ),
+    rec('主力／替代擇一', '猴怪用格鬥招式；巴大蝶則用念力繞過岩石系的高防禦。', [
+      { ...pm('猴怪', ['fighting']), obtain: '22 號道路草叢捕捉；可在小剛前取得。', moveNote: '踢倒：Lv.9，格鬥招式對岩石有效。' },
+      { ...pm('巴大蝶', ['bug', 'flying']), obtain: '常青森林捕捉綠毛蟲，Lv.10 進化成巴大蝶。', moveNote: '念力：Lv.10；打這兩隻為普通傷害。' },
+    ]),
   ],
 };
 assertBattle(gymBrock);
@@ -52,31 +37,18 @@ const gymMisty = {
     pm('海星星', ['water'], 18),
     pm('寶石海星', ['water', 'psychic'], 21),
   ],
+  strategy: {
+    level: '18～22',
+    summary: '用電或草招打海星星與寶石海星；先把主力補滿血再迎戰寶石海星。',
+    tips: ['寶石海星速度快，水招威力也高；低等級剋屬寵仍可能被打倒。'],
+  },
   recommendedTeams: [
-    rec(
-      '電草雙核隊',
-      '皮卡丘十萬伏特穩定剋水；華藍可領妙蛙種子，草系技能可一路用到四天王前',
-      [
-        pm('皮卡丘', ['electric']),
-        pm('妙蛙種子', ['grass', 'poison']),
-        pm('比比鳥', ['normal', 'flying']),
-        pm('小拉達', ['normal']),
-        pm('綠毛蟲', ['bug', 'poison']),
-        pm('尼多力諾', ['poison']),
-      ],
-    ),
-    rec(
-      '捕蟲電系隊',
-      '巴大蝶帶麻痺粉與超音波干擾，皮卡丘主力輸出；避免純毒系打超能力',
-      [
-        pm('皮卡丘', ['electric']),
-        pm('巴大蝶', ['bug', 'poison']),
-        pm('猴怪', ['fighting']),
-        pm('角金魚', ['water']),
-        pm('波波', ['normal', 'flying']),
-        pm('阿柏蛇', ['poison']),
-      ],
-    ),
+    rec('電系主力', '先用電擊，避免把未取得的十萬伏特當作必備。', [
+      { ...pm('皮卡丘', ['electric']), obtain: '開局取得。', moveNote: '電擊即可上場；Lv.26 才學十萬伏特，不必為此硬練。' },
+    ]),
+    rec('草系替代', '已領取並培養妙蛙種子，可用草招補位；不必為這場重練整隊。', [
+      { ...pm('妙蛙種子', ['grass', 'poison']), obtain: '皮卡丘親密度足夠時，向華藍市屋內 NPC 領取。', moveNote: 'Lv.13 藤鞭；不是到城裡就無條件送。' },
+    ]),
   ],
 };
 assertBattle(gymMisty);
@@ -88,32 +60,18 @@ const gymLtSurge = {
   location: '枯葉市',
   badge: '橙色徽章',
   badgeType: 'electric',
-  party: [pm('雷丘', ['electric'], 28)],
+  party: [
+    pm('雷丘', ['electric'], 28),
+  ],
+  strategy: {
+    level: '25～29',
+    summary: '地鼠免疫電招，學會挖洞後以地面招式反擊。',
+    tips: ['先在聖安奴號取得居合斬，並持有小霞徽章，才能砍樹進入道館。', '地面系能擋十萬伏特，但黃版雷丘的百萬噸重拳、百萬噸重踢仍能命中。'],
+  },
   recommendedTeams: [
-    rec(
-      '地面系剋制隊',
-      '黃版馬志士僅有一隻雷丘，地鼠或地系技能一擊必殺；取得傑尼龜後可補水屬',
-      [
-        pm('地鼠', ['ground']),
-        pm('妙蛙種子', ['grass', 'poison']),
-        pm('小火龍', ['fire']),
-        pm('皮卡丘', ['electric']),
-        pm('比比鳥', ['normal', 'flying']),
-        pm('尼多力諾', ['poison']),
-      ],
-    ),
-    rec(
-      '三御三家隊',
-      '24 號道路可領小火龍，枯葉可領傑尼龜；地面系＋草火水覆蓋馬志士單雷丘',
-      [
-        pm('地鼠', ['ground']),
-        pm('妙蛙草', ['grass', 'poison']),
-        pm('小火龍', ['fire']),
-        pm('傑尼龜', ['water']),
-        pm('皮卡丘', ['electric']),
-        pm('比比鳥', ['normal', 'flying']),
-      ],
-    ),
+    rec('地面主力', '地鼠已足夠；若已進化成三地鼠可直接沿用。', [
+      { ...pm('地鼠', ['ground']), obtain: '枯葉市東側的地鼠洞穴捕捉。', moveNote: '挖洞：Lv.19。' },
+    ]),
   ],
 };
 assertBattle(gymLtSurge);
@@ -130,31 +88,16 @@ const gymErika = {
     pm('口呆花', ['grass', 'poison'], 32),
     pm('臭臭花', ['grass', 'poison'], 32),
   ],
+  strategy: {
+    level: '30～34',
+    summary: '以飛行或火招打草系，並準備解麻與解毒道具。',
+    tips: ['走草系對打容易拖長戰鬥；先確認主力有有效攻擊招式。'],
+  },
   recommendedTeams: [
-    rec(
-      '火飛雙核隊',
-      '火系剋草，飛行系免疫地面且剋草；彩虹市可抓小火馬或用已進化的小火龍',
-      [
-        pm('火恐龍', ['fire']),
-        pm('比比鳥', ['normal', 'flying']),
-        pm('大比鳥', ['normal', 'flying']),
-        pm('皮卡丘', ['electric']),
-        pm('傑尼龜', ['water']),
-        pm('地鼠', ['ground']),
-      ],
-    ),
-    rec(
-      '毒系速攻隊',
-      '毒系剋草，毛球或瓦斯彈在彩虹市附近可取得；搭配超音波與睡眠粉干擾',
-      [
-        pm('毛球', ['bug', 'poison']),
-        pm('瓦斯彈', ['poison']),
-        pm('火恐龍', ['fire']),
-        pm('大比鳥', ['normal', 'flying']),
-        pm('皮卡丘', ['electric']),
-        pm('地鼠', ['ground']),
-      ],
-    ),
+    rec('主力／替代擇一', '沒有火系御三家也能用大嘴雀通關。', [
+      { ...pm('大嘴雀', ['normal', 'flying']), obtain: '22／3 號道路捕捉烈雀，Lv.20 進化。', moveNote: '使用啄；有學會其他飛行招式也可替換。' },
+      { ...pm('火恐龍', ['fire']), obtain: '24 號道路領取小火龍，Lv.16 進化。', moveNote: '使用火花；火招對草系有效。' },
+    ]),
   ],
 };
 assertBattle(gymErika);
@@ -172,31 +115,16 @@ const gymKoga = {
     pm('毛球', ['bug', 'poison'], 48),
     pm('摩魯蛾', ['bug', 'poison'], 50),
   ],
+  strategy: {
+    level: '45～50',
+    summary: '以超能力招式打毒屬性；毛球與摩魯蛾也弱飛行、火。',
+    tips: ['阿桔的徽章可解鎖場外衝浪；可視隊伍狀況先打阿桔或娜姿。', '摩魯蛾 Lv.50，留意影子分身、劇毒與精神強念；牠在這場沒有催眠招式。'],
+  },
   recommendedTeams: [
-    rec(
-      '超能力剋制隊',
-      '阿桔四隻蟲毒，超能力系效果絕佳；胡地或勇基拉在黃版可交易取得，凱西也可自行練',
-      [
-        pm('勇基拉', ['psychic']),
-        pm('大比鳥', ['normal', 'flying']),
-        pm('火恐龍', ['fire']),
-        pm('皮卡丘', ['electric']),
-        pm('傑尼龜', ['water']),
-        pm('地鼠', ['ground']),
-      ],
-    ),
-    rec(
-      '火系清場隊',
-      '火系剋蟲，大比鳥補飛行剋毒；注意毛球可能用睡眠粉，帶解眠藥',
-      [
-        pm('噴火龍', ['fire']),
-        pm('大比鳥', ['normal', 'flying']),
-        pm('皮卡丘', ['electric']),
-        pm('水箭龜', ['water']),
-        pm('隆隆石', ['rock', 'ground']),
-        pm('勇基拉', ['psychic']),
-      ],
-    ),
+    rec('超能力主力／替代擇一', '選一隻練好的超能力系即可；勇基拉不必交換成胡地。', [
+      { ...pm('勇基拉', ['psychic']), obtain: '5／6 號道路捕捉凱西，Lv.16 進化；不需交換。', moveNote: '幻象光線；或在金黃市取得 TM29 精神強念。' },
+      { ...pm('引夢貘人', ['psychic']), obtain: '11 號道路捕捉催眠貘，Lv.26 進化。', moveNote: '念力／精神強念；可用催眠術輔助，但命中不保證。' },
+    ]),
   ],
 };
 assertBattle(gymKoga);
@@ -213,31 +141,16 @@ const gymSabrina = {
     pm('勇基拉', ['psychic'], 50),
     pm('胡地', ['psychic'], 50),
   ],
+  strategy: {
+    level: '45～50',
+    summary: '以一般物理攻擊突破超能力系；卡比獸可作為主力。',
+    tips: ['先解決西爾佛公司事件，再挑戰金黃道館。', '耿鬼帶毒屬性，會被超能力招式剋制，並非安全換入對策。初代幽靈屬性的相剋判定不能套用後世代規則。'],
+  },
   recommendedTeams: [
-    rec(
-      '惡系剋制隊',
-      '黃版娜姿三隻超能力系且等級 50，耿鬼的惡系（Gen1 以鬼系招式）或高攻擊鬼系可剋制',
-      [
-        pm('耿鬼', ['ghost', 'poison']),
-        pm('大比鳥', ['normal', 'flying']),
-        pm('噴火龍', ['fire']),
-        pm('水箭龜', ['water']),
-        pm('皮卡丘', ['electric']),
-        pm('隆隆岩', ['rock', 'ground']),
-      ],
-    ),
-    rec(
-      '高速物理隊',
-      '凱西無攻擊技可優先處理；大比鳥或大比鳥以物理技突破，地系防胡地',
-      [
-        pm('大比鳥', ['normal', 'flying']),
-        pm('耿鬼', ['ghost', 'poison']),
-        pm('隆隆岩', ['rock', 'ground']),
-        pm('水箭龜', ['water']),
-        pm('噴火龍', ['fire']),
-        pm('皮卡丘', ['electric']),
-      ],
-    ),
+    rec('物理主力／替代', '已有練好的拉達可補位；不要為了館別強制重練整隊。', [
+      { ...pm('卡比獸', ['normal']), obtain: '救出富士老人取得寶可夢之笛，喚醒 12／16 號道路的卡比獸。', moveNote: '使用泰山壓頂等一般物理招式。' },
+      { ...pm('拉達', ['normal']), obtain: '前期道路的小拉達 Lv.20 進化。', moveNote: '使用必殺門牙等一般物理招式；需留意自身血量。' },
+    ]),
   ],
 };
 assertBattle(gymSabrina);
@@ -254,31 +167,16 @@ const gymBlaine = {
     pm('烈焰馬', ['fire'], 50),
     pm('風速狗', ['fire'], 54),
   ],
+  strategy: {
+    level: '49～54',
+    summary: '用衝浪打火系；水伊布抗火，拉普拉斯則是受到普通傷害。',
+    tips: ['先從寶可夢屋取得秘密鑰匙，才能打開紅蓮道館。'],
+  },
   recommendedTeams: [
-    rec(
-      '水系剋制隊',
-      '三隻火系，水箭龜或拉普拉斯穩定剋制；地系也可但風速狗學習招較廣需留意',
-      [
-        pm('水箭龜', ['water']),
-        pm('拉普拉斯', ['water', 'ice']),
-        pm('隆隆岩', ['rock', 'ground']),
-        pm('耿鬼', ['ghost', 'poison']),
-        pm('大比鳥', ['normal', 'flying']),
-        pm('皮卡丘', ['electric']),
-      ],
-    ),
-    rec(
-      '地面岩石隊',
-      '地系與岩石系雙剋火；紅蓮町前可抓小拳石或地鼠進化',
-      [
-        pm('隆隆岩', ['rock', 'ground']),
-        pm('三地鼠', ['ground']),
-        pm('水箭龜', ['water']),
-        pm('耿鬼', ['ghost', 'poison']),
-        pm('大比鳥', ['normal', 'flying']),
-        pm('胡地', ['psychic']),
-      ],
-    ),
+    rec('水系主力／替代擇一', '若已練好水箭龜，可直接用水箭龜衝浪，不必重練。', [
+      { ...pm('水伊布', ['water']), obtain: '玉虹市大樓後門取得伊布，用百貨公司的水之石進化。', moveNote: 'HM03 衝浪：狩獵地帶取得；場外使用需阿桔徽章。' },
+      { ...pm('拉普拉斯', ['water', 'ice']), obtain: '西爾佛公司 7F，擊敗勁敵後向職員領取 Lv.15 拉普拉斯，需再培養。', moveNote: '使用 HM03 衝浪；水／冰受到火招為普通傷害。' },
+    ]),
   ],
 };
 assertBattle(gymBlaine);
@@ -295,33 +193,18 @@ const gymGiovanni = {
     pm('貓老大', ['normal'], 53),
     pm('尼多后', ['poison', 'ground'], 53),
     pm('尼多王', ['poison', 'ground'], 55),
-    pm('隆隆岩', ['ground', 'rock'], 55),
+    pm('鑽角犀獸', ['ground', 'rock'], 55),
   ],
+  strategy: {
+    level: '50～55',
+    summary: '用衝浪打地面隊伍；貓老大是一般系，沒有水系弱點。',
+    tips: ['取得其他七枚徽章後，常青道館才開放。', '黃版尼多王與尼多后都帶打雷；水系主力弱電，換入前先確認血量。', '尼多王、尼多后受到草招為普通傷害；鑽角犀獸弱水／草四倍、弱冰兩倍。'],
+  },
   recommendedTeams: [
-    rec(
-      '水冰剋制隊',
-      '水箭龜與拉普拉斯剋地系；大比鳥處理貓老大，耿鬼或胡地對付尼多家族',
-      [
-        pm('水箭龜', ['water']),
-        pm('拉普拉斯', ['water', 'ice']),
-        pm('大比鳥', ['normal', 'flying']),
-        pm('耿鬼', ['ghost', 'poison']),
-        pm('胡地', ['psychic']),
-        pm('皮卡丘', ['electric']),
-      ],
-    ),
-    rec(
-      '草系剋地隊',
-      '妙蛙花四倍剋地鼠，也可對付部分地面系；搭配水與飛行補盲點',
-      [
-        pm('妙蛙花', ['grass', 'poison']),
-        pm('水箭龜', ['water']),
-        pm('大比鳥', ['normal', 'flying']),
-        pm('耿鬼', ['ghost', 'poison']),
-        pm('胡地', ['psychic']),
-        pm('皮卡丘', ['electric']),
-      ],
-    ),
+    rec('水系主力／替代擇一', '延續夏伯戰的水系主力即可，注意回復血量。', [
+      { ...pm('水伊布', ['water']), obtain: '玉虹市大樓後門取得伊布，用百貨公司的水之石進化。', moveNote: 'HM03 衝浪：狩獵地帶取得；場外使用需阿桔徽章。' },
+      { ...pm('拉普拉斯', ['water', 'ice']), obtain: '西爾佛公司 7F，擊敗勁敵後向職員領取 Lv.15 拉普拉斯，需再培養。', moveNote: '使用 HM03 衝浪；水／冰受到火招為普通傷害。' },
+    ]),
   ],
 };
 assertBattle(gymGiovanni);
@@ -389,15 +272,8 @@ assertBattle(eliteLance);
 const championBlue = {
   role: 'champion',
   name: '青綠',
-  notes: '依前期對戰結果，伊布進化為水／雷／火伊布（此處為連贏兩場→雷伊布路線）；與紅藍冠軍隊完全不同',
-  party: [
-    pm('穿山王', ['ground'], 61),
-    pm('胡地', ['psychic'], 59),
-    pm('椰蛋樹', ['grass', 'psychic'], 61),
-    pm('刺甲貝', ['water', 'ice'], 61),
-    pm('九尾', ['fire'], 63),
-    pm('雷伊布', ['electric'], 65),
-  ],
+  notes: '依勁敵伊布進化分支選擇下方隊伍。',
+  party: yellowLeague.battles.champion.variants[0].party,
 };
 assertBattle(championBlue);
 
@@ -409,7 +285,9 @@ export const yellowGuide = {
   title: '寶可夢 黃',
   displayGeneration: 1,
   status: 'complete',
-  notes: '道館順序與隊伍與紅／藍不同（阿桔在娜姿之前）；玩家固定隨行皮卡丘，青綠依伊布進化路線組隊',
+  quickNavigation: true,
+  gymSequenceMode: 'suggested',
+  notes: '本頁列出建議挑戰路線，中段道館可調整先後；編號沿用地圖連結。等級為培養建議，不是通關保證。黃版使用初代規則；冠軍依勁敵伊布進化分為三種完整隊伍。',
   gyms: [
     gymBrock,
     gymMisty,

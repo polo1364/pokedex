@@ -53,6 +53,7 @@ export function initGuidePage() {
     url.searchParams.delete('part');
     url.searchParams.delete('region');
     url.searchParams.delete('battle');
+    url.hash = '';
     history.replaceState(null, '', url);
     renderGuidePage(id, root, titleEl, 'main');
   });
@@ -65,9 +66,9 @@ function populateVersionSelect(select) {
     const opt = document.createElement('option');
     opt.value = meta.id;
     opt.textContent = meta.status === 'placeholder'
-      ? `${meta.title}（準備中）`
+      ? `${meta.title}（${getGuideMap(meta.id) ? '地圖已提供・攻略準備中' : '準備中'}）`
       : meta.title;
-    opt.disabled = meta.status === 'placeholder';
+    opt.disabled = meta.status === 'placeholder' && !getGuideMap(meta.id);
     select.appendChild(opt);
   });
 }
@@ -105,8 +106,15 @@ function renderGuidePage(versionId, root, titleEl, partId = 'main') {
     ? (partLabel && activePartId !== 'main' ? `${meta.title} ${partLabel}` : meta.title) + ' 攻略｜寶可夢圖鑑'
     : '版本攻略｜寶可夢圖鑑';
 
+  const subtitle = document.querySelector('.guide-page-subtitle');
+  if (subtitle) subtitle.textContent = versionId === 'pokemmo'
+    ? '五地區主線、主要戰鬥打法、培育與終盤入門'
+    : '道館、四天王、冠軍隊伍與建議攜帶隊伍';
+
   root.innerHTML = '';
+  root.classList.toggle('guide-page--pokemmo', versionId === 'pokemmo');
   root.classList.toggle('guide-page--legends-arceus', versionId === 'legends-arceus');
+  root.classList.toggle('guide-page--kanto', !!guide.quickNavigation && activePartId === 'main');
 
   if (partTabs) {
     root.appendChild(renderPartTabs(partTabs, activePartId, (newPart) => {
@@ -121,6 +129,13 @@ function renderGuidePage(versionId, root, titleEl, partId = 'main') {
 
   setGuideChatVersion(versionId, isMainPlaceholder || isPartPlaceholder, activePartId, partLabel || '本體');
   if (!isMainPlaceholder && !isPartPlaceholder) applyBattleDeepLink();
+  const sectionHash = location.hash.slice(1);
+  if (/^expansion-section-[a-z0-9-]+$/.test(sectionHash)) {
+    requestAnimationFrame(() => {
+      const section = document.getElementById(sectionHash);
+      if (section) scrollToGuideTarget(section);
+    });
+  }
   updateGuideBackToTop();
 
   destroyGuideRequestSearch();
@@ -149,6 +164,7 @@ function switchGuidePart(versionId, root, titleEl, partId) {
     url.searchParams.delete('cat');
   }
   url.searchParams.delete('battle');
+  url.hash = '';
   history.replaceState(null, '', url);
   renderGuidePage(versionId, root, titleEl, partId);
 }
@@ -179,6 +195,7 @@ function renderPartTabs(tabs, activePartId, onSelect) {
 function renderPartContent(container, guide, partId, expansion) {
   if (partId === 'main') {
     if (!hasMainGuideContent(guide)) {
+      appendRegionMap(container, guide);
       const msg = document.createElement('p');
       msg.className = 'guide-placeholder-msg guide-page-empty';
       msg.textContent = guide.mainPlaceholderMessage || '本體攻略準備中，請稍後再來。';
@@ -199,6 +216,22 @@ function renderPartContent(container, guide, partId, expansion) {
       container.appendChild(note);
     }
 
+    if (guide.quickNavigation) {
+      const nav = document.createElement('nav');
+      nav.className = 'guide-quick-nav';
+      nav.setAttribute('aria-label', '攻略快速導覽');
+      const targets = [...guide.gyms.map(gym => ({ label: `${gym.name}・${gym.location}`, ref: `gym:${gym.order}` })), { label: guide.leagueSectionTitle || guide.leagueTitle || '四天王與冠軍', ref: 'league' }];
+      targets.forEach(({ label, ref }) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = label;
+        button.dataset.guideTarget = ref;
+        button.addEventListener('click', () => scrollToBattleCard(ref));
+        nav.appendChild(button);
+      });
+      container.appendChild(nav);
+    }
+
     const richGuide = guide.prerequisites?.length || guide.hms?.length || guide.sections?.length;
     if (richGuide) {
       appendExpansionGuide(container, {
@@ -216,9 +249,14 @@ function renderPartContent(container, guide, partId, expansion) {
       sequenceMode: guide.gymSequenceMode || 'fixed',
     });
     appendLeagueSection(container, guide);
+    appendBattleSection(container, guide.adventureSectionTitle || '其他路線與結局戰', guide.adventureBattles, 'adventure', annotateId, {
+      sequenceMode: 'suggested',
+    });
+    appendGuideSources(container, guide.sources);
     return;
   }
 
+  appendExpansionMap(container, expansion, guide.id);
   if (!hasExpansionContent(expansion)) {
     const msg = document.createElement('p');
     msg.className = 'guide-placeholder-msg guide-page-empty';
@@ -228,13 +266,14 @@ function renderPartContent(container, guide, partId, expansion) {
     return;
   }
 
-  appendExpansionMap(container, expansion);
   appendExpansionGuide(container, expansion);
   appendBattleSection(
     container,
     expansion.battleSectionTitle || '重要戰鬥',
     expansion.gyms,
     `expansion:${partId}`,
+    null,
+    { sequenceMode: expansion.battleSequenceMode || 'fixed' },
   );
   if (expansion.league) {
     appendLeagueSection(container, {
@@ -247,6 +286,32 @@ function renderPartContent(container, guide, partId, expansion) {
       champion: expansion.champion ?? null,
     });
   }
+  appendGuideSources(container, expansion.sources);
+}
+
+function appendGuideSources(container, sources) {
+  if (!sources?.length) return;
+  const section = document.createElement('section');
+  section.className = 'guide-sources';
+  const heading = document.createElement('h2');
+  heading.className = 'guide-page-section-heading';
+  heading.textContent = '資料來源';
+  section.appendChild(heading);
+  const list = document.createElement('ul');
+  for (const source of sources) {
+    // Source metadata is data, never HTML or an executable URL.
+    if (!/^https:\/\//.test(source.url || '')) continue;
+    const item = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = source.url;
+    link.textContent = source.title || source.url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    item.appendChild(link);
+    list.appendChild(item);
+  }
+  section.appendChild(list);
+  container.appendChild(section);
 }
 
 const ISLAND_NUM_LABELS = ['①', '②', '③', '④', '⑤', '⑥', '⑦'];
@@ -296,6 +361,27 @@ function appendExpansionGuide(container, expansion) {
     guide.classList.add(`guide-expansion-guide--${expansionId}`);
   }
   guide.setAttribute('aria-label', `${expansion.title || '擴充'}攻略`);
+
+  const chapters = expansion.sections?.filter(section => section.type === 'island') || [];
+  if (expansion.chapterNavigation && chapters.length) {
+    guide.classList.add('guide-expansion-guide--navigable');
+    const nav = document.createElement('details');
+    nav.className = 'guide-chapter-nav';
+    const summary = document.createElement('summary');
+    summary.textContent = `流程章節（${chapters.length}）`;
+    nav.appendChild(summary);
+    const list = document.createElement('ol');
+    for (const chapter of chapters) {
+      const item = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = `#${expansionSectionId(expansionId, chapter.number)}`;
+      link.textContent = chapter.title;
+      item.appendChild(link);
+      list.appendChild(item);
+    }
+    nav.appendChild(list);
+    guide.appendChild(nav);
+  }
 
   const legend = document.createElement('p');
   legend.className = 'guide-expansion-legend';
@@ -1005,8 +1091,12 @@ function buildSeviiMapTooltip(hotspot, expansion) {
   return tooltip;
 }
 
-function appendExpansionMap(container, expansion) {
-  const map = getExpansionMap(expansion?.id) ?? getGuideMap(expansion?.id);
+function appendExpansionMap(container, expansion, versionId) {
+  const map = getExpansionMap(expansion?.id, versionId) ?? getGuideMap(expansion?.id);
+  if (map?.atlas) {
+    appendAtlasMap(container, map.atlas, map.mapId);
+    return;
+  }
   if (!map?.hotspots?.length) return;
 
   const expansionId = expansion.id || 'sevii';
@@ -1126,9 +1216,38 @@ function appendExpansionMap(container, expansion) {
   bindGuideMapTooltips(section);
 }
 
+function appendAtlasMap(container, versionId, mapId = '') {
+  const section = document.createElement('section');
+  section.className = 'guide-region-map guide-region-map--wide';
+  section.setAttribute('aria-label', '分版地區地圖');
+  const url = new URL('./atlas/index.html', location.href);
+  url.searchParams.set('version', versionId);
+  url.searchParams.set('embedded', '1');
+  if (mapId) url.searchParams.set('map', mapId);
+  const frame = document.createElement('iframe');
+  frame.className = 'guide-atlas-frame';
+  frame.title = '可搜尋與放大的地區地圖';
+  frame.src = url.href;
+  frame.loading = 'lazy';
+  section.appendChild(frame);
+  const link = document.createElement('a');
+  url.searchParams.delete('embedded');
+  link.href = url.href;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.className = 'guide-map-enlarge';
+  link.textContent = '開啟完整地圖集（新分頁）';
+  section.appendChild(link);
+  container.appendChild(section);
+}
+
 function appendRegionMap(container, guide) {
   const map = getGuideMap(guide.id);
   if (!map) return;
+  if (map.atlas) {
+    appendAtlasMap(container, map.atlas);
+    return;
+  }
 
   const hasGymHotspots = map.hotspots?.length && guide.gyms?.length;
   const opponents = getLeagueOpponents(guide);
@@ -1308,8 +1427,7 @@ function buildLeagueMapTooltip(guide, opponents, spot) {
 
   let rosterHtml = '';
   opponents.forEach(({ battle, battleRef }, index) => {
-    const isChampion = battleRef === 'champion';
-    const roleLabel = isChampion ? '冠軍' : `四天王 ${index + 1}`;
+    const roleLabel = battle.roleLabel || getOpponentRoleLabel(guide.id, battleRef, index);
     const typeKey = battle.specialty || battle.badgeType;
     const typeBg = typeKey ? (typeColors[typeKey] || '#666') : '';
     const typeLabel = typeKey ? (typeNamesCN[typeKey] || typeKey) : '';
@@ -1384,7 +1502,7 @@ function appendLeagueSection(container, guide) {
 
   const heading = document.createElement('h2');
   heading.className = 'guide-page-section-heading';
-  heading.textContent = guide.leagueSectionTitle || '四天王＋冠軍（連戰）';
+  heading.textContent = guide.leagueSectionTitle || guide.leagueTitle || '四天王＋冠軍（連戰）';
   section.appendChild(heading);
 
   const introText = league.intro || league.note;
@@ -1549,7 +1667,8 @@ function getBattleGuidePreview(battleGuide) {
 }
 
 function getSpecialtyKey(battle) {
-  return battle.badgeType || battle.specialty || null;
+  const key = battle.badgeType || battle.specialty || null;
+  return key === 'mixed' ? null : key;
 }
 
 function isSequenceNumbered(battle, sequenceMode) {
@@ -1559,6 +1678,7 @@ function isSequenceNumbered(battle, sequenceMode) {
 
 function getBattlePreview(battle, battleGuide, mode) {
   if (mode === 'league') return getBattleGuidePreview(battleGuide);
+  if (battle.strategy?.summary) return battle.strategy.summary;
   if (!battle.notes) return '';
   const firstSentence = battle.notes.split(/[。！？\n]/)[0];
   return firstSentence.length > 80 ? `${firstSentence.slice(0, 80)}…` : firstSentence;
@@ -1570,8 +1690,10 @@ function getTimelineMode(battle, rolePrefix) {
 }
 
 function getTimelineRoleLabel(battle, mode, sequenceMode, index, guideId, battleRef) {
+  if (battle.roleLabel) return battle.roleLabel;
+  if (battleRef?.startsWith('story:')) return '劇情戰';
   if (mode === 'league') return getOpponentRoleLabel(guideId, battleRef, index);
-  if (mode === 'gym') {
+  if (mode === 'gym' && battle.role === 'gym') {
     return isSequenceNumbered(battle, sequenceMode) ? `道館 ${battle.order}` : '道館';
   }
   if (mode === 'noble') return '王／女王';
@@ -1718,9 +1840,9 @@ function renderOpponentParty(party) {
   party.forEach((p, i) => {
     const isLead = i === party.length - 1;
     html += `<li class="guide-party-grid-row${isLead ? ' guide-party-grid-row--lead' : ''}">`
-      + `<span class="guide-party-grid-name">${p.name}</span>`
+      + `<span class="guide-party-grid-name">${p.name}${p.teraType ? `<span class="guide-pokemon-note">太晶：${typeNamesCN[p.teraType] || p.teraType}</span>` : ''}</span>`
       + `${p.level ? `<span class="guide-level">Lv.${p.level}</span>` : ''}`
-      + `<span class="guide-type-badges">${renderTypeBadges(p.types)}</span>`
+      + `<span class="guide-type-badges">${p.teraType ? '原屬性：' : ''}${renderTypeBadges(p.types)}</span>`
       + `</li>`;
   });
   html += '</ul>';
@@ -1822,6 +1944,10 @@ function renderChampionVariants(championGuide, party = []) {
         <span class="guide-variant-sub">${variant.subtitle || ''}</span>
       </summary>
       <div class="guide-variant-body">`;
+    if (variant.party?.length) {
+      html += '<h4 class="guide-variant-subtitle">此分支完整隊伍</h4>';
+      html += renderOpponentParty(variant.party);
+    }
     if (variant.tips?.length) html += renderBattleTips(variant.tips);
     if (variant.essentials?.length) {
       html += '<div class="guide-table-wrap"><table class="guide-league-table"><thead><tr>'
@@ -1833,12 +1959,21 @@ function renderChampionVariants(championGuide, party = []) {
     }
     if (variant.matchups?.length) {
       html += '<h4 class="guide-variant-subtitle">推薦處理</h4>';
-      html += renderMatchupTable(variant.matchups, party);
+      html += renderMatchupTable(variant.matchups, variant.party || party);
     }
     html += '</div></details>';
   });
   html += '</div>';
   return html;
+}
+
+function renderRecommendedPokemon(p) {
+  return `<li class="guide-team-row">
+    <span class="guide-pokemon-name">${p.name}</span>
+    <span class="guide-type-badges">${renderTypeBadges(p.types)}</span>
+    ${p.obtain ? `<span class="guide-pokemon-note"><strong>取得：</strong>${p.obtain}</span>` : ''}
+    ${p.moveNote ? `<span class="guide-pokemon-note"><strong>招式：</strong>${p.moveNote}</span>` : ''}
+  </li>`;
 }
 
 function renderRecommendedTeamsBlock(teams, title) {
@@ -1850,10 +1985,7 @@ function renderRecommendedTeamsBlock(teams, title) {
   grid.innerHTML = teams.map((team) => {
     let html = `<div class="guide-team-block"><div class="guide-team-label">${team.label}</div><ul class="guide-team-list">`;
     team.pokemon.forEach((p) => {
-      html += `<li class="guide-team-row">
-        <span class="guide-pokemon-name">${p.name}</span>
-        <span class="guide-type-badges">${renderTypeBadges(p.types)}</span>
-      </li>`;
+      html += renderRecommendedPokemon(p);
     });
     html += `</ul><p class="guide-team-reason">${team.reason}</p></div>`;
     return html;
@@ -1863,8 +1995,12 @@ function renderRecommendedTeamsBlock(teams, title) {
 }
 
 function renderOpponentDetail(battle, battleRef, battleGuide) {
+  // Gym/cup/story version branches use the same complete-party presentation as champions.
+  if (battle.variants?.length && !battleGuide?.variants?.length) {
+    battleGuide = { ...battleGuide, variants: battle.variants };
+  }
   const metaItems = [];
-  if (battle.specialty) {
+  if (battle.specialty && battle.specialty !== 'mixed') {
     metaItems.push(`<span class="guide-meta-chip">專長：${typeNamesCN[battle.specialty] || battle.specialty}</span>`);
   }
   if (battle.notes) {
@@ -1875,12 +2011,14 @@ function renderOpponentDetail(battle, battleRef, battleGuide) {
   html += `<div class="guide-leader-name">${battle.name}</div>`;
   if (metaItems.length) html += `<div class="guide-meta-row">${metaItems.join('')}</div>`;
 
-  if (battleRef === 'champion' && battleGuide?.variants) {
+  if (battleGuide?.variants?.length) {
     if (battleGuide.intro) html += renderOpponentSummary(battleGuide);
-    html += '<section class="guide-detail-section"><h3 class="guide-section-title">對手隊伍</h3>';
-    html += renderOpponentParty(battle.party);
-    html += '</section>';
-    html += '<section class="guide-detail-section"><h3 class="guide-section-title">冠軍戰打法（依御三家）</h3>';
+    if (!battleGuide.variants.every(variant => variant.party?.length)) {
+      html += '<section class="guide-detail-section"><h3 class="guide-section-title">對手隊伍</h3>';
+      html += renderOpponentParty(battle.party);
+      html += '</section>';
+    }
+    html += `<section class="guide-detail-section"><h3 class="guide-section-title">${battleRef === 'champion' ? '冠軍戰' : '版本'}分支與打法</h3>`;
     html += renderChampionVariants(battleGuide, battle.party);
     html += '</section>';
   } else if (battleGuide) {
@@ -1940,7 +2078,7 @@ function renderBattleDetail(battle, expansionId = null) {
 
   let html = '<div class="guide-battle-detail-inner">';
 
-  if (battle.notes) {
+  if (battle.notes && battle.notes !== battle.strategy?.summary) {
     html += `<div class="guide-opponent-summary">${annotateNotes(battle.notes)}</div>`;
   }
 
@@ -1955,25 +2093,37 @@ function renderBattleDetail(battle, expansionId = null) {
   html += `<div class="guide-leader-name">${battle.name}</div>`;
   if (metaItems.length) html += `<div class="guide-meta-row">${metaItems.join('')}</div>`;
 
+  if (battle.strategy) {
+    html += '<section class="guide-detail-section guide-gym-strategy"><h3 class="guide-section-title">先看打法</h3>';
+    const levelLabel = /^\d+[～–-]\d+$/.test(battle.strategy.level)
+      ? `建議主力 Lv.${battle.strategy.level}（培養參考）`
+      : battle.strategy.level;
+    html += `<p class="guide-strategy-level">${levelLabel}</p>`;
+    html += `<p class="guide-strategy-summary">${battle.strategy.summary}</p>`;
+    if (battle.strategy.tips?.length) html += renderBattleTips(battle.strategy.tips);
+    html += '</section>';
+  }
+
   const isWildEncounter = battle.role === 'wild' || battle.role === 'legendary';
   const partyTitle = isWildEncounter ? '野生寶可夢' : '對手隊伍';
 
   html += `<section class="guide-detail-section"><h3 class="guide-section-title">${partyTitle}</h3>`;
-  html += renderOpponentParty(battle.party);
+  html += battle.partyNote ? `<p class="guide-battle-notes">${escapeHtml(battle.partyNote)}</p>` : '';
+  html += battle.variants?.length
+    ? renderChampionVariants({ variants: battle.variants }, battle.party)
+    : renderOpponentParty(battle.party);
   html += '</section>';
 
-  html += '<section class="guide-detail-section"><h3 class="guide-section-title">建議攜帶隊伍</h3><div class="guide-teams-grid">';
+  html += `<section class="guide-detail-section"><h3 class="guide-section-title">${battle.strategy ? '推薦主力與替代選擇' : '建議攜帶隊伍'}</h3><div class="guide-teams-grid">`;
   battle.recommendedTeams.forEach((team) => {
     html += `<div class="guide-team-block">
       <div class="guide-team-label">${team.label}</div>
+      ${battle.strategy ? `<p class="guide-team-reason guide-team-reason--before">${team.reason}</p>` : ''}
       <ul class="guide-team-list">`;
     team.pokemon.forEach((p) => {
-      html += `<li class="guide-team-row">
-        <span class="guide-pokemon-name">${p.name}</span>
-        <span class="guide-type-badges">${renderTypeBadges(p.types)}</span>
-      </li>`;
+      html += renderRecommendedPokemon(p);
     });
-    html += `</ul><p class="guide-team-reason">${team.reason}</p></div>`;
+    html += `</ul>${battle.strategy ? '' : `<p class="guide-team-reason">${team.reason}</p>`}</div>`;
   });
   html += '</div></section>';
   html += '</div>';
@@ -1999,13 +2149,17 @@ function applyBattleDeepLink() {
   const battleRef = new URLSearchParams(location.search).get('battle');
   if (!battleRef) return;
   requestAnimationFrame(() => {
-    if (battleRef === 'league') return;
-    const isLeagueOpponent = battleRef === 'champion' || battleRef.startsWith('eliteFour:');
+    if (battleRef === 'league') {
+      scrollToBattleCard('league');
+      return;
+    }
+    const isLeagueOpponent = battleRef === 'champion' || battleRef.startsWith('eliteFour:') || battleRef.startsWith('story:');
     if (isLeagueOpponent) {
       document.querySelectorAll('.guide-opponent-card').forEach((item) => {
         const detail = item.querySelector('.guide-battle-detail');
         if (detail?.dataset.battleRef === battleRef) {
           item.querySelector('.guide-battle-toggle')?.click();
+          scrollToGuideTarget(item);
         }
       });
       return;
@@ -2014,6 +2168,7 @@ function applyBattleDeepLink() {
       const detail = item.querySelector('.guide-battle-detail');
       if (detail?.dataset.battleRef === battleRef) {
         item.querySelector('.guide-battle-toggle')?.click();
+        scrollToGuideTarget(item);
       }
     });
   });

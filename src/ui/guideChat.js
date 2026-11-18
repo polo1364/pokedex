@@ -94,7 +94,9 @@ export async function setGuideChatVersion(versionId, disabled, partId = 'main', 
 
   const descEl = modalEl?.querySelector('.guide-chat-desc');
   if (descEl && !currentDisabled) {
-    const scopeHint = currentPartId === 'main'
+    const scopeHint = versionId === 'pokemmo'
+      ? `目前瀏覽「${currentPartLabel}」；依 PokeMMO 此分頁與入門規則作答，不套用原作設定`
+      : currentPartId === 'main'
       ? '僅依本體攻略作答，不引用其他版本'
       : `目前瀏覽「${currentPartLabel}」；僅依本版本本體與 DLC 作答，不引用其他版本`;
     descEl.textContent = scopeHint;

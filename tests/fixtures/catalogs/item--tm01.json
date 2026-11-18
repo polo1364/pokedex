@@ -1,0 +1,658 @@
+{
+  "id": 305,
+  "name": "tm01",
+  "category": {
+    "name": "all-machines",
+    "url": "https://pokeapi.co/api/v2/item-category/37/"
+  },
+  "names": [
+    {
+      "name": "招式學習器０１",
+      "language": {
+        "name": "zh-hant",
+        "url": "https://pokeapi.co/api/v2/language/4/"
+      }
+    },
+    {
+      "name": "TM01",
+      "language": {
+        "name": "en",
+        "url": "https://pokeapi.co/api/v2/language/9/"
+      }
+    }
+  ],
+  "prices": [
+    {
+      "purchase_price": 3000,
+      "sell_price": 1500,
+      "currency": {
+        "name": "poke-dollar",
+        "url": "https://pokeapi.co/api/v2/currency/1/"
+      },
+      "version_group": {
+        "name": "red-blue",
+        "url": "https://pokeapi.co/api/v2/version-group/1/"
+      }
+    },
+    {
+      "purchase_price": 3000,
+      "sell_price": 1500,
+      "currency": {
+        "name": "poke-dollar",
+        "url": "https://pokeapi.co/api/v2/currency/1/"
+      },
+      "version_group": {
+        "name": "yellow",
+        "url": "https://pokeapi.co/api/v2/version-group/2/"
+      }
+    },
+    {
+      "purchase_price": null,
+      "sell_price": 1500,
+      "currency": {
+        "name": "poke-dollar",
+        "url": "https://pokeapi.co/api/v2/currency/1/"
+      },
+      "version_group": {
+        "name": "gold-silver",
+        "url": "https://pokeapi.co/api/v2/version-group/3/"
+      }
+    },
+    {
+      "purchase_price": null,
+      "sell_price": 1500,
+      "currency": {
+        "name": "poke-dollar",
+        "url": "https://pokeapi.co/api/v2/currency/1/"
+      },
+      "version_group": {
+        "name": "crystal",
+        "url": "https://pokeapi.co/api/v2/version-group/4/"
+      }
+    },
+    {
+      "purchase_price": null,
+      "sell_price": 1500,
+      "currency": {
+        "name": "poke-dollar",
+        "url": "https://pokeapi.co/api/v2/currency/1/"
+      },
+      "version_group": {
+        "name": "ruby-sapphire",
+        "url": "https://pokeapi.co/api/v2/version-group/5/"
+      }
+    },
+    {
+      "purchase_price": null,
+      "sell_price": 1500,
+      "currency": {
+        "name": "poke-dollar",
+        "url": "https://pokeapi.co/api/v2/currency/1/"
+      },
+      "version_group": {
+        "name": "emerald",
+        "url": "https://pokeapi.co/api/v2/version-group/6/"
+      }
+    },
+    {
+      "purchase_price": null,
+      "sell_price": 1500,
+      "currency": {
+        "name": "poke-dollar",
+        "url": "https://pokeapi.co/api/v2/currency/1/"
+      },
+      "version_group": {
+        "name": "firered-leafgreen",
+        "url": "https://pokeapi.co/api/v2/version-group/7/"
+      }
+    },
+    {
+      "purchase_price": 5000,
+      "sell_price": null,
+      "currency": {
+        "name": "poke-dollar",
+        "url": "https://pokeapi.co/api/v2/currency/1/"
+      },
+      "version_group": {
+        "name": "omega-ruby-alpha-sapphire",
+        "url": "https://pokeapi.co/api/v2/version-group/16/"
+      }
+    },
+    {
+      "purchase_price": 40000,
+      "sell_price": null,
+      "currency": {
+        "name": "poke-dollar",
+        "url": "https://pokeapi.co/api/v2/currency/1/"
+      },
+      "version_group": {
+        "name": "sword-shield",
+        "url": "https://pokeapi.co/api/v2/version-group/20/"
+      }
+    },
+    {
+      "purchase_price": null,
+      "sell_price": 1500,
+      "currency": {
+        "name": "poke-dollar",
+        "url": "https://pokeapi.co/api/v2/currency/1/"
+      },
+      "version_group": {
+        "name": "brilliant-diamond-shining-pearl",
+        "url": "https://pokeapi.co/api/v2/version-group/23/"
+      }
+    },
+    {
+      "purchase_price": null,
+      "sell_price": 400,
+      "currency": {
+        "name": "poke-dollar",
+        "url": "https://pokeapi.co/api/v2/currency/1/"
+      },
+      "version_group": {
+        "name": "scarlet-violet",
+        "url": "https://pokeapi.co/api/v2/version-group/25/"
+      }
+    },
+    {
+      "purchase_price": 3000,
+      "sell_price": 1500,
+      "currency": {
+        "name": "poke-dollar",
+        "url": "https://pokeapi.co/api/v2/currency/1/"
+      },
+      "version_group": {
+        "name": "red-green-japan",
+        "url": "https://pokeapi.co/api/v2/version-group/28/"
+      }
+    },
+    {
+      "purchase_price": 3000,
+      "sell_price": 1500,
+      "currency": {
+        "name": "poke-dollar",
+        "url": "https://pokeapi.co/api/v2/currency/1/"
+      },
+      "version_group": {
+        "name": "blue-japan",
+        "url": "https://pokeapi.co/api/v2/version-group/29/"
+      }
+    }
+  ],
+  "machines": [
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/2/"
+      },
+      "version_group": {
+        "name": "red-blue",
+        "url": "https://pokeapi.co/api/v2/version-group/1/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/3/"
+      },
+      "version_group": {
+        "name": "yellow",
+        "url": "https://pokeapi.co/api/v2/version-group/2/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/4/"
+      },
+      "version_group": {
+        "name": "gold-silver",
+        "url": "https://pokeapi.co/api/v2/version-group/3/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/5/"
+      },
+      "version_group": {
+        "name": "crystal",
+        "url": "https://pokeapi.co/api/v2/version-group/4/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/6/"
+      },
+      "version_group": {
+        "name": "ruby-sapphire",
+        "url": "https://pokeapi.co/api/v2/version-group/5/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/7/"
+      },
+      "version_group": {
+        "name": "emerald",
+        "url": "https://pokeapi.co/api/v2/version-group/6/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/8/"
+      },
+      "version_group": {
+        "name": "firered-leafgreen",
+        "url": "https://pokeapi.co/api/v2/version-group/7/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/9/"
+      },
+      "version_group": {
+        "name": "diamond-pearl",
+        "url": "https://pokeapi.co/api/v2/version-group/8/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/10/"
+      },
+      "version_group": {
+        "name": "platinum",
+        "url": "https://pokeapi.co/api/v2/version-group/9/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/11/"
+      },
+      "version_group": {
+        "name": "heartgold-soulsilver",
+        "url": "https://pokeapi.co/api/v2/version-group/10/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/12/"
+      },
+      "version_group": {
+        "name": "black-white",
+        "url": "https://pokeapi.co/api/v2/version-group/11/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/13/"
+      },
+      "version_group": {
+        "name": "colosseum",
+        "url": "https://pokeapi.co/api/v2/version-group/12/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/14/"
+      },
+      "version_group": {
+        "name": "xd",
+        "url": "https://pokeapi.co/api/v2/version-group/13/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/15/"
+      },
+      "version_group": {
+        "name": "black-2-white-2",
+        "url": "https://pokeapi.co/api/v2/version-group/14/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/16/"
+      },
+      "version_group": {
+        "name": "x-y",
+        "url": "https://pokeapi.co/api/v2/version-group/15/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/17/"
+      },
+      "version_group": {
+        "name": "omega-ruby-alpha-sapphire",
+        "url": "https://pokeapi.co/api/v2/version-group/16/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/18/"
+      },
+      "version_group": {
+        "name": "sun-moon",
+        "url": "https://pokeapi.co/api/v2/version-group/17/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/19/"
+      },
+      "version_group": {
+        "name": "ultra-sun-ultra-moon",
+        "url": "https://pokeapi.co/api/v2/version-group/18/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/20/"
+      },
+      "version_group": {
+        "name": "lets-go-pikachu-lets-go-eevee",
+        "url": "https://pokeapi.co/api/v2/version-group/19/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/21/"
+      },
+      "version_group": {
+        "name": "sword-shield",
+        "url": "https://pokeapi.co/api/v2/version-group/20/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/22/"
+      },
+      "version_group": {
+        "name": "red-green-japan",
+        "url": "https://pokeapi.co/api/v2/version-group/28/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/23/"
+      },
+      "version_group": {
+        "name": "blue-japan",
+        "url": "https://pokeapi.co/api/v2/version-group/29/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/1816/"
+      },
+      "version_group": {
+        "name": "scarlet-violet",
+        "url": "https://pokeapi.co/api/v2/version-group/25/"
+      }
+    },
+    {
+      "machine": {
+        "url": "https://pokeapi.co/api/v2/machine/2213/"
+      },
+      "version_group": {
+        "name": "legends-za",
+        "url": "https://pokeapi.co/api/v2/version-group/30/"
+      }
+    }
+  ],
+  "game_indices": [
+    {
+      "game_index": 201,
+      "generation": {
+        "name": "generation-i",
+        "url": "https://pokeapi.co/api/v2/generation/1/"
+      }
+    },
+    {
+      "game_index": 191,
+      "generation": {
+        "name": "generation-ii",
+        "url": "https://pokeapi.co/api/v2/generation/2/"
+      }
+    },
+    {
+      "game_index": 289,
+      "generation": {
+        "name": "generation-iii",
+        "url": "https://pokeapi.co/api/v2/generation/3/"
+      }
+    },
+    {
+      "game_index": 328,
+      "generation": {
+        "name": "generation-iv",
+        "url": "https://pokeapi.co/api/v2/generation/4/"
+      }
+    },
+    {
+      "game_index": 328,
+      "generation": {
+        "name": "generation-v",
+        "url": "https://pokeapi.co/api/v2/generation/5/"
+      }
+    },
+    {
+      "game_index": 328,
+      "generation": {
+        "name": "generation-vi",
+        "url": "https://pokeapi.co/api/v2/generation/6/"
+      }
+    },
+    {
+      "game_index": 328,
+      "generation": {
+        "name": "generation-vii",
+        "url": "https://pokeapi.co/api/v2/generation/7/"
+      }
+    },
+    {
+      "game_index": 328,
+      "generation": {
+        "name": "generation-viii",
+        "url": "https://pokeapi.co/api/v2/generation/8/"
+      }
+    },
+    {
+      "game_index": 328,
+      "generation": {
+        "name": "generation-ix",
+        "url": "https://pokeapi.co/api/v2/generation/9/"
+      }
+    }
+  ],
+  "flavor_text_entries": [
+    {
+      "text": "Powerful, but makes\nthe user flinch if\nhit by the foe.",
+      "version_group": {
+        "name": "ruby-sapphire",
+        "url": "https://pokeapi.co/api/v2/version-group/5/"
+      },
+      "language": {
+        "name": "en",
+        "url": "https://pokeapi.co/api/v2/language/9/"
+      }
+    },
+    {
+      "text": "Powerful, but makes\nthe user flinch if\nhit by the foe.",
+      "version_group": {
+        "name": "emerald",
+        "url": "https://pokeapi.co/api/v2/version-group/6/"
+      },
+      "language": {
+        "name": "en",
+        "url": "https://pokeapi.co/api/v2/language/9/"
+      }
+    },
+    {
+      "text": "An attack that is\nexecuted last.\nThe user flinches\nif hit beforehand.",
+      "version_group": {
+        "name": "firered-leafgreen",
+        "url": "https://pokeapi.co/api/v2/version-group/7/"
+      },
+      "language": {
+        "name": "en",
+        "url": "https://pokeapi.co/api/v2/language/9/"
+      }
+    },
+    {
+      "text": "The user focuses its mind before\nlaunching this attack. It will fail if\nthe user is hit before it is used.",
+      "version_group": {
+        "name": "diamond-pearl",
+        "url": "https://pokeapi.co/api/v2/version-group/8/"
+      },
+      "language": {
+        "name": "en",
+        "url": "https://pokeapi.co/api/v2/language/9/"
+      }
+    },
+    {
+      "text": "The user focuses its mind before\nlaunching this attack. It will fail if\nthe user is hit before it is used.",
+      "version_group": {
+        "name": "platinum",
+        "url": "https://pokeapi.co/api/v2/version-group/9/"
+      },
+      "language": {
+        "name": "en",
+        "url": "https://pokeapi.co/api/v2/language/9/"
+      }
+    },
+    {
+      "text": "The user focuses its mind before\nlaunching this attack. It will fail if\nthe user is hit before it is used.",
+      "version_group": {
+        "name": "heartgold-soulsilver",
+        "url": "https://pokeapi.co/api/v2/version-group/10/"
+      },
+      "language": {
+        "name": "en",
+        "url": "https://pokeapi.co/api/v2/language/9/"
+      }
+    },
+    {
+      "text": "The user sharpens its claws to\nboost its Attack stat and accuracy.",
+      "version_group": {
+        "name": "black-white",
+        "url": "https://pokeapi.co/api/v2/version-group/11/"
+      },
+      "language": {
+        "name": "en",
+        "url": "https://pokeapi.co/api/v2/language/9/"
+      }
+    },
+    {
+      "text": "The user sharpens its claws to\nboost its Attack stat and accuracy.",
+      "version_group": {
+        "name": "black-2-white-2",
+        "url": "https://pokeapi.co/api/v2/version-group/14/"
+      },
+      "language": {
+        "name": "en",
+        "url": "https://pokeapi.co/api/v2/language/9/"
+      }
+    },
+    {
+      "text": "The user sharpens its claws to\nboost its Attack stat and accuracy.",
+      "version_group": {
+        "name": "x-y",
+        "url": "https://pokeapi.co/api/v2/version-group/15/"
+      },
+      "language": {
+        "name": "en",
+        "url": "https://pokeapi.co/api/v2/language/9/"
+      }
+    },
+    {
+      "text": "激勵自己，\n進而提高攻擊和特攻。",
+      "version_group": {
+        "name": "sun-moon",
+        "url": "https://pokeapi.co/api/v2/version-group/17/"
+      },
+      "language": {
+        "name": "zh-hant",
+        "url": "https://pokeapi.co/api/v2/language/4/"
+      }
+    },
+    {
+      "text": "The user is roused, and its Attack and Sp. Atk\nstats increase.",
+      "version_group": {
+        "name": "sun-moon",
+        "url": "https://pokeapi.co/api/v2/version-group/17/"
+      },
+      "language": {
+        "name": "en",
+        "url": "https://pokeapi.co/api/v2/language/9/"
+      }
+    },
+    {
+      "text": "激勵自己，\n進而提高攻擊和特攻。",
+      "version_group": {
+        "name": "ultra-sun-ultra-moon",
+        "url": "https://pokeapi.co/api/v2/version-group/18/"
+      },
+      "language": {
+        "name": "zh-hant",
+        "url": "https://pokeapi.co/api/v2/language/4/"
+      }
+    },
+    {
+      "text": "The user is roused, and its Attack and Sp. Atk\nstats increase.",
+      "version_group": {
+        "name": "ultra-sun-ultra-moon",
+        "url": "https://pokeapi.co/api/v2/version-group/18/"
+      },
+      "language": {
+        "name": "en",
+        "url": "https://pokeapi.co/api/v2/language/9/"
+      }
+    },
+    {
+      "text": "將頭伸出，\n直直衝向對手進行攻擊。\n有時會讓對手畏縮。",
+      "version_group": {
+        "name": "lets-go-pikachu-lets-go-eevee",
+        "url": "https://pokeapi.co/api/v2/version-group/19/"
+      },
+      "language": {
+        "name": "zh-hant",
+        "url": "https://pokeapi.co/api/v2/language/4/"
+      }
+    },
+    {
+      "text": "The user sticks out its head and attacks by charging\nstraight into the target. This may also make the\ntarget flinch.",
+      "version_group": {
+        "name": "lets-go-pikachu-lets-go-eevee",
+        "url": "https://pokeapi.co/api/v2/version-group/19/"
+      },
+      "language": {
+        "name": "en",
+        "url": "https://pokeapi.co/api/v2/language/9/"
+      }
+    },
+    {
+      "text": "用灌注了巨大力量的重踢\n踢飛對手進行攻擊。",
+      "version_group": {
+        "name": "sword-shield",
+        "url": "https://pokeapi.co/api/v2/version-group/20/"
+      },
+      "language": {
+        "name": "zh-hant",
+        "url": "https://pokeapi.co/api/v2/language/4/"
+      }
+    },
+    {
+      "text": "The target is attacked by a kick launched with\nmuscle-packed power.",
+      "version_group": {
+        "name": "sword-shield",
+        "url": "https://pokeapi.co/api/v2/version-group/20/"
+      },
+      "language": {
+        "name": "en",
+        "url": "https://pokeapi.co/api/v2/language/9/"
+      }
+    }
+  ],
+  "sprites": {
+    "default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/tm-normal.png"
+  },
+  "attributes": []
+}

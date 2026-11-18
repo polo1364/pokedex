@@ -1,7 +1,23 @@
 import { getCache, setCache } from './cache.js';
 import { CONCURRENCY_LIMIT } from '../config.js';
 
+const pendingRequests = new Map();
+
 export async function fetchJson(url, cacheKey) {
+  const key = JSON.stringify([url, cacheKey]);
+  if (pendingRequests.has(key)) return pendingRequests.get(key);
+
+  const request = fetchAndCacheJson(url, cacheKey);
+  pendingRequests.set(key, request);
+  try {
+    return await request;
+  } finally {
+    // Failed requests must also be removed so callers can retry.
+    pendingRequests.delete(key);
+  }
+}
+
+async function fetchAndCacheJson(url, cacheKey) {
   if (cacheKey) {
     const cached = await getCache(cacheKey);
     if (cached) return cached;

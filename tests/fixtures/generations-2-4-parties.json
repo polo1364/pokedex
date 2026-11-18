@@ -1,0 +1,3003 @@
+{
+  "gold-silver": {
+    "sources": [
+      "https://www.serebii.net/gs/gyms.shtml",
+      "https://www.serebii.net/gs/elitefour.shtml"
+    ],
+    "gyms": [
+      [
+        {
+          "name": "波波",
+          "types": [
+            "normal",
+            "flying"
+          ],
+          "level": 7
+        },
+        {
+          "name": "比比鳥",
+          "types": [
+            "normal",
+            "flying"
+          ],
+          "level": 9
+        }
+      ],
+      [
+        {
+          "name": "鐵甲蛹",
+          "types": [
+            "bug"
+          ],
+          "level": 14
+        },
+        {
+          "name": "鐵殼蛹",
+          "types": [
+            "bug",
+            "poison"
+          ],
+          "level": 14
+        },
+        {
+          "name": "飛天螳螂",
+          "types": [
+            "bug",
+            "flying"
+          ],
+          "level": 16
+        }
+      ],
+      [
+        {
+          "name": "皮皮",
+          "types": [
+            "normal"
+          ],
+          "level": 18
+        },
+        {
+          "name": "大奶罐",
+          "types": [
+            "normal"
+          ],
+          "level": 20
+        }
+      ],
+      [
+        {
+          "name": "鬼斯",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 21
+        },
+        {
+          "name": "鬼斯通",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 21
+        },
+        {
+          "name": "鬼斯通",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 23
+        },
+        {
+          "name": "耿鬼",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 25
+        }
+      ],
+      [
+        {
+          "name": "火爆猴",
+          "types": [
+            "fighting"
+          ],
+          "level": 27
+        },
+        {
+          "name": "蚊香泳士",
+          "types": [
+            "water",
+            "fighting"
+          ],
+          "level": 30
+        }
+      ],
+      [
+        {
+          "name": "小磁怪",
+          "types": [
+            "electric",
+            "steel"
+          ],
+          "level": 30
+        },
+        {
+          "name": "小磁怪",
+          "types": [
+            "electric",
+            "steel"
+          ],
+          "level": 30
+        },
+        {
+          "name": "大鋼蛇",
+          "types": [
+            "steel",
+            "ground"
+          ],
+          "level": 35
+        }
+      ],
+      [
+        {
+          "name": "小海獅",
+          "types": [
+            "water"
+          ],
+          "level": 27
+        },
+        {
+          "name": "白海獅",
+          "types": [
+            "water",
+            "ice"
+          ],
+          "level": 29
+        },
+        {
+          "name": "長毛豬",
+          "types": [
+            "ice",
+            "ground"
+          ],
+          "level": 31
+        }
+      ],
+      [
+        {
+          "name": "哈克龍",
+          "types": [
+            "dragon"
+          ],
+          "level": 37
+        },
+        {
+          "name": "哈克龍",
+          "types": [
+            "dragon"
+          ],
+          "level": 37
+        },
+        {
+          "name": "哈克龍",
+          "types": [
+            "dragon"
+          ],
+          "level": 37
+        },
+        {
+          "name": "刺龍王",
+          "types": [
+            "water",
+            "dragon"
+          ],
+          "level": 40
+        }
+      ]
+    ],
+    "league": [
+      [
+        {
+          "name": "天然鳥",
+          "types": [
+            "psychic",
+            "flying"
+          ],
+          "level": 40
+        },
+        {
+          "name": "迷唇姐",
+          "types": [
+            "ice",
+            "psychic"
+          ],
+          "level": 41
+        },
+        {
+          "name": "椰蛋樹",
+          "types": [
+            "grass",
+            "psychic"
+          ],
+          "level": 41
+        },
+        {
+          "name": "呆殼獸",
+          "types": [
+            "water",
+            "psychic"
+          ],
+          "level": 41
+        },
+        {
+          "name": "天然鳥",
+          "types": [
+            "psychic",
+            "flying"
+          ],
+          "level": 42
+        }
+      ],
+      [
+        {
+          "name": "阿利多斯",
+          "types": [
+            "bug",
+            "poison"
+          ],
+          "level": 40
+        },
+        {
+          "name": "摩魯蛾",
+          "types": [
+            "bug",
+            "poison"
+          ],
+          "level": 41
+        },
+        {
+          "name": "佛烈托斯",
+          "types": [
+            "bug",
+            "steel"
+          ],
+          "level": 43
+        },
+        {
+          "name": "臭臭泥",
+          "types": [
+            "poison"
+          ],
+          "level": 42
+        },
+        {
+          "name": "叉字蝠",
+          "types": [
+            "poison",
+            "flying"
+          ],
+          "level": 44
+        }
+      ],
+      [
+        {
+          "name": "戰舞郎",
+          "types": [
+            "fighting"
+          ],
+          "level": 42
+        },
+        {
+          "name": "飛腿郎",
+          "types": [
+            "fighting"
+          ],
+          "level": 42
+        },
+        {
+          "name": "快拳郎",
+          "types": [
+            "fighting"
+          ],
+          "level": 42
+        },
+        {
+          "name": "大岩蛇",
+          "types": [
+            "rock",
+            "ground"
+          ],
+          "level": 43
+        },
+        {
+          "name": "怪力",
+          "types": [
+            "fighting"
+          ],
+          "level": 46
+        }
+      ],
+      [
+        {
+          "name": "月亮伊布",
+          "types": [
+            "dark"
+          ],
+          "level": 42
+        },
+        {
+          "name": "霸王花",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "level": 42
+        },
+        {
+          "name": "耿鬼",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 45
+        },
+        {
+          "name": "黑暗鴉",
+          "types": [
+            "dark",
+            "flying"
+          ],
+          "level": 44
+        },
+        {
+          "name": "黑魯加",
+          "types": [
+            "dark",
+            "fire"
+          ],
+          "level": 47
+        }
+      ],
+      [
+        {
+          "name": "暴鯉龍",
+          "types": [
+            "water",
+            "flying"
+          ],
+          "level": 44
+        },
+        {
+          "name": "快龍",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 47
+        },
+        {
+          "name": "快龍",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 47
+        },
+        {
+          "name": "化石翼龍",
+          "types": [
+            "rock",
+            "flying"
+          ],
+          "level": 46
+        },
+        {
+          "name": "噴火龍",
+          "types": [
+            "fire",
+            "flying"
+          ],
+          "level": 46
+        },
+        {
+          "name": "快龍",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 50
+        }
+      ]
+    ]
+  },
+  "crystal": {
+    "sources": [
+      "https://www.serebii.net/gs/gyms.shtml",
+      "https://www.serebii.net/gs/elitefour.shtml"
+    ],
+    "gyms": [
+      [
+        {
+          "name": "波波",
+          "types": [
+            "normal",
+            "flying"
+          ],
+          "level": 7
+        },
+        {
+          "name": "比比鳥",
+          "types": [
+            "normal",
+            "flying"
+          ],
+          "level": 9
+        }
+      ],
+      [
+        {
+          "name": "鐵甲蛹",
+          "types": [
+            "bug"
+          ],
+          "level": 14
+        },
+        {
+          "name": "鐵殼蛹",
+          "types": [
+            "bug",
+            "poison"
+          ],
+          "level": 14
+        },
+        {
+          "name": "飛天螳螂",
+          "types": [
+            "bug",
+            "flying"
+          ],
+          "level": 16
+        }
+      ],
+      [
+        {
+          "name": "皮皮",
+          "types": [
+            "normal"
+          ],
+          "level": 18
+        },
+        {
+          "name": "大奶罐",
+          "types": [
+            "normal"
+          ],
+          "level": 20
+        }
+      ],
+      [
+        {
+          "name": "鬼斯",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 21
+        },
+        {
+          "name": "鬼斯通",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 21
+        },
+        {
+          "name": "鬼斯通",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 23
+        },
+        {
+          "name": "耿鬼",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 25
+        }
+      ],
+      [
+        {
+          "name": "火爆猴",
+          "types": [
+            "fighting"
+          ],
+          "level": 27
+        },
+        {
+          "name": "蚊香泳士",
+          "types": [
+            "water",
+            "fighting"
+          ],
+          "level": 30
+        }
+      ],
+      [
+        {
+          "name": "小磁怪",
+          "types": [
+            "electric",
+            "steel"
+          ],
+          "level": 30
+        },
+        {
+          "name": "小磁怪",
+          "types": [
+            "electric",
+            "steel"
+          ],
+          "level": 30
+        },
+        {
+          "name": "大鋼蛇",
+          "types": [
+            "steel",
+            "ground"
+          ],
+          "level": 35
+        }
+      ],
+      [
+        {
+          "name": "小海獅",
+          "types": [
+            "water"
+          ],
+          "level": 27
+        },
+        {
+          "name": "白海獅",
+          "types": [
+            "water",
+            "ice"
+          ],
+          "level": 29
+        },
+        {
+          "name": "長毛豬",
+          "types": [
+            "ice",
+            "ground"
+          ],
+          "level": 31
+        }
+      ],
+      [
+        {
+          "name": "哈克龍",
+          "types": [
+            "dragon"
+          ],
+          "level": 37
+        },
+        {
+          "name": "哈克龍",
+          "types": [
+            "dragon"
+          ],
+          "level": 37
+        },
+        {
+          "name": "哈克龍",
+          "types": [
+            "dragon"
+          ],
+          "level": 37
+        },
+        {
+          "name": "刺龍王",
+          "types": [
+            "water",
+            "dragon"
+          ],
+          "level": 40
+        }
+      ]
+    ],
+    "league": [
+      [
+        {
+          "name": "天然鳥",
+          "types": [
+            "psychic",
+            "flying"
+          ],
+          "level": 40
+        },
+        {
+          "name": "迷唇姐",
+          "types": [
+            "ice",
+            "psychic"
+          ],
+          "level": 41
+        },
+        {
+          "name": "椰蛋樹",
+          "types": [
+            "grass",
+            "psychic"
+          ],
+          "level": 41
+        },
+        {
+          "name": "呆殼獸",
+          "types": [
+            "water",
+            "psychic"
+          ],
+          "level": 41
+        },
+        {
+          "name": "天然鳥",
+          "types": [
+            "psychic",
+            "flying"
+          ],
+          "level": 42
+        }
+      ],
+      [
+        {
+          "name": "阿利多斯",
+          "types": [
+            "bug",
+            "poison"
+          ],
+          "level": 40
+        },
+        {
+          "name": "摩魯蛾",
+          "types": [
+            "bug",
+            "poison"
+          ],
+          "level": 41
+        },
+        {
+          "name": "佛烈托斯",
+          "types": [
+            "bug",
+            "steel"
+          ],
+          "level": 43
+        },
+        {
+          "name": "臭臭泥",
+          "types": [
+            "poison"
+          ],
+          "level": 42
+        },
+        {
+          "name": "叉字蝠",
+          "types": [
+            "poison",
+            "flying"
+          ],
+          "level": 44
+        }
+      ],
+      [
+        {
+          "name": "戰舞郎",
+          "types": [
+            "fighting"
+          ],
+          "level": 42
+        },
+        {
+          "name": "飛腿郎",
+          "types": [
+            "fighting"
+          ],
+          "level": 42
+        },
+        {
+          "name": "快拳郎",
+          "types": [
+            "fighting"
+          ],
+          "level": 42
+        },
+        {
+          "name": "大岩蛇",
+          "types": [
+            "rock",
+            "ground"
+          ],
+          "level": 43
+        },
+        {
+          "name": "怪力",
+          "types": [
+            "fighting"
+          ],
+          "level": 46
+        }
+      ],
+      [
+        {
+          "name": "月亮伊布",
+          "types": [
+            "dark"
+          ],
+          "level": 42
+        },
+        {
+          "name": "霸王花",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "level": 42
+        },
+        {
+          "name": "耿鬼",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 45
+        },
+        {
+          "name": "黑暗鴉",
+          "types": [
+            "dark",
+            "flying"
+          ],
+          "level": 44
+        },
+        {
+          "name": "黑魯加",
+          "types": [
+            "dark",
+            "fire"
+          ],
+          "level": 47
+        }
+      ],
+      [
+        {
+          "name": "暴鯉龍",
+          "types": [
+            "water",
+            "flying"
+          ],
+          "level": 44
+        },
+        {
+          "name": "快龍",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 47
+        },
+        {
+          "name": "快龍",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 47
+        },
+        {
+          "name": "化石翼龍",
+          "types": [
+            "rock",
+            "flying"
+          ],
+          "level": 46
+        },
+        {
+          "name": "噴火龍",
+          "types": [
+            "fire",
+            "flying"
+          ],
+          "level": 46
+        },
+        {
+          "name": "快龍",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 50
+        }
+      ]
+    ]
+  },
+  "ruby-sapphire": {
+    "sources": [
+      "https://www.serebii.net/rubysapphire/gyms.shtml",
+      "https://www.serebii.net/rubysapphire/elitefour.shtml"
+    ],
+    "gyms": [
+      [
+        {
+          "name": "小拳石",
+          "types": [
+            "rock",
+            "ground"
+          ],
+          "level": 14
+        },
+        {
+          "name": "朝北鼻",
+          "types": [
+            "rock"
+          ],
+          "level": 15
+        }
+      ],
+      [
+        {
+          "name": "腕力",
+          "types": [
+            "fighting"
+          ],
+          "level": 17
+        },
+        {
+          "name": "幕下力士",
+          "types": [
+            "fighting"
+          ],
+          "level": 18
+        }
+      ],
+      [
+        {
+          "name": "小磁怪",
+          "types": [
+            "electric",
+            "steel"
+          ],
+          "level": 22
+        },
+        {
+          "name": "霹靂電球",
+          "types": [
+            "electric"
+          ],
+          "level": 20
+        },
+        {
+          "name": "三合一磁怪",
+          "types": [
+            "electric",
+            "steel"
+          ],
+          "level": 23
+        }
+      ],
+      [
+        {
+          "name": "熔岩蟲",
+          "types": [
+            "fire"
+          ],
+          "level": 26
+        },
+        {
+          "name": "熔岩蟲",
+          "types": [
+            "fire"
+          ],
+          "level": 26
+        },
+        {
+          "name": "煤炭龜",
+          "types": [
+            "fire"
+          ],
+          "level": 28
+        }
+      ],
+      [
+        {
+          "name": "請假王",
+          "types": [
+            "normal"
+          ],
+          "level": 28
+        },
+        {
+          "name": "過動猿",
+          "types": [
+            "normal"
+          ],
+          "level": 30
+        },
+        {
+          "name": "請假王",
+          "types": [
+            "normal"
+          ],
+          "level": 31
+        }
+      ],
+      [
+        {
+          "name": "大王燕",
+          "types": [
+            "normal",
+            "flying"
+          ],
+          "level": 31
+        },
+        {
+          "name": "大嘴鷗",
+          "types": [
+            "water",
+            "flying"
+          ],
+          "level": 30
+        },
+        {
+          "name": "盔甲鳥",
+          "types": [
+            "steel",
+            "flying"
+          ],
+          "level": 32
+        },
+        {
+          "name": "七夕青鳥",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 33
+        }
+      ],
+      [
+        {
+          "name": "月石",
+          "types": [
+            "rock",
+            "psychic"
+          ],
+          "level": 42
+        },
+        {
+          "name": "太陽岩",
+          "types": [
+            "rock",
+            "psychic"
+          ],
+          "level": 42
+        }
+      ],
+      [
+        {
+          "name": "愛心魚",
+          "types": [
+            "water"
+          ],
+          "level": 40
+        },
+        {
+          "name": "鯰魚王",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "level": 42
+        },
+        {
+          "name": "海魔獅",
+          "types": [
+            "ice",
+            "water"
+          ],
+          "level": 40
+        },
+        {
+          "name": "金魚王",
+          "types": [
+            "water"
+          ],
+          "level": 42
+        },
+        {
+          "name": "美納斯",
+          "types": [
+            "water"
+          ],
+          "level": 43
+        }
+      ]
+    ],
+    "league": [
+      [
+        {
+          "name": "大狼犬",
+          "types": [
+            "dark"
+          ],
+          "level": 46
+        },
+        {
+          "name": "狡猾天狗",
+          "types": [
+            "grass",
+            "dark"
+          ],
+          "level": 48
+        },
+        {
+          "name": "夢歌仙人掌",
+          "types": [
+            "grass",
+            "dark"
+          ],
+          "level": 46
+        },
+        {
+          "name": "巨牙鯊",
+          "types": [
+            "water",
+            "dark"
+          ],
+          "level": 48
+        },
+        {
+          "name": "阿勃梭魯",
+          "types": [
+            "dark"
+          ],
+          "level": 49
+        }
+      ],
+      [
+        {
+          "name": "彷徨夜靈",
+          "types": [
+            "ghost"
+          ],
+          "level": 48
+        },
+        {
+          "name": "詛咒娃娃",
+          "types": [
+            "ghost"
+          ],
+          "level": 49
+        },
+        {
+          "name": "勾魂眼",
+          "types": [
+            "dark",
+            "ghost"
+          ],
+          "level": 50
+        },
+        {
+          "name": "詛咒娃娃",
+          "types": [
+            "ghost"
+          ],
+          "level": 49
+        },
+        {
+          "name": "彷徨夜靈",
+          "types": [
+            "ghost"
+          ],
+          "level": 51
+        }
+      ],
+      [
+        {
+          "name": "冰鬼護",
+          "types": [
+            "ice"
+          ],
+          "level": 50
+        },
+        {
+          "name": "海魔獅",
+          "types": [
+            "ice",
+            "water"
+          ],
+          "level": 50
+        },
+        {
+          "name": "海魔獅",
+          "types": [
+            "ice",
+            "water"
+          ],
+          "level": 52
+        },
+        {
+          "name": "冰鬼護",
+          "types": [
+            "ice"
+          ],
+          "level": 52
+        },
+        {
+          "name": "帝牙海獅",
+          "types": [
+            "ice",
+            "water"
+          ],
+          "level": 53
+        }
+      ],
+      [
+        {
+          "name": "甲殼龍",
+          "types": [
+            "dragon"
+          ],
+          "level": 52
+        },
+        {
+          "name": "七夕青鳥",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 54
+        },
+        {
+          "name": "沙漠蜻蜓",
+          "types": [
+            "ground",
+            "dragon"
+          ],
+          "level": 53
+        },
+        {
+          "name": "沙漠蜻蜓",
+          "types": [
+            "ground",
+            "dragon"
+          ],
+          "level": 53
+        },
+        {
+          "name": "暴飛龍",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 55
+        }
+      ],
+      [
+        {
+          "name": "盔甲鳥",
+          "types": [
+            "steel",
+            "flying"
+          ],
+          "level": 57
+        },
+        {
+          "name": "念力土偶",
+          "types": [
+            "ground",
+            "psychic"
+          ],
+          "level": 55
+        },
+        {
+          "name": "波士可多拉",
+          "types": [
+            "steel",
+            "rock"
+          ],
+          "level": 56
+        },
+        {
+          "name": "搖籃百合",
+          "types": [
+            "rock",
+            "grass"
+          ],
+          "level": 56
+        },
+        {
+          "name": "太古盔甲",
+          "types": [
+            "rock",
+            "bug"
+          ],
+          "level": 56
+        },
+        {
+          "name": "巨金怪",
+          "types": [
+            "steel",
+            "psychic"
+          ],
+          "level": 58
+        }
+      ]
+    ]
+  },
+  "emerald": {
+    "sources": [
+      "https://www.serebii.net/emerald/gym.shtml",
+      "https://www.serebii.net/emerald/elite.shtml"
+    ],
+    "gyms": [
+      [
+        {
+          "name": "小拳石",
+          "types": [
+            "rock",
+            "ground"
+          ],
+          "level": 12
+        },
+        {
+          "name": "小拳石",
+          "types": [
+            "rock",
+            "ground"
+          ],
+          "level": 12
+        },
+        {
+          "name": "朝北鼻",
+          "types": [
+            "rock"
+          ],
+          "level": 15
+        }
+      ],
+      [
+        {
+          "name": "腕力",
+          "types": [
+            "fighting"
+          ],
+          "level": 16
+        },
+        {
+          "name": "瑪沙那",
+          "types": [
+            "fighting",
+            "psychic"
+          ],
+          "level": 16
+        },
+        {
+          "name": "幕下力士",
+          "types": [
+            "fighting"
+          ],
+          "level": 19
+        }
+      ],
+      [
+        {
+          "name": "霹靂電球",
+          "types": [
+            "electric"
+          ],
+          "level": 20
+        },
+        {
+          "name": "落雷獸",
+          "types": [
+            "electric"
+          ],
+          "level": 20
+        },
+        {
+          "name": "三合一磁怪",
+          "types": [
+            "electric",
+            "steel"
+          ],
+          "level": 22
+        },
+        {
+          "name": "雷電獸",
+          "types": [
+            "electric"
+          ],
+          "level": 24
+        }
+      ],
+      [
+        {
+          "name": "呆火駝",
+          "types": [
+            "fire",
+            "ground"
+          ],
+          "level": 24
+        },
+        {
+          "name": "熔岩蟲",
+          "types": [
+            "fire"
+          ],
+          "level": 24
+        },
+        {
+          "name": "噴火駝",
+          "types": [
+            "fire",
+            "ground"
+          ],
+          "level": 26
+        },
+        {
+          "name": "煤炭龜",
+          "types": [
+            "fire"
+          ],
+          "level": 29
+        }
+      ],
+      [
+        {
+          "name": "晃晃斑",
+          "types": [
+            "normal"
+          ],
+          "level": 27
+        },
+        {
+          "name": "過動猿",
+          "types": [
+            "normal"
+          ],
+          "level": 27
+        },
+        {
+          "name": "直衝熊",
+          "types": [
+            "normal"
+          ],
+          "level": 29
+        },
+        {
+          "name": "請假王",
+          "types": [
+            "normal"
+          ],
+          "level": 31
+        }
+      ],
+      [
+        {
+          "name": "青綿鳥",
+          "types": [
+            "normal",
+            "flying"
+          ],
+          "level": 29
+        },
+        {
+          "name": "熱帶龍",
+          "types": [
+            "grass",
+            "flying"
+          ],
+          "level": 29
+        },
+        {
+          "name": "大嘴鷗",
+          "types": [
+            "water",
+            "flying"
+          ],
+          "level": 30
+        },
+        {
+          "name": "盔甲鳥",
+          "types": [
+            "steel",
+            "flying"
+          ],
+          "level": 31
+        },
+        {
+          "name": "七夕青鳥",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 33
+        }
+      ],
+      [
+        {
+          "name": "念力土偶",
+          "types": [
+            "ground",
+            "psychic"
+          ],
+          "level": 41
+        },
+        {
+          "name": "天然鳥",
+          "types": [
+            "psychic",
+            "flying"
+          ],
+          "level": 41
+        },
+        {
+          "name": "月石",
+          "types": [
+            "rock",
+            "psychic"
+          ],
+          "level": 42
+        },
+        {
+          "name": "太陽岩",
+          "types": [
+            "rock",
+            "psychic"
+          ],
+          "level": 42
+        }
+      ],
+      [
+        {
+          "name": "愛心魚",
+          "types": [
+            "water"
+          ],
+          "level": 41
+        },
+        {
+          "name": "鯰魚王",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "level": 41
+        },
+        {
+          "name": "海魔獅",
+          "types": [
+            "ice",
+            "water"
+          ],
+          "level": 43
+        },
+        {
+          "name": "鐵螯龍蝦",
+          "types": [
+            "water",
+            "dark"
+          ],
+          "level": 43
+        },
+        {
+          "name": "刺龍王",
+          "types": [
+            "water",
+            "dragon"
+          ],
+          "level": 46
+        }
+      ]
+    ],
+    "league": [
+      [
+        {
+          "name": "大狼犬",
+          "types": [
+            "dark"
+          ],
+          "level": 46
+        },
+        {
+          "name": "狡猾天狗",
+          "types": [
+            "grass",
+            "dark"
+          ],
+          "level": 48
+        },
+        {
+          "name": "夢歌仙人掌",
+          "types": [
+            "grass",
+            "dark"
+          ],
+          "level": 46
+        },
+        {
+          "name": "鐵螯龍蝦",
+          "types": [
+            "water",
+            "dark"
+          ],
+          "level": 48
+        },
+        {
+          "name": "阿勃梭魯",
+          "types": [
+            "dark"
+          ],
+          "level": 49
+        }
+      ],
+      [
+        {
+          "name": "彷徨夜靈",
+          "types": [
+            "ghost"
+          ],
+          "level": 48
+        },
+        {
+          "name": "詛咒娃娃",
+          "types": [
+            "ghost"
+          ],
+          "level": 49
+        },
+        {
+          "name": "勾魂眼",
+          "types": [
+            "dark",
+            "ghost"
+          ],
+          "level": 50
+        },
+        {
+          "name": "詛咒娃娃",
+          "types": [
+            "ghost"
+          ],
+          "level": 49
+        },
+        {
+          "name": "彷徨夜靈",
+          "types": [
+            "ghost"
+          ],
+          "level": 51
+        }
+      ],
+      [
+        {
+          "name": "海魔獅",
+          "types": [
+            "ice",
+            "water"
+          ],
+          "level": 50
+        },
+        {
+          "name": "冰鬼護",
+          "types": [
+            "ice"
+          ],
+          "level": 50
+        },
+        {
+          "name": "海魔獅",
+          "types": [
+            "ice",
+            "water"
+          ],
+          "level": 52
+        },
+        {
+          "name": "冰鬼護",
+          "types": [
+            "ice"
+          ],
+          "level": 52
+        },
+        {
+          "name": "帝牙海獅",
+          "types": [
+            "ice",
+            "water"
+          ],
+          "level": 53
+        }
+      ],
+      [
+        {
+          "name": "甲殼龍",
+          "types": [
+            "dragon"
+          ],
+          "level": 52
+        },
+        {
+          "name": "七夕青鳥",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 54
+        },
+        {
+          "name": "刺龍王",
+          "types": [
+            "water",
+            "dragon"
+          ],
+          "level": 53
+        },
+        {
+          "name": "沙漠蜻蜓",
+          "types": [
+            "ground",
+            "dragon"
+          ],
+          "level": 53
+        },
+        {
+          "name": "暴飛龍",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 55
+        }
+      ],
+      [
+        {
+          "name": "吼鯨王",
+          "types": [
+            "water"
+          ],
+          "level": 57
+        },
+        {
+          "name": "毒刺水母",
+          "types": [
+            "water",
+            "poison"
+          ],
+          "level": 55
+        },
+        {
+          "name": "樂天河童",
+          "types": [
+            "water",
+            "grass"
+          ],
+          "level": 56
+        },
+        {
+          "name": "鯰魚王",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "level": 56
+        },
+        {
+          "name": "暴鯉龍",
+          "types": [
+            "water",
+            "flying"
+          ],
+          "level": 56
+        },
+        {
+          "name": "美納斯",
+          "types": [
+            "water"
+          ],
+          "level": 58
+        }
+      ]
+    ]
+  },
+  "diamond-pearl": {
+    "sources": [
+      "https://www.serebii.net/diamondpearl/gymleaders.shtml",
+      "https://www.serebii.net/diamondpearl/elite4.shtml"
+    ],
+    "gyms": [
+      [
+        {
+          "name": "小拳石",
+          "types": [
+            "rock",
+            "ground"
+          ],
+          "level": 12
+        },
+        {
+          "name": "大岩蛇",
+          "types": [
+            "rock",
+            "ground"
+          ],
+          "level": 12
+        },
+        {
+          "name": "頭蓋龍",
+          "types": [
+            "rock"
+          ],
+          "level": 14
+        }
+      ],
+      [
+        {
+          "name": "櫻花寶",
+          "types": [
+            "grass"
+          ],
+          "level": 19
+        },
+        {
+          "name": "草苗龜",
+          "types": [
+            "grass"
+          ],
+          "level": 19
+        },
+        {
+          "name": "羅絲雷朵",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "level": 22
+        }
+      ],
+      [
+        {
+          "name": "瑪沙那",
+          "types": [
+            "fighting",
+            "psychic"
+          ],
+          "level": 27
+        },
+        {
+          "name": "豪力",
+          "types": [
+            "fighting"
+          ],
+          "level": 27
+        },
+        {
+          "name": "路卡利歐",
+          "types": [
+            "fighting",
+            "steel"
+          ],
+          "level": 30
+        }
+      ],
+      [
+        {
+          "name": "暴鯉龍",
+          "types": [
+            "water",
+            "flying"
+          ],
+          "level": 27
+        },
+        {
+          "name": "沼王",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "level": 27
+        },
+        {
+          "name": "浮潛鼬",
+          "types": [
+            "water"
+          ],
+          "level": 30
+        }
+      ],
+      [
+        {
+          "name": "隨風球",
+          "types": [
+            "ghost",
+            "flying"
+          ],
+          "level": 32
+        },
+        {
+          "name": "耿鬼",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 34
+        },
+        {
+          "name": "夢妖魔",
+          "types": [
+            "ghost"
+          ],
+          "level": 36
+        }
+      ],
+      [
+        {
+          "name": "銅鏡怪",
+          "types": [
+            "steel",
+            "psychic"
+          ],
+          "level": 36
+        },
+        {
+          "name": "大鋼蛇",
+          "types": [
+            "steel",
+            "ground"
+          ],
+          "level": 36
+        },
+        {
+          "name": "護城龍",
+          "types": [
+            "rock",
+            "steel"
+          ],
+          "level": 39
+        }
+      ],
+      [
+        {
+          "name": "雪笠怪",
+          "types": [
+            "grass",
+            "ice"
+          ],
+          "level": 38
+        },
+        {
+          "name": "狃拉",
+          "types": [
+            "dark",
+            "ice"
+          ],
+          "level": 38
+        },
+        {
+          "name": "恰雷姆",
+          "types": [
+            "fighting",
+            "psychic"
+          ],
+          "level": 40
+        },
+        {
+          "name": "暴雪王",
+          "types": [
+            "grass",
+            "ice"
+          ],
+          "level": 42
+        }
+      ],
+      [
+        {
+          "name": "雷丘",
+          "types": [
+            "electric"
+          ],
+          "level": 46
+        },
+        {
+          "name": "雙尾怪手",
+          "types": [
+            "normal"
+          ],
+          "level": 47
+        },
+        {
+          "name": "章魚桶",
+          "types": [
+            "water"
+          ],
+          "level": 48
+        },
+        {
+          "name": "倫琴貓",
+          "types": [
+            "electric"
+          ],
+          "level": 49
+        }
+      ]
+    ],
+    "league": [
+      [
+        {
+          "name": "毒粉蛾",
+          "types": [
+            "bug",
+            "poison"
+          ],
+          "level": 53
+        },
+        {
+          "name": "赫拉克羅斯",
+          "types": [
+            "bug",
+            "fighting"
+          ],
+          "level": 54
+        },
+        {
+          "name": "蜂女王",
+          "types": [
+            "bug",
+            "flying"
+          ],
+          "level": 54
+        },
+        {
+          "name": "狩獵鳳蝶",
+          "types": [
+            "bug",
+            "flying"
+          ],
+          "level": 53
+        },
+        {
+          "name": "龍王蠍",
+          "types": [
+            "poison",
+            "dark"
+          ],
+          "level": 57
+        }
+      ],
+      [
+        {
+          "name": "沼王",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "level": 55
+        },
+        {
+          "name": "河馬獸",
+          "types": [
+            "ground"
+          ],
+          "level": 59
+        },
+        {
+          "name": "樹才怪",
+          "types": [
+            "rock"
+          ],
+          "level": 57
+        },
+        {
+          "name": "鯰魚王",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "level": 55
+        },
+        {
+          "name": "隆隆岩",
+          "types": [
+            "rock",
+            "ground"
+          ],
+          "level": 56
+        }
+      ],
+      [
+        {
+          "name": "烈焰馬",
+          "types": [
+            "fire"
+          ],
+          "level": 58
+        },
+        {
+          "name": "烈焰猴",
+          "types": [
+            "fire",
+            "fighting"
+          ],
+          "level": 61
+        },
+        {
+          "name": "大鋼蛇",
+          "types": [
+            "steel",
+            "ground"
+          ],
+          "level": 57
+        },
+        {
+          "name": "長耳兔",
+          "types": [
+            "normal"
+          ],
+          "level": 57
+        },
+        {
+          "name": "隨風球",
+          "types": [
+            "ghost",
+            "flying"
+          ],
+          "level": 58
+        }
+      ],
+      [
+        {
+          "name": "魔牆人偶",
+          "types": [
+            "psychic"
+          ],
+          "level": 59
+        },
+        {
+          "name": "麒麟奇",
+          "types": [
+            "normal",
+            "psychic"
+          ],
+          "level": 59
+        },
+        {
+          "name": "恰雷姆",
+          "types": [
+            "fighting",
+            "psychic"
+          ],
+          "level": 60
+        },
+        {
+          "name": "胡地",
+          "types": [
+            "psychic"
+          ],
+          "level": 60
+        },
+        {
+          "name": "青銅鐘",
+          "types": [
+            "steel",
+            "psychic"
+          ],
+          "level": 63
+        }
+      ],
+      [
+        {
+          "name": "花岩怪",
+          "types": [
+            "ghost",
+            "dark"
+          ],
+          "level": 61
+        },
+        {
+          "name": "烈咬陸鯊",
+          "types": [
+            "dragon",
+            "ground"
+          ],
+          "level": 66
+        },
+        {
+          "name": "海兔獸",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "level": 60
+        },
+        {
+          "name": "美納斯",
+          "types": [
+            "water"
+          ],
+          "level": 63
+        },
+        {
+          "name": "羅絲雷朵",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "level": 60
+        },
+        {
+          "name": "路卡利歐",
+          "types": [
+            "fighting",
+            "steel"
+          ],
+          "level": 63
+        }
+      ]
+    ]
+  },
+  "platinum": {
+    "sources": [
+      "https://www.serebii.net/platinum/gyms.shtml",
+      "https://www.serebii.net/platinum/elitefour.shtml"
+    ],
+    "gyms": [
+      [
+        {
+          "name": "小拳石",
+          "types": [
+            "rock",
+            "ground"
+          ],
+          "level": 12
+        },
+        {
+          "name": "大岩蛇",
+          "types": [
+            "rock",
+            "ground"
+          ],
+          "level": 12
+        },
+        {
+          "name": "頭蓋龍",
+          "types": [
+            "rock"
+          ],
+          "level": 14
+        }
+      ],
+      [
+        {
+          "name": "草苗龜",
+          "types": [
+            "grass"
+          ],
+          "level": 20
+        },
+        {
+          "name": "櫻花兒",
+          "types": [
+            "grass"
+          ],
+          "level": 20
+        },
+        {
+          "name": "羅絲雷朵",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "level": 22
+        }
+      ],
+      [
+        {
+          "name": "夜巡靈",
+          "types": [
+            "ghost"
+          ],
+          "level": 24
+        },
+        {
+          "name": "鬼斯通",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 24
+        },
+        {
+          "name": "夢妖魔",
+          "types": [
+            "ghost"
+          ],
+          "level": 26
+        }
+      ],
+      [
+        {
+          "name": "瑪沙那",
+          "types": [
+            "fighting",
+            "psychic"
+          ],
+          "level": 28
+        },
+        {
+          "name": "豪力",
+          "types": [
+            "fighting"
+          ],
+          "level": 29
+        },
+        {
+          "name": "路卡利歐",
+          "types": [
+            "fighting",
+            "steel"
+          ],
+          "level": 32
+        }
+      ],
+      [
+        {
+          "name": "暴鯉龍",
+          "types": [
+            "water",
+            "flying"
+          ],
+          "level": 33
+        },
+        {
+          "name": "沼王",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "level": 34
+        },
+        {
+          "name": "浮潛鼬",
+          "types": [
+            "water"
+          ],
+          "level": 37
+        }
+      ],
+      [
+        {
+          "name": "三合一磁怪",
+          "types": [
+            "electric",
+            "steel"
+          ],
+          "level": 37
+        },
+        {
+          "name": "大鋼蛇",
+          "types": [
+            "steel",
+            "ground"
+          ],
+          "level": 38
+        },
+        {
+          "name": "護城龍",
+          "types": [
+            "rock",
+            "steel"
+          ],
+          "level": 41
+        }
+      ],
+      [
+        {
+          "name": "狃拉",
+          "types": [
+            "dark",
+            "ice"
+          ],
+          "level": 40
+        },
+        {
+          "name": "長毛豬",
+          "types": [
+            "ice",
+            "ground"
+          ],
+          "level": 40
+        },
+        {
+          "name": "暴雪王",
+          "types": [
+            "grass",
+            "ice"
+          ],
+          "level": 42
+        },
+        {
+          "name": "雪妖女",
+          "types": [
+            "ice",
+            "ghost"
+          ],
+          "level": 44
+        }
+      ],
+      [
+        {
+          "name": "雷伊布",
+          "types": [
+            "electric"
+          ],
+          "level": 46
+        },
+        {
+          "name": "雷丘",
+          "types": [
+            "electric"
+          ],
+          "level": 46
+        },
+        {
+          "name": "倫琴貓",
+          "types": [
+            "electric"
+          ],
+          "level": 48
+        },
+        {
+          "name": "電擊魔獸",
+          "types": [
+            "electric"
+          ],
+          "level": 50
+        }
+      ]
+    ],
+    "league": [
+      [
+        {
+          "name": "遠古巨蜓",
+          "types": [
+            "bug",
+            "flying"
+          ],
+          "level": 49
+        },
+        {
+          "name": "巨鉗螳螂",
+          "types": [
+            "bug",
+            "steel"
+          ],
+          "level": 49
+        },
+        {
+          "name": "蜂女王",
+          "types": [
+            "bug",
+            "flying"
+          ],
+          "level": 50
+        },
+        {
+          "name": "赫拉克羅斯",
+          "types": [
+            "bug",
+            "fighting"
+          ],
+          "level": 51
+        },
+        {
+          "name": "龍王蠍",
+          "types": [
+            "poison",
+            "dark"
+          ],
+          "level": 53
+        }
+      ],
+      [
+        {
+          "name": "鯰魚王",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "level": 50
+        },
+        {
+          "name": "天蠍王",
+          "types": [
+            "ground",
+            "flying"
+          ],
+          "level": 53
+        },
+        {
+          "name": "隆隆岩",
+          "types": [
+            "rock",
+            "ground"
+          ],
+          "level": 52
+        },
+        {
+          "name": "超甲狂犀",
+          "types": [
+            "ground",
+            "rock"
+          ],
+          "level": 55
+        },
+        {
+          "name": "河馬獸",
+          "types": [
+            "ground"
+          ],
+          "level": 52
+        }
+      ],
+      [
+        {
+          "name": "黑魯加",
+          "types": [
+            "dark",
+            "fire"
+          ],
+          "level": 52
+        },
+        {
+          "name": "火伊布",
+          "types": [
+            "fire"
+          ],
+          "level": 55
+        },
+        {
+          "name": "烈焰馬",
+          "types": [
+            "fire"
+          ],
+          "level": 53
+        },
+        {
+          "name": "烈焰猴",
+          "types": [
+            "fire",
+            "fighting"
+          ],
+          "level": 55
+        },
+        {
+          "name": "鴨嘴炎獸",
+          "types": [
+            "fire"
+          ],
+          "level": 57
+        }
+      ],
+      [
+        {
+          "name": "魔牆人偶",
+          "types": [
+            "psychic"
+          ],
+          "level": 53
+        },
+        {
+          "name": "太陽伊布",
+          "types": [
+            "psychic"
+          ],
+          "level": 55
+        },
+        {
+          "name": "青銅鐘",
+          "types": [
+            "steel",
+            "psychic"
+          ],
+          "level": 54
+        },
+        {
+          "name": "胡地",
+          "types": [
+            "psychic"
+          ],
+          "level": 56
+        },
+        {
+          "name": "艾路雷朵",
+          "types": [
+            "psychic",
+            "fighting"
+          ],
+          "level": 59
+        }
+      ],
+      [
+        {
+          "name": "花岩怪",
+          "types": [
+            "ghost",
+            "dark"
+          ],
+          "level": 58
+        },
+        {
+          "name": "羅絲雷朵",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "level": 58
+        },
+        {
+          "name": "波克基斯",
+          "types": [
+            "normal",
+            "flying"
+          ],
+          "level": 60
+        },
+        {
+          "name": "路卡利歐",
+          "types": [
+            "fighting",
+            "steel"
+          ],
+          "level": 60
+        },
+        {
+          "name": "美納斯",
+          "types": [
+            "water"
+          ],
+          "level": 58
+        },
+        {
+          "name": "烈咬陸鯊",
+          "types": [
+            "dragon",
+            "ground"
+          ],
+          "level": 62
+        }
+      ]
+    ]
+  },
+  "heartgold-soulsilver": {
+    "sources": [
+      "https://www.serebii.net/heartgoldsoulsilver/gym.shtml",
+      "https://www.serebii.net/heartgoldsoulsilver/elitefour.shtml"
+    ],
+    "gyms": [
+      [
+        {
+          "name": "波波",
+          "types": [
+            "normal",
+            "flying"
+          ],
+          "level": 9
+        },
+        {
+          "name": "比比鳥",
+          "types": [
+            "normal",
+            "flying"
+          ],
+          "level": 13
+        }
+      ],
+      [
+        {
+          "name": "鐵甲蛹",
+          "types": [
+            "bug"
+          ],
+          "level": 15
+        },
+        {
+          "name": "鐵殼蛹",
+          "types": [
+            "bug",
+            "poison"
+          ],
+          "level": 15
+        },
+        {
+          "name": "飛天螳螂",
+          "types": [
+            "bug",
+            "flying"
+          ],
+          "level": 17
+        }
+      ],
+      [
+        {
+          "name": "皮皮",
+          "types": [
+            "normal"
+          ],
+          "level": 17
+        },
+        {
+          "name": "大奶罐",
+          "types": [
+            "normal"
+          ],
+          "level": 19
+        }
+      ],
+      [
+        {
+          "name": "鬼斯",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 21
+        },
+        {
+          "name": "鬼斯通",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 21
+        },
+        {
+          "name": "鬼斯通",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 23
+        },
+        {
+          "name": "耿鬼",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 25
+        }
+      ],
+      [
+        {
+          "name": "火爆猴",
+          "types": [
+            "fighting"
+          ],
+          "level": 29
+        },
+        {
+          "name": "蚊香泳士",
+          "types": [
+            "water",
+            "fighting"
+          ],
+          "level": 31
+        }
+      ],
+      [
+        {
+          "name": "小磁怪",
+          "types": [
+            "electric",
+            "steel"
+          ],
+          "level": 30
+        },
+        {
+          "name": "小磁怪",
+          "types": [
+            "electric",
+            "steel"
+          ],
+          "level": 30
+        },
+        {
+          "name": "大鋼蛇",
+          "types": [
+            "steel",
+            "ground"
+          ],
+          "level": 35
+        }
+      ],
+      [
+        {
+          "name": "小海獅",
+          "types": [
+            "water"
+          ],
+          "level": 30
+        },
+        {
+          "name": "白海獅",
+          "types": [
+            "water",
+            "ice"
+          ],
+          "level": 32
+        },
+        {
+          "name": "長毛豬",
+          "types": [
+            "ice",
+            "ground"
+          ],
+          "level": 34
+        }
+      ],
+      [
+        {
+          "name": "哈克龍",
+          "types": [
+            "dragon"
+          ],
+          "level": 38
+        },
+        {
+          "name": "哈克龍",
+          "types": [
+            "dragon"
+          ],
+          "level": 38
+        },
+        {
+          "name": "暴鯉龍",
+          "types": [
+            "water",
+            "flying"
+          ],
+          "level": 38
+        },
+        {
+          "name": "刺龍王",
+          "types": [
+            "water",
+            "dragon"
+          ],
+          "level": 41
+        }
+      ]
+    ],
+    "league": [
+      [
+        {
+          "name": "天然鳥",
+          "types": [
+            "psychic",
+            "flying"
+          ],
+          "level": 40
+        },
+        {
+          "name": "迷唇姐",
+          "types": [
+            "ice",
+            "psychic"
+          ],
+          "level": 41
+        },
+        {
+          "name": "椰蛋樹",
+          "types": [
+            "grass",
+            "psychic"
+          ],
+          "level": 41
+        },
+        {
+          "name": "呆殼獸",
+          "types": [
+            "water",
+            "psychic"
+          ],
+          "level": 41
+        },
+        {
+          "name": "天然鳥",
+          "types": [
+            "psychic",
+            "flying"
+          ],
+          "level": 42
+        }
+      ],
+      [
+        {
+          "name": "阿利多斯",
+          "types": [
+            "bug",
+            "poison"
+          ],
+          "level": 40
+        },
+        {
+          "name": "摩魯蛾",
+          "types": [
+            "bug",
+            "poison"
+          ],
+          "level": 41
+        },
+        {
+          "name": "佛烈托斯",
+          "types": [
+            "bug",
+            "steel"
+          ],
+          "level": 43
+        },
+        {
+          "name": "臭臭泥",
+          "types": [
+            "poison"
+          ],
+          "level": 42
+        },
+        {
+          "name": "叉字蝠",
+          "types": [
+            "poison",
+            "flying"
+          ],
+          "level": 44
+        }
+      ],
+      [
+        {
+          "name": "戰舞郎",
+          "types": [
+            "fighting"
+          ],
+          "level": 42
+        },
+        {
+          "name": "飛腿郎",
+          "types": [
+            "fighting"
+          ],
+          "level": 42
+        },
+        {
+          "name": "快拳郎",
+          "types": [
+            "fighting"
+          ],
+          "level": 42
+        },
+        {
+          "name": "大岩蛇",
+          "types": [
+            "rock",
+            "ground"
+          ],
+          "level": 43
+        },
+        {
+          "name": "怪力",
+          "types": [
+            "fighting"
+          ],
+          "level": 46
+        }
+      ],
+      [
+        {
+          "name": "月亮伊布",
+          "types": [
+            "dark"
+          ],
+          "level": 42
+        },
+        {
+          "name": "霸王花",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "level": 42
+        },
+        {
+          "name": "耿鬼",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "level": 45
+        },
+        {
+          "name": "黑暗鴉",
+          "types": [
+            "dark",
+            "flying"
+          ],
+          "level": 44
+        },
+        {
+          "name": "黑魯加",
+          "types": [
+            "dark",
+            "fire"
+          ],
+          "level": 47
+        }
+      ],
+      [
+        {
+          "name": "暴鯉龍",
+          "types": [
+            "water",
+            "flying"
+          ],
+          "level": 44
+        },
+        {
+          "name": "快龍",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 49
+        },
+        {
+          "name": "快龍",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 49
+        },
+        {
+          "name": "化石翼龍",
+          "types": [
+            "rock",
+            "flying"
+          ],
+          "level": 48
+        },
+        {
+          "name": "噴火龍",
+          "types": [
+            "fire",
+            "flying"
+          ],
+          "level": 48
+        },
+        {
+          "name": "快龍",
+          "types": [
+            "dragon",
+            "flying"
+          ],
+          "level": 50
+        }
+      ]
+    ]
+  }
+}

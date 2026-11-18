@@ -1,3 +1,6 @@
+import { getMachineIcon, renderCatalogIcon, bindCatalogIconFallbacks } from '../utils/catalogIcons.js';
+import '../styles/catalogs.css';
+import { getVersionGroupDisplayName, versionGroupScore } from '../utils/versions.js';
 import { loadMachinesCatalog } from '../data/machines.js';
 import { typeColors, TYPE_ORDER, typeNamesCN } from '../config.js';
 import { escapeHtml } from '../utils/infoCards.js';
@@ -21,6 +24,7 @@ import {
 let catalog = null;
 let searchQuery = '';
 let kindFilter = 'all';
+const versionFilters = new Map();
 const renderedSections = new Set();
 
 const KIND_FILTERS = [
@@ -65,6 +69,13 @@ function refreshCatalogFilters() {
 
 function bindGenSortControls() {
   const root = document.getElementById('machinesContentRoot');
+  root?.addEventListener('change', (e) => {
+    const select = e.target.closest('.catalog-version-select');
+    if (!select) return;
+    const gen = Number(select.dataset.gen);
+    versionFilters.set(gen, select.value);
+    refreshGenSectionFilter(gen);
+  });
   root?.addEventListener('click', (e) => {
     const filterBtn = e.target.closest('.machines-gen-type-filter-btn');
     if (filterBtn) {
@@ -132,7 +143,15 @@ function renderGenSortToolbar(gen) {
     ? `篩選：${typeNamesCN[typeFilter] || typeFilter}`
     : '屬性篩選';
 
+  const versions = [...new Set((catalog.byGen[gen] || []).map((entry) => entry.versionGroup))]
+    .sort((a, b) => versionGroupScore(b) - versionGroupScore(a));
   return `<div class="machines-gen-toolbar">
+    <label class="catalog-version-label">遊戲版本
+      <select class="catalog-version-select" data-gen="${gen}" aria-label="第 ${gen} 世代遊戲版本">
+        <option value="all">全部版本（逐版列出）</option>
+        ${versions.map((version) => `<option value="${escapeHtml(version)}"${versionFilters.get(gen) === version ? ' selected' : ''}>${escapeHtml(getVersionGroupDisplayName(version))}</option>`).join('')}
+      </select>
+    </label>
     <span class="machines-gen-sort-label">排列</span>
     <div class="machines-gen-sort-group" role="group" aria-label="第 ${gen} 世代排列順序">
       ${SORT_OPTIONS.map((opt) => `
@@ -158,7 +177,7 @@ function getSectionItems(gen) {
 function getAvailableTypesForGen(gen) {
   const available = new Set(
     (catalog?.byGen[gen] || [])
-      .filter(entryMatchesBase)
+      .filter((entry) => entryMatchesBase(entry) && matchesVersion(entry, gen))
       .map((entry) => entry.type)
   );
   ensureMachineTypeFilterAvailable(gen, available);
@@ -200,7 +219,8 @@ function refreshGenSection(gen) {
 function sectionHasFilter(gen) {
   return Boolean(searchQuery)
     || kindFilter !== 'all'
-    || getMachineTypeFilter(gen) !== 'all';
+    || getMachineTypeFilter(gen) !== 'all'
+    || (versionFilters.get(gen) || 'all') !== 'all';
 }
 
 function rerenderSectionGrid(section) {
@@ -226,6 +246,7 @@ function bindFilterLinks() {
       moveSlug: btn.dataset.moveSlug || '',
       displayLabel: btn.dataset.displayLabel || '',
       typeLabel: btn.dataset.typeLabel || '',
+      versionGroup: btn.dataset.versionGroup || '',
     });
   });
 }
@@ -264,7 +285,7 @@ async function loadAndRender() {
     updateBackToTop('machinesBackToTop');
   } catch (err) {
     console.error(err);
-    if (progressText) progressText.textContent = '載入失敗，請重新整理頁面';
+    if (progressText) progressText.textContent = err.message || '載入失敗，請重新整理頁面';
   }
 }
 
@@ -333,6 +354,7 @@ function scrollToGen(gen) {
   const section = document.getElementById(`machines-gen-${gen}`);
   if (!section) return;
   section.classList.add('is-open');
+  section.querySelector('.items-gen-header')?.setAttribute('aria-expanded', 'true');
   const body = section.querySelector('.items-gen-body');
   body?.removeAttribute('hidden');
   ensureSectionRendered(section);
@@ -360,8 +382,13 @@ function entryMatchesBase(entry) {
     || entry.typeLabel.includes(q);
 }
 
+function matchesVersion(entry, gen) {
+  const version = versionFilters.get(gen) || 'all';
+  return version === 'all' || entry.versionGroup === version;
+}
+
 function entryMatches(entry, gen) {
-  if (!entryMatchesBase(entry)) return false;
+  if (!entryMatchesBase(entry) || !matchesVersion(entry, gen)) return false;
   const typeFilter = getMachineTypeFilter(gen);
   return typeFilter === 'all' || entry.type === typeFilter;
 }
@@ -420,7 +447,7 @@ function renderGenSection(gen, items) {
   const hasFilter = sectionHasFilter(gen);
   const hidden = (searchQuery || kindFilter !== 'all') && !visibleItems.length;
   const defaultOpenGen = getDefaultOpenGen();
-  const defaultOpen = gen === defaultOpenGen && !searchQuery && kindFilter === 'all';
+  const defaultOpen = searchQuery || kindFilter !== 'all' ? visibleItems.length > 0 : gen === defaultOpenGen;
   const eagerRender = defaultOpen || Boolean(searchQuery) || kindFilter !== 'all' || getMachineTypeFilter(gen) !== 'all';
 
   return `<section class="items-gen-section machines-gen-section${defaultOpen ? ' is-open' : ''}${hidden ? ' is-hidden' : ''}" id="machines-gen-${gen}" data-gen="${gen}">
@@ -448,14 +475,7 @@ function renderSectionGrid(items, eagerRender, gen) {
 }
 
 function renderMachineSprite(entry) {
-  const icon = escapeHtml(entry.placeholderIcon || '💿');
-  if (entry.sprite) {
-    return `<img class="item-card-sprite" src="${escapeHtml(entry.sprite)}" alt="" loading="lazy" width="48" height="48" data-placeholder="${icon}">`;
-  }
-  if (entry.spriteFallback && entry.kind !== 'TR') {
-    return `<img class="item-card-sprite" src="${escapeHtml(entry.spriteFallback)}" alt="" loading="lazy" width="48" height="48" data-placeholder="${icon}">`;
-  }
-  return `<span class="item-card-sprite-placeholder" aria-hidden="true">${icon}</span>`;
+  return renderCatalogIcon(getMachineIcon(entry), `${entry.displayLabel}（${entry.typeLabel}）`);
 }
 
 function renderMachineCard(entry) {
@@ -465,30 +485,32 @@ function renderMachineCard(entry) {
   const englishRow = entry.hasChineseMoveName
     ? ''
     : `<div>英文名稱 ${escapeHtml(entry.moveNameEn)}</div>`;
-  const typeChip = `<span class="machine-card-type" style="background:${typeColor}">${escapeHtml(entry.typeLabel)}</span>`;
+  const typeChip = `<span class="machine-card-type">${escapeHtml(entry.typeLabel)}</span>`;
 
   return `<article class="item-card machine-card machine-card--kind-${kindClass} machine-card--type-${entry.type}"
-    tabindex="0" style="--machine-kind-accent:${kindColor};--machine-type-accent:${typeColor}" data-slug="${escapeHtml(entry.itemSlug)}">
+    tabindex="0" style="--machine-kind-accent:${kindColor};--machine-type-accent:${typeColor}" data-slug="${escapeHtml(entry.itemSlug)}" data-version-group="${escapeHtml(entry.versionGroup)}">
     <div class="item-card-sprite-wrap">
       ${renderMachineSprite(entry)}
     </div>
     <span class="machine-card-kind">${escapeHtml(entry.displayLabel)}</span>
     <div class="machine-card-move">${escapeHtml(entry.moveName)}</div>
     ${typeChip}
-    <p class="item-card-effect machine-card-effect">${escapeHtml(entry.moveEffect || '無繁中效果說明')}</p>
+    <p class="catalog-version-badge">${escapeHtml(getVersionGroupDisplayName(entry.versionGroup))}</p>
+    ${entry.effectLanguage ? `<p class="item-card-effect machine-card-effect">${escapeHtml(entry.moveEffect)}</p>` : ''}
     <button type="button" class="machine-card-filter-link"
+      data-version-group="${escapeHtml(entry.versionGroup)}"
       data-move-slug="${escapeHtml(entry.moveSlug)}"
       data-move-name="${escapeHtml(entry.moveName)}"
       data-display-label="${escapeHtml(entry.displayLabel)}"
-      data-type-label="${escapeHtml(entry.typeLabel)}">篩選圖鑑</button>
+      data-type-label="${escapeHtml(entry.typeLabel)}">查看此版本可學習寶可夢</button>
     <div class="machine-card-tip item-inline-detail" aria-hidden="true">
-      <div class="item-detail-section">
+      ${entry.effectLanguage ? `<div class="item-detail-section">
         <div class="item-detail-title">招式效果</div>
-        <p class="item-detail-effect">${escapeHtml(entry.moveEffect || '無繁中效果說明')}</p>
-      </div>
+        <p class="item-detail-effect">${escapeHtml(entry.moveEffect)}</p>
+      </div>` : ''}
       <div class="item-detail-meta">
         ${englishRow}
-        <div>${escapeHtml(entry.kindLabel)} · ${escapeHtml(entry.displayLabel)}</div>
+        <div>${escapeHtml(entry.displayLabel)}</div>
         <div>屬性 ${escapeHtml(entry.typeLabel)}</div>
       </div>
     </div>
@@ -515,18 +537,19 @@ function bindSectionToggles(root) {
 }
 
 function bindCardInteractions(container) {
-  container.querySelectorAll('.item-card-sprite[data-placeholder]').forEach((img) => {
-    img.addEventListener('error', () => {
-      const icon = img.dataset.placeholder || '💿';
-      const placeholder = document.createElement('span');
-      placeholder.className = 'item-card-sprite-placeholder';
-      placeholder.setAttribute('aria-hidden', 'true');
-      placeholder.textContent = icon;
-      img.replaceWith(placeholder);
-    }, { once: true });
-  });
+  bindCatalogIconFallbacks(container);
 
   container.querySelectorAll('.machine-card').forEach((card) => {
+    if (card.dataset.bound) return;
+    card.dataset.bound = 'true';
+    const syncDetailAccessibility = () => {
+      const visible = card.classList.contains('is-expanded') || card.matches(':focus-visible')
+        || (window.matchMedia('(hover: hover)').matches && card.matches(':hover'));
+      card.querySelector('.item-inline-detail')?.setAttribute('aria-hidden', String(!visible));
+    };
+    for (const event of ['mouseenter', 'mouseleave', 'focus', 'blur']) {
+      card.addEventListener(event, syncDetailAccessibility);
+    }
     card.addEventListener('click', (e) => {
       if (e.target.closest('.machine-card-filter-link')) return;
       if (window.matchMedia('(hover: hover)').matches) return;
@@ -561,8 +584,8 @@ function updateCount() {
   }
 
   const anyTypeFilter = [...Array(9)].some((_, i) => getMachineTypeFilter(i + 1) !== 'all');
-  if (!searchQuery && kindFilter === 'all' && !anyTypeFilter) {
-    el.textContent = `共 ${catalog.totalMachines} 項招式機 · 卡片 ${totalCards} 張（跨世代顯示）`;
+  if (!searchQuery && kindFilter === 'all' && !anyTypeFilter && ![...versionFilters.values()].some((v) => v !== 'all')) {
+    el.textContent = `共 ${catalog.totalMachines} 項招式機 · 卡片 ${totalCards} 張（逐遊戲版本列出）`;
   } else if (!visible) {
     el.textContent = '找不到符合的招式機';
   } else {

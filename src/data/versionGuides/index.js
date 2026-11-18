@@ -1,4 +1,5 @@
 import { GUIDE_VERSIONS } from './guideVersions.js';
+import { pokemmoGuide } from './pokemmo/index.js';
 import { redBlueGuide } from './gen1-red-blue.js';
 import { yellowGuide } from './gen1-yellow.js';
 import { fireredLeafgreenGuide } from './gen1-firered-leafgreen.js';
@@ -21,8 +22,37 @@ import { scarletVioletGuide } from './gen9-scarlet-violet.js';
 import { legendsArceusGuide } from './gen8-legends-arceus.js';
 import { VERSION_DLC_PLACEHOLDERS } from './versionDlc.js';
 
+import { goldSilverKantoExpansion, crystalKantoExpansion } from './gen2-kanto.js';
+import { diamondPearlBattleZoneExpansion } from './gen4-diamond-pearl-battle-zone.js';
+import { platinumDistortionWorldExpansion } from './gen4-platinum-distortion-world.js';
+import { platinumBattleFrontierExpansion } from './gen4-platinum-battle-frontier.js';
+import { heartgoldSoulsilverKantoExpansion } from './gen4-heartgold-soulsilver-kanto.js';
+import { omegaRubyAlphaSapphireDeltaEpisodeExpansion } from './gen6-omega-ruby-alpha-sapphire-delta-episode.js';
+import { ultraSunUltraMoonUltraWormholeExpansion } from './gen7-ultra-sun-ultra-moon-ultra-wormhole.js';
+import { brilliantDiamondShiningPearlBattleZoneExpansion } from './gen8-brilliant-diamond-shining-pearl-battle-zone.js';
+import { isleOfArmorExpansion } from './gen8-sword-shield-isle-of-armor.js';
+import { crownTundraExpansion } from './gen8-sword-shield-crown-tundra.js';
+import { tealMaskExpansion } from './gen9-scarlet-violet-teal-mask.js';
+import { indigoDiskExpansion } from './gen9-scarlet-violet-indigo-disk.js';
+import { scarletVioletStory } from './gen9-scarlet-violet-story.js';
+import { legendsZaGuide } from './gen9-legends-za.js';
+
+const ADDITIONAL_EXPANSIONS = {
+  'gold-silver': [goldSilverKantoExpansion],
+  crystal: [crystalKantoExpansion],
+  'diamond-pearl': [diamondPearlBattleZoneExpansion],
+  platinum: [platinumDistortionWorldExpansion, platinumBattleFrontierExpansion],
+  'heartgold-soulsilver': [heartgoldSoulsilverKantoExpansion],
+  'omega-ruby-alpha-sapphire': [omegaRubyAlphaSapphireDeltaEpisodeExpansion],
+  'ultra-sun-ultra-moon': [ultraSunUltraMoonUltraWormholeExpansion],
+  'brilliant-diamond-shining-pearl': [brilliantDiamondShiningPearlBattleZoneExpansion],
+  'sword-shield': [isleOfArmorExpansion, crownTundraExpansion],
+  'scarlet-violet': [tealMaskExpansion, indigoDiskExpansion],
+};
+
 /** @type {Record<string, object>} */
 const COMPLETE_GUIDES = {
+  pokemmo: pokemmoGuide,
   'red-blue': redBlueGuide,
   yellow: yellowGuide,
   'firered-leafgreen': fireredLeafgreenGuide,
@@ -41,7 +71,14 @@ const COMPLETE_GUIDES = {
   'ultra-sun-ultra-moon': ultraSunUltraMoonGuide,
   'sword-shield': swordShieldGuide,
   'brilliant-diamond-shining-pearl': brilliantDiamondShiningPearlGuide,
-  'scarlet-violet': scarletVioletGuide,
+  'scarlet-violet': {
+    ...scarletVioletGuide,
+    sections: [...(scarletVioletGuide.sections || []), ...scarletVioletStory.sections],
+    adventureBattles: scarletVioletStory.battles,
+    sources: [...(scarletVioletGuide.sources || []), ...(scarletVioletStory.sources || [])],
+    chapterNavigation: true,
+  },
+  'legends-za': { ...legendsZaGuide, chapterNavigation: true },
   'legends-arceus': legendsArceusGuide,
 };
 
@@ -49,7 +86,14 @@ function attachDlcPlaceholders(guide, versionId) {
   if (!guide) return null;
 
   const defaults = VERSION_DLC_PLACEHOLDERS[versionId] || [];
-  const existing = guide.expansions || [];
+  const authored = ADDITIONAL_EXPANSIONS[versionId] || [];
+  const authoredIds = new Set(authored.map((expansion) => expansion.id));
+  const existing = [
+    ...(guide.expansions || []).filter((expansion) => !authoredIds.has(expansion.id)),
+    ...authored,
+  ].map((expansion) => expansion.sources?.length
+    ? { ...expansion, chapterNavigation: true }
+    : expansion);
   const existingIds = new Set(existing.map((e) => e.id));
   const merged = [
     ...existing,
@@ -111,6 +155,8 @@ export function resolveBattle(battleRef, guide) {
   if (role === 'gym') return guide.gyms?.find((b) => b.order === order) ?? null;
   if (role === 'noble') return guide.nobles?.find((b) => b.order === order) ?? null;
   if (role === 'eliteFour') return guide.eliteFour?.find((b) => b.order === order) ?? null;
+  if (role === 'story') return guide.storyBattles?.find((b) => b.order === order) ?? null;
+  if (role === 'adventure') return guide.adventureBattles?.find((b) => b.order === order) ?? null;
   return null;
 }
 
@@ -118,6 +164,7 @@ export function resolveBattle(battleRef, guide) {
 export function getLeagueOpponents(guide) {
   const list = [];
   guide.eliteFour?.forEach((b) => list.push({ battle: b, battleRef: `eliteFour:${b.order}` }));
+  guide.storyBattles?.forEach((b) => list.push({ battle: b, battleRef: `story:${b.order}` }));
   if (guide.champion) list.push({ battle: guide.champion, battleRef: 'champion' });
   return list;
 }

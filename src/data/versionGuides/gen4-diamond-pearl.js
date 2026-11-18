@@ -1,326 +1,816 @@
-import { pm, rec, assertBattle, assertLeague } from './helpers.js';
+import { assertBattle, assertLeague } from './helpers.js';
 import { diamondPearlLeague } from './gen4-diamond-pearl-league.js';
 
 const gymRoark = {
-  order: 1,
-  role: 'gym',
-  name: '瓢太',
-  location: '黑金市',
-  badge: '煤炭徽章',
-  badgeType: 'rock',
-  party: [
-    pm('小拳石', ['rock', 'ground'], 12),
-    pm('大岩蛇', ['rock', 'ground'], 14),
+  "order": 1,
+  "role": "gym",
+  "name": "瓢太",
+  "location": "黑金市",
+  "badge": "煤炭徽章",
+  "badgeType": "rock",
+  "party": [
+    {
+      "name": "小拳石",
+      "types": [
+        "rock",
+        "ground"
+      ],
+      "level": 12
+    },
+    {
+      "name": "大岩蛇",
+      "types": [
+        "rock",
+        "ground"
+      ],
+      "level": 12
+    },
+    {
+      "name": "頭蓋龍",
+      "types": [
+        "rock"
+      ],
+      "level": 14
+    }
   ],
-  recommendedTeams: [
-    rec('水草開局隊', '草苗龜或波加曼對岩石效果絕佳；百代森林可抓泳圈鼬補水。建議等級 12 以上。', [
-      pm('草苗龜', ['grass']),
-      pm('波加曼', ['water']),
-      pm('泳圈鼬', ['water']),
-      pm('小貓怪', ['electric']),
-      pm('姆克兒', ['normal', 'flying']),
-    ]),
-    rec('格鬥補刀隊', '黑金炭坑可抓腕力，格鬥打岩石；小火焰猴早期學電光一閃補刀。', [
-      pm('波加曼', ['water']),
-      pm('小火焰猴', ['fire']),
-      pm('腕力', ['fighting']),
-      pm('小貓怪', ['electric']),
-      pm('頭蓋龍', ['rock']),
-    ]),
+  "recommendedTeams": [
+    {
+      "label": "可取得的主力與替代",
+      "reason": "依開局與已培養成員挑選，不需要全部收齊。",
+      "pokemon": [
+        {
+          "name": "含羞苞",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "obtain": "204號道路",
+          "moveNote": "吸取；毒屬性仍要留意對手攻擊"
+        },
+        {
+          "name": "猛火猴",
+          "types": [
+            "fire",
+            "fighting"
+          ],
+          "obtain": "小火焰猴Lv.14進化（選它開局）",
+          "moveNote": "音速拳"
+        },
+        {
+          "name": "波加曼",
+          "types": [
+            "water"
+          ],
+          "obtain": "選波加曼開局",
+          "moveNote": "泡沫或泡沫光線"
+        }
+      ]
+    }
   ],
+  "strategy": {
+    "level": "12～16",
+    "summary": "水、草或格鬥處理岩石，頭蓋龍攻擊高，不宜拖回合。",
+    "tips": [
+      "小火焰猴Lv.14進化猛火猴後學音速拳；岩石系不怕一般火招。"
+    ]
+  }
 };
 assertBattle(gymRoark);
 
 const gymGardenia = {
-  order: 2,
-  role: 'gym',
-  name: '菜種',
-  location: '百代市',
-  badge: '森林徽章',
-  badgeType: 'grass',
-  party: [
-    pm('草苗龜', ['grass'], 20),
-    pm('櫻花兒', ['grass'], 22),
-    pm('羅絲雷朵', ['grass', 'poison'], 24),
+  "order": 2,
+  "role": "gym",
+  "name": "菜種",
+  "location": "百代市",
+  "badge": "森林徽章",
+  "badgeType": "grass",
+  "party": [
+    {
+      "name": "櫻花寶",
+      "types": [
+        "grass"
+      ],
+      "level": 19
+    },
+    {
+      "name": "草苗龜",
+      "types": [
+        "grass"
+      ],
+      "level": 19
+    },
+    {
+      "name": "羅絲雷朵",
+      "types": [
+        "grass",
+        "poison"
+      ],
+      "level": 22
+    }
   ],
-  recommendedTeams: [
-    rec('火飛剋制隊', '小火焰猴進化猛火猴對草效果絕佳；姆克兒進化姆克鷹以飛行系補刀，可壓制羅絲雷朵。', [
-      pm('猛火猴', ['fire', 'fighting']),
-      pm('姆克兒', ['normal', 'flying']),
-      pm('小貓怪', ['electric']),
-      pm('波皇子', ['water']),
-      pm('頭蓋龍', ['rock']),
-    ]),
-    rec('毒系突破隊', '百代森林可抓不良蛙，毒系打草；飛行系姆克鷹穩定輸出。', [
-      pm('不良蛙', ['poison', 'fighting']),
-      pm('姆克鷹', ['normal', 'flying']),
-      pm('小火焰猴', ['fire']),
-      pm('波加曼', ['water']),
-      pm('勒克貓', ['electric']),
-    ]),
+  "recommendedTeams": [
+    {
+      "label": "可取得的主力與替代",
+      "reason": "依開局與已培養成員挑選，不需要全部收齊。",
+      "pokemon": [
+        {
+          "name": "姆克鳥",
+          "types": [
+            "normal",
+            "flying"
+          ],
+          "obtain": "姆克兒Lv.14進化",
+          "moveNote": "翅膀攻擊"
+        },
+        {
+          "name": "小火馬",
+          "types": [
+            "fire"
+          ],
+          "obtain": "211號道路西段（百代市東側草叢）",
+          "moveNote": "火花；此時不需要Lv.40烈焰馬"
+        }
+      ]
+    }
   ],
+  "strategy": {
+    "level": "20～24",
+    "summary": "火或飛行對草；羅絲雷朵速度快，準備解麻與解毒。",
+    "tips": [
+      "含羞苞與羅絲雷朵是草／毒；不是純草。"
+    ]
+  }
 };
 assertBattle(gymGardenia);
 
 const gymMaylene = {
-  order: 3,
-  role: 'gym',
-  name: '阿李',
-  location: '帷幕市',
-  badge: '帷幕徽章',
-  badgeType: 'fighting',
-  party: [
-    pm('瑪沙那', ['fighting', 'psychic'], 26),
-    pm('路卡利歐', ['fighting', 'steel'], 29),
+  "order": 3,
+  "role": "gym",
+  "name": "阿李",
+  "location": "帷幕市",
+  "badge": "帷幕徽章",
+  "badgeType": "fighting",
+  "party": [
+    {
+      "name": "瑪沙那",
+      "types": [
+        "fighting",
+        "psychic"
+      ],
+      "level": 27
+    },
+    {
+      "name": "豪力",
+      "types": [
+        "fighting"
+      ],
+      "level": 27
+    },
+    {
+      "name": "路卡利歐",
+      "types": [
+        "fighting",
+        "steel"
+      ],
+      "level": 30
+    }
   ],
-  recommendedTeams: [
-    rec('飛行超能隊', '姆克鷹飛行系對格鬥效果絕佳；蛋孵化利歐路進化路卡利歐可對拼。', [
-      pm('姆克鷹', ['normal', 'flying']),
-      pm('利歐路', ['fighting', 'steel']),
-      pm('波皇子', ['water']),
-      pm('勒克貓', ['electric']),
-      pm('草苗龜', ['grass']),
-    ]),
-    rec('超能剋制隊', '瑪沙那超能格鬥雙屬，惡系與鬼系效果佳；飛行系優先處理路卡利歐。', [
-      pm('姆克鷹', ['normal', 'flying']),
-      pm('勒克貓', ['electric']),
-      pm('波皇子', ['water']),
-      pm('猛火猴', ['fire', 'fighting']),
-      pm('無殼海兔', ['water']),
-    ]),
+  "recommendedTeams": [
+    {
+      "label": "可取得的主力與替代",
+      "reason": "依開局與已培養成員挑選，不需要全部收齊。",
+      "pokemon": [
+        {
+          "name": "姆克鷹",
+          "types": [
+            "normal",
+            "flying"
+          ],
+          "obtain": "姆克鳥Lv.34進化；尚未進化可用姆克鳥",
+          "moveNote": "翅膀攻擊；高於此關建議等級才是姆克鷹"
+        },
+        {
+          "name": "猛火猴",
+          "types": [
+            "fire",
+            "fighting"
+          ],
+          "obtain": "小火焰猴開局",
+          "moveNote": "火焰輪打路卡利歐；注意吸取拳回血"
+        }
+      ]
+    }
   ],
+  "strategy": {
+    "level": "28～32",
+    "summary": "飛行／超能力打格鬥；路卡利歐另有鋼屬性，改火或地面。",
+    "tips": [
+      "路卡利歐對飛行、超能力僅等倍；不要只靠剋制標籤。"
+    ]
+  }
 };
 assertBattle(gymMaylene);
 
 const gymWake = {
-  order: 4,
-  role: 'gym',
-  name: '吉憲',
-  location: '濱名市',
-  badge: '濕地徽章',
-  badgeType: 'water',
-  party: [
-    pm('暴鯉龍', ['water', 'flying'], 30),
-    pm('浮潛鼬', ['water'], 33),
-    pm('沼王', ['water', 'ground'], 33),
+  "order": 4,
+  "role": "gym",
+  "name": "吉憲",
+  "location": "濱名市",
+  "badge": "濕地徽章",
+  "badgeType": "water",
+  "party": [
+    {
+      "name": "暴鯉龍",
+      "types": [
+        "water",
+        "flying"
+      ],
+      "level": 27
+    },
+    {
+      "name": "沼王",
+      "types": [
+        "water",
+        "ground"
+      ],
+      "level": 27
+    },
+    {
+      "name": "浮潛鼬",
+      "types": [
+        "water"
+      ],
+      "level": 30
+    }
   ],
-  recommendedTeams: [
-    rec('草電雙剋隊', '草苗龜或羅絲雷朵草系打沼王與浮潛鼬；勒克貓打暴鯉龍。', [
-      pm('樹林龜', ['grass', 'ground']),
-      pm('勒克貓', ['electric']),
-      pm('姆克鷹', ['normal', 'flying']),
-      pm('猛火猴', ['fire', 'fighting']),
-      pm('無殼海兔', ['water']),
-    ]),
-    rec('電系核心隊', '小貓怪線電系穩定；草系補刀沼王地面屬性。', [
-      pm('勒克貓', ['electric']),
-      pm('草苗龜', ['grass']),
-      pm('姆克鷹', ['normal', 'flying']),
-      pm('波皇子', ['water']),
-      pm('利歐路', ['fighting', 'steel']),
-    ]),
+  "recommendedTeams": [
+    {
+      "label": "可取得的主力與替代",
+      "reason": "依開局與已培養成員挑選，不需要全部收齊。",
+      "pokemon": [
+        {
+          "name": "勒克貓",
+          "types": [
+            "electric"
+          ],
+          "obtain": "202號道路小貓怪Lv.15進化",
+          "moveNote": "電光；Lv.30再進化倫琴貓"
+        },
+        {
+          "name": "毒薔薇",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "obtain": "含羞苞白天高親密進化，或捕捉野生毒薔薇",
+          "moveNote": "草招打沼王4倍"
+        }
+      ]
+    }
   ],
+  "strategy": {
+    "level": "28～32",
+    "summary": "電招打暴鯉龍4倍；沼王免疫電，必須換草。",
+    "tips": [
+      "浮潛鼬有冰系攻擊，草系要留意血量。"
+    ]
+  }
 };
 assertBattle(gymWake);
 
 const gymFantina = {
-  order: 5,
-  role: 'gym',
-  name: '梅麗莎',
-  location: '緣之市',
-  badge: '幻覺徽章',
-  badgeType: 'ghost',
-  party: [
-    pm('夢妖魔', ['ghost'], 32),
-    pm('耿鬼', ['ghost', 'poison'], 34),
-    pm('隨風球', ['ghost', 'flying'], 36),
+  "order": 5,
+  "role": "gym",
+  "name": "梅麗莎",
+  "location": "緣之市",
+  "badge": "幻覺徽章",
+  "badgeType": "ghost",
+  "party": [
+    {
+      "name": "隨風球",
+      "types": [
+        "ghost",
+        "flying"
+      ],
+      "level": 32
+    },
+    {
+      "name": "耿鬼",
+      "types": [
+        "ghost",
+        "poison"
+      ],
+      "level": 34
+    },
+    {
+      "name": "夢妖魔",
+      "types": [
+        "ghost"
+      ],
+      "level": 36
+    }
   ],
-  recommendedTeams: [
-    rec('惡系剋制隊', '鬼系怕惡與鬼；姆克鷹飛行打夢妖魔，惡系或高威力招式破耿鬼。', [
-      pm('姆克鷹', ['normal', 'flying']),
-      pm('勒克貓', ['electric']),
-      pm('路卡利歐', ['fighting', 'steel']),
-      pm('樹林龜', ['grass', 'ground']),
-      pm('波皇子', ['water']),
-    ]),
-    rec('超能暗影隊', '利歐路波導彈打鬼系；電系補刀隨風球飛行屬性。', [
-      pm('利歐路', ['fighting', 'steel']),
-      pm('勒克貓', ['electric']),
-      pm('姆克鷹', ['normal', 'flying']),
-      pm('猛火猴', ['fire', 'fighting']),
-      pm('海兔獸', ['water', 'ground']),
-    ]),
+  "recommendedTeams": [
+    {
+      "label": "可取得的主力與替代",
+      "reason": "依開局與已培養成員挑選，不需要全部收齊。",
+      "pokemon": [
+        {
+          "name": "勒克貓",
+          "types": [
+            "electric"
+          ],
+          "obtain": "小貓怪Lv.15進化",
+          "moveNote": "咬住；別因電屬性就誤認電招剋幽靈"
+        },
+        {
+          "name": "暴鯉龍",
+          "types": [
+            "water",
+            "flying"
+          ],
+          "obtain": "舊釣竿釣鯉魚王後Lv.20進化",
+          "moveNote": "咬住；夢妖魔可能有電系覆蓋，需留意換場"
+        }
+      ]
+    }
   ],
+  "strategy": {
+    "level": "34～38",
+    "summary": "幽靈不受一般、格鬥攻擊；咬住等惡招可反制。",
+    "tips": [
+      "白金第3館為夜巡靈、鬼斯通、夢妖魔；鑽石／珍珠第5館則為隨風球、耿鬼、夢妖魔。",
+      "飄浮的鬼斯通／耿鬼／夢妖魔免疫地面，不能用地面剋毒一概處理。"
+    ]
+  }
 };
 assertBattle(gymFantina);
 
 const gymByron = {
-  order: 6,
-  role: 'gym',
-  name: '東瓜',
-  location: '水脈市',
-  badge: '礦山徽章',
-  badgeType: 'steel',
-  party: [
-    pm('三合一磁怪', ['electric', 'steel'], 37),
-    pm('大鋼蛇', ['steel', 'ground'], 38),
-    pm('護城龍', ['steel', 'rock'], 39),
+  "order": 6,
+  "role": "gym",
+  "name": "東瓜",
+  "location": "水脈市",
+  "badge": "礦山徽章",
+  "badgeType": "steel",
+  "party": [
+    {
+      "name": "銅鏡怪",
+      "types": [
+        "steel",
+        "psychic"
+      ],
+      "level": 36
+    },
+    {
+      "name": "大鋼蛇",
+      "types": [
+        "steel",
+        "ground"
+      ],
+      "level": 36
+    },
+    {
+      "name": "護城龍",
+      "types": [
+        "rock",
+        "steel"
+      ],
+      "level": 39
+    }
   ],
-  recommendedTeams: [
-    rec('火格鬥隊', '猛火猴或烈焰猴火系打鋼；路卡利歐格鬥穩定突破護城龍。', [
-      pm('猛火猴', ['fire', 'fighting']),
-      pm('路卡利歐', ['fighting', 'steel']),
-      pm('樹林龜', ['grass', 'ground']),
-      pm('勒克貓', ['electric']),
-      pm('姆克鷹', ['normal', 'flying']),
-    ]),
-    rec('地面水系隊', '樹林龜地震打三合一磁怪；海兔獸水地面雙屬扛傷反打。', [
-      pm('樹林龜', ['grass', 'ground']),
-      pm('海兔獸', ['water', 'ground']),
-      pm('勒克貓', ['electric']),
-      pm('姆克鷹', ['normal', 'flying']),
-      pm('烈焰猴', ['fire', 'fighting']),
-    ]),
+  "recommendedTeams": [
+    {
+      "label": "可取得的主力與替代",
+      "reason": "依開局與已培養成員挑選，不需要全部收齊。",
+      "pokemon": [
+        {
+          "name": "烈焰猴",
+          "types": [
+            "fire",
+            "fighting"
+          ],
+          "obtain": "猛火猴Lv.36進化（火開局）",
+          "moveNote": "火焰輪／近身戰；別用飛行招打鋼"
+        },
+        {
+          "name": "浮潛鼬",
+          "types": [
+            "water"
+          ],
+          "obtain": "泳圈鼬Lv.26進化",
+          "moveNote": "衝浪；打大鋼蛇與護城龍有效"
+        }
+      ]
+    }
   ],
+  "strategy": {
+    "level": "37～41",
+    "summary": "火、地面或格鬥打鋼；護城龍怕地面／格鬥4倍。",
+    "tips": [
+      "鑽石／珍珠的銅鏡怪有飄浮，地面無效；白金則換成三合一磁怪。"
+    ]
+  }
 };
 assertBattle(gymByron);
 
 const gymCandice = {
-  order: 7,
-  role: 'gym',
-  name: '小菘',
-  location: '雪峰市',
-  badge: '冰凍徽章',
-  badgeType: 'ice',
-  party: [
-    pm('雪笠怪', ['grass', 'ice'], 40),
-    pm('狃拉', ['dark', 'ice'], 40),
-    pm('長毛豬', ['ice', 'ground'], 42),
-    pm('暴雪王', ['grass', 'ice'], 44),
+  "order": 7,
+  "role": "gym",
+  "name": "小菘",
+  "location": "雪峰市",
+  "badge": "冰凍徽章",
+  "badgeType": "ice",
+  "party": [
+    {
+      "name": "雪笠怪",
+      "types": [
+        "grass",
+        "ice"
+      ],
+      "level": 38
+    },
+    {
+      "name": "狃拉",
+      "types": [
+        "dark",
+        "ice"
+      ],
+      "level": 38
+    },
+    {
+      "name": "恰雷姆",
+      "types": [
+        "fighting",
+        "psychic"
+      ],
+      "level": 40
+    },
+    {
+      "name": "暴雪王",
+      "types": [
+        "grass",
+        "ice"
+      ],
+      "level": 42
+    }
   ],
-  recommendedTeams: [
-    rec('火格鬥隊', '烈焰猴火系打冰效果絕佳；路卡利歐格鬥打暴雪王與狃拉。', [
-      pm('烈焰猴', ['fire', 'fighting']),
-      pm('路卡利歐', ['fighting', 'steel']),
-      pm('倫琴貓', ['electric']),
-      pm('姆克鷹', ['normal', 'flying']),
-      pm('海兔獸', ['water', 'ground']),
-    ]),
-    rec('鋼火雙剋隊', '帝王拿波鋼系抗冰並反打；烈焰猴處理雪笠怪草冰雙屬。', [
-      pm('帝王拿波', ['water', 'steel']),
-      pm('烈焰猴', ['fire', 'fighting']),
-      pm('倫琴貓', ['electric']),
-      pm('姆克鷹', ['normal', 'flying']),
-      pm('土台龜', ['grass', 'ground']),
-    ]),
+  "recommendedTeams": [
+    {
+      "label": "可取得的主力與替代",
+      "reason": "依開局與已培養成員挑選，不需要全部收齊。",
+      "pokemon": [
+        {
+          "name": "烈焰馬",
+          "types": [
+            "fire"
+          ],
+          "obtain": "小火馬Lv.40進化",
+          "moveNote": "火焰輪；白金雪妖女免疫格鬥，鋼招則有2倍效果"
+        },
+        {
+          "name": "烈焰猴",
+          "types": [
+            "fire",
+            "fighting"
+          ],
+          "obtain": "小火焰猴開局後進化",
+          "moveNote": "火焰輪；近身戰打非幽靈冰系"
+        }
+      ]
+    }
   ],
+  "strategy": {
+    "level": "40～44",
+    "summary": "火系主攻；暴雪王草／冰怕火4倍，留意冰雹。",
+    "tips": [
+      "鑽石／珍珠隊中恰雷姆不弱火；白金換成長毛豬與雪妖女。",
+      "冰系對草、地面有效，土台龜不宜留場。"
+    ]
+  }
 };
 assertBattle(gymCandice);
 
 const gymVolkner = {
-  order: 8,
-  role: 'gym',
-  name: '電次',
-  location: '濱海市',
-  badge: '電氣徽章',
-  badgeType: 'electric',
-  party: [
-    pm('雷伊布', ['electric'], 46),
-    pm('雷丘', ['electric'], 46),
-    pm('倫琴貓', ['electric'], 48),
-    pm('電擊魔獸', ['electric'], 50),
+  "order": 8,
+  "role": "gym",
+  "name": "電次",
+  "location": "濱海市",
+  "badge": "電氣徽章",
+  "badgeType": "electric",
+  "party": [
+    {
+      "name": "雷丘",
+      "types": [
+        "electric"
+      ],
+      "level": 46
+    },
+    {
+      "name": "雙尾怪手",
+      "types": [
+        "normal"
+      ],
+      "level": 47
+    },
+    {
+      "name": "章魚桶",
+      "types": [
+        "water"
+      ],
+      "level": 48
+    },
+    {
+      "name": "倫琴貓",
+      "types": [
+        "electric"
+      ],
+      "level": 49
+    }
   ],
-  recommendedTeams: [
-    rec('地面剋制隊', '土台龜或海兔獸地面系免疫電且效果絕佳；草系補刀雷伊布。', [
-      pm('土台龜', ['grass', 'ground']),
-      pm('海兔獸', ['water', 'ground']),
-      pm('烈焰猴', ['fire', 'fighting']),
-      pm('路卡利歐', ['fighting', 'steel']),
-      pm('姆克鷹', ['normal', 'flying']),
-    ]),
-    rec('地面主力隊', '樹林龜地震穩定輸出；路卡利歐近身戰補刀電擊魔獸。', [
-      pm('土台龜', ['grass', 'ground']),
-      pm('路卡利歐', ['fighting', 'steel']),
-      pm('帝王拿波', ['water', 'steel']),
-      pm('姆克鷹', ['normal', 'flying']),
-      pm('瑪狃拉', ['dark', 'ice']),
-    ]),
+  "recommendedTeams": [
+    {
+      "label": "可取得的主力與替代",
+      "reason": "依開局與已培養成員挑選，不需要全部收齊。",
+      "pokemon": [
+        {
+          "name": "河馬獸",
+          "types": [
+            "ground"
+          ],
+          "obtain": "214號道路等地的沙河馬Lv.34進化",
+          "moveNote": "地震；DP沙河馬在遺跡迷洞穴，白金也可在洞內找"
+        },
+        {
+          "name": "海兔獸",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "obtain": "海邊無殼海兔Lv.30進化",
+          "moveNote": "泥巴炸彈；地面屬性免疫電，草招會造成4倍傷害"
+        }
+      ]
+    }
   ],
+  "strategy": {
+    "level": "47～51",
+    "summary": "地面招打電系，並先判斷版本的非電系成員。",
+    "tips": [
+      "鑽石／珍珠有章魚桶與雙尾怪手；白金才是全電系。",
+      "不要讓水／飛行暴鯉龍扛電招；冰系覆蓋也會威脅土台龜。"
+    ]
+  }
 };
 assertBattle(gymVolkner);
 
 const eliteAaron = {
-  order: 1,
-  role: 'eliteFour',
-  name: '阿柳',
-  specialty: 'bug',
-  party: [
-    pm('毒粉蛾', ['bug', 'poison'], 49),
-    pm('狩獵鳳蝶', ['bug', 'flying'], 49),
-    pm('毒粉蛾', ['bug', 'poison'], 50),
-    pm('蜂女王', ['bug', 'flying'], 51),
-    pm('赫拉克羅斯', ['bug', 'fighting'], 53),
-  ],
+  "order": 1,
+  "role": "eliteFour",
+  "name": "阿柳",
+  "specialty": "bug",
+  "party": [
+    {
+      "name": "毒粉蛾",
+      "types": [
+        "bug",
+        "poison"
+      ],
+      "level": 53
+    },
+    {
+      "name": "赫拉克羅斯",
+      "types": [
+        "bug",
+        "fighting"
+      ],
+      "level": 54
+    },
+    {
+      "name": "蜂女王",
+      "types": [
+        "bug",
+        "flying"
+      ],
+      "level": 54
+    },
+    {
+      "name": "狩獵鳳蝶",
+      "types": [
+        "bug",
+        "flying"
+      ],
+      "level": 53
+    },
+    {
+      "name": "龍王蠍",
+      "types": [
+        "poison",
+        "dark"
+      ],
+      "level": 57
+    }
+  ]
 };
 assertBattle(eliteAaron);
 
 const eliteBertha = {
-  order: 2,
-  role: 'eliteFour',
-  name: '菊野',
-  specialty: 'ground',
-  party: [
-    pm('鯰魚王', ['water', 'ground'], 51),
-    pm('河馬獸', ['ground'], 52),
-    pm('隆隆岩', ['rock', 'ground'], 52),
-    pm('天蠍王', ['ground', 'flying'], 53),
-    pm('超甲狂犀', ['ground', 'rock'], 55),
-  ],
+  "order": 2,
+  "role": "eliteFour",
+  "name": "菊野",
+  "specialty": "ground",
+  "party": [
+    {
+      "name": "沼王",
+      "types": [
+        "water",
+        "ground"
+      ],
+      "level": 55
+    },
+    {
+      "name": "河馬獸",
+      "types": [
+        "ground"
+      ],
+      "level": 59
+    },
+    {
+      "name": "樹才怪",
+      "types": [
+        "rock"
+      ],
+      "level": 57
+    },
+    {
+      "name": "鯰魚王",
+      "types": [
+        "water",
+        "ground"
+      ],
+      "level": 55
+    },
+    {
+      "name": "隆隆岩",
+      "types": [
+        "rock",
+        "ground"
+      ],
+      "level": 56
+    }
+  ]
 };
 assertBattle(eliteBertha);
 
 const eliteFlint = {
-  order: 3,
-  role: 'eliteFour',
-  name: '大葉',
-  specialty: 'fire',
-  party: [
-    pm('黑魯加', ['dark', 'fire'], 55),
-    pm('火伊布', ['fire'], 55),
-    pm('烈焰馬', ['fire'], 56),
-    pm('鴨嘴炎獸', ['fire'], 57),
-    pm('烈焰猴', ['fire', 'fighting'], 57),
-  ],
+  "order": 3,
+  "role": "eliteFour",
+  "name": "大葉",
+  "specialty": "fire",
+  "party": [
+    {
+      "name": "烈焰馬",
+      "types": [
+        "fire"
+      ],
+      "level": 58
+    },
+    {
+      "name": "烈焰猴",
+      "types": [
+        "fire",
+        "fighting"
+      ],
+      "level": 61
+    },
+    {
+      "name": "大鋼蛇",
+      "types": [
+        "steel",
+        "ground"
+      ],
+      "level": 57
+    },
+    {
+      "name": "長耳兔",
+      "types": [
+        "normal"
+      ],
+      "level": 57
+    },
+    {
+      "name": "隨風球",
+      "types": [
+        "ghost",
+        "flying"
+      ],
+      "level": 58
+    }
+  ]
 };
 assertBattle(eliteFlint);
 
 const eliteLucian = {
-  order: 4,
-  role: 'eliteFour',
-  name: '悟松',
-  specialty: 'psychic',
-  party: [
-    pm('魔牆人偶', ['psychic'], 53),
-    pm('麒麟奇', ['normal', 'psychic'], 53),
-    pm('青銅鐘', ['steel', 'psychic'], 56),
-    pm('胡地', ['psychic'], 56),
-    pm('艾路雷朵', ['psychic', 'fighting'], 59),
-  ],
+  "order": 4,
+  "role": "eliteFour",
+  "name": "悟松",
+  "specialty": "psychic",
+  "party": [
+    {
+      "name": "魔牆人偶",
+      "types": [
+        "psychic"
+      ],
+      "level": 59
+    },
+    {
+      "name": "麒麟奇",
+      "types": [
+        "normal",
+        "psychic"
+      ],
+      "level": 59
+    },
+    {
+      "name": "恰雷姆",
+      "types": [
+        "fighting",
+        "psychic"
+      ],
+      "level": 60
+    },
+    {
+      "name": "胡地",
+      "types": [
+        "psychic"
+      ],
+      "level": 60
+    },
+    {
+      "name": "青銅鐘",
+      "types": [
+        "steel",
+        "psychic"
+      ],
+      "level": 63
+    }
+  ]
 };
 assertBattle(eliteLucian);
 
 const championCynthia = {
-  role: 'champion',
-  name: '竹蘭',
-  specialty: 'dragon',
-  party: [
-    pm('花岩怪', ['ghost', 'dark'], 58),
-    pm('羅絲雷朵', ['grass', 'poison'], 58),
-    pm('海兔獸', ['water', 'ground'], 58),
-    pm('路卡利歐', ['fighting', 'steel'], 60),
-    pm('美納斯', ['water'], 60),
-    pm('烈咬陸鯊', ['dragon', 'ground'], 62),
-  ],
+  "role": "champion",
+  "name": "竹蘭",
+  "specialty": "dragon",
+  "party": [
+    {
+      "name": "花岩怪",
+      "types": [
+        "ghost",
+        "dark"
+      ],
+      "level": 61
+    },
+    {
+      "name": "烈咬陸鯊",
+      "types": [
+        "dragon",
+        "ground"
+      ],
+      "level": 66
+    },
+    {
+      "name": "海兔獸",
+      "types": [
+        "water",
+        "ground"
+      ],
+      "level": 60
+    },
+    {
+      "name": "美納斯",
+      "types": [
+        "water"
+      ],
+      "level": 63
+    },
+    {
+      "name": "羅絲雷朵",
+      "types": [
+        "grass",
+        "poison"
+      ],
+      "level": 60
+    },
+    {
+      "name": "路卡利歐",
+      "types": [
+        "fighting",
+        "steel"
+      ],
+      "level": 63
+    }
+  ]
 };
 assertBattle(championCynthia);
 
@@ -332,7 +822,7 @@ export const diamondPearlGuide = {
   title: '寶可夢 鑽石／珍珠',
   displayGeneration: 4,
   status: 'complete',
-  notes: '鑽石版與珍珠版道館、四天王、冠軍隊伍相同。第 5 道館為梅麗莎、第 6 為東瓜。通關後戰鬥區為 DLC 書籤。',
+  notes: "NDS鑽石／珍珠首次主線；梅麗莎是第5館，竹蘭最高Lv.66。通關後戰鬥地區為遊戲內建內容，不是付費DLC。",
   gyms: [
     gymRoark,
     gymGardenia,

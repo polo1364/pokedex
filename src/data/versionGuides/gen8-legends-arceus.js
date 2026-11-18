@@ -8,128 +8,314 @@ import { daybreakExpansion } from './gen8-legends-arceus-daybreak.js';
 import { requestsExpansion } from './legends-arceus-requests/index.js';
 
 const nobleKleavor = {
-  order: 1,
-  role: 'noble',
-  name: '森林王 劈斧螳螂',
-  location: '黑曜原野／巨木戰場',
-  specialty: 'bug',
-  notes: '動作閃避＋丟鎮寶削槽。觀察衝刺，等撞樹硬直再投鎮寶；有空檔時派寶可夢戰鬥可大幅削減鎮撫槽。弱點：水、岩石、鋼。',
-  party: [pm('劈斧螳螂', ['bug', 'rock'], 30)],
-  recommendedTeams: [
-    rec('水系剋制', '泳圈鼬／浮潛鼬水系打岩石；小貓怪電系泛用。', [
-      pm('泳圈鼬', ['water']),
-      pm('小貓怪', ['electric']),
-      pm('小火馬', ['fire']),
-    ]),
+  "order": 1,
+  "role": "noble",
+  "name": "森林王 劈斧螳螂",
+  "location": "黑曜原野／巨木戰場",
+  "specialty": "bug",
+  "notes": "觀察衝刺並閃避，在撞樹硬直時投鎮寶。派寶可夢對戰獲勝可創造更好的投鎮寶時機；最後仍靠鎮寶完成鎮撫。劈斧螳螂 Lv.18，弱水、岩石、鋼。",
+  "party": [
+    {
+      "name": "劈斧螳螂",
+      "types": [
+        "bug",
+        "rock"
+      ],
+      "level": 18
+    }
   ],
+  "recommendedTeams": [
+    {
+      "label": "水系剋制",
+      "reason": "泳圈鼬／浮潛鼬水系打岩石；小貓怪電系泛用。",
+      "pokemon": [
+        {
+          "name": "泳圈鼬",
+          "types": [
+            "water"
+          ]
+        },
+        {
+          "name": "小貓怪",
+          "types": [
+            "electric"
+          ]
+        },
+        {
+          "name": "小火馬",
+          "types": [
+            "fire"
+          ]
+        }
+      ]
+    }
+  ]
 };
 assertBattle(nobleKleavor);
 
 const nobleLilligant = {
-  order: 2,
-  role: 'noble',
-  name: '峭壁女王 裙兒小姐',
-  location: '紅蓮濕地',
-  specialty: 'grass',
-  notes: '草／格鬥；弱飛行四倍、火、冰、毒、超能、妖精。不要貪丟鎮寶，等跳起落地硬直再投；戰鬥用飛行或火系。',
-  party: [pm('裙兒小姐', ['grass', 'fighting'], 35)],
-  recommendedTeams: [
-    rec('飛行四倍', '姆克鳥／姆克鷹飛行系四倍剋制；火暴獸／小火馬火系剋草。', [
-      pm('姆克兒', ['normal', 'flying']),
-      pm('火球鼠', ['fire']),
-      pm('勇基拉', ['psychic']),
-    ]),
+  "order": 2,
+  "role": "noble",
+  "name": "峭壁女王 裙兒小姐",
+  "location": "紅蓮濕地",
+  "specialty": "grass",
+  "notes": "草／格鬥；弱飛行四倍、火、冰、毒、超能、妖精。不要貪丟鎮寶，等跳起落地硬直再投；戰鬥用飛行或火系。",
+  "party": [
+    {
+      "name": "裙兒小姐",
+      "types": [
+        "grass",
+        "fighting"
+      ],
+      "level": 30
+    }
   ],
+  "recommendedTeams": [
+    {
+      "label": "飛行四倍",
+      "reason": "姆克鳥／姆克鷹飛行系四倍剋制；火暴獸／小火馬火系剋草。",
+      "pokemon": [
+        {
+          "name": "姆克兒",
+          "types": [
+            "normal",
+            "flying"
+          ]
+        },
+        {
+          "name": "火球鼠",
+          "types": [
+            "fire"
+          ]
+        },
+        {
+          "name": "勇吉拉",
+          "types": [
+            "psychic"
+          ]
+        }
+      ]
+    }
+  ]
 };
 assertBattle(nobleLilligant);
 
 const nobleArcanine = {
-  order: 3,
-  role: 'noble',
-  name: '島嶼王 風速狗',
-  location: '群青海岸／熔岩戰場',
-  specialty: 'fire',
-  notes: '火／岩石；弱水、地面四倍。不要站在火焰區，衝刺硬直後投鎮寶；戰鬥用水系或地面系。',
-  party: [pm('風速狗', ['fire', 'rock'], 40)],
-  recommendedTeams: [
-    rec('水地面雙剋', '海殼獸水／地面雙重剋制；浮潛鼬水系穩定。', [
-      pm('海殼獸', ['water', 'ground']),
-      pm('浮潛鼬', ['water']),
-      pm('鑽角犀獸', ['ground']),
-    ]),
+  "order": 3,
+  "role": "noble",
+  "name": "島嶼王 風速狗",
+  "location": "群青海岸／熔岩戰場",
+  "specialty": "fire",
+  "notes": "火／岩石；弱水、地面四倍。不要站在火焰區，衝刺硬直後投鎮寶；戰鬥用水系或地面系。",
+  "party": [
+    {
+      "name": "風速狗",
+      "types": [
+        "fire",
+        "rock"
+      ],
+      "level": 36
+    }
   ],
+  "recommendedTeams": [
+    {
+      "label": "水招或地面招",
+      "reason": "水、地面招對洗翠風速狗為 4 倍；無殼海兔進化海兔獸後為水／地面。",
+      "pokemon": [
+        {
+          "name": "海兔獸",
+          "types": [
+            "water",
+            "ground"
+          ]
+        },
+        {
+          "name": "浮潛鼬",
+          "types": [
+            "water"
+          ]
+        }
+      ]
+    }
+  ]
 };
 assertBattle(nobleArcanine);
 
 const nobleElectrode = {
-  order: 4,
-  role: 'noble',
-  name: '山道王 頑皮雷彈',
-  location: '天冠山麓／迎月戰場',
-  specialty: 'electric',
-  notes: '電／草；弱火、冰、毒、蟲。追蹤電球需持續移動；自爆後大空檔立刻投鎮寶或進戰鬥。',
-  party: [pm('頑皮雷彈', ['electric', 'grass'], 45)],
-  recommendedTeams: [
-    rec('火冰剋草', '火暴獸／烈焰馬火系；冰系寶可夢剋草。', [
-      pm('火暴獸', ['fire', 'ghost']),
-      pm('毒骷蛙', ['poison', 'fighting']),
-      pm('烈焰馬', ['fire']),
-    ]),
+  "order": 4,
+  "role": "noble",
+  "name": "山道王 頑皮雷彈",
+  "location": "天冠山麓／迎月戰場",
+  "specialty": "electric",
+  "notes": "電／草；弱火、冰、毒、蟲。追蹤電球需持續移動；自爆後大空檔立刻投鎮寶或進戰鬥。",
+  "party": [
+    {
+      "name": "頑皮雷彈",
+      "types": [
+        "electric",
+        "grass"
+      ],
+      "level": 46
+    }
   ],
+  "recommendedTeams": [
+    {
+      "label": "火冰剋草",
+      "reason": "火暴獸／烈焰馬火系；冰系寶可夢剋草。",
+      "pokemon": [
+        {
+          "name": "火暴獸",
+          "types": [
+            "fire",
+            "ghost"
+          ]
+        },
+        {
+          "name": "毒骷蛙",
+          "types": [
+            "poison",
+            "fighting"
+          ]
+        },
+        {
+          "name": "烈焰馬",
+          "types": [
+            "fire"
+          ]
+        }
+      ]
+    }
+  ]
 };
 assertBattle(nobleElectrode);
 
 const nobleAvalugg = {
-  order: 5,
-  role: 'noble',
-  name: '雪原王 冰岩怪',
-  location: '純白凍土',
-  specialty: 'ice',
-  notes: '冰／岩石；弱格鬥、鋼四倍。學會冰球與雷射節奏，橫移躲掃射；累了再派寶可夢戰鬥。',
-  party: [pm('冰岩怪', ['ice', 'rock'], 50)],
-  recommendedTeams: [
-    rec('格鬥鋼剋制', '路卡利歐格鬥／鋼皆有效；怪力格鬥四倍剋制。', [
-      pm('路卡利歐', ['fighting', 'steel']),
-      pm('怪力', ['fighting']),
-      pm('巨鉗螳螂', ['bug', 'steel']),
-    ]),
+  "order": 5,
+  "role": "noble",
+  "name": "雪原王 冰岩怪",
+  "location": "純白凍土",
+  "specialty": "ice",
+  "notes": "冰／岩石；弱格鬥、鋼四倍。學會冰球與雷射節奏，橫移躲掃射；累了再派寶可夢戰鬥。",
+  "party": [
+    {
+      "name": "冰岩怪",
+      "types": [
+        "ice",
+        "rock"
+      ],
+      "level": 56
+    }
   ],
+  "recommendedTeams": [
+    {
+      "label": "格鬥鋼剋制",
+      "reason": "路卡利歐格鬥／鋼皆有效；怪力格鬥四倍剋制。",
+      "pokemon": [
+        {
+          "name": "路卡利歐",
+          "types": [
+            "fighting",
+            "steel"
+          ]
+        },
+        {
+          "name": "怪力",
+          "types": [
+            "fighting"
+          ]
+        },
+        {
+          "name": "巨鉗螳螂",
+          "types": [
+            "bug",
+            "steel"
+          ]
+        }
+      ]
+    }
+  ]
 };
 assertBattle(nobleAvalugg);
 
 const dialga = {
-  order: 1,
-  role: 'legendary',
-  name: '帝牙盧卡',
-  location: '神奧神殿',
-  specialty: 'steel',
-  notes: '金剛隊路線先捕捉帝牙盧卡；珍珠隊則後期以特殊球取得。兩者最終都能取得，不必過度焦慮。',
-  party: [pm('帝牙盧卡', ['steel', 'dragon'], 50)],
-  recommendedTeams: [
-    rec('剋鋼龍', '格鬥、地面、火系打鋼；地面系打點穩定。', [
-      pm('海殼獸', ['water', 'ground']),
-      pm('路卡利歐', ['fighting', 'steel']),
-      pm('怪力', ['fighting']),
-    ]),
+  "order": 1,
+  "role": "legendary",
+  "name": "帝牙盧卡",
+  "location": "神奧神殿",
+  "specialty": "steel",
+  "notes": "選剛石同行會先捕捉 Lv.65 帝牙盧卡；選珠貝則先捕捉帕路奇亞，再以鎮寶對抗起源帝牙盧卡並用起源球完成劇情捕捉。兩隻最後都能取得。",
+  "party": [
+    {
+      "name": "帝牙盧卡",
+      "types": [
+        "steel",
+        "dragon"
+      ],
+      "level": 65
+    }
   ],
+  "recommendedTeams": [
+    {
+      "label": "格鬥／地面打點",
+      "reason": "帝牙盧卡鋼／龍弱格鬥、地面 2 倍；火招等倍。第一場要削血投球，第二場以動作閃避與鎮寶為主。",
+      "pokemon": [
+        {
+          "name": "海兔獸",
+          "types": [
+            "water",
+            "ground"
+          ]
+        },
+        {
+          "name": "怪力",
+          "types": [
+            "fighting"
+          ]
+        }
+      ]
+    }
+  ]
 };
 assertBattle(dialga);
 
 const palkia = {
-  order: 2,
-  role: 'legendary',
-  name: '帕路奇亞',
-  location: '神奧神殿',
-  specialty: 'water',
-  notes: '珍珠隊路線先捕捉帕路奇亞；金剛隊後期取得。時空裂縫事件後於三大湖取得紅色鎖鏈材料。',
-  party: [pm('帕路奇亞', ['water', 'dragon'], 50)],
-  recommendedTeams: [
-    rec('剋水龍', '草系、電系打水系；路卡利歐格鬥補刀。', [
-      pm('羅絲雷朵', ['grass', 'poison']),
-      pm('小貓怪', ['electric']),
-      pm('路卡利歐', ['fighting', 'steel']),
-    ]),
+  "order": 2,
+  "role": "legendary",
+  "name": "帕路奇亞",
+  "location": "神奧神殿",
+  "specialty": "water",
+  "notes": "選珠貝同行會先捕捉 Lv.65 帕路奇亞；選剛石則先捕捉帝牙盧卡，再以鎮寶對抗起源帕路奇亞並用起源球完成劇情捕捉。依同行人物決定先後，並非固定帝牙盧卡先。",
+  "party": [
+    {
+      "name": "帕路奇亞",
+      "types": [
+        "water",
+        "dragon"
+      ],
+      "level": 65
+    }
   ],
+  "recommendedTeams": [
+    {
+      "label": "妖精／龍打點",
+      "reason": "水／龍只弱妖精與龍 2 倍；草與電招都是等倍。龍系己方也要注意被龍招反擊。",
+      "pokemon": [
+        {
+          "name": "仙子伊布",
+          "types": [
+            "fairy"
+          ]
+        },
+        {
+          "name": "黏美龍",
+          "types": [
+            "steel",
+            "dragon"
+          ]
+        }
+      ]
+    }
+  ]
 };
 assertBattle(palkia);
 
@@ -141,7 +327,7 @@ export const legendsArceusGuide = {
   status: 'complete',
   notes: '本作目標為完成洗翠圖鑑、鎮撫王／女王寶可夢，最終與阿爾宙斯相遇。無道館與傳統聯盟，以五大原野調查與星級試驗推進主線。',
   gymSectionTitle: '主線傳說戰',
-  nobleSequenceMode: 'suggested',
+  nobleSequenceMode: 'fixed',
   leagueSectionTitle: '破關後連戰',
   usePrepLegend: true,
   legendHint: '移至標示詞可查看說明',
@@ -166,10 +352,10 @@ export const legendsArceusGuide = {
       title: '御三家推薦',
       variant: 'hisui',
       rows: [
-        { label: '水水獭', value: '最穩；前期水系好用，大劍鬼（水／惡）打點廣' },
+        { label: '水水獺', value: '最穩；前期水系好用，大劍鬼（水／惡）打點廣' },
         { label: '火球鼠', value: '泛用；火暴獸（火／幽靈）特攻輸出舒服' },
         { label: '木木梟', value: '稍吃操作；狙射樹梟（草／格鬥）打點特殊但弱點多' },
-        { label: '建議', value: '順通關選水水獭或火球鼠；木木梟需較熟悉屬性剋制' },
+        { label: '建議', value: '順通關選水水獺或火球鼠；木木梟需較熟悉屬性剋制' },
       ],
     },
     {
@@ -208,7 +394,7 @@ export const legendsArceusGuide = {
         { label: '迅疾', value: '威力下降，但可能更快再行動' },
         { label: '剛猛', value: '威力上升，但可能讓對手更快行動' },
         { label: '收掉殘血', value: '用迅疾' },
-        { label: '一擊必殺', value: '用剛猛' },
+        { label: '提高傷害', value: '剛猛提高威力，並非保證一擊擊倒；先看行動順序' },
         { label: '王／女王戰', value: '不要亂剛猛以免被連打' },
       ],
     },
@@ -216,10 +402,11 @@ export const legendsArceusGuide = {
 
   hmSectionTitle: '騎乘與探索能力',
   hms: [
-    { name: '月月熊', importance: '必帶', usage: '紅蓮濕地解鎖；可搜尋地下道具（泥炭塊等）' },
-    { name: '幽尾玄魚', importance: '必帶', usage: '群青海岸解鎖；水上移動' },
-    { name: '大狃拉', importance: '必帶', usage: '天冠山麓解鎖；攀爬峭壁' },
-    { name: '勇士雄鷹', importance: '必帶', usage: '純白凍土解鎖；滑翔，探索效率大增' },
+    { name: '詭角鹿', importance: '劇情解鎖', usage: '黑曜原野解鎖；陸地奔跑與跳躍。所有騎乘均不占隊伍格子。' },
+    { name: '月月熊', importance: '劇情解鎖', usage: '紅蓮濕地解鎖；可搜尋地下道具（泥炭塊等）' },
+    { name: '幽尾玄魚', importance: '劇情解鎖', usage: '群青海岸解鎖；水上移動' },
+    { name: '大狃拉', importance: '劇情解鎖', usage: '天冠山麓解鎖；攀爬峭壁' },
+    { name: '勇士雄鷹', importance: '劇情解鎖', usage: '純白凍土解鎖；滑翔，探索效率大增' },
   ],
 
   sections: [
@@ -278,7 +465,7 @@ export const legendsArceusGuide = {
         { name: '迎月戰場', content: '山道王頑皮雷彈' },
       ],
       flows: ['解鎖天冠山麓', '取得大狃拉', '鎮撫頑皮雷彈'],
-      tips: ['抓圓陸鯊、小磁怪、銅鏡怪', '時空歪曲常出稀有寶可夢'],
+      tips: ['抓圓陸鯊、銅鏡怪；小磁怪需在群青海岸的時空歪曲尋找', '時空歪曲常出稀有寶可夢'],
     },
     {
       type: 'island',
@@ -291,7 +478,7 @@ export const legendsArceusGuide = {
         { name: '酷寒荒地', content: '頭目多' },
       ],
       flows: ['解鎖純白凍土', '取得勇士雄鷹', '鎮撫冰岩怪'],
-      tips: ['抓狃拉、路卡利歐', '冰伊布可在冰岩塊進化'],
+      tips: ['抓狃拉、路卡利歐', '伊布可在冰山地下道的凍石附近進化成冰伊布，或直接使用冰之石'],
     },
     {
       type: 'island',
@@ -327,12 +514,12 @@ export const legendsArceusGuide = {
       title: '特殊進化條件',
       vertical: true,
       steps: [
-        '幽尾玄魚：野蠻鱸魚累積反作用傷害且不瀕死進化',
-        '大狃拉：洗翠狃拉白天持有銳利之爪進化（格鬥／毒）',
+        '幽尾玄魚：白條紋野蠻鱸魚累積至少294點反作用傷害且不瀕死後進化',
+        '大狃拉：白天對洗翠狃拉直接使用銳利之爪（本作沒有攜帶道具機制）',
         '月月熊：圈圈熊滿月夜晚使用泥炭塊',
         '劈斧螳螂：飛天螳螂使用黑奇石',
-        '洗翠黏美龍：黏美兒雨天達指定等級（鋼／龍）',
-        '詭角鹿：驚角鹿使用一定次數迅疾屏障猛攻',
+        '洗翠黏美龍：洗翠黏美兒Lv.50以上在雨天進化（鋼／龍）',
+        '詭角鹿：驚角鹿使用20次迅疾屏障猛攻後進化',
       ],
     },
     {
@@ -357,7 +544,7 @@ export const legendsArceusGuide = {
             { name: '御三家', reason: '主力輸出' },
             { name: '倫琴貓', reason: '電系，前後期皆可用' },
             { name: '姆克鷹', reason: '飛行打草／格鬥／蟲' },
-            { name: '海殼獸', reason: '水系補位' },
+            { name: '海兔獸', reason: '水系補位' },
             { name: '路卡利歐', reason: '格鬥／鋼，後期強' },
             { name: '黏美龍', reason: '後期耐久主力' },
           ],
@@ -382,7 +569,7 @@ export const legendsArceusGuide = {
         '黑曜：抓小貓怪、姆克兒、泳圈鼬→避開頭目烈焰馬→劈斧螳螂',
         '紅蓮：月月熊→抓玫瑰苞、不良蛙→裙兒小姐',
         '群青：幽尾玄魚→卡蒂狗、波加曼→風速狗',
-        '天冠：大狃拉→圓陸鯊、小磁怪→頑皮雷彈',
+        '天冠：大狃拉→圓陸鯊、銅鏡怪→頑皮雷彈',
         '純白：勇士雄鷹→路卡利歐、狃拉→冰岩怪→神殿主線',
       ],
     },
@@ -417,7 +604,7 @@ export const legendsArceusGuide = {
       title: '懶人通關路線',
       vertical: true,
       steps: [
-        '選御三家（水水獭或火球鼠）',
+        '選御三家（水水獺或火球鼠）',
         '黑曜補圖鑑→劈斧螳螂',
         '紅蓮月月熊→裙兒小姐',
         '群青幽尾玄魚→風速狗',
@@ -430,7 +617,7 @@ export const legendsArceusGuide = {
     {
       type: 'conclusion',
       title: '最重要結論',
-      body: '本作核心不是「練一隊打到底」，而是大量捕捉、補圖鑑、解鎖騎乘、擴大探索，最後完成必要圖鑑見阿爾宙斯。順通關：水水獭或火球鼠開局，前期抓小貓怪、姆克兒、泳圈鼬，中期補海殼獸、黏黏寶，後期路卡利歐、烈咬陸鯊、洗翠黏美龍；破關後備冰／惡／妖精打騎拉帝納。',
+      body: '本作核心不是「練一隊打到底」，而是大量捕捉、補圖鑑、解鎖騎乘、擴大探索，最後完成必要圖鑑見阿爾宙斯。順通關：水水獺或火球鼠開局，前期抓小貓怪、姆克兒、泳圈鼬，中期補海兔獸、黏黏寶，後期路卡利歐、烈咬陸鯊、洗翠黏美龍；破關後備冰／惡／妖精打騎拉帝納。',
     },
   ],
 

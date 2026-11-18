@@ -1,4 +1,6 @@
+import '../styles/pokemon-detail.css';
 import { MOVE_PAGE_SIZE, statNames, typeColors, typeNamesCN } from '../config.js';
+import { escapeHtml } from '../utils/infoCards.js';
 import { fetchJson, runPool } from '../api/client.js';
 import { store, toggleFavorite, getFavorites } from '../state/store.js';
 import { getChineseName, getLatestZhEntry, getGenerationFromSpecies } from '../utils/i18n.js';
@@ -40,6 +42,8 @@ function resetModalScroll() {
   modal.scrollTop = 0;
   const content = modal.querySelector('.modal-content');
   if (content) content.scrollTop = 0;
+  const body = modal.querySelector('.modal-body');
+  if (body) body.scrollTop = 0;
 }
 
 function scheduleResetModalScroll() {
@@ -85,14 +89,13 @@ export async function showDetail(id) {
   loadAbilities(pokemon, gen);
   loadVersions(pokemon, gen);
   loadHeldItems(pokemon, gen);
-  loadedTabs.add('moves');
-  loadMoves(pokemon, gen);
+  loadedTabs.add('overview');
   enrichFormSwitcher(pokemon, gen);
 }
 
 async function switchForm(pokemonId) {
   if (pokemonId === currentDetailId) return;
-  const activeTabName = document.querySelector('.tab.active')?.dataset.tab || 'moves';
+  const activeTabName = document.querySelector('#modal .tab.active')?.dataset.tab || 'overview';
 
   let pokemon;
   try {
@@ -103,7 +106,7 @@ async function switchForm(pokemonId) {
 
   currentDetailId = pokemon.id;
   currentPokemon = pokemon;
-  const gen = detailGeneration;
+  const gen = ++detailGeneration;
   loadedTabs = new Set();
   shinyMode = false;
 
@@ -112,23 +115,13 @@ async function switchForm(pokemonId) {
   loadAbilities(pokemon, gen);
   loadVersions(pokemon, gen);
   loadHeldItems(pokemon, gen);
-  if (activeTabName === 'moves') {
-    loadedTabs.add('moves');
-    loadMoves(pokemon, gen);
-  } else {
-    activateTab(activeTabName, gen, { force: true });
-  }
+  activateTab(activeTabName, gen, { force: true });
   updateFormSwitcherActive(pokemon.id);
-
-  const active = getVarietyButtonsSync(pokemon.speciesData, pokemon.id).find((b) => b.isActive);
-  if (active) {
-    const title = document.querySelector('.modal-name');
-    if (title) title.textContent = active.label;
-  }
+  enrichFormSwitcher(pokemon, gen);
 }
 function renderModalContent(pokemon, gen) {
   const formButtons = getVarietyButtonsSync(pokemon.speciesData, pokemon.id);
-  const displayName = formButtons.find((b) => b.isActive)?.label || pokemon.chineseName;
+  const displayName = pokemon.chineseName;
   renderModalHeader(pokemon, displayName);
   renderModalBody(pokemon, gen, formButtons, displayName);
 }
@@ -137,20 +130,25 @@ async function enrichFormSwitcher(pokemon, gen) {
   const varieties = pokemon.speciesData?.varieties || [];
   if (varieties.length <= 1) return;
 
-  const buttons = await getVarietyButtons(pokemon.speciesData, pokemon.id);
+  let buttons;
+  try {
+    buttons = await getVarietyButtons(pokemon.speciesData, pokemon.id);
+  } catch {
+    return; // Keep the immediately available form buttons when enrichment fails.
+  }
   if (gen !== detailGeneration) return;
 
   const switcher = document.getElementById('formSwitcher');
   if (!switcher) return;
 
   switcher.innerHTML = buttons.map((b) =>
-    `<button type="button" class="form-btn${b.isActive ? ' active' : ''}" data-pid="${b.pokemonId}">${b.label}</button>`
+    `<button type="button" class="form-btn${b.isActive ? ' active' : ''}" aria-pressed="${b.isActive}" data-pid="${b.pokemonId}">${escapeHtml(b.label)}</button>`
   ).join('');
   bindFormButtons();
 
   const active = buttons.find((b) => b.isActive);
   if (active) {
-    const title = document.querySelector('.modal-name');
+    const title = document.querySelector('#modal .modal-form-label');
     if (title) title.textContent = active.label;
   }
 }
@@ -158,6 +156,7 @@ async function enrichFormSwitcher(pokemon, gen) {
 function updateFormSwitcherActive(pokemonId) {
   document.querySelectorAll('.form-btn').forEach((btn) => {
     btn.classList.toggle('active', parseInt(btn.dataset.pid, 10) === pokemonId);
+    btn.setAttribute('aria-pressed', String(parseInt(btn.dataset.pid, 10) === pokemonId));
   });
 }
 
@@ -169,38 +168,54 @@ function bindFormButtons() {
   });
 }
 
+function typeBadgeStyle(type) {
+  const background = typeColors[type] || '#888888';
+  const channels = background.slice(1).match(/.{2}/g).map((hex) => {
+    const value = parseInt(hex, 16) / 255;
+    return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  });
+  const luminance = channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+  return `background:${background};color:${luminance > 0.179 ? '#000' : '#fff'}`;
+}
+
 function renderModalHeader(pokemon, displayName) {
   const favs = getFavorites();
   const isFav = favs.includes(pokemon.id);
   const name = displayName || pokemon.chineseName;
-  const primaryType = pokemon.types[0]?.type?.name || 'normal';
-  const accent = typeColors[primaryType] || '#888';
   const speciesMeta = renderSpeciesMetaHtml(pokemon.speciesData);
 
   document.getElementById('modalHeader').innerHTML = `
-    <div class="modal-id">#${pokemon.id.toString().padStart(4, '0')}</div>
-    <h2 class="modal-name">${name}</h2>
-    ${speciesMeta}
-    <div class="pokemon-types">
-      ${pokemon.types.map((t) => `<span class="type-badge" style="background:${typeColors[t.type.name]}">${typeNamesCN[t.type.name]}</span>`).join('')}
+    <div class="modal-identity">
+      <div class="modal-heading-line">
+        <span class="detail-pokeball" aria-hidden="true"></span>
+        <span class="modal-id">#${pokemon.id.toString().padStart(4, '0')}</span>
+        <h2 class="modal-name" id="pokemonDetailTitle">${escapeHtml(name)}</h2>
+        <span class="modal-english-name">${escapeHtml(pokemon.name)}</span>
+      </div>
+      <div class="modal-meta-line">
+        ${speciesMeta}
+        <div class="pokemon-types">
+          ${pokemon.types.map((t) => `<span class="type-badge" style="${typeBadgeStyle(t.type.name)}">${typeNamesCN[t.type.name]}</span>`).join('')}
+        </div>
+      </div>
     </div>
     <div class="modal-actions">
-      <button type="button" class="modal-action-btn" id="favoriteBtn" data-fav="${isFav}">${isFav ? '★ 已收藏' : '☆ 收藏'}</button>
-      <button type="button" class="modal-action-btn" id="shinyToggleBtn">✨ 閃光</button>
-      <button type="button" class="modal-action-btn" id="shareBtn">🔗 分享</button>
+      <button type="button" class="modal-action-btn" id="favoriteBtn" data-fav="${isFav}" aria-pressed="${isFav}">${isFav ? '★ 已收藏' : '☆ 收藏'}</button>
+      <button type="button" class="modal-action-btn" id="shinyToggleBtn" aria-pressed="false">✧ 閃光</button>
+      <button type="button" class="modal-action-btn" id="shareBtn">↗ 分享</button>
     </div>`;
-
-  const modalContent = document.querySelector('.modal-content');
-  if (modalContent) modalContent.style.setProperty('--modal-accent', accent);
 
   document.getElementById('favoriteBtn')?.addEventListener('click', () => {
     const list = toggleFavorite(pokemon.id);
     const btn = document.getElementById('favoriteBtn');
     const on = list.includes(pokemon.id);
     btn.textContent = on ? '★ 已收藏' : '☆ 收藏';
+    btn.dataset.fav = String(on);
+    btn.setAttribute('aria-pressed', String(on));
   });
   document.getElementById('shinyToggleBtn')?.addEventListener('click', () => {
     shinyMode = !shinyMode;
+    document.getElementById('shinyToggleBtn').setAttribute('aria-pressed', String(shinyMode));
     const img = document.querySelector('#modalMainImage');
     if (img) img.src = getPokemonImage(pokemon, { shiny: shinyMode });
   });
@@ -227,51 +242,66 @@ function renderModalBody(pokemon, gen, formButtons, displayName) {
   const genNum = getGenerationFromSpecies(pokemon.speciesData, store.generationMap) || '—';
   const img = getPokemonImage(pokemon, { shiny: shinyMode });
   const imgFallback = isUsingSpeciesImageFallback(pokemon);
-  const primaryType = pokemon.types[0]?.type?.name || 'normal';
-  const accent = typeColors[primaryType] || '#888';
+  const activeForm = formButtons.find((b) => b.isActive);
 
   document.getElementById('modalBody').innerHTML = `
-    ${formButtons.length ? `<div class="form-switcher" id="formSwitcher">${formButtons.map((b) =>
-      `<button type="button" class="form-btn${b.isActive ? ' active' : ''}" data-pid="${b.pokemonId}">${b.label}</button>`
-    ).join('')}</div>` : ''}
+    <nav class="tabs detail-tabs" aria-label="寶可夢介紹分頁">
+      ${[['overview', '總覽'], ['moves', '招式'], ['evolution', '進化'], ['typechart', '相剋'], ['encounters', '地點']].map(([key, label]) =>
+        `<button type="button" class="tab${key === 'overview' ? ' active' : ''}" data-tab="${key}" aria-pressed="${key === 'overview'}" aria-controls="${key}Tab">${label}</button>`
+      ).join('')}
+    </nav>
+    <div class="detail-content">
+    ${formButtons.length ? `<details class="detail-forms">
+      <summary>形態<span class="modal-form-label">${escapeHtml(activeForm?.label)}</span></summary>
+      <div class="form-switcher" id="formSwitcher">${formButtons.map((b) =>
+        `<button type="button" class="form-btn${b.isActive ? ' active' : ''}" aria-pressed="${b.isActive}" data-pid="${b.pokemonId}">${escapeHtml(b.label)}</button>`
+      ).join('')}</div>
+    </details>` : ''}
+    <div class="tab-content active" id="overviewTab">
     <div class="detail-grid">
       <div class="detail-section detail-section--profile">
-        <div class="modal-hero" style="--modal-accent: ${accent}">
-          <img id="modalMainImage" class="modal-hero-img${imgFallback ? ' form-img-fallback' : ''}" src="${img}" alt="${displayName}">
+        <div class="modal-hero">
+          <img id="modalMainImage" class="modal-hero-img${imgFallback ? ' form-img-fallback' : ''}" src="${img}" alt="${escapeHtml(displayName)}">
         </div>
         ${imgFallback ? '<p class="form-img-hint">此形態暫無獨立圖像，顯示預設外觀參考</p>' : ''}
-        ${renderFlavorHtml(flavor)}
         ${renderBasicInfoGrid(pokemon, genNum)}
+        ${renderFlavorHtml(flavor)}
       </div>
+      <div class="detail-combat">
       <div class="detail-section detail-section--stats">
         <h3 class="section-title">種族值</h3>
         ${pokemon.stats.map((s) => `
-          <div class="stat-item">
+          <div class="stat-item" data-stat="${escapeHtml(s.stat.name)}">
             <div class="stat-header"><span class="stat-name">${statNames[s.stat.name]}</span><span class="stat-number">${s.base_stat}</span></div>
             <div class="stat-bar-container"><div class="stat-bar-fill" style="width:${(s.base_stat / maxStat) * 100}%"></div></div>
           </div>`).join('')}
-        <div class="stat-total"><span>總和</span><span style="color:var(--accent-primary)">${totalStats}</span></div>
+        <div class="stat-total"><span>總和</span><span>${totalStats}</span></div>
+      </div>
+      <div class="detail-section detail-abilities"><h3 class="section-title">特性</h3><div id="abilitiesSection">載入中...</div></div>
       </div>
     </div>
-    ${renderBreedingSectionHtml(pokemon.speciesData)}
-    ${renderEcologySectionHtml(pokemon.speciesData)}
-    ${renderPokedexNumbersHtml(pokemon.speciesData)}
-    <div class="detail-panel detail-section"><h3 class="section-title">特性</h3><div id="abilitiesSection">載入中...</div></div>
-    <div class="detail-panel detail-section"><h3 class="section-title">出現版本</h3><div id="versionsSection">載入中...</div></div>
-    <div class="detail-panel modal-tabs-wrap">
-      <div class="tabs">
-        <button type="button" class="tab active" data-tab="moves">可學習招式</button>
-        <button type="button" class="tab" data-tab="evolution">進化鏈</button>
-        <button type="button" class="tab" data-tab="typechart">屬性相剋</button>
-        <button type="button" class="tab" data-tab="encounters">遇敵地點</button>
+    <details class="detail-disclosure">
+      <summary>生態與繁殖<span class="detail-summary-hint">培育・棲息地・持有道具</span></summary>
+      <div class="detail-disclosure-body">
+        ${renderBreedingSectionHtml(pokemon.speciesData)}
+        ${renderEcologySectionHtml(pokemon.speciesData)}
       </div>
-      <div class="tab-content active" id="movesTab"><div id="movesList"><p class="tab-hint">載入招式中...</p></div></div>
-      <div class="tab-content" id="evolutionTab"><div id="evolutionChain"><p class="tab-hint">切換至此分頁載入進化鏈</p></div></div>
-      <div class="tab-content" id="typechartTab"><div id="typeChartSection"></div></div>
-      <div class="tab-content" id="encountersTab"><div id="encountersList"><p class="tab-hint">切換至此分頁載入遇敵地點</p></div></div>
+    </details>
+    <details class="detail-disclosure">
+      <summary>出現版本與圖鑑<span class="detail-summary-hint">登場作品・各地區編號</span></summary>
+      <div class="detail-disclosure-body">
+        <div class="detail-panel detail-section"><h3 class="section-title">出現版本</h3><div id="versionsSection">載入中...</div></div>
+        ${renderPokedexNumbersHtml(pokemon.speciesData)}
+      </div>
+    </details>
+    </div>
+      <div class="tab-content" id="movesTab" hidden><h3 class="section-title">可學習招式</h3><div id="movesList"><p class="tab-hint">載入招式中...</p></div></div>
+      <div class="tab-content" id="evolutionTab" hidden><h3 class="section-title">進化鏈</h3><div id="evolutionChain"><p class="tab-hint">切換至此分頁載入進化鏈</p></div></div>
+      <div class="tab-content" id="typechartTab" hidden><h3 class="section-title">屬性相剋</h3><div id="typeChartSection"></div></div>
+      <div class="tab-content" id="encountersTab" hidden><h3 class="section-title">遇敵地點</h3><div id="encountersList"><p class="tab-hint">切換至此分頁載入遇敵地點</p></div></div>
     </div>`;
 
-  document.querySelectorAll('.tab').forEach((tab) => {
+  document.querySelectorAll('#modal .tab').forEach((tab) => {
     tab.addEventListener('click', (e) => switchTab(e.currentTarget.dataset.tab, e.currentTarget, detailGeneration));
   });
 
@@ -280,16 +310,22 @@ function renderModalBody(pokemon, gen, formButtons, displayName) {
 }
 
 function activateTab(tabName, gen, options = {}) {
-  const tabEl = document.querySelector(`.tab[data-tab="${tabName}"]`)
-    || document.querySelector('.tab[data-tab="moves"]');
+  const tabEl = document.querySelector(`#modal .tab[data-tab="${tabName}"]`)
+    || document.querySelector('#modal .tab[data-tab="overview"]');
   if (tabEl) switchTab(tabEl.dataset.tab, tabEl, gen, options);
 }
 
 function switchTab(tabName, tabEl, gen, { force = false } = {}) {
-  document.querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach((t) => t.classList.remove('active'));
-  tabEl.classList.add('active');
-  document.getElementById(`${tabName}Tab`).classList.add('active');
+  document.getElementById('modalBody').scrollTop = 0;
+  document.querySelectorAll('#modal .tab').forEach((t) => {
+    t.classList.toggle('active', t === tabEl);
+    t.setAttribute('aria-pressed', String(t === tabEl));
+  });
+  document.querySelectorAll('#modal .tab-content').forEach((panel) => {
+    const active = panel.id === `${tabName}Tab`;
+    panel.classList.toggle('active', active);
+    panel.hidden = !active;
+  });
 
   if (!currentPokemon || gen !== detailGeneration) return;
   if (!force && loadedTabs.has(tabName)) return;
@@ -311,7 +347,7 @@ async function loadAbilities(pokemon, gen) {
       const data = await fetchJson(a.ability.url, `ability_${a.ability.name}`);
       const desc = getLatestZhEntry(data.flavor_text_entries);
       return `<div class="ability-item${a.is_hidden ? ' ability-item--hidden' : ''}">
-        <div class="ability-name">${getChineseName(data.names)}${a.is_hidden ? '<span class="ability-hidden">隱藏</span>' : ''}</div>
+        <div class="ability-name">${escapeHtml(getChineseName(data.names))}<span class="${a.is_hidden ? 'ability-hidden' : 'ability-standard'}">${a.is_hidden ? '隱藏特性' : '一般特性'}</span></div>
         ${desc ? `<div class="ability-description">${desc.flavor_text.replace(/\n/g, '')}</div>` : ''}
       </div>`;
     }));
@@ -405,11 +441,10 @@ async function loadMoves(pokemon, gen) {
       return `<div class="moves-category"><h4 class="category-title">${label} (${moves.length})</h4>
         <div class="moves-grid">${list.map((move) => {
           const typeLabel = typeNamesCN[move.type] || move.type;
-          const typeBg = typeColors[move.type] || '#666';
           return `<div class="move-item">
             <div class="move-info">
               <span class="move-name">${move.name}</span>
-              ${move.type ? `<span class="type-badge move-type" style="background:${typeBg}">${typeLabel}</span>` : ''}
+              ${move.type ? `<span class="type-badge move-type" style="${typeBadgeStyle(move.type)}">${typeLabel}</span>` : ''}
             </div>
             ${move.level > 0 ? `<span class="move-level">${move.level}級</span>` : ''}
           </div>`;
