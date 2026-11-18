@@ -66,6 +66,67 @@ with sync_playwright() as playwright:
                     page.screenshot(path=str(OUT/f'{key}-{width}.png'),full_page=True)
                 results.append({'width':width,'version':version,'map':key,'status':'PASS'})
         assert not errors,errors
+        # Map interaction: whole map first, zoom controls, drag, on-map place card, centring.
+        for version,key in [('gold-silver','gold-silver'),('scarlet-violet','paldea')]:
+            page.goto(f'{BASE}/atlas/index.html?version={version}&map={key}')
+            page.wait_for_selector('.location')
+            vp=page.locator('#viewport')
+            fits=lambda: vp.evaluate('v=>v.scrollWidth<=v.clientWidth+1&&v.scrollHeight<=v.clientHeight+2')
+            assert fits(),(width,key,'default view must show the whole map')
+            expect(page.locator('#zoom-out')).to_be_disabled()
+            expect(page.locator('#zoom-level')).to_have_text('100%')
+            expect(page.locator('#place-card')).to_be_hidden()
+            hit=page.locator('.location .hit').first.evaluate('n=>n.getBoundingClientRect().width')
+            assert hit>=30,(width,key,'touch target too small',hit)
+            fit_width=page.locator('#canvas').evaluate('n=>n.getBoundingClientRect().width')
+            page.locator('#zoom-in').click()
+            zoomed=page.locator('#canvas').evaluate('n=>n.getBoundingClientRect().width')
+            assert zoomed>fit_width*1.3,(width,key,'zoom in',fit_width,zoomed)
+            expect(page.locator('#zoom-out')).to_be_enabled()
+            assert not fits(),(width,key,'zoomed map should be pannable')
+            assert_readable(page,(width,key,'zoom-in'))
+            # Ctrl+wheel zooms further around the pointer
+            box=vp.bounding_box()
+            page.mouse.move(box['x']+box['width']/2,box['y']+box['height']/2)
+            page.keyboard.down('Control');page.mouse.wheel(0,-300);page.keyboard.up('Control')
+            page.wait_for_function('w=>document.querySelector("#canvas").getBoundingClientRect().width>w*1.2',arg=zoomed)
+            page.wait_for_timeout(250)
+            assert_readable(page,(width,key,'wheel zoom'))
+            if width>1000:
+                before=vp.evaluate('v=>[v.scrollLeft,v.scrollTop]')
+                selected_before=page.locator('#place-name').text_content()
+                page.mouse.move(box['x']+box['width']*.6,box['y']+box['height']*.6);page.mouse.down()
+                page.mouse.move(box['x']+box['width']*.4,box['y']+box['height']*.4,steps=6);page.mouse.up()
+                after=vp.evaluate('v=>[v.scrollLeft,v.scrollTop]')
+                assert after!=before,(width,key,'drag did not pan',before,after)
+                assert page.locator('#place-name').text_content()==selected_before,(width,key,'drag must not select a place')
+            # Choosing a place opens the on-map card and brings its marker into view
+            target=DATA['maps'][key]['locations'][-1]
+            page.select_option('#place-select',target['id'])
+            expect(page.locator('#place-card')).to_be_visible()
+            expect(page.locator('#card-name')).to_have_text(target['name'])
+            page.wait_for_timeout(700)
+            inside=page.evaluate("""id=>{const n=[...document.querySelectorAll('#map [data-id]')].find(x=>x.dataset.id===id).querySelector('.anchor').getBoundingClientRect();const v=document.querySelector('#viewport').getBoundingClientRect();return n.left>=v.left-1&&n.right<=v.right+1&&n.top>=v.top-1&&n.bottom<=v.bottom+1;}""",target['id'])
+            assert inside,(width,key,'selected place not scrolled into view')
+            page.locator('#place-card-close').click()
+            expect(page.locator('#place-card')).to_be_hidden()
+            vp.focus();page.keyboard.press('0')
+            assert fits(),(width,key,'0 key returns to whole map')
+            # Dense maps can stack markers; whichever marker is on top at that point wins.
+            page.locator('.location .anchor').first.click(force=True)
+            expect(page.locator('#place-card')).to_be_visible()
+            expect(page.locator('#card-name')).to_have_text(page.locator('#place-name').text_content())
+            page.locator('#soft').uncheck()
+            assert page.locator('#map').get_attribute('class')!='soft'
+            assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,key,'page overflow after interaction')
+        assert not errors,errors
+        # Embedded atlas sizes its iframe to the content: no inner page scrollbar, no dead space.
+        page.goto(f'{BASE}/guide.html?version=gold-silver')
+        frame=page.locator('iframe.guide-atlas-frame');frame.scroll_into_view_if_needed()
+        inner=page.frame_locator('iframe.guide-atlas-frame');inner.locator('.location').first.wait_for()
+        page.wait_for_function("""()=>{const f=document.querySelector('iframe.guide-atlas-frame');const b=f.contentDocument.body.getBoundingClientRect().height;return Math.abs(f.getBoundingClientRect().height-b)<=6;}""")
+        assert inner.locator('#viewport').evaluate('v=>v.scrollWidth<=v.clientWidth+1&&v.scrollHeight<=v.clientHeight+2'),(width,'embedded map must fit')
+        assert frame.get_attribute('allow')=='fullscreen'
         # Integration: guide pages keep the atlas and the existing battle cards.
         for version in DATA['versionMaps']:
             page.goto(f'{BASE}/guide.html?version={version}')
@@ -131,4 +192,4 @@ with sync_playwright() as playwright:
     assert page.locator('#map [data-connection]').count()==7
     browser.close()
 (OUT/'browser-results.json').write_text(json.dumps(results,ensure_ascii=False,indent=2),encoding='utf-8')
-print(f'PASS: {len(results)} atlas views, {integrations} guide integrations, 8 guide/expansion links, Z-A selection, and offline preview')
+print(f'PASS: {len(results)} atlas views, map interaction (fit, zoom, wheel, drag, card, centring), auto-sized embed, {integrations} guide integrations, 8 guide/expansion links, Z-A selection, and offline preview')

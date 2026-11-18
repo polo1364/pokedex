@@ -1220,7 +1220,52 @@ function appendExpansionMap(container, expansion, versionId) {
   bindGuideMapTooltips(section);
 }
 
+let atlasMessagingBound = false;
+
+/**
+ * 內嵌地圖與攻略頁的溝通：
+ * - 地圖回報內容高度，iframe 剛好包住，不會出現雙重捲軸或大片空白
+ * - 攻略頁告知視窗高度，地圖據此決定可視範圍，整張圖能在一個畫面內看完
+ */
+function bindAtlasMessaging() {
+  if (atlasMessagingBound) return;
+  atlasMessagingBound = true;
+  const frames = () => [...document.querySelectorAll('iframe.guide-atlas-frame')];
+  const sendHost = (frame) => {
+    frame.contentWindow?.postMessage({ type: 'atlas:host', height: window.innerHeight }, location.origin);
+  };
+  window.addEventListener('message', (e) => {
+    if (e.origin !== location.origin) return;
+    const frame = frames().find((f) => f.contentWindow === e.source);
+    if (!frame) return;
+    if (e.data?.type === 'atlas:ready') {
+      // 載入後短時間內回報的高度視為「預設狀態」的高度，記下來供下次直接套用
+      frame.dataset.settleUntil = String(Date.now() + 1500);
+      sendHost(frame);
+    } else if (e.data?.type === 'atlas:height') {
+      const height = Number(e.data.height);
+      if (Number.isFinite(height) && height > 200 && height < 6000) {
+        // 使用者正在看地圖下方的內容時（例如由地圖連結跳到某章節），
+        // 地圖高度改變不可把眼前的內容擠走：依位移量補償捲動位置。
+        const before = frame.getBoundingClientRect().bottom;
+        frame.style.height = `${Math.ceil(height) + 2}px`;
+        const shift = frame.getBoundingClientRect().bottom - before;
+        if (shift && before < window.innerHeight * 0.25) {
+          window.scrollBy({ top: shift, behavior: 'instant' });
+        }
+        if (frame.dataset.heightKey && Date.now() < Number(frame.dataset.settleUntil || 0)) {
+          try {
+            sessionStorage.setItem(frame.dataset.heightKey, frame.style.height);
+          } catch { /* 無法儲存時只是少了這項最佳化 */ }
+        }
+      }
+    }
+  });
+  window.addEventListener('resize', () => frames().forEach(sendHost));
+}
+
 function appendAtlasMap(container, versionId, mapId = '') {
+  bindAtlasMessaging();
   const section = document.createElement('section');
   section.className = 'guide-region-map guide-region-map--wide';
   section.setAttribute('aria-label', '分版地區地圖');
@@ -1231,6 +1276,14 @@ function appendAtlasMap(container, versionId, mapId = '') {
   const frame = document.createElement('iframe');
   frame.className = 'guide-atlas-frame';
   frame.title = '可搜尋與放大的地區地圖';
+  frame.allow = 'fullscreen';
+  // 地圖是延遲載入的：重新整理到頁面深處時它可能還沒載入。
+  // 先套用上次量到的高度，版面才會與瀏覽器要還原的捲動位置一致。
+  frame.dataset.heightKey = `pokedex_atlas_height:${versionId}:${mapId || 'default'}:${window.innerWidth}`;
+  try {
+    const saved = sessionStorage.getItem(frame.dataset.heightKey);
+    if (/^\d{3,4}px$/.test(saved || '')) frame.style.height = saved;
+  } catch { /* 忽略 */ }
   frame.src = url.href;
   frame.loading = 'lazy';
   section.appendChild(frame);

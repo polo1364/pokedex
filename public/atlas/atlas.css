@@ -6,3 +6,85 @@
 
 .legend,#place-en,#map-note,footer,body.embedded footer,.map-hint{font-size:14px}
 @media(max-width:650px){.details p{font-size:16px}header>a{font-size:14px}}
+
+/* ===== 地圖操作：拖曳、縮放控制、全螢幕、地點說明卡 ===== */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+nav{row-gap:10px}
+.nav-group{display:inline-flex;align-items:center;flex-wrap:wrap;gap:10px}
+.place-finder input{width:210px;max-width:100%}
+.place-finder select{max-width:200px}
+
+.map-stage{position:relative}
+.viewport{touch-action:pan-x pan-y;overscroll-behavior:contain;cursor:default}
+.viewport.pannable{cursor:grab}
+.viewport.dragging{cursor:grabbing;user-select:none}
+.viewport.dragging .location{cursor:grabbing}
+.viewport:focus-visible{outline:3px solid #f7d378;outline-offset:2px}
+
+.map-controls{position:absolute;top:12px;left:12px;z-index:3;display:flex;flex-direction:column;align-items:center;gap:6px}
+.map-controls button{width:44px;height:44px;min-height:44px;padding:0;font-size:22px;line-height:1;font-weight:700;background:#1d3539f2;border-color:#9bb8ab;box-shadow:0 4px 14px #0007}
+.map-controls button:hover:not(:disabled){background:#3b615d}
+.map-controls button:disabled{opacity:.45;cursor:not-allowed}
+.map-controls button[aria-pressed="true"]{background:#edc46f;color:#22302f;border-color:#fff4dd}
+.zoom-level{min-width:44px;padding:3px 6px;border-radius:6px;background:#1d3539e6;border:1px solid #5d7c72;color:#e7efe6;font-size:12px;text-align:center;font-variant-numeric:tabular-nums}
+
+.place-card{position:absolute;left:12px;bottom:12px;z-index:4;width:min(380px,calc(100% - 24px));max-height:min(62%,420px);overflow:auto;padding:16px 44px 16px 18px;border:1px solid #9bb8ab;border-radius:12px;background:#132a2ef5;box-shadow:0 12px 36px #000a}
+.place-card[hidden]{display:none}
+.place-card h2{font-size:20px;margin:2px 0 4px}
+.place-card p{font-size:15px;margin:4px 0}
+.place-card #card-en{font-size:13px;letter-spacing:.5px;color:#b6c9bd}
+.place-card ul{margin:8px 0;padding-left:20px;font-size:15px;line-height:1.75}
+.place-card ul:empty{display:none}
+.place-card #card-link{display:inline-block;margin-top:8px;padding:8px 12px;border:1px solid #edc46f;border-radius:8px;text-decoration:none;font-weight:700}
+.place-card #card-link:hover{background:#edc46f;color:#22302f}
+.place-card-close{position:absolute;top:8px;right:8px;width:36px;height:36px;min-height:36px;padding:0;font-size:20px;line-height:1;border-color:transparent;background:transparent}
+.place-card-close:hover{background:#3b615d}
+
+/* 選到的地點閃一下，方便在地圖上找到 */
+@keyframes place-pulse{0%{stroke-width:3;filter:drop-shadow(0 0 0 #fff)}35%{stroke-width:16;filter:drop-shadow(0 0 18px #fff)}100%{stroke-width:8;filter:drop-shadow(0 0 7px #fff)}}
+.location.pulse .anchor,.location.pulse rect{animation:place-pulse .9s ease-out 2}
+@media(prefers-reduced-motion:reduce){.location.pulse .anchor,.location.pulse rect{animation:none}}
+
+/* 柔和底圖：降低原始地形的飽和度與亮度，讓地名與標記更醒目 */
+#map.soft image{filter:saturate(.7) brightness(.78) contrast(.96)}
+
+/* 嵌在攻略頁：精簡標題，地圖高度依外層視窗決定 */
+body.embedded header{padding:12px 28px 2px}
+body.embedded header .eyebrow{display:none}
+body.embedded h1{font-size:21px;margin:0 0 2px}
+body.embedded #version-note{margin:0;font-size:14px}
+body.embedded nav{padding-top:8px;padding-bottom:12px}
+body.embedded .viewport{max-height:clamp(340px,calc(var(--host-height,900px) - 210px),820px)}
+body.embedded main{padding-bottom:10px}
+
+/* 全螢幕 */
+.map-stage:fullscreen{background:#172f34;display:flex;align-items:center;justify-content:center}
+.map-stage:fullscreen .viewport{width:100vw;height:100vh;max-height:100vh;border:0;border-radius:0;display:flex;align-items:flex-start}
+.map-stage:fullscreen #canvas{margin:auto}
+
+@media(max-width:650px){
+  .place-finder{flex:1 1 100%}
+  .place-finder input,.place-finder select{width:100%;max-width:none;flex:1}
+  .map-controls{top:8px;left:8px}
+  .place-card{left:8px;right:8px;bottom:8px;width:auto;max-height:52%;padding:14px 42px 14px 14px}
+  body.embedded header{padding:10px 13px 2px}
+  body.embedded .viewport{max-height:clamp(300px,calc(var(--host-height,800px) - 250px),640px)}
+}
+
+.map-controls button{font-size:26px;font-family:system-ui,sans-serif}
+.map-controls #fullscreen{font-size:20px}
+.details #map-note,.details #scope{font-size:14px;margin:0 0 8px}
+
+/* 小螢幕：縮放按鈕改排在地圖下方，不遮住地圖；全螢幕時才浮在地圖上 */
+@media(max-width:650px){
+  .map-stage:not(:fullscreen) .map-controls{position:static;flex-direction:row;justify-content:flex-start;gap:8px;margin-top:8px}
+  .map-stage:not(:fullscreen) .map-controls button{box-shadow:none}
+  .map-stage:not(:fullscreen) .zoom-level{margin-left:auto;padding:6px 10px;font-size:14px}
+
+}
+
+/* 小螢幕：說明卡放在地圖下方，不蓋住剛選到的地點；全螢幕時才浮在地圖底部 */
+@media(max-width:650px){
+  .map-stage:not(:fullscreen) .place-card{position:relative;left:auto;right:auto;bottom:auto;width:auto;max-height:none;margin-top:8px;box-shadow:none}
+  .map-stage:fullscreen .place-card{max-height:42%}
+}

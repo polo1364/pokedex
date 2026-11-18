@@ -3,24 +3,48 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>寶可夢・分版地圖集</title>
-<link rel="stylesheet" href="atlas.css">
+<link rel="stylesheet" href="atlas.css?v=map-ux-1">
 </head>
 <body>
 <header><div><p class="eyebrow">POKÉDEX · REGIONAL ATLAS</p><h1 id="title">分版地圖集</h1><p id="version-note">依世代探索各地區</p></div><a id="guide-link" href="../guide.html" target="_top">返回攻略 ↗</a></header>
 <nav aria-label="地圖工具">
 <label id="version-control">版本 <select id="version" aria-label="選擇遊戲版本"></select></label>
 <label>地區 <select id="region" aria-label="選擇地區"></select></label>
-<button id="fit" type="button">完整地圖</button><button id="zoom" type="button">放大閱讀</button>
+<label class="place-finder">找地點 <input id="search" type="search" placeholder="輸入中文或英文地名" aria-label="搜尋地點" autocomplete="off"></label>
+<label class="place-finder"><span class="sr">快速選擇</span><select id="place-select" aria-label="選擇地點"></select></label>
+<span class="nav-group">
+<button id="fit" type="button" title="顯示整張地圖（0）">完整地圖</button><button id="zoom" type="button" title="放大到所有地名都清楚的大小">放大閱讀</button>
+</span>
+<span class="nav-group">
 <label class="check"><input type="checkbox" id="landmarks" checked>其他地點</label>
 <label class="check"><input type="checkbox" id="all-labels">全部地名</label>
+<label class="check"><input type="checkbox" id="soft" checked>柔和底圖</label>
+</span>
 </nav>
 <main>
 <p id="projection" class="map-hint" hidden></p>
-<div class="viewport" id="viewport" tabindex="0" aria-label="可捲動地圖"><div id="canvas"><svg id="map" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="地區地圖"></svg></div></div>
-<p class="map-hint">預設以清晰字級顯示，可左右、上下捲動。「完整地圖」查看全貌；密集地點可從下方搜尋。</p>
+<div class="map-stage" id="stage">
+<div class="viewport" id="viewport" tabindex="0" aria-label="地圖：可拖曳移動，按加減號縮放"><div id="canvas"><svg id="map" class="soft" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="地區地圖"></svg></div></div>
+<div class="map-controls" role="group" aria-label="地圖縮放">
+<button id="zoom-in" type="button" aria-label="放大" title="放大（+）">+</button>
+<button id="zoom-out" type="button" aria-label="縮小" title="縮小（−）">−</button>
+<button id="fullscreen" type="button" aria-label="全螢幕" title="全螢幕" aria-pressed="false">⛶</button>
+<span id="zoom-level" class="zoom-level" aria-live="polite">100%</span>
+</div>
+<aside class="place-card" id="place-card" aria-label="地點說明" hidden>
+<button id="place-card-close" type="button" class="place-card-close" aria-label="關閉地點說明">×</button>
+<p class="eyebrow" id="card-kind"></p>
+<h2 id="card-name"></h2>
+<p id="card-en"></p>
+<p id="card-detail"></p>
+<ul id="card-places"></ul>
+<a id="card-link" hidden target="_top">查看對應攻略 ↗</a>
+</aside>
+</div>
+<p class="map-hint" id="map-help">點地點看說明；拖曳可移動地圖。按 ＋／－、雙擊或 Ctrl＋滾輪縮放，手機可用兩指縮放。</p>
 <div class="legend"><span><i class="gym"></i>道館／試煉依屬性分色</span><span><i class="land"></i>陸路</span><span><i class="water"></i>水道</span><span><i class="poi"></i>其他地點</span><span id="counts"></span></div>
-<div class="details"><section aria-live="polite"><p class="eyebrow" id="place-kind">地點資訊</p><h2 id="place-name">點選地圖上的地點</h2><p id="place-en"></p><p id="place-detail"></p><ul id="places"></ul><a id="battle-link" hidden target="_top">查看對應攻略 ↗</a></section><section><label for="search">搜尋地點</label><input id="search" type="search" placeholder="輸入中文或英文地名"><label for="place-select">快速選擇</label><select id="place-select" aria-label="選擇地點"></select><p id="map-note"></p></section></div>
-<footer><p id="scope"></p><p>地區圖保留來源地形與比例，重製分色標記與互動圖層；第一世代沿用已確認的插畫。異空間另以連接示意呈現，地區總覽不等同室內導航。</p><a id="source" target="_blank" rel="noopener noreferrer">查看本圖核對來源 ↗</a></footer>
+<div class="details"><section aria-live="polite"><p class="eyebrow" id="place-kind">地點資訊</p><h2 id="place-name">點選地圖上的地點</h2><p id="place-en"></p><p id="place-detail"></p><ul id="places"></ul><a id="battle-link" hidden target="_top">查看對應攻略 ↗</a></section><section><p id="map-note"></p><p id="scope"></p></section></div>
+<footer><p>地區圖保留來源地形與比例，重製分色標記與互動圖層；第一世代沿用已確認的插畫。異空間另以連接示意呈現，地區總覽不等同室內導航。</p><a id="source" target="_blank" rel="noopener noreferrer">查看本圖核對來源 ↗</a></footer>
 </main>
-<script src="atlas.js?v=pokemmo-1"></script>
+<script src="atlas.js?v=map-ux-1"></script>
 </body></html>
