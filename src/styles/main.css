@@ -7046,3 +7046,50 @@
         transition: none;
       }
     }
+
+
+    /* ==== 網格顯示形態 ==== */
+    .form-badge {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.6;
+      white-space: nowrap;
+    }
+
+    .pokemon-card .form-badge {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      z-index: 2;
+    }
+
+    .list-name .form-badge {
+      margin-left: 8px;
+      vertical-align: 2px;
+    }
+
+    .form-badge--mega { background: rgba(255, 0, 110, 0.25); color: #ff9cc6; }
+    .form-badge--regional { background: rgba(63, 185, 80, 0.25); color: #9be9a8; }
+    .form-badge--gmax { background: rgba(255, 90, 60, 0.28); color: #ffb3a3; }
+    .form-badge--other { background: rgba(131, 56, 236, 0.28); color: #d2b8ff; }
+
+    .pokemon-card--form {
+      border-style: dashed;
+    }
+
+    .forms-select:disabled {
+      opacity: 0.5;
+    }
+
+    /* 形態名稱較長（如「穿山鼠（阿羅拉的樣子）」），允許換成兩行 */
+    .pokemon-card--form .pokemon-name {
+      white-space: normal;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      line-height: 1.35;
+      font-size: var(--font-md);
+    }

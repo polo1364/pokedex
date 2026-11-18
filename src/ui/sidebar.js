@@ -181,6 +181,8 @@ export function syncFilterControls() {
   document.querySelectorAll('.view-btn').forEach((b) => {
     b.classList.toggle('active', b.dataset.view === store.viewMode);
   });
+  const formsSelect = document.getElementById('formsSelect');
+  if (formsSelect) formsSelect.value = store.currentFilters.forms || 'none';
   syncAdvancedControls();
 }
 

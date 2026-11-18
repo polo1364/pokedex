@@ -36,7 +36,7 @@ test('writes only non-default values and keeps unrelated params', () => {
 });
 
 test('round-trips state through the URL', () => {
-  const state = { gen: '9', type: 'dragon', q: 'mr mime', fav: false, sort: 'capture_rate', view: 'list', adv: DEFAULT_URL_STATE.adv };
+  const state = { gen: '9', type: 'dragon', q: 'mr mime', fav: false, sort: 'capture_rate', view: 'list', adv: DEFAULT_URL_STATE.adv, forms: 'mega' };
   const href = buildUrlWithState(BASE, state);
   assert.deepEqual({ ...DEFAULT_URL_STATE, ...readUrlState(new URL(href).search) }, state);
 });
@@ -63,4 +63,12 @@ test('editing a search replaces history; starting, clearing and other changes pu
   assert.equal(urlChangeKind(`${BASE}?q=pi`, `${BASE}?q=pika`), 'replace');
   assert.equal(urlChangeKind(`${BASE}?q=pi`, `${BASE}?q=pi&gen=1`), 'push');
   assert.equal(urlChangeKind(`${BASE}?sort=hp`, BASE), 'push');
+});
+
+test('forms mode is written only when shown and validated on read', () => {
+  const href = buildUrlWithState(BASE, { ...DEFAULT_URL_STATE, forms: 'regional' });
+  assert.equal(new URL(href).search, '?forms=regional');
+  assert.equal(readUrlState('?forms=regional').forms, 'regional');
+  assert.equal(readUrlState('?forms=shiny').forms, undefined);
+  assert.equal(new URL(buildUrlWithState(href, DEFAULT_URL_STATE)).search, '');
 });

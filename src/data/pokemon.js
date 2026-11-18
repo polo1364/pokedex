@@ -4,7 +4,8 @@ import { store } from '../state/store.js';
 import { getChineseName } from '../utils/i18n.js';
 import { getPokemonImage } from '../utils/sprites.js';
 import { initFilterMeta } from '../utils/filterMeta.js';
-import { entryFromSummary, entryVarietyIds } from '../utils/entrySummary.js';
+import { entryFromSummary, entryVarietyIds, entryFromForm } from '../utils/entrySummary.js';
+import { getFormLabelByPokemonId } from '../utils/forms.js';
 
 const PREBUILT_INDEX_URL = './data/species-index.json';
 
@@ -16,6 +17,13 @@ async function loadPrebuiltIndex() {
     const data = await res.json();
     if (!Array.isArray(data?.entries) || !data.entries.length) return null;
     store.abilityNames = data.abilityNames || {};
+    const speciesById = new Map(data.entries.map((s) => [s.id, s]));
+    store.formEntries = (data.forms || []).flatMap((form) => {
+      const species = speciesById.get(form.sp);
+      if (!species) return [];
+      const label = form.fz ? '' : getFormLabelByPokemonId(form.id, form.n, species.n);
+      return [entryFromForm(form, species, BASE_URL, label && label !== form.n ? label : '')];
+    });
     return data.entries.map((summary) => entryFromSummary(summary, BASE_URL));
   } catch {
     return null;

@@ -159,9 +159,28 @@ with sync_playwright() as p:
     expect(page.locator('#advAbilityHint')).to_contain_text('找不到')
     page.locator('#advReset').click()
     expect(cards).to_have_count(1025)
+    # 網格顯示形態：超級進化排在物種之後、地區形態用自己的屬性、計數含形態、網址還原
+    page.goto(f'{BASE}/?forms=mega&gen=1&sort=id')
+    expect(page.locator('#formsSelect')).to_have_value('mega')
+    mega_x = page.locator('.pokemon-card[data-id="10034"]')
+    expect(mega_x.locator('.pokemon-name')).to_have_text('超級噴火龍Ｘ')
+    expect(mega_x.locator('.pokemon-id')).to_have_text('#0006')
+    expect(mega_x.locator('.form-badge')).to_have_text('超級進化')
+    ids = page.locator('.pokemon-card').evaluate_all('cards => cards.slice(6, 10).map(c => c.dataset.id)')
+    assert ids == ['6', '10034', '10035', '7'], ids
+    page.locator('#formsSelect').select_option('regional')
+    page.locator('#searchBox').fill('六尾')
+    expect(cards).to_have_count(2)
+    expect(page.locator('.pokemon-card--form .type-badge')).to_have_text(['冰'])
+    page.locator('#searchBox').fill('')
+    page.locator('#genFilters [data-gen="all"]').click()
+    page.locator('#formsSelect').select_option('all')
+    expect(page.locator('#statCount')).to_contain_text('1351')
+    page.locator('#formsSelect').select_option('none')
+    expect(cards).to_have_count(1025)
     species_requests = [u for u in api_requests if '/pokemon-species' in u]
     assert not species_requests, f'Prebuilt index still fetched species: {species_requests[:3]}'
     assert not errors, errors
-    print('PASS prebuilt index: 1025 cards, filters, sort, English search, URL state, back button and advanced filters with PokeAPI blocked')
+    print('PASS prebuilt index: 1025 cards, filters, sort, English search, URL state, back button, advanced filters and forms with PokeAPI blocked')
     context.close()
     browser.close()

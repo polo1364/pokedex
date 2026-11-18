@@ -60,6 +60,9 @@ function scheduleResetModalScroll() {
 }
 
 function findSpeciesEntry(id) {
+  // 顯示形態時，形態本身也是首頁清單的條目（上一隻／下一隻要以它定位）
+  const formEntry = (store.formEntries || []).find((e) => e.id === id);
+  if (formEntry && store.filteredPokemon?.includes(formEntry)) return formEntry;
   return store.speciesIndex.find((e) => e.id === id || e.speciesId === id)
     || store.speciesIndex.find((e) => entryVarietyIds(e).includes(id));
 }
@@ -89,7 +92,7 @@ function navButtonHtml(entry, direction) {
       direction === 'prev' ? arrowHtml : ''}<span class="modal-nav-text">${label}</span>${direction === 'next' ? arrowHtml : ''}</button>`;
   }
   const name = escapeHtml(entry.chineseName || entry.name);
-  const num = `#${String(entry.id).padStart(4, '0')}`;
+  const num = `#${String(entry.dexNumber ?? entry.id).padStart(4, '0')}`;
   const key = direction === 'prev' ? '←' : '→';
   return `<button type="button" class="modal-nav-btn modal-nav-btn--${direction}" data-nav="${direction}"
     aria-label="${label}：${num} ${name}" title="${label}（${key}）">${

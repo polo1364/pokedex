@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {
+  entryFromForm, formDisplayName,
   entryFromSummary, entryGeneration, entryTypes, entryStat, entryTotalStats,
   entryHeight, entryWeight, entryCaptureRate, entryVarietyIds,
 } from '../src/utils/entrySummary.js';
@@ -40,4 +41,33 @@ test('full PokéAPI data takes precedence over the summary once loaded', () => {
   assert.equal(entryGeneration(entry), 7);
   assert.equal(entryCaptureRate(entry), 3);
   assert.equal(entryHeight(entry), 1);
+});
+
+test('forms in the index become their own entries with species-level generation', () => {
+  assert.equal(index.version, 3);
+  assert.ok(index.forms.length >= 300);
+  const species = new Map(index.entries.map((e) => [e.id, e]));
+  assert.ok(index.forms.every((f) => species.has(f.sp) && f.t.length && f.s.length === 6 && ['mega', 'regional', 'gmax', 'other'].includes(f.k)));
+
+  const megaX = index.forms.find((f) => f.n === 'charizard-mega-x');
+  const entry = entryFromForm(megaX, species.get(6), 'https://pokeapi.co/api/v2');
+  assert.equal(entry.chineseName, '超級噴火龍Ｘ');
+  assert.equal(entry.dexNumber, 6);
+  assert.equal(entry.id, 10034);
+  assert.equal(entry.pokemonUrl, 'https://pokeapi.co/api/v2/pokemon/10034/');
+  assert.deepEqual(entryTypes(entry), ['fire', 'dragon']);
+  assert.equal(entryGeneration(entry), 1, 'generation follows the species');
+  assert.equal(entryTotalStats(entry), 634);
+
+  const alolan = index.forms.find((f) => f.n === 'vulpix-alola');
+  assert.equal(alolan.k, 'regional');
+  assert.deepEqual(alolan.t, ['ice']);
+  assert.equal(index.forms.find((f) => f.n === 'charizard-gmax').k, 'gmax');
+});
+
+test('form names fall back to species name plus a label', () => {
+  assert.equal(formDisplayName('噴火龍', '超級噴火龍Ｘ', ''), '超級噴火龍Ｘ');
+  assert.equal(formDisplayName('六尾', '阿羅拉的樣子', ''), '六尾（阿羅拉的樣子）');
+  assert.equal(formDisplayName('噴火龍', null, '超極巨化'), '噴火龍（超極巨化）');
+  assert.equal(formDisplayName('噴火龍', null, ''), '噴火龍');
 });

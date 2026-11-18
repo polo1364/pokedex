@@ -9,7 +9,7 @@ export function matchesSearch(entry, rawQuery) {
   const digits = q.replace(/^#/, '');
   if (/^\d+$/.test(digits)) {
     const n = digits.replace(/^0+(?=\d)/, '');
-    return entry.id.toString().includes(n);
+    return String(entry.dexNumber ?? entry.id).includes(n);
   }
   return false;
 }

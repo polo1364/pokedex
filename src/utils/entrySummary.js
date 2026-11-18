@@ -85,3 +85,50 @@ export function entryEggGroups(entry) {
   if (entry?.speciesData?.egg_groups) return entry.speciesData.egg_groups.map((g) => g.name);
   return entry?.summary?.eg ?? null;
 }
+
+export const FORM_KINDS = ['mega', 'regional', 'gmax', 'other'];
+export const FORM_KIND_LABELS = {
+  mega: '超級進化', regional: '地區形態', gmax: '超極巨化', other: '其他形態',
+};
+export const FORM_MODES = ['none', 'all', ...FORM_KINDS];
+
+/**
+ * 形態顯示名稱：官方繁中形態名已含寶可夢名時直接使用（如「超級噴火龍Ｘ」），
+ * 否則組成「寶可夢名（形態）」。
+ */
+export function formDisplayName(speciesName, officialFormName, fallbackLabel) {
+  if (officialFormName) {
+    return officialFormName.includes(speciesName) ? officialFormName : `${speciesName}（${officialFormName}）`;
+  }
+  return fallbackLabel ? `${speciesName}（${fallbackLabel}）` : speciesName;
+}
+
+/**
+ * 由預建索引的形態資料建立條目：屬性、種族值、特性用形態本身；世代、蛋群、捕獲率沿用物種。
+ * @param {object} form 索引 forms[] 的一筆
+ * @param {object} species 對應物種在索引 entries[] 的一筆
+ * @param {string} baseUrl PokéAPI 位址
+ * @param {string} [fallbackLabel] 沒有官方繁中形態名時使用的標籤
+ */
+export function entryFromForm(form, species, baseUrl, fallbackLabel = '') {
+  const name = formDisplayName(species.zh, form.fz, fallbackLabel);
+  return {
+    id: form.id,
+    speciesId: species.id,
+    dexNumber: species.id,
+    name: form.n,
+    chineseName: name,
+    pokemonUrl: `${baseUrl}/pokemon/${form.id}/`,
+    loaded: false,
+    isForm: true,
+    formKind: form.k,
+    summary: {
+      ...form,
+      zh: name,
+      p: form.id,
+      g: species.g,
+      eg: species.eg,
+      cr: species.cr,
+    },
+  };
+}

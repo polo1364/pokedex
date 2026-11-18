@@ -16,8 +16,17 @@ import {
 let lastFilterKey = '';
 
 function filterKey() {
-  const { gen, type, search, favorites, item, tm, adv } = store.currentFilters;
-  return `${gen}|${type}|${search}|${favorites}|${item}|${tm}|${JSON.stringify(adv)}`;
+  const { gen, type, search, favorites, item, tm, adv, forms } = store.currentFilters;
+  return `${gen}|${type}|${search}|${favorites}|${item}|${tm}|${JSON.stringify(adv)}|${forms}`;
+}
+
+/** 篩選的母體：物種一般形態，加上依「顯示形態」選項納入的其他形態。 */
+function filterPool() {
+  const mode = store.currentFilters.forms || 'none';
+  const forms = store.formEntries || [];
+  if (mode === 'none' || !forms.length) return store.speciesIndex;
+  const extra = mode === 'all' ? forms : forms.filter((f) => f.formKind === mode);
+  return [...store.speciesIndex, ...extra];
 }
 
 export function applyFilters(resetDisplay = true) {
@@ -26,7 +35,9 @@ export function applyFilters(resetDisplay = true) {
   const adv = store.currentFilters.adv || EMPTY_ADVANCED;
   const { item, tm } = store.currentFilters;
 
-  store.filteredPokemon = store.speciesIndex.filter((entry) => {
+  const pool = filterPool();
+  store.poolSize = pool.length;
+  store.filteredPokemon = pool.filter((entry) => {
     const gen = store.currentFilters.gen;
     const matchGen = gen === 'all' || entryGeneration(entry) === parseInt(gen, 10);
     const types = entryTypes(entry);
@@ -62,7 +73,8 @@ function sortAsc(a, b, getValue) {
 export function sortFiltered() {
   const { sortBy } = store;
   const sorters = {
-    id: (a, b) => a.id - b.id,
+    // 形態排在所屬物種之後（以圖鑑編號排序，同編號再依 pokemon id）
+    id: (a, b) => (a.dexNumber ?? a.id) - (b.dexNumber ?? b.id) || a.id - b.id,
     name: (a, b) => (a.chineseName || '').localeCompare(b.chineseName || '', 'zh-Hant'),
     generation: (a, b) => {
       const ga = entryGeneration(a) ?? 99;

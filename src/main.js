@@ -44,6 +44,7 @@ function currentUrlState() {
     sort: store.sortBy,
     view: store.viewMode,
     adv: f.adv,
+    forms: f.forms,
   };
 }
 
@@ -65,6 +66,7 @@ function applyUrlState(params, { fillDefaults = false } = {}) {
   if (state.sort !== undefined) store.sortBy = state.sort;
   if (state.view !== undefined) store.viewMode = state.view;
   if (state.adv !== undefined) f.adv = { ...state.adv };
+  if (state.forms !== undefined) f.forms = state.forms;
 }
 
 /** 使用者改變篩選後，把狀態寫進網址：一般變更新增上一頁紀錄，打字搜尋只取代目前紀錄。 */
@@ -131,6 +133,10 @@ async function init() {
   initViewControls(() => onUserFilterChange(false));
   initSortControl((reset) => onUserFilterChange(reset));
   initAdvancedFilters(() => onUserFilterChange());
+  document.getElementById('formsSelect')?.addEventListener('change', (e) => {
+    store.currentFilters.forms = e.target.value;
+    onUserFilterChange();
+  });
   syncFilterControls();
 
   window.addEventListener('popstate', () => {
@@ -205,6 +211,8 @@ async function init() {
 
     document.getElementById('loadingContainer').style.display = 'none';
     populateAbilityOptions();
+    const formsSelect = document.getElementById('formsSelect');
+    if (formsSelect) formsSelect.disabled = !store.formEntries.length;
     await refreshUI();
 
     if (!openCompareFromUrl() && openId) await openModal(parseInt(openId, 10));

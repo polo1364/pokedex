@@ -6,6 +6,7 @@
  */
 import { TYPE_ORDER } from '../config.js';
 import { normalizeAdvanced, EMPTY_ADVANCED } from './advancedFilters.js';
+import { FORM_MODES } from './entrySummary.js';
 
 export const SORT_KEYS = [
   'id', 'name', 'generation', 'total', 'hp', 'attack', 'defense',
@@ -15,7 +16,7 @@ export const VIEW_MODES = ['grid', 'list'];
 export const MAX_GENERATION = 9;
 
 export const DEFAULT_URL_STATE = Object.freeze({
-  gen: 'all', type: 'all', q: '', fav: false, sort: 'id', view: 'grid', adv: EMPTY_ADVANCED,
+  gen: 'all', type: 'all', q: '', fav: false, sort: 'id', view: 'grid', adv: EMPTY_ADVANCED, forms: 'none',
 });
 
 const MANAGED_KEYS = ['gen', 'type', 'q', 'fav', 'sort', 'view'];
@@ -52,6 +53,9 @@ export function readUrlState(search) {
   const view = params.get('view');
   if (view && VIEW_MODES.includes(view)) state.view = view;
 
+  const forms = params.get('forms');
+  if (forms && FORM_MODES.includes(forms)) state.forms = forms;
+
   if (ADV_KEYS.some((key) => params.has(key))) {
     state.adv = normalizeAdvanced(Object.fromEntries(ADV_KEYS.map((key) => [key, params.get(key) ?? undefined])));
   }
@@ -82,6 +86,9 @@ export function buildUrlWithState(href, state) {
     if (isDefault) url.searchParams.delete(key);
     else url.searchParams.set(key, value);
   }
+
+  if (state.forms && state.forms !== 'none' && FORM_MODES.includes(state.forms)) url.searchParams.set('forms', state.forms);
+  else url.searchParams.delete('forms');
 
   const adv = normalizeAdvanced(state.adv || {});
   const hasRange = adv.min !== null || adv.max !== null;

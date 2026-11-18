@@ -38,6 +38,50 @@ function zhHant(names) {
   return names?.find((n) => n.language?.name?.toLowerCase() === 'zh-hant')?.name || '（無繁中譯名）';
 }
 
+const ARTWORK_PREFIX = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/';
+
+/** 形態分類：超級進化／原始回歸、地區形態、超極巨化、其他。 */
+export function formKind(slug, form) {
+  if (form?.is_mega || /-(mega|primal)(-|$)/.test(slug)) return 'mega';
+  if (/-gmax$/.test(slug)) return 'gmax';
+  if (/-(alola|galar|hisui|paldea)(-|$)/.test(slug)) return 'regional';
+  return 'other';
+}
+
+/** 非預設形態：屬性、種族值、特性與繁中形態名，供首頁「顯示形態」使用。 */
+async function buildForm(pokemonUrl, speciesId) {
+  const pokemon = await getJson(pokemonUrl);
+  const formRef = pokemon.forms?.[0];
+  const form = formRef ? await getJson(formRef.url) : null;
+  const statMap = Object.fromEntries(pokemon.stats.map((s) => [s.stat.name, s.base_stat]));
+  const art = pokemon.sprites?.other?.['official-artwork']?.front_default
+    || pokemon.sprites?.other?.home?.front_default
+    || pokemon.sprites?.front_default
+    || null;
+  const zhForm = form?.form_names?.find((n) => n.language?.name?.toLowerCase() === 'zh-hant')?.name
+    || form?.names?.find((n) => n.language?.name?.toLowerCase() === 'zh-hant')?.name
+    || null;
+  const entry = {
+    id: pokemon.id,
+    sp: speciesId,
+    n: pokemon.name,
+    k: formKind(pokemon.name, form),
+    t: pokemon.types.sort((a, b) => a.slot - b.slot).map((t) => t.type.name),
+    s: STAT_ORDER.map((k) => statMap[k] ?? 0),
+    h: pokemon.height,
+    w: pokemon.weight,
+    a: pokemon.abilities.sort((x, y) => x.slot - y.slot)
+      .map((x) => (x.is_hidden ? `*${x.ability.name}` : x.ability.name)),
+  };
+  if (zhForm) entry.fz = zhForm;
+  // 圖片不是標準官方立繪路徑時才記錄（相對於 sprites/pokemon/）
+  if (art && art !== `${ARTWORK_PREFIX}other/official-artwork/${pokemon.id}.png`) {
+    entry.img = art.startsWith(ARTWORK_PREFIX) ? art.slice(ARTWORK_PREFIX.length) : art;
+  }
+  if (!art) entry.img = '';
+  return entry;
+}
+
 async function buildEntry(item) {
   const species = await getJson(item.url);
   const defaultVariety = species.varieties.find((v) => v.is_default) || species.varieties[0];
@@ -62,7 +106,12 @@ async function buildEntry(item) {
   const defaultId = idFromUrl(defaultVariety.pokemon.url);
   if (defaultId !== species.id) entry.p = defaultId;
   if (species.varieties.length > 1) entry.v = species.varieties.map((v) => idFromUrl(v.pokemon.url));
-  return entry;
+  const forms = [];
+  for (const v of species.varieties) {
+    if (v.is_default) continue;
+    forms.push(await buildForm(v.pokemon.url, species.id));
+  }
+  return { entry, forms };
 }
 
 async function main() {
@@ -73,10 +122,13 @@ async function main() {
   let next = 0;
   let done = 0;
 
+  const forms = [];
   async function worker() {
     while (next < items.length) {
       const i = next++;
-      entries[i] = await buildEntry(items[i]);
+      const built = await buildEntry(items[i]);
+      entries[i] = built.entry;
+      forms.push(...built.forms);
       done += 1;
       if (done % 100 === 0 || done === items.length) process.stdout.write(`\r${done}/${items.length}`);
     }
@@ -85,9 +137,12 @@ async function main() {
   process.stdout.write('\n');
 
   entries.sort((a, b) => a.id - b.id);
+  forms.sort((a, b) => a.sp - b.sp || a.id - b.id);
+  const kinds = forms.reduce((acc, f) => ({ ...acc, [f.k]: (acc[f.k] || 0) + 1 }), {});
+  console.log(`形態 ${forms.length} 種（繁中形態名 ${forms.filter((f) => f.fz).length}）`, kinds);
 
   // 特性繁中名稱（篩選介面用）；沒有繁中譯名的保留英文代碼
-  const abilitySlugs = [...new Set(entries.flatMap((e) => e.a.map((x) => x.replace(/^\*/, ''))))].sort();
+  const abilitySlugs = [...new Set([...entries, ...forms].flatMap((e) => e.a.map((x) => x.replace(/^\*/, ''))))].sort();
   const abilityNames = {};
   let k = 0;
   async function abilityWorker() {
@@ -102,12 +157,13 @@ async function main() {
   console.log(`特性 ${abilitySlugs.length} 種（繁中 ${Object.keys(abilityNames).length} 種）`);
 
   const payload = {
-    version: 2,
+    version: 3,
     generatedAt: new Date().toISOString().slice(0, 10),
     count: entries.length,
     stats: STAT_ORDER,
     abilityNames,
     entries,
+    forms,
   };
   await mkdir(path.dirname(outFile), { recursive: true });
   await writeFile(outFile, `${JSON.stringify(payload)}\n`);
