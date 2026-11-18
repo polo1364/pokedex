@@ -10,7 +10,7 @@
     "build": "vite build",
     "start": "node server/index.js",
     "preview": "concurrently \"vite preview\" \"node server/index.js\"",
-    "build:index": "node scripts/build-species-index.mjs"
+    "build:index": "node scripts/build-species-index.mjs && node scripts/build-move-ability-index.mjs"
   },
   "dependencies": {
     "dotenv": "^16.4.7",

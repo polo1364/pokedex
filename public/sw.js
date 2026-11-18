@@ -1,6 +1,6 @@
-const CACHE_NAME = 'pokedex-pro-v6';
+const CACHE_NAME = 'pokedex-pro-v7';
 
-const PRECACHE = ['./index.html', './guide.html', './items.html', './machines.html', './team.html', './manifest.json'];
+const PRECACHE = ['./index.html', './guide.html', './items.html', './machines.html', './team.html', './moves.html', './manifest.json'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(

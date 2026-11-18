@@ -11,6 +11,7 @@ export default defineConfig({
         items: resolve(__dirname, 'items.html'),
         machines: resolve(__dirname, 'machines.html'),
         team: resolve(__dirname, 'team.html'),
+        moves: resolve(__dirname, 'moves.html'),
       },
     },
   },

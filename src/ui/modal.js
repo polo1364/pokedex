@@ -481,7 +481,7 @@ async function loadAbilities(pokemon, gen) {
       const data = await fetchJson(a.ability.url, `ability_${a.ability.name}`);
       const desc = getLatestZhEntry(data.flavor_text_entries);
       return `<div class="ability-item${a.is_hidden ? ' ability-item--hidden' : ''}">
-        <div class="ability-name">${escapeHtml(getChineseName(data.names))}<span class="${a.is_hidden ? 'ability-hidden' : 'ability-standard'}">${a.is_hidden ? '隱藏特性' : '一般特性'}</span></div>
+        <div class="ability-name"><a class="ability-name-link" href="./moves.html?tab=abilities&amp;open=${encodeURIComponent(a.ability.name)}" title="在特性圖鑑查看">${escapeHtml(getChineseName(data.names))}</a><span class="${a.is_hidden ? 'ability-hidden' : 'ability-standard'}">${a.is_hidden ? '隱藏特性' : '一般特性'}</span></div>
         ${desc ? `<div class="ability-description">${desc.flavor_text.replace(/\n/g, '')}</div>` : ''}
       </div>`;
     }));

@@ -2269,6 +2269,21 @@
       --catalog-accent: #3fb950;
     }
 
+    .sidebar-catalog-link--moves {
+      --catalog-accent: #d2a8ff;
+    }
+
+    .ability-name-link {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dashed currentColor;
+    }
+
+    .ability-name-link:hover,
+    .ability-name-link:focus-visible {
+      border-bottom-style: solid;
+    }
+
     .sidebar-catalog-link:hover,
     .sidebar-catalog-link:focus-visible {
       border-color: color-mix(in srgb, var(--catalog-accent) 55%, transparent);

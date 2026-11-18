@@ -57,10 +57,12 @@ app.get('*', (req, res, next) => {
   const itemsMatch = req.path === '/items' || req.path.startsWith('/items/');
   const machinesMatch = req.path === '/machines' || req.path.startsWith('/machines/');
   const teamMatch = req.path === '/team' || req.path.startsWith('/team/');
+  const movesMatch = req.path === '/moves' || req.path.startsWith('/moves/');
   const htmlFile = guideMatch ? 'guide.html'
     : itemsMatch ? 'items.html'
       : machinesMatch ? 'machines.html'
-        : teamMatch ? 'team.html' : 'index.html';
+        : teamMatch ? 'team.html'
+          : movesMatch ? 'moves.html' : 'index.html';
   res.sendFile(path.join(distPath, htmlFile), (err) => {
     if (err) next();
   });
