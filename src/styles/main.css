@@ -7261,3 +7261,650 @@
 
     .backup-status[data-kind="ok"] { color: #7ee8a8; }
     .backup-status[data-kind="error"] { color: #ff8fb0; }
+
+    /* ============================================================
+       攻略「對戰看板」排版（版本 B）
+       屬性色橫幅＋王牌立繪、帶圖片與弱點的對手、編號作戰步驟、推薦隊伍卡片
+       ============================================================ */
+    #guideContentRoot .guide-battle-detail-inner.gb {
+      padding: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+
+    /* ── 寶可夢圖片（未載入或對不到名稱時是屬性色佔位圖） ── */
+    #guideContentRoot .gb-art {
+      position: relative;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--gb-c, #8a8fb5) 38%, transparent) 0%, color-mix(in srgb, var(--gb-c, #8a8fb5) 10%, transparent) 62%, transparent 70%);
+    }
+
+    #guideContentRoot .gb-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+    }
+
+    #guideContentRoot .gb-art.is-empty::after {
+      content: "?";
+      font-size: 22px;
+      font-weight: 900;
+      color: color-mix(in srgb, var(--gb-c, #8a8fb5) 70%, #fff);
+      opacity: 0.7;
+    }
+
+    /* ── 橫幅 ── */
+    #guideContentRoot .gb-hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 150px;
+      padding: 22px 190px 20px 24px;
+      background: linear-gradient(115deg,
+        color-mix(in srgb, var(--gb-c) 42%, #0c1030) 0%,
+        color-mix(in srgb, var(--gb-c) 72%, #101433) 60%,
+        color-mix(in srgb, var(--gb-c) 86%, #000) 100%);
+      color: #fff;
+    }
+
+    #guideContentRoot .gb-hero::after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      top: -70px;
+      width: 290px;
+      height: 290px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      pointer-events: none;
+    }
+
+    #guideContentRoot .gb-hero-step {
+      display: inline-block;
+      padding: 2px 12px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.32);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+    }
+
+    #guideContentRoot .gb-hero .gb-hero-name {
+      margin: 8px 0 10px;
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1.15;
+      color: #fff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    #guideContentRoot .gb-hero .gb-hero-meta {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0;
+    }
+
+    #guideContentRoot .gb-hero .gb-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.34);
+      color: #f1f2ff;
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    #guideContentRoot .gb-hero .gb-pill b {
+      font-weight: 800;
+      color: #fff;
+    }
+
+    #guideContentRoot .gb-hero .gb-pill--level {
+      background: #ffd75e;
+      color: #3a2a00;
+    }
+
+    #guideContentRoot .gb-hero .gb-pill--level b {
+      color: #3a2a00;
+    }
+
+    #guideContentRoot .gb-hero-art {
+      position: absolute;
+      right: 20px;
+      bottom: -12px;
+      z-index: 1;
+      width: 170px;
+      height: 170px;
+      background: none;
+    }
+
+    #guideContentRoot .gb-hero-art.is-empty {
+      display: none;
+    }
+
+    /* ── 區塊配置：左對手、右步驟、下方隊伍 ── */
+    #guideContentRoot .gb > .gb-notes,
+    #guideContentRoot .gb > .guide-opponent-summary {
+      margin: 16px 22px 0;
+    }
+
+    #guideContentRoot .gb > .guide-detail-section {
+      margin: 0;
+      padding: 18px 22px 0;
+    }
+
+    #guideContentRoot .gb > .guide-detail-section:last-child {
+      padding-bottom: 22px;
+    }
+
+    #guideContentRoot .gb .guide-section-title {
+      margin: 0 0 12px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: var(--text-muted);
+    }
+
+    @media (min-width: 900px) {
+      #guideContentRoot .guide-battle-detail-inner.gb--plan {
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+        grid-template-areas:
+          "hero hero"
+          "notes notes"
+          "foes steps"
+          "squad squad";
+      }
+
+      #guideContentRoot .gb--plan > .gb-hero { grid-area: hero; }
+      #guideContentRoot .gb--plan > .gb-notes { grid-area: notes; }
+      #guideContentRoot .gb--plan > .gb-sec--foes { grid-area: foes; padding-right: 11px; }
+      #guideContentRoot .gb--plan > .gb-sec--steps { grid-area: steps; padding-left: 11px; }
+      #guideContentRoot .gb--plan > .gb-sec--squad { grid-area: squad; }
+    }
+
+    /* ── 對手隊伍 ── */
+    #guideContentRoot .gb-foes {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #guideContentRoot .gb--plan .gb-sec--foes .gb-foes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    #guideContentRoot .gb-foes .gb-foe {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      background: #1d2142;
+    }
+
+    #guideContentRoot .gb-foes .gb-foe--ace {
+      border-color: #ffd75e;
+      background: linear-gradient(120deg, rgba(255, 215, 94, 0.14), #1d2142 60%);
+    }
+
+    #guideContentRoot .gb-foe-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    #guideContentRoot .gb-foe .guide-party-grid-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    #guideContentRoot .gb-ace {
+      padding: 1px 8px;
+      border-radius: 5px;
+      background: #ffd75e;
+      color: #3a2a00;
+      font-size: 11.5px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    #guideContentRoot .gb-lv {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 5px 0;
+    }
+
+    #guideContentRoot .gb-lv .guide-level {
+      min-width: 50px;
+      padding: 0;
+      background: none;
+      border: 0;
+      color: #ffe08a;
+      font-size: 14px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #guideContentRoot .gb-lv i {
+      position: relative;
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+
+    #guideContentRoot .gb-lv i::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: var(--w, 0%);
+      border-radius: 3px;
+      background: linear-gradient(90deg, #ffb648, #ffe08a);
+    }
+
+    #guideContentRoot .gb-foe-types,
+    #guideContentRoot .gb-weak {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    #guideContentRoot .gb-weak {
+      margin-top: 6px;
+    }
+
+    #guideContentRoot .gb-types-label,
+    #guideContentRoot .gb-weak-label {
+      font-weight: 700;
+    }
+
+    #guideContentRoot .gb-tera {
+      padding: 1px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary);
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    #guideContentRoot .gb-weak-chip {
+      padding: 0 8px;
+      border: 1.5px dashed var(--gb-c);
+      border-radius: 6px;
+      color: color-mix(in srgb, var(--gb-c) 72%, #fff);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.65;
+    }
+
+    #guideContentRoot .gb-weak-chip.is-quad {
+      border-style: solid;
+      background: color-mix(in srgb, var(--gb-c) 28%, transparent);
+      color: #fff;
+    }
+
+    #guideContentRoot .gb-weak-chip small {
+      margin-left: 3px;
+      font-size: 10.5px;
+      font-weight: 900;
+    }
+
+    /* ── 作戰步驟 ── */
+    #guideContentRoot .gb-steps {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: gb-step;
+    }
+
+    #guideContentRoot .gb-step {
+      --c: #2bd17e;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 12px 14px;
+      border-left: 5px solid var(--c);
+      border-radius: 14px;
+      background: #1d2142;
+    }
+
+    #guideContentRoot .gb-step::before {
+      counter-increment: gb-step;
+      content: counter(gb-step);
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--c);
+      color: #0d0f22;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    #guideContentRoot .gb-step--prep { --c: #5cc8ff; }
+    #guideContentRoot .gb-step--do { --c: #2bd17e; }
+    #guideContentRoot .gb-step--warn { --c: #ff7a5c; background: rgba(255, 120, 90, 0.1); }
+    #guideContentRoot .gb-step--warn::before { counter-increment: none; content: "!"; }
+
+    #guideContentRoot .gb-step h4 {
+      margin: 0 0 2px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--c);
+    }
+
+    #guideContentRoot .gb-step p,
+    #guideContentRoot .gb-step .guide-battle-tip,
+    #guideContentRoot .gb-step .guide-strategy-summary,
+    #guideContentRoot .gb-step .guide-strategy-level {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--text-primary);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    /* 聯盟／分支裡獨立的注意事項也用同樣的警示樣式 */
+    #guideContentRoot .gb .guide-battle-tips > .guide-battle-tip {
+      padding: 10px 14px;
+      border: 0;
+      border-left: 5px solid #ff7a5c;
+      border-radius: 12px;
+      background: rgba(255, 120, 90, 0.1);
+      font-size: 16px;
+    }
+
+    /* ── 推薦隊伍 ── */
+    #guideContentRoot .guide-team-block.gb-team {
+      padding: 0;
+      border: 0;
+      background: none;
+    }
+
+    #guideContentRoot .gb-team-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    #guideContentRoot .gb-team-head .guide-team-label {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    #guideContentRoot .gb-role {
+      padding: 1px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    #guideContentRoot .gb-role--first { background: #2bd17e; color: #062615; }
+    #guideContentRoot .gb-role--alt { background: #b79cff; color: #1d1040; }
+
+    #guideContentRoot .gb-team .guide-team-reason {
+      margin: 0 0 10px;
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
+    #guideContentRoot .gb-allies {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #guideContentRoot .gb-allies .gb-ally {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      grid-template-areas:
+        "art name"
+        "art types";
+      gap: 4px 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 4px solid #2bd17e;
+      border-radius: 14px;
+      background: #1d2142;
+    }
+
+    #guideContentRoot .gb-team:not(:first-child) .gb-ally {
+      border-top-color: #b79cff;
+    }
+
+    #guideContentRoot .gb-ally .gb-art { grid-area: art; }
+
+    #guideContentRoot .gb-ally .guide-pokemon-name {
+      grid-area: name;
+      align-self: end;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    #guideContentRoot .gb-ally .guide-type-badges {
+      grid-area: types;
+      align-self: start;
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    #guideContentRoot .gb-ally .gb-fact {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 8px;
+      align-items: baseline;
+      margin: 4px 0 0;
+      padding: 0;
+      color: var(--text-primary);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    #guideContentRoot .gb-k {
+      padding: 0 8px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.75;
+      white-space: nowrap;
+    }
+
+    #guideContentRoot .gb-k--get { background: rgba(92, 200, 255, 0.15); color: #7fd4ff; }
+    #guideContentRoot .gb-k--move { background: rgba(183, 156, 255, 0.18); color: #c9b5ff; }
+
+    #guideContentRoot .gb-ver {
+      display: inline-block;
+      margin-right: 6px;
+      padding: 0 8px;
+      border-radius: 5px;
+      background: #6b7090;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.7;
+      vertical-align: 1px;
+    }
+
+    #guideContentRoot .gb-ver--red, #guideContentRoot .gb-ver--ruby, #guideContentRoot .gb-ver--scarlet { background: #d8403f; }
+    #guideContentRoot .gb-ver--blue, #guideContentRoot .gb-ver--sapphire, #guideContentRoot .gb-ver--x { background: #2f7fd6; }
+    #guideContentRoot .gb-ver--yellow, #guideContentRoot .gb-ver--gold, #guideContentRoot .gb-ver--sun { background: #e0a800; color: #2c2100; }
+    #guideContentRoot .gb-ver--green, #guideContentRoot .gb-ver--emerald { background: #2f9e5b; }
+    #guideContentRoot .gb-ver--silver, #guideContentRoot .gb-ver--platinum, #guideContentRoot .gb-ver--white { background: #c9cede; color: #20243a; }
+    #guideContentRoot .gb-ver--crystal, #guideContentRoot .gb-ver--diamond, #guideContentRoot .gb-ver--sword { background: #35b8d6; color: #05232b; }
+    #guideContentRoot .gb-ver--pearl, #guideContentRoot .gb-ver--y, #guideContentRoot .gb-ver--shield { background: #e06aa0; }
+    #guideContentRoot .gb-ver--moon, #guideContentRoot .gb-ver--violet { background: #7a55d6; }
+    #guideContentRoot .gb-ver--black { background: #2b2d3f; border: 1px solid #6b7090; }
+
+    @media (max-width: 640px) {
+      #guideContentRoot .gb-hero {
+        min-height: 128px;
+        padding: 16px 118px 14px 16px;
+      }
+
+      #guideContentRoot .gb-hero .gb-hero-name { font-size: 28px; }
+      #guideContentRoot .gb-hero-art { right: 4px; bottom: -6px; width: 112px; height: 112px; }
+      #guideContentRoot .gb > .guide-detail-section { padding: 16px 12px 0; }
+      #guideContentRoot .gb > .guide-detail-section:last-child { padding-bottom: 16px; }
+      #guideContentRoot .gb > .gb-notes, #guideContentRoot .gb > .guide-opponent-summary { margin: 12px 12px 0; }
+      #guideContentRoot .gb-foes, #guideContentRoot .gb-allies { grid-template-columns: minmax(0, 1fr); }
+      #guideContentRoot .gb-art { width: 60px; height: 60px; }
+      #guideContentRoot .gb-foes .gb-foe { grid-template-columns: 60px minmax(0, 1fr); }
+      #guideContentRoot .gb-allies .gb-ally { grid-template-columns: 60px minmax(0, 1fr); }
+    }
+
+    /* ── 蓋過舊版樣式 ── */
+    #guideContentRoot .gb > .guide-gym-strategy {
+      border: 0;
+      border-radius: 0;
+      background: none;
+      box-shadow: none;
+    }
+
+    #guideContentRoot .gb .type-badge {
+      font-size: 12.5px;
+      padding: 2px 10px;
+      border-radius: 6px;
+    }
+
+    #guideContentRoot .gb .gb-ally .guide-type-badges,
+    #guideContentRoot .gb-allies .gb-ally .guide-type-badges {
+      margin-left: 0;
+      justify-content: flex-start;
+    }
+
+    #guideContentRoot .gb-allies .gb-ally .gb-fact {
+      display: grid;
+      flex-basis: auto;
+      color: var(--text-primary);
+    }
+
+    #guideContentRoot .gb-allies .gb-ally {
+      text-align: left;
+    }
+
+    #guideContentRoot .gb .guide-teams-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    #guideContentRoot .gb .guide-variant-subtitle {
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+    }
+
+    /* 卡片展開後，橫幅已經有名字與重點，收合列不再重複顯示摘要 */
+    #guideContentRoot .guide-battle-toggle.is-open .guide-opponent-preview {
+      display: none;
+    }
+
+    /* ── 章節區塊：小標改成色塊標籤，流程是編號步驟，重點是提示框 ── */
+    #guideContentRoot .guide-expansion-island .gx-tag {
+      display: inline-flex;
+      align-items: center;
+      margin: 18px 0 10px;
+      padding: 2px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    #guideContentRoot .gx-tag--places { background: rgba(92, 200, 255, 0.16); color: #8fd8ff; }
+    #guideContentRoot .gx-tag--flow { background: rgba(43, 209, 126, 0.16); color: #7ee8a8; }
+    #guideContentRoot .gx-tag--tips { background: rgba(255, 182, 72, 0.18); color: #ffcf85; }
+
+    #guideContentRoot .gx-flow {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: gx-flow;
+    }
+
+    #guideContentRoot .gx-flow > li {
+      position: relative;
+      padding: 10px 14px 10px 54px;
+      border-left: 4px solid #2bd17e;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      line-height: 1.65;
+    }
+
+    #guideContentRoot .gx-flow > li::before {
+      counter-increment: gx-flow;
+      content: counter(gx-flow);
+      position: absolute;
+      left: 12px;
+      top: 9px;
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #2bd17e;
+      color: #0d0f22;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    #guideContentRoot .gx-tips {
+      display: grid;
+      gap: 6px;
+      margin: 0;
+      padding: 12px 16px 12px 34px;
+      border: 1px solid rgba(255, 182, 72, 0.35);
+      border-radius: 12px;
+      background: rgba(255, 182, 72, 0.08);
+      line-height: 1.65;
+    }
+
+    #guideContentRoot .gx-tips > li::marker {
+      color: #ffb648;
+    }

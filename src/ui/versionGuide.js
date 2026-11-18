@@ -17,6 +17,10 @@ import { initGuideAnnotateTooltips } from './guideAnnotateTooltip.js';
 import { initGuideMapTooltips, bindGuideMapTooltips } from './guideMapTooltip.js';
 import { decorateGuideProgress } from './guideProgress.js';
 import {
+  setBoardGeneration, renderBoardHero, heroLevelText, renderBoardParty, renderBoardSteps,
+  renderBoardAlly, teamRoleTag, hydrateGuideArt,
+} from './guideBoard.js';
+import {
   initGuideRequestSearch, destroyGuideRequestSearch, labelChipClass,
 } from './guideRequestSearch.js';
 import {
@@ -86,6 +90,8 @@ function renderGuidePage(versionId, root, titleEl, partId = 'main') {
     return;
   }
 
+  setBoardGeneration(guide.displayGeneration ?? meta?.displayGeneration ?? null);
+
   const partTabs = getGuidePartTabs(guide);
   let activePartId = partId;
   if (activePartId !== 'main' && !getGuideExpansion(guide, activePartId)) {
@@ -131,6 +137,7 @@ function renderGuidePage(versionId, root, titleEl, partId = 'main') {
   if (!isMainPlaceholder && !isPartPlaceholder) {
     decorateGuideProgress(content, { versionId, partId: activePartId, partLabel: partLabel || '本體' });
   }
+  hydrateGuideArt(content);
   setGuideChatVersion(versionId, isMainPlaceholder || isPartPlaceholder, activePartId, partLabel || '本體');
   if (!isMainPlaceholder && !isPartPlaceholder) applyBattleDeepLink();
   const sectionHash = location.hash.slice(1);
@@ -655,21 +662,21 @@ function renderExpansionIsland(section, expansion) {
     html += `<p class="guide-expansion-island-intro">${annotate(section.intro)}</p>`;
   }
   if (section.places?.length) {
-    html += '<h3 class="guide-expansion-subtitle">重要地點</h3>';
+    html += '<h3 class="guide-expansion-subtitle gx-tag gx-tag--places">重要地點</h3>';
     html += renderSimpleTable(
       ['地點', '內容'],
       section.places.map((p) => [annotate(p.name), annotate(p.content)]),
     );
   }
   if (section.flows?.length) {
-    html += '<h3 class="guide-expansion-subtitle">流程</h3><ol class="guide-expansion-flow-list">';
+    html += '<h3 class="guide-expansion-subtitle gx-tag gx-tag--flow">流程</h3><ol class="guide-expansion-flow-list gx-flow">';
     section.flows.forEach((step) => {
       html += `<li>${annotate(step)}</li>`;
     });
     html += '</ol>';
   }
   if (section.tips?.length) {
-    html += '<h3 class="guide-expansion-subtitle">重點</h3><ul class="guide-expansion-tips">';
+    html += '<h3 class="guide-expansion-subtitle gx-tag gx-tag--tips">重點</h3><ul class="guide-expansion-tips gx-tips">';
     section.tips.forEach((tip) => {
       html += `<li>${annotate(tip)}</li>`;
     });
@@ -1869,9 +1876,10 @@ function renderTimelineItem(entry, options) {
           : null;
         if (!expansionId && annotationId) expansionId = annotationId;
         detail.innerHTML = mode === 'league'
-          ? renderOpponentDetail(battle, battleRef, battleGuide)
-          : renderBattleDetail(battle, expansionId);
+          ? renderOpponentDetail(battle, battleRef, battleGuide, roleLabel)
+          : renderBattleDetail(battle, expansionId, roleLabel);
         detail.dataset.rendered = '1';
+        hydrateGuideArt(detail);
       }
       updateBattleInUrl(battleRef);
     } else {
@@ -1892,18 +1900,7 @@ function renderOpponentSummary(battleGuide) {
 }
 
 function renderOpponentParty(party) {
-  if (!party?.length) return '';
-  let html = '<ul class="guide-party-grid">';
-  party.forEach((p, i) => {
-    const isLead = i === party.length - 1;
-    html += `<li class="guide-party-grid-row${isLead ? ' guide-party-grid-row--lead' : ''}">`
-      + `<span class="guide-party-grid-name">${p.name}${p.teraType ? `<span class="guide-pokemon-note">太晶：${typeNamesCN[p.teraType] || p.teraType}</span>` : ''}</span>`
-      + `${p.level ? `<span class="guide-level">Lv.${p.level}</span>` : ''}`
-      + `<span class="guide-type-badges">${p.teraType ? '原屬性：' : ''}${renderTypeBadges(p.types)}</span>`
-      + `</li>`;
-  });
-  html += '</ul>';
-  return html;
+  return renderBoardParty(party);
 }
 
 function renderStarterLineups(lineups) {
@@ -2025,12 +2022,7 @@ function renderChampionVariants(championGuide, party = []) {
 }
 
 function renderRecommendedPokemon(p) {
-  return `<li class="guide-team-row">
-    <span class="guide-pokemon-name">${p.name}</span>
-    <span class="guide-type-badges">${renderTypeBadges(p.types)}</span>
-    ${p.obtain ? `<span class="guide-pokemon-note"><strong>取得：</strong>${p.obtain}</span>` : ''}
-    ${p.moveNote ? `<span class="guide-pokemon-note"><strong>招式：</strong>${p.moveNote}</span>` : ''}
-  </li>`;
+  return renderBoardAlly(p);
 }
 
 function renderRecommendedTeamsBlock(teams, title) {
@@ -2039,34 +2031,28 @@ function renderRecommendedTeamsBlock(teams, title) {
   block.innerHTML = `<h3 class="guide-section-title">${title}</h3>`;
   const grid = document.createElement('div');
   grid.className = 'guide-teams-grid';
-  grid.innerHTML = teams.map((team) => {
-    let html = `<div class="guide-team-block"><div class="guide-team-label">${team.label}</div><ul class="guide-team-list">`;
+  grid.innerHTML = teams.map((team, index) => {
+    let html = `<div class="guide-team-block gb-team"><div class="gb-team-head">${teamRoleTag(index, teams.length)}<div class="guide-team-label">${team.label}</div></div>`
+      + `${team.reason ? `<p class="guide-team-reason guide-team-reason--before">${team.reason}</p>` : ''}<ul class="guide-team-list gb-allies">`;
     team.pokemon.forEach((p) => {
       html += renderRecommendedPokemon(p);
     });
-    html += `</ul><p class="guide-team-reason">${team.reason}</p></div>`;
+    html += '</ul></div>';
     return html;
   }).join('');
   block.appendChild(grid);
   return block;
 }
 
-function renderOpponentDetail(battle, battleRef, battleGuide) {
+function renderOpponentDetail(battle, battleRef, battleGuide, roleLabel = '') {
   // Gym/cup/story version branches use the same complete-party presentation as champions.
   if (battle.variants?.length && !battleGuide?.variants?.length) {
     battleGuide = { ...battleGuide, variants: battle.variants };
   }
-  const metaItems = [];
-  if (battle.specialty && battle.specialty !== 'mixed') {
-    metaItems.push(`<span class="guide-meta-chip">專長：${typeNamesCN[battle.specialty] || battle.specialty}</span>`);
-  }
-  if (battle.notes) {
-    metaItems.push(`<span class="guide-meta-chip">${battle.notes}</span>`);
-  }
+  const specialty = battle.specialty && battle.specialty !== 'mixed' ? battle.specialty : null;
 
-  let html = '<div class="guide-battle-detail-inner guide-opponent-detail-inner">';
-  html += `<div class="guide-leader-name">${battle.name}</div>`;
-  if (metaItems.length) html += `<div class="guide-meta-row">${metaItems.join('')}</div>`;
+  let html = '<div class="guide-battle-detail-inner guide-opponent-detail-inner gb">';
+  html += renderBoardHero(battle, { roleLabel, specialty, chips: battle.notes ? [battle.notes] : [] });
 
   if (battleGuide?.variants?.length) {
     if (battleGuide.intro) html += renderOpponentSummary(battleGuide);
@@ -2128,59 +2114,53 @@ function appendBattleSection(container, title, battles, rolePrefix, annotationId
   container.appendChild(wrap);
 }
 
-function renderBattleDetail(battle, expansionId = null) {
+function renderBattleDetail(battle, expansionId = null, roleLabel = '') {
   const annotateNotes = expansionId
     ? (text) => renderExpansionAnnotated(text, expansionId)
     : renderAnnotated;
+  const specialtyKey = getSpecialtyKey(battle);
 
-  let html = '<div class="guide-battle-detail-inner">';
+  let html = `<div class="guide-battle-detail-inner gb${battle.strategy ? ' gb--plan' : ''}">`;
+  html += renderBoardHero(battle, {
+    roleLabel,
+    specialty: specialtyKey,
+    levelText: heroLevelText(battle.strategy?.level),
+  });
 
   if (battle.notes && battle.notes !== battle.strategy?.summary) {
-    html += `<div class="guide-opponent-summary">${annotateNotes(battle.notes)}</div>`;
+    html += `<div class="guide-opponent-summary gb-notes">${annotateNotes(battle.notes)}</div>`;
   }
-
-  const metaItems = [];
-  if (battle.location) metaItems.push(`<span class="guide-meta-chip">📍 ${battle.location}</span>`);
-  if (battle.badge) metaItems.push(`<span class="guide-meta-chip">🏅 ${battle.badge}</span>`);
-  const specialtyKey = getSpecialtyKey(battle);
-  if (specialtyKey) {
-    metaItems.push(`<span class="guide-meta-chip">專長：${typeNamesCN[specialtyKey] || specialtyKey}</span>`);
-  }
-
-  html += `<div class="guide-leader-name">${battle.name}</div>`;
-  if (metaItems.length) html += `<div class="guide-meta-row">${metaItems.join('')}</div>`;
 
   if (battle.strategy) {
-    html += '<section class="guide-detail-section guide-gym-strategy"><h3 class="guide-section-title">先看打法</h3>';
+    html += '<section class="guide-detail-section guide-gym-strategy gb-sec gb-sec--steps"><h3 class="guide-section-title">先看打法</h3>';
     const levelLabel = /^\d+[～–-]\d+$/.test(battle.strategy.level)
       ? `建議主力 Lv.${battle.strategy.level}（培養參考）`
       : battle.strategy.level;
-    html += `<p class="guide-strategy-level">${levelLabel}</p>`;
-    html += `<p class="guide-strategy-summary">${battle.strategy.summary}</p>`;
-    if (battle.strategy.tips?.length) html += renderBattleTips(battle.strategy.tips);
+    html += renderBoardSteps(battle.strategy, levelLabel);
     html += '</section>';
   }
 
   const isWildEncounter = battle.role === 'wild' || battle.role === 'legendary';
   const partyTitle = isWildEncounter ? '野生寶可夢' : '對手隊伍';
 
-  html += `<section class="guide-detail-section"><h3 class="guide-section-title">${partyTitle}</h3>`;
+  html += `<section class="guide-detail-section gb-sec gb-sec--foes"><h3 class="guide-section-title">${partyTitle}</h3>`;
   html += battle.partyNote ? `<p class="guide-battle-notes">${escapeHtml(battle.partyNote)}</p>` : '';
   html += battle.variants?.length
     ? renderChampionVariants({ variants: battle.variants }, battle.party)
     : renderOpponentParty(battle.party);
   html += '</section>';
 
-  html += `<section class="guide-detail-section"><h3 class="guide-section-title">${battle.strategy ? '推薦主力與替代選擇' : '建議攜帶隊伍'}</h3><div class="guide-teams-grid">`;
-  battle.recommendedTeams.forEach((team) => {
-    html += `<div class="guide-team-block">
-      <div class="guide-team-label">${team.label}</div>
-      ${battle.strategy ? `<p class="guide-team-reason guide-team-reason--before">${team.reason}</p>` : ''}
-      <ul class="guide-team-list">`;
+  const teams = battle.recommendedTeams || [];
+  html += `<section class="guide-detail-section gb-sec gb-sec--squad"><h3 class="guide-section-title">${battle.strategy ? '推薦主力與替代選擇' : '建議攜帶隊伍'}</h3><div class="guide-teams-grid">`;
+  teams.forEach((team, index) => {
+    html += `<div class="guide-team-block gb-team">
+      <div class="gb-team-head">${teamRoleTag(index, teams.length)}<div class="guide-team-label">${team.label}</div></div>
+      ${team.reason ? `<p class="guide-team-reason guide-team-reason--before">${team.reason}</p>` : ''}
+      <ul class="guide-team-list gb-allies">`;
     team.pokemon.forEach((p) => {
       html += renderRecommendedPokemon(p);
     });
-    html += `</ul>${battle.strategy ? '' : `<p class="guide-team-reason">${team.reason}</p>`}</div>`;
+    html += '</ul></div>';
   });
   html += '</div></section>';
   html += '</div>';
