@@ -60,7 +60,111 @@ function findSpeciesEntry(id) {
     || store.speciesIndex.find((e) => entryVarietyIds(e).includes(id));
 }
 
+let showRequestToken = 0;
+
+/** 詳情視窗上一隻／下一隻：依首頁目前篩選與排序後的順序。 */
+function getDetailNeighbors() {
+  const list = store.filteredPokemon || [];
+  if (!currentSpeciesEntry || list.length < 2) return null;
+  const index = list.findIndex((e) => e === currentSpeciesEntry || e.id === currentSpeciesEntry.id);
+  if (index < 0) return null;
+  return {
+    index,
+    total: list.length,
+    prev: index > 0 ? list[index - 1] : null,
+    next: index < list.length - 1 ? list[index + 1] : null,
+  };
+}
+
+function navButtonHtml(entry, direction) {
+  const label = direction === 'prev' ? '上一隻' : '下一隻';
+  const arrow = direction === 'prev' ? '‹' : '›';
+  const arrowHtml = `<span class="modal-nav-arrow" aria-hidden="true">${arrow}</span>`;
+  if (!entry) {
+    return `<button type="button" class="modal-nav-btn modal-nav-btn--${direction}" disabled aria-label="${label}（已到盡頭）">${
+      direction === 'prev' ? arrowHtml : ''}<span class="modal-nav-text">${label}</span>${direction === 'next' ? arrowHtml : ''}</button>`;
+  }
+  const name = escapeHtml(entry.chineseName || entry.name);
+  const num = `#${String(entry.id).padStart(4, '0')}`;
+  const key = direction === 'prev' ? '←' : '→';
+  return `<button type="button" class="modal-nav-btn modal-nav-btn--${direction}" data-nav="${direction}"
+    aria-label="${label}：${num} ${name}" title="${label}（${key}）">${
+    direction === 'prev' ? arrowHtml : ''}<span class="modal-nav-text"><span class="modal-nav-num">${num}</span> ${name}</span>${
+    direction === 'next' ? arrowHtml : ''}</button>`;
+}
+
+function ensureNavElement() {
+  let nav = document.getElementById('modalNav');
+  if (nav) return nav;
+  const header = document.querySelector('#modal .modal-header');
+  if (!header) return null;
+  nav = document.createElement('nav');
+  nav.id = 'modalNav';
+  nav.className = 'modal-nav';
+  nav.hidden = true;
+  nav.setAttribute('aria-label', '切換寶可夢');
+  header.insertAdjacentElement('afterend', nav);
+  nav.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-nav]');
+    if (btn) navigateDetail(btn.dataset.nav === 'prev' ? -1 : 1);
+  });
+  return nav;
+}
+
+function renderDetailNav() {
+  const nav = ensureNavElement();
+  if (!nav) return;
+  const neighbors = getDetailNeighbors();
+  if (!neighbors) {
+    nav.hidden = true;
+    nav.innerHTML = '';
+    return;
+  }
+  nav.hidden = false;
+  nav.innerHTML = `${navButtonHtml(neighbors.prev, 'prev')}
+    <span class="modal-nav-pos">${neighbors.index + 1} / ${neighbors.total}</span>
+    ${navButtonHtml(neighbors.next, 'next')}`;
+  // 預先載入相鄰兩隻，切換時幾乎不用等待
+  for (const entry of [neighbors.prev, neighbors.next]) {
+    if (entry && !entry.loaded) resolvePokemonById(entry.id, entry).catch(() => {});
+  }
+}
+
+/** 網址原本帶 ?id= 時跟著目前顯示的寶可夢更新；關閉時移除，避免重新整理又跳出舊的詳情。 */
+function syncIdParam(id) {
+  const url = new URL(location.href);
+  if (!url.searchParams.has('id')) return;
+  if (id) url.searchParams.set('id', String(id));
+  else url.searchParams.delete('id');
+  history.replaceState(history.state, '', url);
+}
+
+let navigating = false;
+
+async function navigateDetail(delta) {
+  if (navigating) return;
+  const neighbors = getDetailNeighbors();
+  const target = delta < 0 ? neighbors?.prev : neighbors?.next;
+  if (!target) return;
+  const activeTabName = document.querySelector('#modal .tab.active')?.dataset.tab || 'overview';
+  const focusedNav = document.activeElement?.closest?.('[data-nav]')?.dataset.nav;
+  navigating = true;
+  try {
+    await showDetail(target.id);
+  } finally {
+    navigating = false;
+  }
+  if (activeTabName !== 'overview') activateTab(activeTabName, detailGeneration, { force: true });
+  if (focusedNav) {
+    const again = document.querySelector(`#modalNav [data-nav="${focusedNav}"]`)
+      || document.querySelector('#modalNav [data-nav]');
+    again?.focus();
+  }
+  syncIdParam(currentDetailId);
+}
+
 export async function showDetail(id) {
+  const token = ++showRequestToken;
   const speciesEntry = findSpeciesEntry(id);
   let pokemon;
   try {
@@ -68,6 +172,8 @@ export async function showDetail(id) {
   } catch {
     return;
   }
+  // 快速連按上一隻／下一隻時，較慢回來的舊請求不可覆蓋新的畫面
+  if (token !== showRequestToken) return;
 
   currentSpeciesEntry = speciesEntry;
   currentDetailId = pokemon.id;
@@ -89,6 +195,7 @@ export async function showDetail(id) {
   loadHeldItems(pokemon, gen);
   loadedTabs.add('overview');
   enrichFormSwitcher(pokemon, gen);
+  renderDetailNav();
 }
 
 async function switchForm(pokemonId) {
@@ -533,6 +640,8 @@ export function closeModal() {
   currentDetailId = null;
   currentSpeciesEntry = null;
   detailGeneration++;
+  showRequestToken++;
+  syncIdParam(null);
 }
 
 let modalEventsInitialized = false;
@@ -570,4 +679,45 @@ export function initModalEvents() {
       closeModal();
     }
   });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    if (!document.getElementById('modal')?.classList.contains('active')) return;
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (e.target.closest?.('input, select, textarea, [contenteditable="true"]')) return;
+    e.preventDefault();
+    navigateDetail(e.key === 'ArrowLeft' ? -1 : 1);
+  });
+  bindSwipeNavigation();
+}
+
+/** 手機左右滑動切換；從可水平捲動的區塊（表格、分頁列）開始的滑動不攔截。 */
+function bindSwipeNavigation() {
+  const content = document.querySelector('#modal .modal-content');
+  if (!content) return;
+  let start = null;
+  content.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) { start = null; return; }
+    const t = e.touches[0];
+    start = { x: t.clientX, y: t.clientY, time: Date.now(), target: e.target };
+  }, { passive: true });
+  content.addEventListener('touchend', (e) => {
+    if (!start) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    const quick = Date.now() - start.time < 700;
+    const fromScroller = isInsideHorizontalScroller(start.target, content);
+    start = null;
+    if (!quick || fromScroller || Math.abs(dx) < 70 || Math.abs(dy) > Math.abs(dx) * 0.6) return;
+    navigateDetail(dx > 0 ? -1 : 1);
+  }, { passive: true });
+}
+
+function isInsideHorizontalScroller(el, boundary) {
+  for (let node = el; node && node !== boundary; node = node.parentElement) {
+    if (node.matches?.('input, select, textarea')) return true;
+    const style = getComputedStyle(node);
+    if (/(auto|scroll)/.test(style.overflowX) && node.scrollWidth > node.clientWidth + 1) return true;
+  }
+  return false;
 }

@@ -134,6 +134,8 @@ def run():
                 requested.append(route.request.url)
                 route.fulfill(content_type='application/json', body=json.dumps(api_data(route.request.url)))
             context.route('https://pokeapi.co/**', route_api)
+            # 用測試自己的物種清單（預建索引含 1025 筆真實資料，相鄰預載會超出假資料範圍）
+            context.route('**/data/species-index.json', lambda route: route.fulfill(status=404, body=''))
             page = context.new_page()
             errors = []
             page.on('pageerror', lambda error: errors.append(str(error)))
@@ -146,6 +148,17 @@ def run():
             assert not any('/move/' in url for url in requested), 'Moves should load on demand'
             assert_layout(page)
             page.screenshot(path=str(OUT / f'pikachu-{width}.png'))
+
+            # 上一隻／下一隻：依首頁目前排序（假資料 6, 25, 132, 800），網址 id 同步
+            nav = page.locator('#modalNav')
+            expect(nav.locator('.modal-nav-pos')).to_have_text('2 / 4')
+            expect(nav.locator('[data-nav="prev"]')).to_contain_text('噴火龍')
+            page.keyboard.press('ArrowRight')
+            expect(page.locator('#pokemonDetailTitle')).to_have_text('百變怪')
+            assert page.evaluate('location.search') == '?id=132', page.evaluate('location.search')
+            nav.locator('[data-nav="prev"]').click()
+            expect(page.locator('#pokemonDetailTitle')).to_have_text('皮卡丘')
+            expect(nav.locator('.modal-nav-pos')).to_have_text('2 / 4')
 
             page.locator('#favoriteBtn').click()
             expect(page.locator('#favoriteBtn')).to_have_attribute('aria-pressed', 'true')
@@ -206,7 +219,7 @@ def run():
                     page.screenshot(path=str(OUT / f'long-name-{width}.png'))
                 page.locator('#closeModalBtn').click()
             assert not errors, errors
-            print(f'PASS {width}x{height}: tabs, forms, stats, favorite, shiny, share, disclosures, encounters, long name, missing image, no overflow/errors')
+            print(f'PASS {width}x{height}: prev/next nav, tabs, forms, stats, favorite, shiny, share, disclosures, encounters, long name, missing image, no overflow/errors')
             context.close()
         # The machines page creates the same dialog dynamically (no index.html markup).
         page = browser.new_page(viewport={'width': 390, 'height': 844}, service_workers='block')
@@ -225,6 +238,7 @@ def run():
         page.evaluate(await_detail)
         expect(page.locator('#overviewTab')).to_be_visible()
         expect(page.locator('#pokemonDetailTitle')).to_have_text('皮卡丘')
+        expect(page.locator('#modalNav')).to_be_hidden()
         assert page.locator('#modal .modal-header').evaluate('(el) => getComputedStyle(el).backgroundColor') == 'rgb(66, 45, 62)'
         page.locator('#modal .detail-tabs').get_by_role('button', name='招式', exact=True).click()
         expect(page.locator('#movesList')).to_contain_text('電擊')

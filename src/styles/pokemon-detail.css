@@ -329,3 +329,49 @@
 @media (prefers-reduced-motion: reduce) {
   #modal *, #modal *::before, #modal *::after { transition: none; animation: none; }
 }
+
+/* 上一隻／下一隻 */
+#modal .modal-nav {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  flex-shrink: 0;
+  background: #553e51;
+  border-top: 1px solid rgb(255 255 255 / 8%);
+  color: #f6f0f6;
+}
+#modal .modal-nav[hidden] { display: none; }
+#modal .modal-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 36px;
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+#modal .modal-nav-btn--prev { justify-self: start; }
+#modal .modal-nav-btn--next { justify-self: end; }
+#modal .modal-nav-btn:hover:not(:disabled) { background: #6e5269; transform: none; }
+#modal .modal-nav-btn:disabled { opacity: 0.4; cursor: default; }
+#modal .modal-nav-btn:focus-visible { outline: 2px solid #efb493; outline-offset: 1px; }
+#modal .modal-nav-arrow { font-size: 22px; line-height: 1; }
+#modal .modal-nav-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#modal .modal-nav-num { opacity: 0.7; font-variant-numeric: tabular-nums; }
+#modal .modal-nav-pos { font-size: 13px; opacity: 0.75; font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (max-width: 640px) {
+  #modal .modal-nav { padding: 4px 6px; gap: 4px; }
+  #modal .modal-nav-btn { font-size: 13px; padding: 4px 6px; gap: 4px; }
+  #modal .modal-nav-num { display: none; }
+}
