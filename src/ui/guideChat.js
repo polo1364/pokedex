@@ -13,6 +13,9 @@ const ROLE_LABELS = {
 /** @type {Map<string, { role: string, content: string }[]>} */
 const chatSessions = new Map();
 
+/** 純靜態部署（如 GitHub Pages）沒有 /api/chat 後端：建置時設 VITE_STATIC_ONLY=1 隱藏 AI 問答 */
+const STATIC_ONLY = import.meta.env?.VITE_STATIC_ONLY === '1';
+
 let fabEl = null;
 let modalEl = null;
 let mountEl = null;
@@ -85,7 +88,7 @@ export async function setGuideChatVersion(versionId, disabled, partId = 'main', 
   currentVersionId = versionId;
   currentPartId = partId || 'main';
   currentPartLabel = partLabel || '本體';
-  currentDisabled = disabled || isPlaceholder(versionId);
+  currentDisabled = disabled || isPlaceholder(versionId) || STATIC_ONLY;
 
   if (fabEl) {
     fabEl.hidden = currentDisabled;
