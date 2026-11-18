@@ -124,7 +124,8 @@ async function formatOneEvolutionDetail(d) {
 export async function formatEvolutionDetails(details) {
   if (!details?.length) return '';
   const texts = await Promise.all(details.map((d) => formatOneEvolutionDetail(d)));
-  return texts.filter(Boolean).join('／');
+  // 同一進化在不同世代可能重複列出相同條件（如雷丘），去重避免「使用雷之石／使用雷之石」
+  return [...new Set(texts.filter(Boolean))].join('／');
 }
 
 export function getGenerationFromSpecies(speciesData, generationMap) {

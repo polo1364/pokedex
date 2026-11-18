@@ -5,6 +5,9 @@ import { applyFilters, preloadVisiblePokemon } from './data/filters.js';
 import { enrichFilterMetaForEntries } from './utils/filterMeta.js';
 import { loadVersionNames } from './utils/versions.js';
 import { store } from './state/store.js';
+import { fetchJson } from './api/client.js';
+import { BASE_URL } from './config.js';
+import { getChineseName } from './utils/i18n.js';
 import { renderPokemonGrid, patchPokemonCard, loadMore } from './ui/grid.js';
 import {
   initSidebar, bindSidebarFilters, initViewControls, initSortControl,
@@ -37,6 +40,19 @@ function applyTmFromUrl(params) {
   const tm = params.get('tm') || params.get('move');
   if (!tm) return;
   store.currentFilters.tm = tm.trim();
+  store.currentFilters.tmLabel = (params.get('tmLabel') || '').trim();
+}
+
+/** 網址只帶招式代碼（如 thunderbolt）時，補抓繁中招式名供篩選標籤顯示。 */
+async function resolveTmLabel() {
+  const { tm, tmLabel } = store.currentFilters;
+  if (!tm || tmLabel) return;
+  try {
+    const slug = encodeURIComponent(tm.toLowerCase());
+    const data = await fetchJson(`${BASE_URL}/move/${slug}`, `move_${slug}`);
+    const name = getChineseName(data.names);
+    if (name && store.currentFilters.tm === tm) store.currentFilters.tmLabel = name;
+  } catch { /* 保留代碼顯示 */ }
 }
 
 async function init() {
@@ -67,6 +83,23 @@ async function init() {
     await refreshUI(false);
   });
 
+  document.getElementById('statTags')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-clear]');
+    if (!btn) return;
+    const url = new URL(location.href);
+    if (btn.dataset.clear === 'item') {
+      store.currentFilters.item = '';
+      store.currentFilters.itemLabel = '';
+      ['heldItemSlug', 'heldItem', 'item', 'heldItemLabel'].forEach((k) => url.searchParams.delete(k));
+    } else if (btn.dataset.clear === 'tm') {
+      store.currentFilters.tm = '';
+      store.currentFilters.tmLabel = '';
+      ['tm', 'move', 'tmLabel'].forEach((k) => url.searchParams.delete(k));
+    }
+    history.replaceState(null, '', url);
+    refreshUI();
+  });
+
   document.getElementById('pokemonGrid')?.addEventListener('click', async (e) => {
     const card = e.target.closest('[data-id]');
     if (!card) return;
@@ -88,7 +121,7 @@ async function init() {
 
   try {
     document.getElementById('loadingContainer').style.display = 'flex';
-    await loadVersionNames();
+    await Promise.all([loadVersionNames(), resolveTmLabel()]);
     await loadGenerations();
     await bootstrapSpeciesIndex((pct, done, total) => {
       document.getElementById('progressBar').style.width = pct + '%';

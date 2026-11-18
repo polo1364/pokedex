@@ -22,9 +22,52 @@ const METHOD_NAMES = {
   'rough-terrain': '崎嶇地形',
   gift: '贈送',
   'gift-egg': '贈送蛋',
+  static: '定點',
+  pokeflute: '寶可夢之笛',
+  'headbutt-low': '頭錘（低）',
+  'headbutt-normal': '頭錘',
+  'headbutt-high': '頭錘（高）',
+  'squirt-bottle': '傑尼龜噴壺',
+  'wailmer-pail': '吼吼鯨噴壺',
+  seaweed: '海藻',
+  'roaming-grass': '遊走（草叢）',
+  'roaming-water': '遊走（水面）',
+  'devon-scope': '得文偵測鏡',
+  'feebas-tile-fishing': '醜醜魚釣點',
+  'island-scan': '島嶼掃描',
+  sos: '求救對戰',
+  'bubbling-spots': '冒泡水面',
+  'berry-trees': '樹果樹',
+  'npc-trade': '交換',
+  'sos-from-bubbling-spot': '求救對戰（冒泡水面）',
+  overworld: '野外出現',
+  'overworld-water': '野外出現（水面）',
+  'overworld-flying': '野外出現（飛行）',
+  'overworld-special': '野外出現（特殊）',
+  'overworld-flying-special': '野外出現（飛行特殊）',
+  'overworld-water-special': '野外出現（水面特殊）',
+  'overworld-dirt': '野外出現（地面）',
+  horde: '群體對戰',
+  'hidden-grotto': '隱藏洞穴',
+  'honey-tree': '甜甜蜜樹',
+  wanderer: '徘徊',
+  'wanderer-water': '徘徊（水面）',
+  'chase-water': '水面追逐',
+  'dynamax-adventure': '極巨大冒險',
+  'max-raid': '極巨團體戰',
+  'trash-can-ambush': '垃圾桶突襲',
+  'rustling-bush-ambush': '晃動草叢突襲',
+  'ceiling-ambush': '天花板突襲',
+  'ground-ambush': '地面突襲',
+  'sky-ambush': '空中突襲',
+  snag: '奪取',
+  'snag-rematch': '奪取（再戰）',
 };
 
 const ENCOUNTER_VERSION_LABELS = {
+  'red-japan': '寶可夢 紅（日版）',
+  'green-japan': '寶可夢 綠（日版）',
+  'blue-japan': '寶可夢 藍（日版）',
   red: '寶可夢 紅',
   blue: '寶可夢 藍',
   yellow: '寶可夢 黃',
@@ -73,13 +116,40 @@ function zhName(names) {
   return names?.find((n) => n.language?.name?.toLowerCase() === 'zh-hant')?.name || '';
 }
 
+function nameByLang(names, lang) {
+  return names?.find((n) => n.language?.name?.toLowerCase() === lang)?.name || '';
+}
+
+/** 英文地名中常見的道路格式轉成繁中，其餘保留英文（總比只顯示編號好辨認）。 */
+function localizeEnglishPlace(name) {
+  return name
+    .replace(/^Route (\d+)$/i, '$1號道路')
+    .replace(/^(.+?) Route (\d+)$/i, '$1 $2號道路');
+}
+
+/** PokéAPI 新地區（伽勒爾、帕底亞等）常缺繁中譯名：繁中 → 英文 → 編號。 */
+export function placeName(names, prefix, id) {
+  const zh = zhName(names);
+  if (zh) return zh;
+  const en = nameByLang(names, 'en');
+  if (en) return localizeEnglishPlace(en);
+  return fallbackById(prefix, id);
+}
+
+/** 區域名常把地點名當前綴（Giant's Cap (Max Den D)），合併時避免重複。 */
+export function combinePlace(locationName, areaName) {
+  if (!areaName || areaName === locationName) return locationName;
+  if (areaName.startsWith(locationName)) return areaName;
+  return `${locationName}／${areaName}`;
+}
+
 function fallbackById(prefix, id) {
   return id ? `${prefix} #${id}` : `未知${prefix}`;
 }
 
 function encounterVersionLabel(version) {
   const label = ENCOUNTER_VERSION_LABELS[version] || getVersionDisplayName(version);
-  return /[A-Za-z]/.test(label) ? `版本 #${versionScore(version) || 0}` : label;
+  return /[A-Za-z]/.test(label) ? `其他版本（${version}）` : label;
 }
 
 function methodLabel(name) {
@@ -98,14 +168,15 @@ async function resolveLocationArea(areaRef) {
     ? await fetchJson(location.region.url, `region_${regionId}`)
     : null;
 
-  const areaName = zhName(area.names) || fallbackById('區域', areaId);
-  const locationName = zhName(location?.names) || fallbackById('地點', locationId || areaId);
-  const placeName = areaName && areaName !== locationName ? `${locationName}／${areaName}` : locationName;
+  const locationName = placeName(location?.names, '地點', locationId || areaId);
+  const areaName = zhName(area.names)
+    || (zhName(location?.names) || !area.names?.length ? '' : placeName(area.names, '區域', areaId));
+  const combined = combinePlace(locationName, areaName);
 
   return {
     areaUrl: areaRef.url,
-    regionName: zhName(region?.names) || fallbackById('地區', regionId),
-    placeName,
+    regionName: placeName(region?.names, '地區', regionId),
+    placeName: combined,
   };
 }
 
@@ -147,12 +218,17 @@ export async function getEncounterGroups(pokemon) {
           placeName: area.placeName,
           method: methodLabel(method),
           chance: 0,
+          chanceByCondition: new Map(),
           minLevel: Infinity,
           maxLevel: 0,
           details: [],
         };
 
-        current.chance += detail.chance ?? 0;
+        // 同一條件下的多個遭遇欄位機率相加；不同條件（時段、天氣、星級）互斥，取最大值。
+        const condKey = (detail.condition_values || []).map((c) => c.name).sort().join(',');
+        const condSum = (current.chanceByCondition.get(condKey) || 0) + (detail.chance ?? 0);
+        current.chanceByCondition.set(condKey, condSum);
+        current.chance = Math.min(100, Math.max(...current.chanceByCondition.values()));
         current.minLevel = Math.min(current.minLevel, detail.min_level ?? current.minLevel);
         current.maxLevel = Math.max(current.maxLevel, detail.max_level ?? current.maxLevel);
         current.details.push(detailLabel(detail));

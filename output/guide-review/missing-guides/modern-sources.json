@@ -1,0 +1,205 @@
+[
+  {
+    "url": "https://www.serebii.net/swordshield/mustard.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\swordshield--mustard.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "147703431c79f9b87d53018d175859fc17da86c52e9fdea9a92500ef49b73005"
+  },
+  {
+    "url": "https://www.serebii.net/swordshield/klaraavery.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\swordshield--klaraavery.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "f88264102f52fb79cda9888baf08c0135a9bf0ae9bcea5a807e916156bdb6692"
+  },
+  {
+    "url": "https://www.serebii.net/swordshield/legendary.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\swordshield--legendary.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "427532fae8a7243477f131371b8048ca85b2a73d7a1156ca2841236c5831e9db"
+  },
+  {
+    "url": "https://www.serebii.net/swordshield/dynamaxadventures.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\swordshield--dynamaxadventures.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "09391f8036660d9831b7c16650323eb5651865c76b94850227a47774b98406e2"
+  },
+  {
+    "url": "https://www.serebii.net/swordshield/maxsoup.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\swordshield--maxsoup.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "b4eeef28a65184b213bc183ef704e75c43d6a45991ef6196bd1b3d3c5ad1a40d"
+  },
+  {
+    "url": "https://www.serebii.net/swordshield/alegendarytreeofalegendarythree.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\swordshield--alegendarytreeofalegendarythree.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "36590245b32e369767835a9aa64f2db51a6e63dc73d07d313a428d06759a035f"
+  },
+  {
+    "url": "https://www.serebii.net/scarletviolet/kitakamimaskfestival.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\scarletviolet--kitakamimaskfestival.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "ade8545029ec106cb77fac946137d00f0620d1bcd5bc59ab98bc92178e4cc331"
+  },
+  {
+    "url": "https://www.serebii.net/scarletviolet/blueberryelitefour.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\scarletviolet--blueberryelitefour.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "32d339b8c8617041ea2e541d9e320330b0d5b994b06e69c29f780ba95b0ca23e"
+  },
+  {
+    "url": "https://www.serebii.net/scarletviolet/areazerounderdepths.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\scarletviolet--areazerounderdepths.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "fcbbcde97653a605c9e801729ca725ca25b641894c78d8544bfb868d9e3d511a"
+  },
+  {
+    "url": "https://www.serebii.net/scarletviolet/pathoflegends.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\scarletviolet--pathoflegends.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "c477d10782436c2549afc6e6468ece36f4eae3ae6ea73463dd91db2c1fa66204"
+  },
+  {
+    "url": "https://www.serebii.net/scarletviolet/starfallstreet.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\scarletviolet--starfallstreet.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "1e8b8d24b6f4a1684bfde700cd878c5d7b4034abb69ddbbf7ec539df3fc9e1bd"
+  },
+  {
+    "url": "https://www.serebii.net/scarletviolet/thewayhome.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\scarletviolet--thewayhome.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "16ebcc72912ed6c931df9bdcd6fca61257d65d8ed51a31433af32d3585c67ff2"
+  },
+  {
+    "url": "https://www.serebii.net/scarletviolet/thebloodmoonbeast.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\scarletviolet--thebloodmoonbeast.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "1cef1c279e4c02abd64ae4ead21f7060658abfb12151fa9474b7c286207c5b46"
+  },
+  {
+    "url": "https://www.serebii.net/scarletviolet/mochimayhem.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\scarletviolet--mochimayhem.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "71e7998b1946291000ef265ffbeb17fa8f05470866d7784078c270cc33fdd99d"
+  },
+  {
+    "url": "https://www.serebii.net/scarletviolet/victoryroad.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\scarletviolet--victoryroad.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "e79251bb463a2361724c2f6bf084a6be2b094c96023470285edab0f45e8a8e19"
+  },
+  {
+    "url": "https://www.serebii.net/swordshield/thesacredbondsofsovereignandsteed.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\swordshield--thesacredbondsofsovereignandsteed.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "5cc8309272a67c95dbb27bb0ef802a00ee4e8e92a5128a140eebd24f2debf3f0"
+  },
+  {
+    "url": "https://www.serebii.net/swordshield/theterribletitanslurkinglockedaway.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\swordshield--theterribletitanslurkinglockedaway.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "88ddd85adf84ffd44dfc62081bca78389c6ea20a9be135a23347e032b8825e03"
+  },
+  {
+    "url": "https://www.serebii.net/swordshield/theycamefromtheultrabeyond.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\swordshield--theycamefromtheultrabeyond.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "f6ea16cfd6c5129a967c12fd160f34c96873a313c1a64f96e12531ba1b887cd3"
+  },
+  {
+    "url": "https://www.serebii.net/swordshield/footprints.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\swordshield--footprints.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "2a451c3f89150270fb66d982b471b17625a418180dc6df8e8321d6ee6e3c5587"
+  },
+  {
+    "url": "https://www.serebii.net/pokearth/galar/slipperyslope.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\pokearth--galar--slipperyslope.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "452516bff6815d93f66276a6aa8e730920163a6cba515596fd5201c72c372c76"
+  },
+  {
+    "url": "https://www.serebii.net/pokearth/terarium/blueberryacademy.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\www.serebii.net--pokearth--terarium--blueberryacademy.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "1773bb2a21d75d628aaa2fd2f0a99916c542916d2399288a7e94ffd10f03f835"
+  },
+  {
+    "url": "https://www.serebii.net/pokearth/terarium/centralplaza.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\www.serebii.net--pokearth--terarium--centralplaza.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "0ed33f5ef1618041c45169d67a0c80b1bbd51d25a9b98ad3e430b44c3b5ae8d1"
+  },
+  {
+    "url": "https://www.serebii.net/scarletviolet/paradoxperrin.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\www.serebii.net--scarletviolet--paradoxperrin.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "a5dd4dd420d3e10a038c85403d612d17ac7f0cd1f24f79193a868ba75fd638cf"
+  },
+  {
+    "url": "https://www.serebii.net/pokearth/kitakami/crystalpool.shtml",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\www.serebii.net--pokearth--kitakami--crystalpool.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "2de2a2aa40e47f8a5af05d2fc33ed1badd3f6679b11fcd6098e21aaebbdc183a"
+  },
+  {
+    "url": "https://www.serebii.net/pokedex-swsh/kubfu/",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\www.serebii.net--pokedex-swsh--kubfu--.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "dd7077c409c2a7c58c8a41d726fca9b90048cf991f1acb797d116b0eeaaffe48"
+  },
+  {
+    "url": "https://www.nintendo.com/us/whatsnew/heres-how-to-play-the-epilogue-to-the-hidden-treasure-of-area-zero-dlc-for-pokemon-scarlet-or-pokemon-violet/",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\www.nintendo.com--us--whatsnew--heres-how-to-play-the-epilogue-to-the-hidden-treasure-of-area-zero-dlc-for-pokemon-scarlet-or-pokemon-violet--.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "84d1e3a9f312bc2c356bd62eefd4199dffa3729866a611aee79c690304200cd9"
+  },
+  {
+    "url": "https://www.nintendo.com/au/news-and-articles/take-on-new-challenges-in-the-hidden-treasure-of-area-zero-part-2-the-indigo-disk-for-pokemon-scarlet-or-pokemon-violet/",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\www.nintendo.com--au--news-and-articles--take-on-new-challenges-in-the-hidden-treasure-of-area-zero-part-2-the-indigo-disk-for-pokemon-scarlet-or-pokemon-violet--.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "fc8b68d69523370eb5d2748158ca652205b0d5c3d2cb822029d2fb63a68ead5e"
+  },
+  {
+    "url": "https://bulbapedia.bulbagarden.net/wiki/Hop",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\bulbapedia--hop.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "7e7530bf94f5a606df7470e1116cab2aefd40d35eb8e030e26817fc7c7884fcd"
+  },
+  {
+    "url": "https://bulbapedia.bulbagarden.net/wiki/Crystal_Pool",
+    "status": 200,
+    "textFile": "output\\guide-review\\missing-guides\\modern-sources\\bulbapedia--crystal-pool.txt",
+    "retrieved": "2026-10-09",
+    "sha256": "469b471b4a718b09fdd21b8cd2f4b66711eb16e83671f17924e55c1240254b95"
+  }
+]

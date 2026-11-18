@@ -14,29 +14,35 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     environment: production
-    if: ${{ secrets.RAILWAY_TOKEN != '' && secrets.RAILWAY_SERVICE_ID != '' }}
+    # secrets 不能直接用在 job 層級的 if（會讓整份 workflow 判定為無效），
+    # 改成先映射到 env，再於步驟中判斷是否已設定。
+    env:
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      RAILWAY_SERVICE_ID: ${{ secrets.RAILWAY_SERVICE_ID }}
 
     steps:
+      - name: Check secrets
+        id: secrets
+        run: |
+          if [ -z "$RAILWAY_TOKEN" ] || [ -z "$RAILWAY_SERVICE_ID" ]; then
+            echo "略過部署：請在 GitHub → Settings → Secrets and variables → Actions 設定："
+            echo "  RAILWAY_TOKEN        — Railway → Account Settings → Tokens（需具 Deploy 權限）"
+            echo "  RAILWAY_SERVICE_ID   — Railway 服務 → Settings → Service ID"
+            echo ""
+            echo "若已在 Railway 連接 GitHub，直接 push 即可自動部署，無需執行此 workflow。"
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout
+        if: steps.secrets.outputs.configured == 'true'
         uses: actions/checkout@v4
 
       - name: Install Railway CLI
+        if: steps.secrets.outputs.configured == 'true'
         run: npm install -g @railway/cli
 
       - name: Deploy to Railway
-        run: railway up --service "${{ secrets.RAILWAY_SERVICE_ID }}" --detach
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-
-  secrets-missing:
-    name: Secrets not configured
-    runs-on: ubuntu-latest
-    if: ${{ secrets.RAILWAY_TOKEN == '' || secrets.RAILWAY_SERVICE_ID == '' }}
-    steps:
-      - name: Skip deploy
-        run: |
-          echo "略過部署：請在 GitHub → Settings → Secrets and variables → Actions 設定："
-          echo "  RAILWAY_TOKEN        — Railway → Account Settings → Tokens（需具 Deploy 權限）"
-          echo "  RAILWAY_SERVICE_ID   — Railway 服務 → Settings → Service ID"
-          echo ""
-          echo "若已在 Railway 連接 GitHub，直接 push 即可自動部署，無需執行此 workflow。"
+        if: steps.secrets.outputs.configured == 'true'
+        run: railway up --service "$RAILWAY_SERVICE_ID" --detach

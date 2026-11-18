@@ -20,14 +20,14 @@ export function renderPokemonGrid() {
 }
 
 function getActiveFilterLabels() {
-  const { gen, type, favorites, item, itemLabel, tm } = store.currentFilters;
+  const { gen, type, favorites, item, itemLabel, tm, tmLabel } = store.currentFilters;
   const labels = [];
   if (gen !== 'all') labels.push({ kind: 'gen', text: `第 ${gen} 世代` });
   if (type !== 'all') labels.push({ kind: 'type', text: typeNamesCN[type] || type, typeKey: type });
   const searchText = document.getElementById('searchBox')?.value?.trim();
   if (searchText) labels.push({ kind: 'search', text: `搜尋：${searchText}` });
   if (item) labels.push({ kind: 'item', text: `道具：${itemLabel || item}` });
-  if (tm) labels.push({ kind: 'tm', text: `招式機：${tm}` });
+  if (tm) labels.push({ kind: 'tm', text: `招式機：${tmLabel || tm}` });
   if (favorites) labels.push({ kind: 'favorites', text: '我的收藏' });
   return labels;
 }
@@ -64,6 +64,10 @@ function updateStatSummary(shown) {
     if (item.kind === 'type') {
       const bg = typeColors[item.typeKey] || '#666';
       return `<span class="stat-tag stat-tag--type" style="background:${bg}">${escapeHtml(item.text)}</span>`;
+    }
+    if (item.kind === 'item' || item.kind === 'tm') {
+      // 道具／招式機篩選只能從網址帶入，側欄沒有對應按鈕，因此在標籤上提供清除。
+      return `<span class="stat-tag stat-tag--${item.kind}">${escapeHtml(item.text)}<button type="button" class="stat-tag-clear" data-clear="${item.kind}" aria-label="清除${escapeHtml(item.text)}篩選">×</button></span>`;
     }
     return `<span class="stat-tag stat-tag--${item.kind}">${escapeHtml(item.text)}</span>`;
   }).join('');
