@@ -1,5 +1,8 @@
 import '../styles/pokemon-detail.css';
 import { entryVarietyIds } from '../utils/entrySummary.js';
+import {
+  isCompareEnabled, getCompareIds, toggleCompare, onCompareChange,
+} from './compare.js';
 import { MOVE_PAGE_SIZE, statNames, typeColors, typeNamesCN } from '../config.js';
 import { escapeHtml } from '../utils/infoCards.js';
 import { fetchJson, runPool } from '../api/client.js';
@@ -308,6 +311,7 @@ function renderModalHeader(pokemon, displayName) {
       <button type="button" class="modal-action-btn" id="favoriteBtn" data-fav="${isFav}" aria-pressed="${isFav}">${isFav ? '★ 已收藏' : '☆ 收藏'}</button>
       <button type="button" class="modal-action-btn" id="shinyToggleBtn" aria-pressed="false">✧ 閃光</button>
       <button type="button" class="modal-action-btn" id="shareBtn">↗ 分享</button>
+      ${isCompareEnabled() ? `<button type="button" class="modal-action-btn" id="compareBtn" aria-pressed="${getCompareIds().includes(pokemon.id)}">⚖ ${getCompareIds().includes(pokemon.id) ? '比較中' : '比較'}</button>` : ''}
     </div>`;
 
   document.getElementById('favoriteBtn')?.addEventListener('click', () => {
@@ -323,6 +327,9 @@ function renderModalHeader(pokemon, displayName) {
     document.getElementById('shinyToggleBtn').setAttribute('aria-pressed', String(shinyMode));
     const img = document.querySelector('#modalMainImage');
     if (img) img.src = getPokemonImage(pokemon, { shiny: shinyMode });
+  });
+  document.getElementById('compareBtn')?.addEventListener('click', () => {
+    toggleCompare(pokemon.id);
   });
   document.getElementById('shareBtn')?.addEventListener('click', () => {
     const url = `${location.origin}${location.pathname}?id=${pokemon.id}`;
@@ -688,6 +695,13 @@ export function initModalEvents() {
     navigateDetail(e.key === 'ArrowLeft' ? -1 : 1);
   });
   bindSwipeNavigation();
+  onCompareChange((ids) => {
+    const btn = document.getElementById('compareBtn');
+    if (!btn || currentDetailId == null) return;
+    const on = ids.includes(currentDetailId);
+    btn.setAttribute('aria-pressed', String(on));
+    btn.textContent = on ? '⚖ 比較中' : '⚖ 比較';
+  });
 }
 
 /** 手機左右滑動切換；從可水平捲動的區塊（表格、分頁列）開始的滑動不攔截。 */

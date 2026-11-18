@@ -160,6 +160,34 @@ def run():
             expect(page.locator('#pokemonDetailTitle')).to_have_text('皮卡丘')
             expect(nav.locator('.modal-nav-pos')).to_have_text('2 / 4')
 
+            if width == 1440:
+                # 寶可夢比較：從詳情加入兩隻 → 底部清單 → 比較視窗 → 網址 → 移除
+                compare_btn = page.locator('#compareBtn')
+                compare_btn.click()
+                expect(compare_btn).to_have_attribute('aria-pressed', 'true')
+                page.keyboard.press('ArrowLeft')
+                expect(page.locator('#pokemonDetailTitle')).to_have_text('噴火龍')
+                page.locator('#compareBtn').click()
+                page.locator('#closeModalBtn').click()
+                tray = page.locator('#compareTray')
+                expect(tray.locator('.compare-chip-name')).to_have_text(['皮卡丘', '噴火龍'])
+                tray.get_by_role('button', name='開始比較').click()
+                dialog = page.locator('#compareModal')
+                expect(dialog.locator('.compare-head-name')).to_have_text(['皮卡丘', '噴火龍'])
+                assert page.evaluate('location.search') == '?compare=25,6', page.evaluate('location.search')
+                expect(dialog.locator('[data-abilities="25"]')).to_contain_text('靜電')
+                expect(dialog.locator('.compare-weak td').nth(1)).to_contain_text('岩石')
+                dialog.locator('[data-remove="6"]').click()
+                expect(dialog.locator('.compare-head-name')).to_have_text(['皮卡丘'])
+                page.keyboard.press('Escape')
+                expect(dialog).not_to_be_visible()
+                assert page.evaluate('location.search') == '', page.evaluate('location.search')
+                tray.get_by_role('button', name='清空').click()
+                expect(tray).to_be_hidden()
+                page.goto(f'{BASE}/?id=25')
+                page.wait_for_load_state('networkidle')
+                expect(page.locator('#pokemonDetailTitle')).to_have_text('皮卡丘')
+
             page.locator('#favoriteBtn').click()
             expect(page.locator('#favoriteBtn')).to_have_attribute('aria-pressed', 'true')
             page.locator('#shinyToggleBtn').click()
@@ -219,7 +247,7 @@ def run():
                     page.screenshot(path=str(OUT / f'long-name-{width}.png'))
                 page.locator('#closeModalBtn').click()
             assert not errors, errors
-            print(f'PASS {width}x{height}: prev/next nav, tabs, forms, stats, favorite, shiny, share, disclosures, encounters, long name, missing image, no overflow/errors')
+            print(f'PASS {width}x{height}: prev/next nav, compare, tabs, forms, stats, favorite, shiny, share, disclosures, encounters, long name, missing image, no overflow/errors')
             context.close()
         # The machines page creates the same dialog dynamically (no index.html markup).
         page = browser.new_page(viewport={'width': 390, 'height': 844}, service_workers='block')
@@ -239,6 +267,7 @@ def run():
         expect(page.locator('#overviewTab')).to_be_visible()
         expect(page.locator('#pokemonDetailTitle')).to_have_text('皮卡丘')
         expect(page.locator('#modalNav')).to_be_hidden()
+        expect(page.locator('#compareBtn')).to_have_count(0)
         assert page.locator('#modal .modal-header').evaluate('(el) => getComputedStyle(el).backgroundColor') == 'rgb(66, 45, 62)'
         page.locator('#modal .detail-tabs').get_by_role('button', name='招式', exact=True).click()
         expect(page.locator('#movesList')).to_contain_text('電擊')

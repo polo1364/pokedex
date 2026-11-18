@@ -16,7 +16,8 @@ import {
   readUrlState, buildUrlWithState, urlChangeKind, DEFAULT_URL_STATE,
 } from './utils/urlState.js';
 import { initVersionDrawer } from './ui/versionDrawer.js';
-import { showDetail, openModal, initModalEvents } from './ui/modal.js';
+import { showDetail, openModal, initModalEvents, closeModal } from './ui/modal.js';
+import { initCompare, openCompareFromUrl } from './ui/compare.js';
 
 let refreshSeq = 0;
 
@@ -104,6 +105,12 @@ async function resolveTmLabel() {
 
 async function init() {
   initModalEvents();
+  initCompare({
+    showDetail: async (id) => {
+      closeModal();
+      await showDetail(id);
+    },
+  });
   onCacheError(() => {
     const toast = document.getElementById('cacheToast');
     if (toast) {
@@ -195,7 +202,7 @@ async function init() {
     document.getElementById('loadingContainer').style.display = 'none';
     await refreshUI();
 
-    if (openId) await openModal(parseInt(openId, 10));
+    if (!openCompareFromUrl() && openId) await openModal(parseInt(openId, 10));
 
     backgroundLoadRemaining();
   } catch (err) {
