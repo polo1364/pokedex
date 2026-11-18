@@ -2265,6 +2265,10 @@
       --catalog-accent: #58a6ff;
     }
 
+    .sidebar-catalog-link--team {
+      --catalog-accent: #3fb950;
+    }
+
     .sidebar-catalog-link:hover,
     .sidebar-catalog-link:focus-visible {
       border-color: color-mix(in srgb, var(--catalog-accent) 55%, transparent);

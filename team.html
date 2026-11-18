@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f0f23">
+  <meta name="description" content="隊伍屬性分析：找出共同弱點、本系招式打擊面與補強方向">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.json">
+  <title>隊伍分析｜寶可夢圖鑑</title>
+</head>
+<body class="team-page-body">
+  <div class="items-page team-page">
+    <header class="items-page-header">
+      <div class="items-page-header-top">
+        <a href="./index.html" class="guide-back-link">← 返回圖鑑</a>
+      </div>
+      <h1 class="items-page-title">隊伍屬性分析</h1>
+      <p class="items-page-subtitle">選最多 6 隻寶可夢，找出共同弱點、本系招式打不痛的屬性，以及補強方向</p>
+      <details class="catalog-notes">
+        <summary>資料說明</summary>
+        <p>只依屬性計算，採用第 6 世代起的屬性相剋表；寶可夢以一般形態的屬性為準。</p>
+        <p>打擊面以「本系招式」（與自身屬性相同的招式）估算，未計入實際學會的其他屬性招式。特性（如飄浮、引火）、道具與太晶化等效果也未計入。</p>
+      </details>
+    </header>
+
+    <main class="items-page-main">
+      <section class="team-card team-builder" aria-labelledby="teamBuilderTitle">
+        <div class="team-builder-head">
+          <h2 id="teamBuilderTitle">我的隊伍 <span class="team-count" id="teamCount">0 / 6</span></h2>
+          <div class="team-builder-actions">
+            <button type="button" class="team-btn" id="teamShare" disabled>複製分享連結</button>
+            <button type="button" class="team-btn" id="teamClear" disabled>清空</button>
+          </div>
+        </div>
+        <div class="team-picker" id="teamPicker">
+          <label class="sr-only" for="teamSearch">搜尋寶可夢加入隊伍</label>
+          <input type="search" class="search-box team-search" id="teamSearch" placeholder="搜尋名稱或編號加入隊伍（如：噴火龍、garchomp、445）" autocomplete="off"
+            role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="teamSuggestions" disabled>
+          <ul class="team-suggestions" id="teamSuggestions" role="listbox" aria-label="搜尋結果" hidden></ul>
+        </div>
+        <p class="team-status" id="teamStatus" role="status" aria-live="polite"></p>
+        <ul class="team-slots" id="teamSlots" aria-label="隊伍成員"></ul>
+      </section>
+
+      <div id="teamAnalysis" class="team-analysis" aria-live="polite">
+        <p class="team-empty">載入寶可夢資料中…</p>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="/src/team-main.js"></script>
+</body>
+</html>

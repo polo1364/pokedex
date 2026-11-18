@@ -3,6 +3,7 @@ import { entryVarietyIds } from '../utils/entrySummary.js';
 import {
   isCompareEnabled, getCompareIds, toggleCompare, onCompareChange,
 } from './compare.js';
+import { getTeamIds, addToTeam, removeFromTeam } from '../state/team.js';
 import { MOVE_PAGE_SIZE, statNames, typeColors, typeNamesCN } from '../config.js';
 import { escapeHtml } from '../utils/infoCards.js';
 import { fetchJson, runPool } from '../api/client.js';
@@ -311,6 +312,7 @@ function renderModalHeader(pokemon, displayName) {
       <button type="button" class="modal-action-btn" id="favoriteBtn" data-fav="${isFav}" aria-pressed="${isFav}">${isFav ? '★ 已收藏' : '☆ 收藏'}</button>
       <button type="button" class="modal-action-btn" id="shinyToggleBtn" aria-pressed="false">✧ 閃光</button>
       <button type="button" class="modal-action-btn" id="shareBtn">↗ 分享</button>
+      <button type="button" class="modal-action-btn" id="teamBtn" aria-pressed="${getTeamIds().includes(pokemon.speciesData?.id ?? pokemon.id)}" title="加入隊伍分析（最多 6 隻）">${getTeamIds().includes(pokemon.speciesData?.id ?? pokemon.id) ? '✓ 隊伍' : '＋ 隊伍'}</button>
       ${isCompareEnabled() ? `<button type="button" class="modal-action-btn" id="compareBtn" aria-pressed="${getCompareIds().includes(pokemon.id)}">⚖ ${getCompareIds().includes(pokemon.id) ? '比較中' : '比較'}</button>` : ''}
     </div>`;
 
@@ -327,6 +329,26 @@ function renderModalHeader(pokemon, displayName) {
     document.getElementById('shinyToggleBtn').setAttribute('aria-pressed', String(shinyMode));
     const img = document.querySelector('#modalMainImage');
     if (img) img.src = getPokemonImage(pokemon, { shiny: shinyMode });
+  });
+  document.getElementById('teamBtn')?.addEventListener('click', () => {
+    // 隊伍分析以物種的一般形態屬性計算，形態頁面也加入其物種
+    const speciesId = pokemon.speciesData?.id ?? pokemon.id;
+    const btn = document.getElementById('teamBtn');
+    if (getTeamIds().includes(speciesId)) {
+      removeFromTeam(speciesId);
+    } else {
+      const result = addToTeam(speciesId);
+      if (result.full) {
+        btn.textContent = '隊伍已滿 6 隻';
+        setTimeout(() => {
+          if (document.getElementById('teamBtn') === btn) btn.textContent = '＋ 隊伍';
+        }, 1800);
+        return;
+      }
+    }
+    const on = getTeamIds().includes(speciesId);
+    btn.textContent = on ? '✓ 隊伍' : '＋ 隊伍';
+    btn.setAttribute('aria-pressed', String(on));
   });
   document.getElementById('compareBtn')?.addEventListener('click', () => {
     toggleCompare(pokemon.id);

@@ -1,0 +1,232 @@
+/* ===== 隊伍屬性分析頁 ===== */
+.team-page { max-width: 1040px; }
+
+.team-card {
+  margin-bottom: 20px;
+  padding: 18px 20px;
+  border: 1px solid rgba(0, 217, 255, 0.2);
+  border-radius: 16px;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 45%),
+    var(--bg-card);
+}
+.team-card h2 { margin: 0 0 6px; font-size: 19px; }
+.team-card h3 { margin: 0 0 10px; font-size: 15px; color: var(--accent-primary); }
+.team-card h4 { margin: 16px 0 8px; font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+.team-card-desc { margin: 0 0 14px; color: var(--text-muted); font-size: 13px; }
+
+/* 隊伍編輯 */
+.team-builder-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.team-count { margin-left: 6px; font-size: 14px; font-weight: 600; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.team-builder-actions { display: flex; gap: 8px; }
+.team-btn {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.team-btn:hover:not(:disabled) { border-color: var(--accent-primary); }
+.team-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.team-btn:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; }
+
+.team-picker { position: relative; }
+.team-search { width: 100%; }
+.team-suggestions {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: 360px;
+  margin: 0;
+  padding: 6px;
+  overflow-y: auto;
+  list-style: none;
+  border: 1px solid rgba(0, 217, 255, 0.35);
+  border-radius: 12px;
+  background: #1b1b33;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+.team-suggestions[hidden] { display: none; }
+.team-suggestion {
+  display: grid;
+  grid-template-columns: 40px 58px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.team-suggestion img { width: 40px; height: 40px; object-fit: contain; }
+.team-suggestion.is-active, .team-suggestion:hover { background: rgba(0, 217, 255, 0.12); }
+.team-suggestion-num { color: var(--text-muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.team-suggestion-name { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.team-suggestion-types { display: flex; gap: 4px; }
+.team-suggestion-types .type-badge { padding: 2px 8px; font-size: 12px; }
+.team-suggestion-in { font-size: 12px; color: var(--accent-primary); white-space: nowrap; }
+.team-suggestion-empty { padding: 10px; color: var(--text-muted); }
+
+.team-status {
+  min-height: 20px;
+  margin: 8px 0 4px;
+  font-size: 13px;
+  color: #ffb3cf;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.team-status.is-visible { opacity: 1; }
+
+.team-slots {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.team-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-height: 168px;
+  padding: 10px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.team-slot--empty {
+  justify-content: center;
+  border-style: dashed;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 26px;
+}
+.team-slot-hint { font-size: 12px; }
+.team-slot-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 10px;
+}
+.team-slot-link:hover .team-slot-name { color: var(--accent-primary); }
+.team-slot-link:focus-visible { outline: 2px solid var(--accent-primary); }
+.team-slot img { width: 76px; height: 76px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35)); }
+.team-slot-num { font-size: 11px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.team-slot-name { max-width: 100%; font-weight: 700; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.team-slot-types { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.team-slot-types .type-badge { padding: 2px 8px; font-size: 11px; }
+.team-slot-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 17px;
+  cursor: pointer;
+}
+.team-slot-remove:hover { background: rgba(255, 0, 110, 0.5); color: #fff; }
+.team-slot-remove:focus-visible { outline: 2px solid var(--accent-primary); }
+
+.team-empty { padding: 28px 8px; text-align: center; color: var(--text-muted); }
+
+/* 摘要 */
+.team-summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.team-chip-list, .team-suggest-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.team-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 4px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+.team-chip--weak { background: rgba(255, 92, 138, 0.14); border: 1px solid rgba(255, 92, 138, 0.35); }
+.team-chip--weak strong { color: #ff8fb0; }
+.team-chip--gap { padding: 2px; background: rgba(255, 163, 107, 0.14); border: 1px solid rgba(255, 163, 107, 0.35); }
+.team-suggest-list { flex-direction: column; gap: 6px; }
+.team-suggest-list li { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+.team-ok { margin: 0; color: #7ee8a8; font-size: 14px; }
+
+/* 防禦表 */
+.team-table-wrap { overflow-x: auto; }
+.team-defense-table { width: 100%; border-collapse: separate; border-spacing: 0 3px; font-variant-numeric: tabular-nums; }
+.team-defense-table th, .team-defense-table td { padding: 3px 4px; text-align: center; }
+.team-defense-table thead th { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+.team-defense-table tbody th { text-align: left; width: 72px; }
+.team-defense-table td { min-width: 40px; height: 30px; font-size: 13px; font-weight: 700; border-radius: 6px; }
+/* 共同弱點列：只替空白格與列標題上底色，保留倍率格本身的顏色 */
+.team-defense-table tr.is-shared-weak th,
+.team-defense-table tr.is-shared-weak td.m-neutral,
+.team-defense-table tr.is-shared-weak td.team-count-cell { background-color: rgba(255, 92, 138, 0.1); }
+.team-defense-table tr.is-shared-weak th { box-shadow: inset 3px 0 0 #ff5c8a; border-radius: 6px; }
+.type-badge--sm { padding: 2px 8px; font-size: 12px; }
+.team-mini { width: 32px; height: 32px; object-fit: contain; vertical-align: middle; }
+.m-quad { background: rgba(255, 60, 110, 0.55); color: #fff; }
+.m-double { background: rgba(255, 140, 90, 0.35); color: #ffd2bd; }
+.m-half { background: rgba(70, 180, 255, 0.22); color: #bfe6ff; }
+.m-quarter { background: rgba(70, 180, 255, 0.4); color: #e3f4ff; }
+.m-immune { background: rgba(180, 180, 204, 0.3); color: #f0f0ff; }
+.team-count-head { width: 40px; }
+.team-count-cell { color: var(--text-secondary); }
+.team-count-weak { color: #ff8fb0; }
+.team-count-resist { color: #8fd3ff; }
+
+/* 打擊面 */
+.team-cover-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.team-cover {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 4px 8px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+}
+.team-cover.is-gap { border-color: rgba(255, 163, 107, 0.45); background: rgba(255, 163, 107, 0.08); }
+.team-cover-best { justify-self: end; padding: 1px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; }
+.team-cover-best.m-neutral { color: var(--text-muted); }
+.team-cover-hitters { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 2px; min-height: 28px; }
+.team-cover-hitters .team-mini { width: 28px; height: 28px; }
+
+@media (max-width: 760px) {
+  .team-slots { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .team-summary-grid { grid-template-columns: 1fr; gap: 18px; }
+}
+
+@media (max-width: 480px) {
+  .team-card { padding: 14px 12px; }
+  .team-slot { min-height: 140px; }
+  .team-slot img { width: 60px; height: 60px; }
+  .team-suggestion { grid-template-columns: 36px minmax(0, 1fr) auto; }
+  .team-suggestion-num, .team-suggestion-in { display: none; }
+  .team-defense-table td { min-width: 34px; font-size: 12px; }
+  .team-mini { width: 26px; height: 26px; }
+  .team-cover-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-status { transition: none; }
+}

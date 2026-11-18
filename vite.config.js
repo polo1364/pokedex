@@ -10,6 +10,7 @@ export default defineConfig({
         guide: resolve(__dirname, 'guide.html'),
         items: resolve(__dirname, 'items.html'),
         machines: resolve(__dirname, 'machines.html'),
+        team: resolve(__dirname, 'team.html'),
       },
     },
   },
