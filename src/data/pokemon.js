@@ -4,6 +4,22 @@ import { store } from '../state/store.js';
 import { getChineseName } from '../utils/i18n.js';
 import { getPokemonImage } from '../utils/sprites.js';
 import { initFilterMeta } from '../utils/filterMeta.js';
+import { entryFromSummary, entryVarietyIds } from '../utils/entrySummary.js';
+
+const PREBUILT_INDEX_URL = './data/species-index.json';
+
+/** 讀取建置時產生的精簡索引；失敗回傳 null，改走逐筆抓 PokéAPI 的舊流程。 */
+async function loadPrebuiltIndex() {
+  try {
+    const res = await fetch(PREBUILT_INDEX_URL, { cache: 'no-cache' });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!Array.isArray(data?.entries) || !data.entries.length) return null;
+    return data.entries.map((summary) => entryFromSummary(summary, BASE_URL));
+  } catch {
+    return null;
+  }
+}
 
 const pokemonCache = new Map();
 const speciesCache = new Map();
@@ -20,6 +36,16 @@ export async function loadGenerations() {
 }
 
 export async function bootstrapSpeciesIndex(onProgress) {
+  if (DATA_STRATEGY !== 'all') {
+    const prebuilt = await loadPrebuiltIndex();
+    if (prebuilt) {
+      store.speciesIndex = prebuilt;
+      store.allPokemon = [];
+      onProgress?.(100, prebuilt.length, prebuilt.length);
+      return store.speciesIndex;
+    }
+  }
+
   const countEndpoint = DATA_STRATEGY === 'all' ? 'pokemon' : 'pokemon-species';
   const countRes = await fetchJson(`${BASE_URL}/${countEndpoint}?limit=0`, `${countEndpoint}_count`);
   const total = countRes.count;
@@ -107,6 +133,7 @@ export async function ensurePokemonLoaded(entry) {
     `species_${entry.speciesId}`
   );
   speciesCache.set(entry.speciesId, speciesData);
+  entry.speciesData = speciesData;
 
   let pokemonUrl = entry.pokemonUrl;
   if (!pokemonUrl) {
@@ -131,10 +158,7 @@ export async function ensurePokemonLoaded(entry) {
 
 export async function resolvePokemonById(id, speciesEntry = null) {
   const entry = speciesEntry || store.speciesIndex.find((e) => e.id === id || e.speciesId === id)
-    || store.speciesIndex.find((e) => e.speciesData?.varieties?.some((v) => {
-      const vid = parseInt(v.pokemon.url.split('/').slice(-2, -1)[0], 10);
-      return vid === id;
-    }));
+    || store.speciesIndex.find((e) => entryVarietyIds(e).includes(id));
 
   if (entry?.pokemon?.id === id) return entry.pokemon;
 

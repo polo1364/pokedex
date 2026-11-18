@@ -1,6 +1,6 @@
 import './styles/main.css';
 import { clearAllCache, onCacheError } from './api/cache.js';
-import { bootstrapSpeciesIndex, loadGenerations, ensurePokemonLoaded } from './data/pokemon.js';
+import { bootstrapSpeciesIndex, ensurePokemonLoaded } from './data/pokemon.js';
 import { applyFilters, preloadVisiblePokemon } from './data/filters.js';
 import { enrichFilterMetaForEntries } from './utils/filterMeta.js';
 import { loadVersionNames } from './utils/versions.js';
@@ -121,8 +121,9 @@ async function init() {
 
   try {
     document.getElementById('loadingContainer').style.display = 'flex';
-    await Promise.all([loadVersionNames(), resolveTmLabel()]);
-    await loadGenerations();
+    // 版本中文名只在詳情視窗用到，且有內建對照表可先頂著，不阻塞首頁顯示。
+    loadVersionNames().catch(() => {});
+    await resolveTmLabel();
     await bootstrapSpeciesIndex((pct, done, total) => {
       document.getElementById('progressBar').style.width = pct + '%';
       document.getElementById('progressText').textContent = `載入中... ${pct}% (${done}/${total})`;
@@ -141,7 +142,8 @@ async function init() {
 }
 
 async function backgroundLoadRemaining() {
-  const unloaded = store.speciesIndex.filter((e) => !e.loaded);
+  // 精簡索引已涵蓋網格所需欄位，不必在背景下載全部 1025 筆完整資料。
+  const unloaded = store.speciesIndex.filter((e) => !e.loaded && !e.summary);
   for (const entry of unloaded) {
     try {
       await ensurePokemonLoaded(entry);

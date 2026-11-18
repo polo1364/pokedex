@@ -1,5 +1,8 @@
 import { store, getFavorites } from '../state/store.js';
-import { getGenerationFromSpecies } from '../utils/i18n.js';
+import {
+  entryGeneration, entryTypes, entryStat, entryTotalStats,
+  entryHeight, entryWeight, entryCaptureRate,
+} from '../utils/entrySummary.js';
 import { ensurePokemonLoaded } from '../data/pokemon.js';
 import { runPool } from '../api/client.js';
 import { matchesSearch } from '../utils/search.js';
@@ -23,12 +26,10 @@ export function applyFilters(resetDisplay = true) {
 
   store.filteredPokemon = store.speciesIndex.filter((entry) => {
     const gen = store.currentFilters.gen;
-    const matchGen = gen === 'all' || (() => {
-      const g = getGenerationFromSpecies(entry.speciesData, store.generationMap);
-      return g === parseInt(gen, 10);
-    })();
+    const matchGen = gen === 'all' || entryGeneration(entry) === parseInt(gen, 10);
+    const types = entryTypes(entry);
     const matchType = store.currentFilters.type === 'all' || (
-      entry.pokemon?.types?.some((t) => t.type.name === store.currentFilters.type) ?? !entry.loaded
+      types ? types.includes(store.currentFilters.type) : !entry.loaded
     );
     const matchFav = !store.currentFilters.favorites || favs.includes(entry.id) || favs.includes(entry.speciesId);
     const matchSearch = matchesSearch(entry, store.currentFilters.search);
@@ -43,15 +44,8 @@ export function applyFilters(resetDisplay = true) {
   lastFilterKey = key;
 }
 
-function getStat(entry, statName) {
-  if (!entry.pokemon?.stats) return -1;
-  return entry.pokemon.stats.find((s) => s.stat.name === statName)?.base_stat ?? -1;
-}
-
-function getTotalStats(entry) {
-  if (!entry.pokemon?.stats) return -1;
-  return entry.pokemon.stats.reduce((sum, s) => sum + s.base_stat, 0);
-}
+const getStat = entryStat;
+const getTotalStats = entryTotalStats;
 
 function sortDesc(a, b, getValue) {
   return getValue(b) - getValue(a);
@@ -67,8 +61,8 @@ export function sortFiltered() {
     id: (a, b) => a.id - b.id,
     name: (a, b) => (a.chineseName || '').localeCompare(b.chineseName || '', 'zh-Hant'),
     generation: (a, b) => {
-      const ga = getGenerationFromSpecies(a.speciesData, store.generationMap) ?? 99;
-      const gb = getGenerationFromSpecies(b.speciesData, store.generationMap) ?? 99;
+      const ga = entryGeneration(a) ?? 99;
+      const gb = entryGeneration(b) ?? 99;
       return ga !== gb ? ga - gb : a.id - b.id;
     },
     total: (a, b) => sortDesc(a, b, getTotalStats),
@@ -78,9 +72,9 @@ export function sortFiltered() {
     'special-attack': (a, b) => sortDesc(a, b, (e) => getStat(e, 'special-attack')),
     'special-defense': (a, b) => sortDesc(a, b, (e) => getStat(e, 'special-defense')),
     speed: (a, b) => sortDesc(a, b, (e) => getStat(e, 'speed')),
-    height: (a, b) => sortDesc(a, b, (e) => e.pokemon?.height ?? -1),
-    weight: (a, b) => sortDesc(a, b, (e) => e.pokemon?.weight ?? -1),
-    capture_rate: (a, b) => sortAsc(a, b, (e) => e.speciesData?.capture_rate ?? 999),
+    height: (a, b) => sortDesc(a, b, entryHeight),
+    weight: (a, b) => sortDesc(a, b, entryWeight),
+    capture_rate: (a, b) => sortAsc(a, b, (e) => entryCaptureRate(e) ?? 999),
   };
 
   store.filteredPokemon.sort(sorters[sortBy] || sorters.id);
@@ -88,7 +82,10 @@ export function sortFiltered() {
 
 export async function preloadVisiblePokemon(onLoaded) {
   const visible = store.filteredPokemon.slice(0, store.displayCount);
-  await runPool(visible.filter((entry) => !entry.loaded), async (entry) => {
+  const { item: itemFilter, tm: tmFilter } = store.currentFilters;
+  // 有精簡索引的條目已足夠顯示與排序；只有道具／招式機篩選需要完整資料（持有物、招式表）。
+  const needsFull = (entry) => !entry.loaded && (!entry.summary || itemFilter || tmFilter);
+  await runPool(visible.filter(needsFull), async (entry) => {
     const pokemon = await ensurePokemonLoaded(entry);
     onLoaded?.(entry);
     return pokemon;

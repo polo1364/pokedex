@@ -47,6 +47,8 @@ with sync_playwright() as p:
         context = browser.new_context(viewport={'width': width, 'height': height},
                                       service_workers='block')
         context.route('https://pokeapi.co/**', pokeapi)
+        # 這組情境測「沒有預建索引」時逐筆抓 PokéAPI 的備援流程（固定 30 筆假資料）。
+        context.route('**/data/species-index.json', lambda route: route.fulfill(status=404, body=''))
         page = context.new_page()
         errors = []
         page.on('pageerror', lambda error: errors.append(str(error)))
@@ -84,4 +86,40 @@ with sync_playwright() as p:
         assert not errors, errors
         print(f'PASS {width}x{height}: type toggle, sort, search, list/grid, layout, no JS errors')
         context.close()
+
+    # 預建索引：完全不連 PokéAPI 也要能立即顯示完整、可篩選排序的網格。
+    context = browser.new_context(viewport={'width': 1440, 'height': 900}, service_workers='block')
+    api_requests = []
+
+    def block_api(route):
+        api_requests.append(route.request.url)
+        route.abort()
+
+    context.route('https://pokeapi.co/**', block_api)
+    context.route('https://raw.githubusercontent.com/**', lambda route: route.abort())
+    page = context.new_page()
+    errors = []
+    page.on('pageerror', lambda error: errors.append(str(error)))
+    page.goto(BASE)
+    cards = page.locator('.pokemon-card')
+    expect(cards).to_have_count(1025, timeout=10000)
+    expect(page.locator('.type-badge--skeleton')).to_have_count(0)
+    expect(page.locator('#statCount')).to_have_text('1025')
+    expect(page.locator('#loadingContainer')).to_be_hidden()
+    page.locator('#genFilters [data-gen="3"]').click()
+    expect(cards).to_have_count(135)
+    page.locator('[data-type="water"]:not(.type-btn--all)').click()
+    expect(cards.first).to_have_attribute('data-id', '258')
+    page.locator('[data-type="water"]:not(.type-btn--all)').click()
+    page.locator('#genFilters [data-gen="all"]').click()
+    page.locator('#sortSelect').select_option('total')
+    expect(cards.first).to_have_attribute('data-id', '493')
+    page.locator('#searchBox').fill('charizard')
+    expect(cards).to_have_count(1)
+    expect(cards.first.locator('.pokemon-name')).to_have_text('噴火龍')
+    species_requests = [u for u in api_requests if '/pokemon-species' in u]
+    assert not species_requests, f'Prebuilt index still fetched species: {species_requests[:3]}'
+    assert not errors, errors
+    print('PASS prebuilt index: 1025 cards, types, gen/type filters, stat sort and English search with PokeAPI blocked')
+    context.close()
     browser.close()

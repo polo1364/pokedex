@@ -1,4 +1,5 @@
 import '../styles/pokemon-detail.css';
+import { entryVarietyIds } from '../utils/entrySummary.js';
 import { MOVE_PAGE_SIZE, statNames, typeColors, typeNamesCN } from '../config.js';
 import { escapeHtml } from '../utils/infoCards.js';
 import { fetchJson, runPool } from '../api/client.js';
@@ -56,10 +57,7 @@ function scheduleResetModalScroll() {
 
 function findSpeciesEntry(id) {
   return store.speciesIndex.find((e) => e.id === id || e.speciesId === id)
-    || store.speciesIndex.find((e) => e.speciesData?.varieties?.some((v) => {
-      const vid = parseInt(v.pokemon.url.split('/').slice(-2, -1)[0], 10);
-      return vid === id;
-    }));
+    || store.speciesIndex.find((e) => entryVarietyIds(e).includes(id));
 }
 
 export async function showDetail(id) {

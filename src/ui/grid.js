@@ -1,6 +1,7 @@
 import { store } from '../state/store.js';
 import { typeColors, typeNamesCN } from '../config.js';
 import { getPokemonImage } from '../utils/sprites.js';
+import { entryTypes, entryTotalStats } from '../utils/entrySummary.js';
 
 export function renderPokemonGrid() {
   const grid = document.getElementById('pokemonGrid');
@@ -80,19 +81,20 @@ const ARTWORK_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/s
 /** 尚未載入完整資料時，先以物種編號推得官方立繪，避免整片「?」佔位圖。 */
 function entryImage(entry) {
   if (entry.pokemon) return getPokemonImage(entry.pokemon);
-  if (entry.id > 0 && entry.id <= 1025) return `${ARTWORK_BASE}/${entry.id}.png`;
+  const artworkId = entry.summary?.p || entry.id;
+  if (artworkId > 0) return `${ARTWORK_BASE}/${artworkId}.png`;
   return getPokemonImage(null);
 }
 
-function typeBadges(pokemon) {
-  if (!pokemon?.types) return '<span class="type-badge type-badge--skeleton" aria-label="載入中"></span>';
-  return pokemon.types
-    .map((t) => `<span class="type-badge" style="background:${typeColors[t.type.name] || '#666'}">${typeNamesCN[t.type.name] || t.type.name}</span>`)
+function typeBadges(entry) {
+  const types = entryTypes(entry);
+  if (!types) return '<span class="type-badge type-badge--skeleton" aria-label="載入中"></span>';
+  return types
+    .map((t) => `<span class="type-badge" style="background:${typeColors[t] || '#666'}">${typeNamesCN[t] || t}</span>`)
     .join('');
 }
 
 function renderCard(entry) {
-  const p = entry.pokemon;
   const img = entryImage(entry);
   const name = escapeHtml(entry.chineseName || entry.name);
   return `
@@ -102,21 +104,21 @@ function renderCard(entry) {
         <img class="pokemon-image" src="${img}" alt="${name}" loading="lazy" decoding="async">
       </div>
       <div class="pokemon-name">${name}</div>
-      <div class="pokemon-types">${typeBadges(p)}</div>
+      <div class="pokemon-types">${typeBadges(entry)}</div>
     </div>`;
 }
 
 function renderListRow(entry) {
-  const p = entry.pokemon;
   const img = entryImage(entry);
   const name = escapeHtml(entry.chineseName || entry.name);
-  const total = p?.stats?.reduce((s, x) => s + x.base_stat, 0) || '—';
+  const totalValue = entryTotalStats(entry);
+  const total = totalValue > 0 ? totalValue : '—';
   return `
     <div class="pokemon-list-row" data-id="${entry.id}" role="button" tabindex="0">
       <img class="list-thumb" src="${img}" alt="" loading="lazy">
       <span class="list-id">#${entry.id.toString().padStart(4, '0')}</span>
       <span class="list-name">${name}</span>
-      <span class="list-types">${typeBadges(p)}</span>
+      <span class="list-types">${typeBadges(entry)}</span>
       <span class="list-total">種族值 ${total}</span>
     </div>`;
 }
