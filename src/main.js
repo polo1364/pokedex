@@ -10,8 +10,11 @@ import { BASE_URL } from './config.js';
 import { getChineseName } from './utils/i18n.js';
 import { renderPokemonGrid, patchPokemonCard, loadMore } from './ui/grid.js';
 import {
-  initSidebar, bindSidebarFilters, initViewControls, initSortControl,
+  initSidebar, bindSidebarFilters, initViewControls, initSortControl, syncFilterControls,
 } from './ui/sidebar.js';
+import {
+  readUrlState, buildUrlWithState, urlChangeKind, DEFAULT_URL_STATE,
+} from './utils/urlState.js';
 import { initVersionDrawer } from './ui/versionDrawer.js';
 import { showDetail, openModal, initModalEvents } from './ui/modal.js';
 
@@ -27,6 +30,50 @@ async function refreshUI(resetDisplay = true) {
     if (seq === refreshSeq) patchPokemonCard(entry);
   });
   if (seq === refreshSeq) renderPokemonGrid();
+}
+
+function currentUrlState() {
+  const f = store.currentFilters;
+  return {
+    gen: f.gen,
+    type: f.type,
+    q: f.searchRaw ?? f.search,
+    fav: f.favorites,
+    sort: store.sortBy,
+    view: store.viewMode,
+  };
+}
+
+/**
+ * 套用網址中的篩選狀態。fillDefaults 為 true 時（上一頁／下一頁），
+ * 網址沒寫到的欄位一律回到預設值；首次載入則沿用 localStorage 記住的排序與檢視。
+ */
+function applyUrlState(params, { fillDefaults = false } = {}) {
+  const parsed = readUrlState(params);
+  const state = fillDefaults ? { ...DEFAULT_URL_STATE, ...parsed } : parsed;
+  const f = store.currentFilters;
+  if (state.gen !== undefined) f.gen = state.gen;
+  if (state.type !== undefined) f.type = state.type;
+  if (state.q !== undefined) {
+    f.searchRaw = state.q;
+    f.search = state.q.toLowerCase();
+  }
+  if (state.fav !== undefined) f.favorites = state.fav;
+  if (state.sort !== undefined) store.sortBy = state.sort;
+  if (state.view !== undefined) store.viewMode = state.view;
+}
+
+/** 使用者改變篩選後，把狀態寫進網址：一般變更新增上一頁紀錄，打字搜尋只取代目前紀錄。 */
+function syncUrl() {
+  const next = buildUrlWithState(location.href, currentUrlState());
+  const kind = urlChangeKind(location.href, next);
+  if (kind === 'push') history.pushState(null, '', next);
+  else if (kind === 'replace') history.replaceState(null, '', next);
+}
+
+function onUserFilterChange(resetDisplay = true) {
+  syncUrl();
+  return refreshUI(resetDisplay);
 }
 
 function applyHeldItemFromUrl(params) {
@@ -65,11 +112,28 @@ async function init() {
     }
   });
 
-  initSidebar(() => refreshUI());
-  bindSidebarFilters(() => refreshUI());
+  const params = new URLSearchParams(location.search);
+  applyUrlState(params);
+
+  initSidebar(() => onUserFilterChange());
+  bindSidebarFilters(() => onUserFilterChange());
   initVersionDrawer();
-  initViewControls(() => refreshUI(false));
-  initSortControl((reset) => refreshUI(reset));
+  initViewControls(() => onUserFilterChange(false));
+  initSortControl((reset) => onUserFilterChange(reset));
+  syncFilterControls();
+
+  window.addEventListener('popstate', () => {
+    const popped = new URLSearchParams(location.search);
+    applyUrlState(popped, { fillDefaults: true });
+    store.currentFilters.item = '';
+    store.currentFilters.itemLabel = '';
+    store.currentFilters.tm = '';
+    store.currentFilters.tmLabel = '';
+    applyHeldItemFromUrl(popped);
+    applyTmFromUrl(popped);
+    syncFilterControls();
+    resolveTmLabel().finally(() => refreshUI());
+  });
 
   window.addEventListener('pageshow', (e) => {
     const root = document.getElementById('versionDrawerRoot');
@@ -96,7 +160,7 @@ async function init() {
       store.currentFilters.tmLabel = '';
       ['tm', 'move', 'tmLabel'].forEach((k) => url.searchParams.delete(k));
     }
-    history.replaceState(null, '', url);
+    history.pushState(null, '', url);
     refreshUI();
   });
 
@@ -114,7 +178,6 @@ async function init() {
     if (card) await showDetail(parseInt(card.dataset.id, 10));
   });
 
-  const params = new URLSearchParams(location.search);
   const openId = params.get('id');
   applyHeldItemFromUrl(params);
   applyTmFromUrl(params);

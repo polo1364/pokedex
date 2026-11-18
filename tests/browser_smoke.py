@@ -117,9 +117,24 @@ with sync_playwright() as p:
     page.locator('#searchBox').fill('charizard')
     expect(cards).to_have_count(1)
     expect(cards.first.locator('.pokemon-name')).to_have_text('噴火龍')
+    # 篩選狀態寫進網址：分享連結可還原，上一頁可回到前一個篩選。
+    page.goto(f'{BASE}/?gen=3&type=water&sort=speed&view=list')
+    rows = page.locator('.pokemon-list-row')
+    expect(rows).to_have_count(28, timeout=10000)
+    expect(page.locator('#genFilters [data-gen="3"]')).to_have_class('filter-btn active')
+    expect(page.locator('#sortSelect')).to_have_value('speed')
+    page.get_by_role('button', name='網格', exact=True).click()
+    page.locator('[data-type="water"]:not(.type-btn--all)').click()
+    expect(cards).to_have_count(135)
+    assert page.evaluate('location.search') == '?gen=3&sort=speed', page.evaluate('location.search')
+    page.go_back()
+    expect(cards).to_have_count(28)
+    expect(page.locator('[data-type="water"]:not(.type-btn--all)')).to_have_class('type-btn active')
+    page.go_back()
+    expect(rows).to_have_count(28)
     species_requests = [u for u in api_requests if '/pokemon-species' in u]
     assert not species_requests, f'Prebuilt index still fetched species: {species_requests[:3]}'
     assert not errors, errors
-    print('PASS prebuilt index: 1025 cards, types, gen/type filters, stat sort and English search with PokeAPI blocked')
+    print('PASS prebuilt index: 1025 cards, filters, sort, English search, URL state restore and back button with PokeAPI blocked')
     context.close()
     browser.close()

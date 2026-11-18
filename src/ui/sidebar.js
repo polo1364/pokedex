@@ -89,6 +89,7 @@ function filterByType(type, onFilterChange) {
 
 export function bindSidebarFilters(onFilterChange) {
   document.getElementById('searchBox').addEventListener('input', (e) => {
+    store.currentFilters.searchRaw = e.target.value;
     store.currentFilters.search = e.target.value.toLowerCase();
     onFilterChange();
   });
@@ -141,8 +142,9 @@ export function initViewControls(onChange) {
       onChange();
     });
   });
-  const active = document.querySelector(`.view-btn[data-view="${store.viewMode}"]`);
-  active?.classList.add('active');
+  document.querySelectorAll('.view-btn').forEach((b) => {
+    b.classList.toggle('active', b.dataset.view === store.viewMode);
+  });
 }
 
 export function initSortControl(onChange) {
@@ -153,4 +155,25 @@ export function initSortControl(onChange) {
   });
   const sortSelect = document.getElementById('sortSelect');
   if (sortSelect && store.sortBy) sortSelect.value = store.sortBy;
+}
+
+/** 依 store 目前的篩選狀態更新側欄、搜尋框、排序與檢視按鈕（網址還原或上一頁時使用）。 */
+export function syncFilterControls() {
+  const { gen, type, favorites } = store.currentFilters;
+  document.querySelectorAll('#genFilters .filter-btn').forEach((b) => {
+    b.classList.toggle('active', b.dataset.gen === gen);
+  });
+  document.querySelectorAll('.type-btn:not(.type-btn--all)').forEach((b) => {
+    b.classList.toggle('active', b.dataset.type === type);
+  });
+  document.getElementById('typeFilterAll')?.classList.toggle('active', type === 'all');
+  document.getElementById('favoritesFilter')?.classList.toggle('active', favorites);
+  const searchBox = document.getElementById('searchBox');
+  const searchText = store.currentFilters.searchRaw ?? store.currentFilters.search;
+  if (searchBox && searchBox.value !== searchText) searchBox.value = searchText;
+  const sortSelect = document.getElementById('sortSelect');
+  if (sortSelect) sortSelect.value = store.sortBy;
+  document.querySelectorAll('.view-btn').forEach((b) => {
+    b.classList.toggle('active', b.dataset.view === store.viewMode);
+  });
 }
