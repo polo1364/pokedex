@@ -7093,3 +7093,171 @@
       line-height: 1.35;
       font-size: var(--font-md);
     }
+
+    /* ==== 備份與還原 ==== */
+    .sidebar-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .backup-open-btn {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid rgba(0, 217, 255, 0.45);
+      border-radius: 8px;
+      background: rgba(0, 217, 255, 0.1);
+      color: #9ef0ff;
+      font: inherit;
+      font-size: var(--font-md);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .backup-open-btn:hover {
+      background: rgba(0, 217, 255, 0.18);
+    }
+
+    .backup-dialog {
+      /* 全站 * { margin: 0 } 會讓原生 dialog 失去置中，需補回 */
+      margin: auto;
+      width: min(520px, calc(100vw - 32px));
+      max-height: calc(100dvh - 32px);
+      padding: 20px 22px;
+      border: 1px solid rgba(0, 217, 255, 0.35);
+      border-radius: 16px;
+      background: #17172c;
+      color: var(--text-primary);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+    }
+
+    .backup-dialog::backdrop {
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .backup-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .backup-head h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .backup-close {
+      width: 38px;
+      height: 38px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: inherit;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .backup-close:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .backup-intro {
+      margin: 0 0 10px;
+      font-size: var(--font-sm);
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .backup-current {
+      margin: 0 0 14px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      font-size: var(--font-sm);
+    }
+
+    .backup-section {
+      padding: 14px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .backup-section h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: var(--accent-primary);
+    }
+
+    .backup-btn {
+      min-height: 40px;
+      padding: 0 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-primary);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .backup-btn--primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-tertiary));
+      color: #fff;
+    }
+
+    .backup-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .backup-btn:focus-visible,
+    .backup-close:focus-visible {
+      outline: 2px solid var(--accent-primary);
+      outline-offset: 2px;
+    }
+
+    .backup-file {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 10px;
+      font-size: var(--font-sm);
+      color: var(--text-secondary);
+    }
+
+    .backup-file input {
+      color: var(--text-secondary);
+      font: inherit;
+      font-size: var(--font-sm);
+    }
+
+    .backup-preview p {
+      margin: 0 0 8px;
+      font-size: var(--font-sm);
+    }
+
+    .backup-modes {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 0 0 12px;
+      padding: 0;
+      border: 0;
+      font-size: var(--font-sm);
+      color: var(--text-secondary);
+    }
+
+    .backup-modes input {
+      accent-color: var(--accent-primary);
+      margin-right: 6px;
+    }
+
+    .backup-status {
+      min-height: 20px;
+      margin: 6px 0 0;
+      font-size: var(--font-sm);
+    }
+
+    .backup-status[data-kind="ok"] { color: #7ee8a8; }
+    .backup-status[data-kind="error"] { color: #ff8fb0; }

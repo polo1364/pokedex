@@ -19,6 +19,7 @@ import {
 import { initVersionDrawer } from './ui/versionDrawer.js';
 import { showDetail, openModal, initModalEvents, closeModal } from './ui/modal.js';
 import { initCompare, openCompareFromUrl } from './ui/compare.js';
+import { initBackup } from './ui/backup.js';
 
 let refreshSeq = 0;
 
@@ -133,6 +134,7 @@ async function init() {
   initViewControls(() => onUserFilterChange(false));
   initSortControl((reset) => onUserFilterChange(reset));
   initAdvancedFilters(() => onUserFilterChange());
+  initBackup({ onRestored: () => refreshUI(false) });
   document.getElementById('formsSelect')?.addEventListener('change', (e) => {
     store.currentFilters.forms = e.target.value;
     onUserFilterChange();
