@@ -2,3 +2,11 @@ node_modules/
 dist/
 .DS_Store
 .env
+
+# 審查與下載暫存（約 109 MB）。
+# 例外：output/guide-review/missing-guides/ 的 modern-sources.json、za-sources.json
+# 已納入版本控制（回歸測試會讀取），被追蹤的檔案不受此規則影響。
+output/
+
+# 本機 Claude Code 設定（預覽伺服器等）
+.claude/
