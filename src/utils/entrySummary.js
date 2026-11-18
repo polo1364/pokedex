@@ -69,3 +69,19 @@ export function entryFromSummary(summary, baseUrl) {
     summary,
   };
 }
+
+/** 特性清單 [{ slug, hidden }]；尚未得知時回傳 null */
+export function entryAbilities(entry) {
+  if (entry?.pokemon?.abilities) {
+    return entry.pokemon.abilities.map((a) => ({ slug: a.ability.name, hidden: Boolean(a.is_hidden) }));
+  }
+  const list = entry?.summary?.a;
+  if (!list) return null;
+  return list.map((raw) => ({ slug: raw.replace(/^\*/, ''), hidden: raw.startsWith('*') }));
+}
+
+/** 蛋群代碼陣列；尚未得知時回傳 null */
+export function entryEggGroups(entry) {
+  if (entry?.speciesData?.egg_groups) return entry.speciesData.egg_groups.map((g) => g.name);
+  return entry?.summary?.eg ?? null;
+}

@@ -266,3 +266,6 @@ body.compare-tray-open .main-content { padding-bottom: 96px; }
 @media (prefers-reduced-motion: reduce) {
   .compare-toast { transition: none; }
 }
+
+/* 手機打開側欄時，比較清單不要蓋住側欄 */
+body:has(.sidebar.open) .compare-tray { display: none; }

@@ -11,6 +11,7 @@ import { getChineseName } from './utils/i18n.js';
 import { renderPokemonGrid, patchPokemonCard, loadMore } from './ui/grid.js';
 import {
   initSidebar, bindSidebarFilters, initViewControls, initSortControl, syncFilterControls,
+  initAdvancedFilters, populateAbilityOptions,
 } from './ui/sidebar.js';
 import {
   readUrlState, buildUrlWithState, urlChangeKind, DEFAULT_URL_STATE,
@@ -42,6 +43,7 @@ function currentUrlState() {
     fav: f.favorites,
     sort: store.sortBy,
     view: store.viewMode,
+    adv: f.adv,
   };
 }
 
@@ -62,6 +64,7 @@ function applyUrlState(params, { fillDefaults = false } = {}) {
   if (state.fav !== undefined) f.favorites = state.fav;
   if (state.sort !== undefined) store.sortBy = state.sort;
   if (state.view !== undefined) store.viewMode = state.view;
+  if (state.adv !== undefined) f.adv = { ...state.adv };
 }
 
 /** 使用者改變篩選後，把狀態寫進網址：一般變更新增上一頁紀錄，打字搜尋只取代目前紀錄。 */
@@ -127,6 +130,7 @@ async function init() {
   initVersionDrawer();
   initViewControls(() => onUserFilterChange(false));
   initSortControl((reset) => onUserFilterChange(reset));
+  initAdvancedFilters(() => onUserFilterChange());
   syncFilterControls();
 
   window.addEventListener('popstate', () => {
@@ -200,6 +204,7 @@ async function init() {
     });
 
     document.getElementById('loadingContainer').style.display = 'none';
+    populateAbilityOptions();
     await refreshUI();
 
     if (!openCompareFromUrl() && openId) await openModal(parseInt(openId, 10));

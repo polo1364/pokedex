@@ -1,11 +1,13 @@
 import { PAGE_SIZE } from '../config.js';
+import { EMPTY_ADVANCED } from '../utils/advancedFilters.js';
 
 export const store = {
   allPokemon: [],
   speciesIndex: [],
   filteredPokemon: [],
   displayCount: PAGE_SIZE,
-  currentFilters: { gen: 'all', type: 'all', search: '', searchRaw: '', favorites: false, item: '', itemLabel: '', tm: '', tmLabel: '' },
+  currentFilters: { gen: 'all', type: 'all', search: '', searchRaw: '', favorites: false, item: '', itemLabel: '', tm: '', tmLabel: '', adv: { ...EMPTY_ADVANCED } },
+  abilityNames: {},
   sortBy: localStorage.getItem('pokedex_sort_by') || 'id',
   viewMode: localStorage.getItem('pokedex_view_mode') || 'grid',
   generationMap: {},

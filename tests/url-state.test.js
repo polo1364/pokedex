@@ -36,9 +36,24 @@ test('writes only non-default values and keeps unrelated params', () => {
 });
 
 test('round-trips state through the URL', () => {
-  const state = { gen: '9', type: 'dragon', q: 'mr mime', fav: false, sort: 'capture_rate', view: 'list' };
+  const state = { gen: '9', type: 'dragon', q: 'mr mime', fav: false, sort: 'capture_rate', view: 'list', adv: DEFAULT_URL_STATE.adv };
   const href = buildUrlWithState(BASE, state);
   assert.deepEqual({ ...DEFAULT_URL_STATE, ...readUrlState(new URL(href).search) }, state);
+});
+
+test('advanced filters round-trip and only write meaningful params', () => {
+  const adv = { type2: 'flying', stat: 'speed', min: 100, max: 130, ability: 'solar-power', egg: 'dragon' };
+  const href = buildUrlWithState(BASE, { ...DEFAULT_URL_STATE, adv });
+  const url = new URL(href);
+  assert.equal(url.search, '?type2=flying&stat=speed&min=100&max=130&ability=solar-power&egg=dragon');
+  assert.deepEqual(readUrlState(url.search).adv, adv);
+
+  const statOnly = buildUrlWithState(BASE, { ...DEFAULT_URL_STATE, adv: { ...DEFAULT_URL_STATE.adv, stat: 'speed' } });
+  assert.equal(new URL(statOnly).search, '', 'a stat without a range is not written');
+  const totalMin = buildUrlWithState(BASE, { ...DEFAULT_URL_STATE, adv: { ...DEFAULT_URL_STATE.adv, min: 600 } });
+  assert.equal(new URL(totalMin).search, '?min=600', 'total is the default stat');
+  assert.deepEqual(readUrlState('?min=abc&egg=pizza').adv, DEFAULT_URL_STATE.adv);
+  assert.equal(urlChangeKind(BASE, `${BASE}?egg=dragon`), 'push');
 });
 
 test('editing a search replaces history; starting, clearing and other changes push', () => {

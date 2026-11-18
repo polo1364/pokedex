@@ -6745,3 +6745,107 @@
       background: rgba(255, 0, 110, 0.55);
       outline: none;
     }
+
+
+    /* ==== 進階篩選 ==== */
+    .adv-count {
+      display: inline-grid;
+      place-items: center;
+      min-width: 18px;
+      height: 18px;
+      margin-left: 4px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: var(--accent-secondary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      vertical-align: 1px;
+    }
+
+    .adv-filters {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .adv-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .adv-label {
+      padding: 0;
+      font-size: var(--font-sm);
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .adv-input {
+      width: 100%;
+      min-width: 0;
+      min-height: 38px;
+      padding: 7px 10px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      background: var(--bg-input);
+      color: var(--text-primary);
+      font: inherit;
+      font-size: var(--font-sm);
+    }
+
+    .adv-input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 2px rgba(0, 217, 255, 0.2);
+    }
+
+    select.adv-input option {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .adv-range {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+    }
+
+    .adv-hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    #advAbilityHint:not(:empty) {
+      color: #ffb3cf;
+    }
+
+    .adv-reset {
+      min-height: 36px;
+      border: 1px dashed var(--border-subtle);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text-secondary);
+      font: inherit;
+      font-size: var(--font-sm);
+      cursor: pointer;
+    }
+
+    .adv-reset:hover {
+      border-color: var(--accent-secondary);
+      color: var(--text-primary);
+    }
+
+    .stat-tag--stat,
+    .stat-tag--ability,
+    .stat-tag--egg {
+      border-color: rgba(0, 217, 255, 0.35);
+    }

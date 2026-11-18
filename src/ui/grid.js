@@ -2,6 +2,8 @@ import { store } from '../state/store.js';
 import { typeColors, typeNamesCN } from '../config.js';
 import { getPokemonImage } from '../utils/sprites.js';
 import { entryTypes, entryTotalStats } from '../utils/entrySummary.js';
+import { STAT_FILTER_LABELS } from '../utils/advancedFilters.js';
+import { EGG_GROUP_NAMES } from '../utils/breeding.js';
 
 export function renderPokemonGrid() {
   const grid = document.getElementById('pokemonGrid');
@@ -30,6 +32,16 @@ function getActiveFilterLabels() {
   if (item) labels.push({ kind: 'item', text: `道具：${itemLabel || item}` });
   if (tm) labels.push({ kind: 'tm', text: `招式機：${tmLabel || tm}` });
   if (favorites) labels.push({ kind: 'favorites', text: '我的收藏' });
+  const adv = store.currentFilters.adv;
+  if (adv && adv.type2 !== 'all') labels.push({ kind: 'type', text: `＋${typeNamesCN[adv.type2] || adv.type2}`, typeKey: adv.type2 });
+  if (adv && (adv.min !== null || adv.max !== null)) {
+    const range = adv.min !== null && adv.max !== null
+      ? (adv.min === adv.max ? `= ${adv.min}` : `${adv.min}–${adv.max}`)
+      : adv.min !== null ? `≥ ${adv.min}` : `≤ ${adv.max}`;
+    labels.push({ kind: 'stat', text: `${STAT_FILTER_LABELS[adv.stat]} ${range}` });
+  }
+  if (adv?.ability) labels.push({ kind: 'ability', text: `特性：${store.abilityNames[adv.ability] || adv.ability}` });
+  if (adv?.egg) labels.push({ kind: 'egg', text: `蛋群：${EGG_GROUP_NAMES[adv.egg] || adv.egg}` });
   return labels;
 }
 

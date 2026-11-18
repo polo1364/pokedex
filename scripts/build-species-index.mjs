@@ -54,6 +54,10 @@ async function buildEntry(item) {
     h: pokemon.height,
     w: pokemon.weight,
     cr: species.capture_rate,
+    // 特性：隱藏特性前綴 *；蛋群代碼
+    a: pokemon.abilities.sort((x, y) => x.slot - y.slot)
+      .map((x) => (x.is_hidden ? `*${x.ability.name}` : x.ability.name)),
+    eg: species.egg_groups.map((g) => g.name),
   };
   const defaultId = idFromUrl(defaultVariety.pokemon.url);
   if (defaultId !== species.id) entry.p = defaultId;
@@ -81,11 +85,28 @@ async function main() {
   process.stdout.write('\n');
 
   entries.sort((a, b) => a.id - b.id);
+
+  // 特性繁中名稱（篩選介面用）；沒有繁中譯名的保留英文代碼
+  const abilitySlugs = [...new Set(entries.flatMap((e) => e.a.map((x) => x.replace(/^\*/, ''))))].sort();
+  const abilityNames = {};
+  let k = 0;
+  async function abilityWorker() {
+    while (k < abilitySlugs.length) {
+      const slug = abilitySlugs[k++];
+      const data = await getJson(`${API}/ability/${slug}/`);
+      const zh = zhHant(data.names);
+      if (zh !== '（無繁中譯名）') abilityNames[slug] = zh;
+    }
+  }
+  await Promise.all(Array.from({ length: CONCURRENCY }, abilityWorker));
+  console.log(`特性 ${abilitySlugs.length} 種（繁中 ${Object.keys(abilityNames).length} 種）`);
+
   const payload = {
-    version: 1,
+    version: 2,
     generatedAt: new Date().toISOString().slice(0, 10),
     count: entries.length,
     stats: STAT_ORDER,
+    abilityNames,
     entries,
   };
   await mkdir(path.dirname(outFile), { recursive: true });

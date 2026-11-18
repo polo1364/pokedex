@@ -5,6 +5,7 @@
  * id、tm、heldItem 等其他參數原樣保留。預設值不寫進網址，讓網址保持乾淨。
  */
 import { TYPE_ORDER } from '../config.js';
+import { normalizeAdvanced, EMPTY_ADVANCED } from './advancedFilters.js';
 
 export const SORT_KEYS = [
   'id', 'name', 'generation', 'total', 'hp', 'attack', 'defense',
@@ -14,10 +15,12 @@ export const VIEW_MODES = ['grid', 'list'];
 export const MAX_GENERATION = 9;
 
 export const DEFAULT_URL_STATE = Object.freeze({
-  gen: 'all', type: 'all', q: '', fav: false, sort: 'id', view: 'grid',
+  gen: 'all', type: 'all', q: '', fav: false, sort: 'id', view: 'grid', adv: EMPTY_ADVANCED,
 });
 
 const MANAGED_KEYS = ['gen', 'type', 'q', 'fav', 'sort', 'view'];
+/** 進階篩選參數：type2、stat（僅在有範圍時寫入）、min、max、ability、egg */
+const ADV_KEYS = ['type2', 'stat', 'min', 'max', 'ability', 'egg'];
 
 /**
  * 解析網址參數；不合法或缺少的欄位不出現在回傳物件中（交由呼叫端沿用目前值）。
@@ -49,6 +52,10 @@ export function readUrlState(search) {
   const view = params.get('view');
   if (view && VIEW_MODES.includes(view)) state.view = view;
 
+  if (ADV_KEYS.some((key) => params.has(key))) {
+    state.adv = normalizeAdvanced(Object.fromEntries(ADV_KEYS.map((key) => [key, params.get(key) ?? undefined])));
+  }
+
   return state;
 }
 
@@ -74,6 +81,21 @@ export function buildUrlWithState(href, state) {
       : !value || value === DEFAULT_URL_STATE[key];
     if (isDefault) url.searchParams.delete(key);
     else url.searchParams.set(key, value);
+  }
+
+  const adv = normalizeAdvanced(state.adv || {});
+  const hasRange = adv.min !== null || adv.max !== null;
+  const advValues = {
+    type2: adv.type2 !== 'all' ? adv.type2 : '',
+    stat: hasRange && adv.stat !== 'total' ? adv.stat : '',
+    min: adv.min !== null ? String(adv.min) : '',
+    max: adv.max !== null ? String(adv.max) : '',
+    ability: adv.ability,
+    egg: adv.egg,
+  };
+  for (const key of ADV_KEYS) {
+    if (advValues[key]) url.searchParams.set(key, advValues[key]);
+    else url.searchParams.delete(key);
   }
   return url.toString();
 }

@@ -1,6 +1,11 @@
 import { store } from '../state/store.js';
 import { typeColors, typeNamesCN, TYPE_ORDER } from '../config.js';
 import { clearAllCache } from '../api/cache.js';
+import {
+  STAT_FILTER_KEYS, STAT_FILTER_LABELS, EGG_FILTER_KEYS,
+  normalizeAdvanced, hasAdvancedFilter, resolveAbility,
+} from '../utils/advancedFilters.js';
+import { EGG_GROUP_NAMES } from '../utils/breeding.js';
 
 const DRAWER_STORAGE_KEY = 'pokedex_drawer_state';
 
@@ -176,4 +181,116 @@ export function syncFilterControls() {
   document.querySelectorAll('.view-btn').forEach((b) => {
     b.classList.toggle('active', b.dataset.view === store.viewMode);
   });
+  syncAdvancedControls();
+}
+
+/* ---------- 進階篩選 ---------- */
+
+const EGG_LABEL_OVERRIDES = { undiscovered: '未發現（無法孵化）' };
+
+function updateAdvancedBadge() {
+  const badge = document.getElementById('advCount');
+  if (!badge) return;
+  const adv = store.currentFilters.adv;
+  const count = [adv.type2 !== 'all', adv.min !== null || adv.max !== null, Boolean(adv.ability), Boolean(adv.egg)]
+    .filter(Boolean).length;
+  badge.hidden = count === 0;
+  badge.textContent = String(count);
+}
+
+/** 依 store 的進階篩選更新側欄控制項；有啟用時自動展開抽屜。 */
+export function syncAdvancedControls() {
+  const adv = store.currentFilters.adv;
+  if (!adv) return;
+  const set = (id, value) => {
+    const el = document.getElementById(id);
+    if (el && el.value !== value) el.value = value;
+  };
+  set('advType2', adv.type2);
+  set('advStat', adv.stat);
+  set('advMin', adv.min === null ? '' : String(adv.min));
+  set('advMax', adv.max === null ? '' : String(adv.max));
+  set('advAbility', adv.ability ? (store.abilityNames[adv.ability] || adv.ability) : '');
+  set('advEgg', adv.egg);
+  updateAdvancedBadge();
+  if (hasAdvancedFilter(adv)) {
+    const drawer = document.querySelector('.sidebar-drawer[data-drawer="advanced"]');
+    const toggle = drawer?.querySelector('.sidebar-drawer-toggle');
+    const body = document.getElementById('advancedDrawerBody');
+    if (drawer && toggle && body && !drawer.classList.contains('is-open')) setDrawerOpen(drawer, toggle, body, true);
+  }
+}
+
+/** 特性輸入框的候選清單（預建索引載入後呼叫）。 */
+export function populateAbilityOptions() {
+  const list = document.getElementById('advAbilityList');
+  if (!list) return;
+  const names = Object.values(store.abilityNames).sort((a, b) => a.localeCompare(b, 'zh-Hant'));
+  list.innerHTML = names.map((n) => `<option value="${n.replace(/"/g, '&quot;')}"></option>`).join('');
+  syncAdvancedControls();
+}
+
+export function initAdvancedFilters(onFilterChange) {
+  const type2 = document.getElementById('advType2');
+  const stat = document.getElementById('advStat');
+  const min = document.getElementById('advMin');
+  const max = document.getElementById('advMax');
+  const ability = document.getElementById('advAbility');
+  const hint = document.getElementById('advAbilityHint');
+  const egg = document.getElementById('advEgg');
+  if (!type2 || !stat || !min || !max || !ability || !egg) return;
+
+  type2.insertAdjacentHTML('beforeend', TYPE_ORDER.map((t) => `<option value="${t}">${typeNamesCN[t]}</option>`).join(''));
+  stat.innerHTML = STAT_FILTER_KEYS.map((k) => `<option value="${k}">${STAT_FILTER_LABELS[k]}</option>`).join('');
+  egg.insertAdjacentHTML('beforeend', EGG_FILTER_KEYS
+    .map((k) => `<option value="${k}">${EGG_LABEL_OVERRIDES[k] || EGG_GROUP_NAMES[k] || k}</option>`).join(''));
+
+  const apply = (patch) => {
+    const next = normalizeAdvanced({ ...store.currentFilters.adv, ...patch });
+    if (JSON.stringify(next) === JSON.stringify(store.currentFilters.adv)) return;
+    store.currentFilters.adv = next;
+    updateAdvancedBadge();
+    onFilterChange();
+  };
+
+  type2.addEventListener('change', () => apply({ type2: type2.value }));
+  stat.addEventListener('change', () => apply({ stat: stat.value }));
+  egg.addEventListener('change', () => apply({ egg: egg.value }));
+
+  let rangeTimer = null;
+  const applyRange = () => {
+    clearTimeout(rangeTimer);
+    apply({ min: min.value, max: max.value });
+  };
+  for (const input of [min, max]) {
+    input.addEventListener('input', () => {
+      clearTimeout(rangeTimer);
+      rangeTimer = setTimeout(applyRange, 450);
+    });
+    input.addEventListener('change', () => {
+      applyRange();
+      syncAdvancedControls();
+    });
+  }
+
+  const applyAbility = () => {
+    const text = ability.value.trim();
+    const slug = resolveAbility(text, store.abilityNames);
+    hint.textContent = text && !slug ? `找不到「${text}」這個特性` : '';
+    apply({ ability: slug });
+  };
+  ability.addEventListener('change', applyAbility);
+  ability.addEventListener('input', () => {
+    // 從候選清單點選或輸入完整名稱時立即套用；清空時取消篩選
+    if (!ability.value.trim() || resolveAbility(ability.value, store.abilityNames)) applyAbility();
+  });
+
+  document.getElementById('advReset')?.addEventListener('click', () => {
+    hint.textContent = '';
+    store.currentFilters.adv = normalizeAdvanced({});
+    syncAdvancedControls();
+    onFilterChange();
+  });
+
+  syncAdvancedControls();
 }

@@ -76,6 +76,42 @@
         </div>
       </div>
 
+      <div class="sidebar-drawer" data-drawer="advanced">
+        <button type="button" class="sidebar-drawer-toggle" aria-expanded="false" aria-controls="advancedDrawerBody">
+          <span>進階篩選 <span class="adv-count" id="advCount" hidden></span></span>
+          <span class="drawer-chevron" aria-hidden="true">▼</span>
+        </button>
+        <div class="sidebar-drawer-body" id="advancedDrawerBody" hidden>
+          <div class="adv-filters" id="advancedFilters">
+            <label class="adv-field">
+              <span class="adv-label">第二屬性（雙屬性）</span>
+              <select id="advType2" class="adv-input"><option value="all">不限</option></select>
+              <small class="adv-hint">與上方屬性一起選，可找出「火＋飛行」等組合</small>
+            </label>
+            <fieldset class="adv-field">
+              <legend class="adv-label">種族值範圍</legend>
+              <select id="advStat" class="adv-input" aria-label="比較的種族值"></select>
+              <div class="adv-range">
+                <input type="number" id="advMin" class="adv-input" min="0" max="999" inputmode="numeric" placeholder="最低" aria-label="最低值">
+                <span aria-hidden="true">–</span>
+                <input type="number" id="advMax" class="adv-input" min="0" max="999" inputmode="numeric" placeholder="最高" aria-label="最高值">
+              </div>
+            </fieldset>
+            <label class="adv-field">
+              <span class="adv-label">特性（含隱藏特性）</span>
+              <input type="search" id="advAbility" class="adv-input" list="advAbilityList" placeholder="例如：飄浮、威嚇" autocomplete="off">
+              <datalist id="advAbilityList"></datalist>
+              <small class="adv-hint" id="advAbilityHint" aria-live="polite"></small>
+            </label>
+            <label class="adv-field">
+              <span class="adv-label">蛋群</span>
+              <select id="advEgg" class="adv-input"><option value="">不限</option></select>
+            </label>
+            <button type="button" class="adv-reset" id="advReset">重設進階篩選</button>
+          </div>
+        </div>
+      </div>
+
       <div class="filter-section sidebar-catalog-section">
         <div class="filter-title">延伸圖鑑</div>
         <div class="sidebar-catalog-list">

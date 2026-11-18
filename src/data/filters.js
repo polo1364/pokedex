@@ -6,6 +6,7 @@ import {
 import { ensurePokemonLoaded } from '../data/pokemon.js';
 import { runPool } from '../api/client.js';
 import { matchesSearch } from '../utils/search.js';
+import { matchesAdvanced, EMPTY_ADVANCED } from '../utils/advancedFilters.js';
 import {
   enrichFilterMetaForEntries,
   matchesItemFilter,
@@ -15,13 +16,14 @@ import {
 let lastFilterKey = '';
 
 function filterKey() {
-  const { gen, type, search, favorites, item, tm } = store.currentFilters;
-  return `${gen}|${type}|${search}|${favorites}|${item}|${tm}`;
+  const { gen, type, search, favorites, item, tm, adv } = store.currentFilters;
+  return `${gen}|${type}|${search}|${favorites}|${item}|${tm}|${JSON.stringify(adv)}`;
 }
 
 export function applyFilters(resetDisplay = true) {
   const favs = getFavorites();
   const key = filterKey();
+  const adv = store.currentFilters.adv || EMPTY_ADVANCED;
   const { item, tm } = store.currentFilters;
 
   store.filteredPokemon = store.speciesIndex.filter((entry) => {
@@ -35,7 +37,9 @@ export function applyFilters(resetDisplay = true) {
     const matchSearch = matchesSearch(entry, store.currentFilters.search);
     const matchItem = !item || matchesItemFilter(entry, item);
     const matchTm = !tm || matchesMachineMoveFilter(entry, tm);
-    return matchGen && (store.currentFilters.type === 'all' || matchType) && matchFav && matchSearch && matchItem && matchTm;
+    const matchAdv = matchesAdvanced(entry, adv);
+    return matchGen && (store.currentFilters.type === 'all' || matchType) && matchFav && matchSearch
+      && matchItem && matchTm && matchAdv;
   });
 
   sortFiltered();

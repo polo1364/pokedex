@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokedex-pro-v5';
+const CACHE_NAME = 'pokedex-pro-v6';
 
 const PRECACHE = ['./index.html', './guide.html', './items.html', './machines.html', './team.html', './manifest.json'];
 
@@ -41,6 +41,11 @@ function isDevSource(url) {
     || path.startsWith('/node_modules/');
 }
 
+/** 檔名固定、內容會更新的資料檔（如預建物種索引）：必須網路優先，否則會一直用舊快取 */
+function isMutableData(url) {
+  return url.pathname.endsWith('.json');
+}
+
 function networkFirst(request) {
   return fetch(request)
     .then((response) => {
@@ -73,7 +78,7 @@ self.addEventListener('fetch', (e) => {
   if (isPokeApi(url)) return;
   if (url.origin !== self.location.origin) return;
 
-  if (isHtmlRequest(e.request, url) || isDevSource(url)) {
+  if (isHtmlRequest(e.request, url) || isDevSource(url) || isMutableData(url)) {
     e.respondWith(networkFirst(e.request));
     return;
   }

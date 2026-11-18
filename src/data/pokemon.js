@@ -15,6 +15,7 @@ async function loadPrebuiltIndex() {
     if (!res.ok) return null;
     const data = await res.json();
     if (!Array.isArray(data?.entries) || !data.entries.length) return null;
+    store.abilityNames = data.abilityNames || {};
     return data.entries.map((summary) => entryFromSummary(summary, BASE_URL));
   } catch {
     return null;

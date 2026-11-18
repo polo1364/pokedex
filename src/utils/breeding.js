@@ -1,6 +1,6 @@
 import { escapeHtml, renderInfoCard } from './infoCards.js';
 
-const EGG_GROUP_NAMES = {
+export const EGG_GROUP_NAMES = {
   monster: '怪獸',
   water1: '水中1',
   bug: '蟲',
