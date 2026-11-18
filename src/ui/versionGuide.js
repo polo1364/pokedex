@@ -15,6 +15,7 @@ import {
 import { annotateGuideText, annotateExpansionText } from '../data/versionGuides/guideAnnotations.js';
 import { initGuideAnnotateTooltips } from './guideAnnotateTooltip.js';
 import { initGuideMapTooltips, bindGuideMapTooltips } from './guideMapTooltip.js';
+import { decorateGuideProgress } from './guideProgress.js';
 import {
   initGuideRequestSearch, destroyGuideRequestSearch, labelChipClass,
 } from './guideRequestSearch.js';
@@ -127,6 +128,9 @@ function renderGuidePage(versionId, root, titleEl, partId = 'main') {
   renderPartContent(content, guide, activePartId, expansion);
   root.appendChild(content);
 
+  if (!isMainPlaceholder && !isPartPlaceholder) {
+    decorateGuideProgress(content, { versionId, partId: activePartId, partLabel: partLabel || '本體' });
+  }
   setGuideChatVersion(versionId, isMainPlaceholder || isPartPlaceholder, activePartId, partLabel || '本體');
   if (!isMainPlaceholder && !isPartPlaceholder) applyBattleDeepLink();
   const sectionHash = location.hash.slice(1);
