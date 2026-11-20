@@ -134,8 +134,14 @@ function zoomTo(width,anchor,immediate=true){
   updateZoomUi();
 }
 
+// 標籤寬度：先用字數估算，再用實際字型量一次取較大者。
+// 沒有微軟正黑體的系統（Android、macOS、Linux）英數字較寬，只靠估算會讓文字凸出標籤框。
+const measureContext=document.createElement('canvas').getContext?.('2d')||null;
 function textWidth(text,font){
-  return Array.from(text).reduce((sum,c)=>sum+(/[\x00-\x7F]/.test(c)?font*.6:font),0);
+  const estimate=Array.from(text).reduce((sum,c)=>sum+(/[\x00-\x7F]/.test(c)?font*.6:font),0);
+  if(!measureContext)return estimate;
+  measureContext.font=`bold ${font}px "Microsoft JhengHei",system-ui,sans-serif`;
+  return Math.max(estimate,measureContext.measureText(text).width);
 }
 
 function wrapLabel(text,font,maxWidth){
