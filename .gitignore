@@ -10,3 +10,6 @@ output/
 
 # 本機 Claude Code 設定（預覽伺服器等）
 .claude/
+
+# Python 位元組碼快取
+__pycache__/
