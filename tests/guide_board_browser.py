@@ -31,10 +31,11 @@ with sync_playwright() as p:
         hero = detail.locator('.gb-hero')
         expect(hero.locator('.gb-hero-name')).to_have_text('小霞')
         expect(hero.locator('.gb-pill--level')).to_have_text('建議 Lv.18–22')
-        expect(hero.locator('.gb-hero-step')).to_contain_text('華藍市')
+        expect(hero.locator('.gb-hero-step')).to_have_text('道館・建議第 2 個 ・ 華藍市')
         steps = detail.locator('.gb-step')
         expect(steps).to_have_count(4)
         assert steps.evaluate_all('n => n.map(x => x.className.split("--")[1])') == ['prep', 'do', 'do', 'warn']
+        assert steps.locator('h4').all_text_contents() == ['準備', '主打', '接著', '注意']
         foes = detail.locator('.gb-foe')
         expect(foes).to_have_count(2)
         expect(foes.nth(1).locator('.gb-ace')).to_have_text('王牌')
@@ -89,6 +90,39 @@ with sync_playwright() as p:
         expect(island.locator('.gx-tag')).to_have_text(['重要地點', '流程', '重點'])
         expect(island.locator('.gx-flow > li')).to_have_count(3)
 
+        # 聯盟對戰：每隻對手的對策直接寫在卡片上，不再另外列一張表
+        detail = open_battle(page, 'red-blue', 'eliteFour:1')
+        expect(detail.locator('.gb-hero-step')).to_contain_text('四天王')
+        league_foes = detail.locator('.gb-foe')
+        expect(league_foes).to_have_count(5)
+        expect(detail.locator('.gb-counter')).to_have_count(5)
+        expect(league_foes.nth(3).locator('.gb-counter')).to_contain_text('卡比獸一般物攻')
+        expect(detail.locator('.guide-league-table')).to_have_count(0)
+        assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (width, 'league overflow')
+
+        # 淺色閱讀模式：切換後換底色、圖片與屬性標籤維持原色，重新整理仍記得
+        toggle = page.locator('#guideThemeToggle')
+        dark_bg = page.evaluate('getComputedStyle(document.documentElement).getPropertyValue("--bg-primary").trim()')
+        badge = detail.locator('.gb-foe .type-badge').first
+        badge_color = badge.evaluate('n => getComputedStyle(n).backgroundColor')
+        expect(toggle).to_have_attribute('aria-pressed', 'false')
+        toggle.click()
+        expect(toggle).to_have_attribute('aria-pressed', 'true')
+        expect(page.locator('html')).to_have_class(re.compile('guide-light'))
+        light_bg = page.evaluate('getComputedStyle(document.documentElement).getPropertyValue("--bg-primary").trim()')
+        assert dark_bg == '#0f0f23' and light_bg == '#ececf7', (dark_bg, light_bg)
+        name_color = detail.locator('.gb-foe .guide-party-grid-name').first.evaluate('n => getComputedStyle(n).color')
+        r, g, b = [int(x) for x in re.findall(r'\d+', name_color)[:3]]
+        assert max(r, g, b) < 90, ('names must be dark on the light theme', name_color)
+        assert badge.evaluate('n => getComputedStyle(n).backgroundColor') == badge_color
+        assert detail.locator('.gb-art').first.evaluate('n => getComputedStyle(n).filter') == 'none'
+        detail = open_battle(page, 'red-blue', 'eliteFour:1')
+        expect(page.locator('html')).to_have_class(re.compile('guide-light'))
+        expect(page.locator('#guideThemeToggle')).to_have_attribute('aria-pressed', 'true')
+        page.locator('#guideThemeToggle').click()
+        expect(page.locator('html')).not_to_have_class(re.compile('guide-light'))
+        assert page.evaluate('localStorage.getItem("pokedex_guide_theme")') == 'dark'
+
         # 實際點過去：招式圖鑑打開該招式、隊伍分析頁帶入整隊
         detail = open_battle(page, 'red-blue', 'gym:2')
         move_link = detail.locator('a.gb-move-link').first
@@ -107,6 +141,6 @@ with sync_playwright() as p:
         page.evaluate('localStorage.clear()')
 
         assert not errors, errors
-        print(f'PASS {width}x{height}: hero, steps, era weaknesses, tera, ace, image fallback, role/version tags, chapter tags, links to dex/moves/team')
+        print(f'PASS {width}x{height}: hero, steps, era weaknesses, tera, ace, image fallback, role/version tags, chapter tags, links to dex/moves/team, league counters, light theme')
         context.close()
     browser.close()

@@ -1,2 +1,4 @@
 # 由 scripts/split-atlas-data.mjs 產生，測試會逐字比對，換行固定為 LF
 public/atlas/data/** text eol=lf
+# 由 scripts/build-guide-light.mjs 產生，測試會逐字比對，換行固定為 LF
+src/styles/guide-light.css text eol=lf

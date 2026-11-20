@@ -16,7 +16,7 @@ import {
   POCKET_NAMES_CN,
 } from '../utils/items.js';
 
-const INDEX_CACHE_KEY = 'items_by_gen_v9';
+const INDEX_CACHE_KEY = 'items_by_gen_v10';
 const ITEMS_FETCH_CONCURRENCY = 25;
 const categoryCache = new Map();
 
@@ -97,6 +97,7 @@ function groupByGeneration(items) {
           historicalName: item.historicalNames[gen] || '',
           effect: summary?.text || '此世代尚無效果說明',
           effectVersion: summary?.versionGroup || '', effectLanguage: summary?.language || '',
+          effectReference: summary?.reference || null,
         });
       }
     }

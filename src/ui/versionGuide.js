@@ -1821,6 +1821,10 @@ function renderTimelineItem(entry, options) {
   const specialtyKey = getSpecialtyKey(battle);
   const accent = specialtyKey ? (typeColors[specialtyKey] || '#666') : '#888';
   const roleLabel = getTimelineRoleLabel(battle, mode, sequenceMode, index, guideId, battleRef);
+  // 可自由挑戰順序的版本，時間軸不編號，但展開後的橫幅仍標出建議的順序
+  const heroRoleLabel = mode === 'gym' && battle.role === 'gym' && sequenceMode === 'suggested' && battle.order
+    ? `道館・建議第 ${battle.order} 個`
+    : roleLabel;
   const preview = getBattlePreview(battle, battleGuide, mode);
   const markerInfo = getTimelineMarkerContent(index, battle, sequenceMode, isChampion);
 
@@ -1893,8 +1897,8 @@ function renderTimelineItem(entry, options) {
           : null;
         if (!expansionId && annotationId) expansionId = annotationId;
         detail.innerHTML = mode === 'league'
-          ? renderOpponentDetail(battle, battleRef, battleGuide, roleLabel)
-          : renderBattleDetail(battle, expansionId, roleLabel);
+          ? renderOpponentDetail(battle, battleRef, battleGuide, heroRoleLabel)
+          : renderBattleDetail(battle, expansionId, heroRoleLabel);
         detail.dataset.rendered = '1';
         hydrateGuideArt(detail);
       }
@@ -1916,8 +1920,19 @@ function renderOpponentSummary(battleGuide) {
   return `<div class="guide-opponent-summary">${battleGuide.intro}</div>`;
 }
 
-function renderOpponentParty(party) {
-  return renderBoardParty(party);
+/**
+ * 對手隊伍。matchups 與隊伍逐一對應時，把「推薦上場」直接放在每張對手卡片上，
+ * 回傳 merged: true 讓呼叫端不必再列一次表格。
+ */
+function renderOpponentParty(party, matchups = null) {
+  const counters = matchupCounters(party, matchups);
+  return renderBoardParty(party, counters || []);
+}
+
+function matchupCounters(party, matchups) {
+  if (!party?.length || matchups?.length !== party.length) return null;
+  const aligned = matchups.every((m, i) => m?.counters && findPartyMember([party[i]], m.opponent || ''));
+  return aligned ? matchups.map((m) => m.counters) : null;
 }
 
 function renderStarterLineups(lineups) {
@@ -2017,7 +2032,7 @@ function renderChampionVariants(championGuide, party = []) {
       <div class="guide-variant-body">`;
     if (variant.party?.length) {
       html += '<h4 class="guide-variant-subtitle">此分支完整隊伍</h4>';
-      html += renderOpponentParty(variant.party);
+      html += renderOpponentParty(variant.party, variant.matchups);
     }
     if (variant.tips?.length) html += renderBattleTips(variant.tips);
     if (variant.essentials?.length) {
@@ -2028,7 +2043,7 @@ function renderChampionVariants(championGuide, party = []) {
       });
       html += '</tbody></table></div>';
     }
-    if (variant.matchups?.length) {
+    if (variant.matchups?.length && !(variant.party?.length && matchupCounters(variant.party, variant.matchups))) {
       html += '<h4 class="guide-variant-subtitle">推薦處理</h4>';
       html += renderMatchupTable(variant.matchups, variant.party || party);
     }
@@ -2084,14 +2099,14 @@ function renderOpponentDetail(battle, battleRef, battleGuide, roleLabel = '') {
   } else if (battleGuide) {
     html += renderOpponentSummary(battleGuide);
     html += '<section class="guide-detail-section"><h3 class="guide-section-title">對手隊伍</h3>';
-    html += renderOpponentParty(battle.party);
+    html += renderOpponentParty(battle.party, battleGuide.matchups);
     html += '</section>';
     if (battleGuide.tips?.length) {
       html += '<section class="guide-detail-section"><h3 class="guide-section-title">注意事項</h3>';
       html += renderBattleTips(battleGuide.tips);
       html += '</section>';
     }
-    if (battleGuide.matchups?.length) {
+    if (battleGuide.matchups?.length && !matchupCounters(battle.party, battleGuide.matchups)) {
       html += '<section class="guide-detail-section"><h3 class="guide-section-title">推薦上場</h3>';
       html += renderMatchupTable(battleGuide.matchups, battle.party);
       html += '</section>';

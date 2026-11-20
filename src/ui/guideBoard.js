@@ -73,7 +73,11 @@ function weaknessRow(mon) {
   return `<div class="gb-weak"><span class="gb-weak-label">${mon.teraType ? '太晶後怕' : '怕'}</span>${quad.map((t) => chip(t, true)).join('')}${double.map((t) => chip(t, false)).join('')}</div>`;
 }
 
-export function renderBoardParty(party) {
+/**
+ * @param {object[]} party
+ * @param {string[]} counters 與 party 同順序的對策（推薦上場的寶可夢與招式）；沒有就不顯示
+ */
+export function renderBoardParty(party, counters = []) {
   if (!party?.length) return '';
   const maxLevel = Math.max(...party.map((p) => Number(p.level) || 0));
   let html = '<ul class="guide-party-grid gb-foes">';
@@ -87,6 +91,7 @@ export function renderBoardParty(party) {
         ${p.level ? `<div class="gb-lv"><span class="guide-level">Lv.${p.level}</span><i style="--w:${width}%"></i></div>` : ''}
         <div class="guide-type-badges gb-foe-types">${p.teraType ? '<span class="gb-types-label">原屬性</span>' : ''}${(p.types || []).map(typeBadge).join('')}${p.teraType ? `<span class="gb-tera">太晶：${typeNamesCN[p.teraType] || p.teraType}</span>` : ''}</div>
         ${weaknessRow(p)}
+        ${counters[i] ? `<div class="gb-counter"><span class="gb-counter-label">對策</span><span data-move-note>${counters[i]}</span></div>` : ''}
       </div>
     </li>`;
   });
@@ -95,6 +100,16 @@ export function renderBoardParty(party) {
 }
 
 /* ---------- 作戰步驟 ---------- */
+
+/**
+ * 作戰摘要各段的小標。資料沒有標階段，只能從寫法判斷：
+ * 第一段是主要打法；帶有提醒語氣的是「留意」；其餘是「接著」。
+ */
+export function stepLabel(part, index, total) {
+  if (index === 0) return total > 1 ? '主打' : '打法';
+  if (/注意|小心|留意|(?<![分特個類級識區])別|不要|勿|避免|不能|無法|只是|僅/.test(part)) return '留意';
+  return '接著';
+}
 
 /**
  * @param {{ level?: string, summary?: string, tips?: string[] }} strategy
@@ -106,8 +121,9 @@ export function renderBoardSteps(strategy, levelLabel) {
   if (levelLabel) {
     html += `<li class="gb-step gb-step--prep"><div><h4>準備</h4><p class="guide-strategy-level">${levelLabel}</p></div></li>`;
   }
-  parts.forEach((part) => {
-    html += `<li class="gb-step gb-step--do"><div><h4>打法</h4><p class="guide-strategy-summary">${part}</p></div></li>`;
+  parts.forEach((part, index) => {
+    const label = stepLabel(part, index, parts.length);
+    html += `<li class="gb-step gb-step--do${label === '留意' ? ' gb-step--care' : ''}"><div><h4>${label}</h4><p class="guide-strategy-summary">${part}</p></div></li>`;
   });
   (strategy.tips || []).forEach((tip) => {
     html += `<li class="gb-step gb-step--warn"><div><h4>注意</h4><p class="guide-battle-tip">${tip}</p></div></li>`;

@@ -126,3 +126,7 @@
 /* 道具卡：查看攜帶此道具的寶可夢 */
 .items-page .item-card-holders-link { margin-top: 10px; position: relative; z-index: 2; white-space: nowrap; }
 .items-page .item-card-holders-link:focus-visible { outline: 2px solid var(--accent-primary, #00d9ff); outline-offset: 2px; }
+
+/* 這個版本只有英文說明時，附上其他版本的中文當參考 */
+.catalog-reference { margin: 6px 0 0; padding: 6px 10px; border-left: 3px solid #ffd58a; border-radius: 0 6px 6px 0; background: #ffd58a14; font-size: 14px; line-height: 1.55; color: var(--text-secondary); }
+.catalog-reference-tag { display: inline-block; margin-right: 8px; padding: 0 7px; border-radius: 5px; background: #ffd58a; color: #3a2a00; font-size: 12px; font-weight: 800; white-space: nowrap; }

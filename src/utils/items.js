@@ -233,7 +233,7 @@ export function getItemVersionDetails(itemData, gen) {
     .filter((version) => VERSION_GROUP_TO_GEN[version] === gen)
     .sort((a, b) => versionGroupScore(b) - versionGroupScore(a));
   return versions.map((versionGroup) => ({
-    ...getVersionedFlavor(flavors, versionGroup),
+    ...getVersionedFlavor(flavors, versionGroup, 'text', { chineseReference: true }),
     prices: prices.filter((price) => price.version_group?.name === versionGroup),
   }));
 }

@@ -9,6 +9,10 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="./manifest.json">
   <title>版本攻略｜寶可夢圖鑑</title>
+  <script>
+    // 淺色閱讀模式：在畫面出現前先套用，避免先閃一下深色（切換邏輯在 src/ui/guideTheme.js）
+    try { if (localStorage.getItem('pokedex_guide_theme') === 'light') document.documentElement.classList.add('guide-light'); } catch (e) {}
+  </script>
 </head>
 <body class="guide-page-body">
   <div class="guide-page">
@@ -16,6 +20,7 @@
       <div class="guide-page-header-top">
         <a href="./index.html" class="guide-back-link">← 返回圖鑑</a>
         <a href="./atlas/index.html" class="guide-back-link">分版地圖集 ↗</a>
+        <button type="button" id="guideThemeToggle" class="guide-back-link guide-theme-toggle" aria-pressed="false">☀ 淺色閱讀</button>
         <label class="guide-version-select-wrap">
           <span class="sr-only">選擇版本</span>
           <select id="guideVersionSelect" class="guide-version-select" aria-label="選擇版本"></select>

@@ -7955,3 +7955,35 @@
       background: color-mix(in srgb, var(--accent-primary) 24%, transparent);
       border-color: var(--accent-primary);
     }
+
+    /* 對戰看板：對手卡片上的對策、作戰步驟的「留意」 */
+    #guideContentRoot .gb-counter {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.14);
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--text-primary);
+    }
+
+    #guideContentRoot .gb-counter-label {
+      flex: none;
+      padding: 0 8px;
+      border-radius: 6px;
+      background: rgba(43, 209, 126, 0.18);
+      color: #7ee8a8;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    #guideContentRoot .gb-step--care { --c: #ffb648; }
+
+    /* 淺色閱讀模式的開關按鈕；淺色配色由 scripts/build-guide-light.mjs 產生在 guide-light.css */
+    .guide-theme-toggle {
+      font: inherit;
+      cursor: pointer;
+    }

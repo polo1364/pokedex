@@ -91,6 +91,10 @@ def main():
             expect(card).to_be_visible()
             expect(card.locator('.item-card-effect')).to_contain_text('30')
             expect(card.locator('.catalog-version-badge')).to_contain_text('火紅／葉綠')
+            # 這個版本只有英文說明：保留本版原文，另外附上標明出處的中文參考
+            reference = card.locator('.catalog-reference').first
+            expect(reference.locator('.catalog-reference-tag')).to_have_text('中文參考・太陽／月亮')
+            expect(reference).to_contain_text('回復少量')
             expect(page.locator('#items-gen-2 .item-card-name')).to_have_text('GOLD BERRY')
             expect(page.locator('#itemsGenNav [data-gen="uncategorized"]')).to_have_text('未分類 (0)')
             if width < 500:
@@ -149,7 +153,7 @@ def main():
             context.close()
 
         # Real IndexedDB: failed downloads must not be cached as complete catalogs.
-        for name, key, target in [('items', 'items_by_gen_v9', '/item/sitrus-berry/'),
+        for name, key, target in [('items', 'items_by_gen_v10', '/item/sitrus-berry/'),
                                   ('machines', 'machines_by_gen_v4', '/item/tm01/')]:
             context = browser.new_context(service_workers='block')
             fail = [True]

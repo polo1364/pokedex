@@ -44,6 +44,26 @@ test('exact-game flavor prefers valid Traditional Chinese, then English; never b
   assert.equal(getItemVersionDetails({ flavor_text_entries: entries }, 3).length, 2);
 });
 
+test('items keep their own text and add a labelled Chinese reference when the game only has English', () => {
+  const entries = [flavor('sword-shield', '最新效果'), flavor('x-y', '第六世代效果'), flavor('diamond-pearl', '第四世代效果'),
+    flavor('black-white', 'Gen 5 effect', 'en'), flavor('ruby-sapphire', 'Old effect', 'en'), flavor('emerald', '[VAR 0100]')];
+  const options = { chineseReference: true };
+  assert.deepEqual(getVersionedFlavor(entries, 'black-white', 'text', options), {
+    text: 'Gen 5 effect', language: 'en', versionGroup: 'black-white',
+    reference: { text: '第六世代效果', versionGroup: 'x-y' },
+  }, 'the game keeps its own text; the nearest newer game supplies the reference');
+  assert.equal(getVersionedFlavor(entries, 'ruby-sapphire', 'text', options).reference.versionGroup, 'diamond-pearl');
+  assert.equal(getVersionedFlavor(entries, 'x-y', 'text', options).reference, undefined, 'own Chinese text needs no reference');
+  assert.equal(getVersionedFlavor(entries, 'emerald', 'text', options).reference, undefined, 'no text for the game: nothing is added');
+  assert.equal(getVersionedFlavor([flavor('scarlet-violet', 'New', 'en'), flavor('x-y', '舊效果')], 'scarlet-violet', 'text', options).reference.versionGroup, 'x-y',
+    'falls back to an older game when nothing newer has Chinese');
+  assert.equal(getVersionedFlavor([flavor('x-y', 'Only English', 'en')], 'x-y', 'text', options).reference, undefined);
+  assert.equal(getVersionedFlavor(entries, 'black-white').reference, undefined, 'machines and other callers are unchanged');
+  const detail = getItemVersionDetails({ flavor_text_entries: entries }, 3).find((d) => d.versionGroup === 'ruby-sapphire');
+  assert.equal(detail.text, 'Old effect');
+  assert.equal(detail.reference.versionGroup, 'diamond-pearl');
+});
+
 test('real historical Sitrus Berry text is not replaced by its latest effect', () => {
   const versions = getItemVersionDetails(fixture('item--sitrus-berry'), 3);
   assert.ok(versions.some((entry) => /30/.test(entry.text)));

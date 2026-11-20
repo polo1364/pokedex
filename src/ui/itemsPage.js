@@ -242,6 +242,11 @@ function renderHoldersLink(item) {
     title="在主圖鑑列出野生時會攜帶此道具的寶可夢（跨版本）">查看攜帶者（${item.heldByCount} 種）→</a>`;
 }
 
+/** 這個版本只有英文說明時附上的中文參考（取自其他版本，效果可能不同）。 */
+function renderReference(reference) {
+  return `<span class="catalog-reference-tag" title="這個版本沒有中文說明；效果可能隨版本改變，請以上方本版原文為準">中文參考・${escapeHtml(getVersionGroupDisplayName(reference.versionGroup))}</span>${escapeHtml(reference.text)}`;
+}
+
 function renderItemCard(item) {
   const accent = getItemAccentColor(item.pocketSlug, item.categorySlug);
   const pocketClass = cssSafeSlug(item.pocketSlug);
@@ -252,6 +257,7 @@ function renderItemCard(item) {
     .map((detail) => `<div class="catalog-version-detail">
     <strong>${escapeHtml(getVersionGroupDisplayName(detail.versionGroup))}</strong>
     ${detail.language ? `<p>${escapeHtml(detail.text)}</p>` : ''}
+    ${detail.reference ? `<p class="catalog-reference">${renderReference(detail.reference)}</p>` : ''}
     ${detail.prices.length ? `<p class="item-card-cost">${detail.prices.map((price) => escapeHtml(formatItemPrice(price))).join('<br>')}</p>` : ''}
   </div>`).join('');
   const attrs = formatAttributeLabels(item.attributes);
@@ -268,6 +274,7 @@ function renderItemCard(item) {
     <div class="item-card-name" title="${escapeHtml(item.displayName)}">${escapeHtml(item.displayName)}</div>
     <span class="item-card-category">${escapeHtml(item.categoryZh)}</span>
     ${hasEffect ? `<p class="item-card-effect">${escapeHtml(item.effect)}</p>
+    ${item.effectReference ? `<p class="catalog-reference">${renderReference(item.effectReference)}</p>` : ''}
     <p class="catalog-version-badge">${escapeHtml(getVersionGroupDisplayName(item.effectVersion))}</p>` : ''}
     <div class="item-inline-detail" aria-hidden="true">
       ${details ? `<div class="item-detail-section">
