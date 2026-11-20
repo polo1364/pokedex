@@ -30,7 +30,7 @@ export const scarletVioletLeague = {
     {
       "attackType": "fighting",
       "label": "格鬥",
-      "uses": "仆刀將軍四倍；巨鍛匠太晶鋼後二倍"
+      "uses": "仆斬將軍四倍；巨鍛匠太晶鋼後二倍"
     }
   ],
   "recommendedTeams": [
@@ -117,9 +117,9 @@ export const scarletVioletLeague = {
       ]
     },
     "eliteFour:2": {
-      "intro": "火招可處理鋼隊；銅鐘飄浮與鋼鎧鴉飛行都免疫一般地面招。",
+      "intro": "火招可處理鋼隊；青銅鐘飄浮與鋼鎧鴉飛行都免疫一般地面招。",
       "tips": [
-        "銅鐘飄浮、鋼鎧鴉飛行都免疫一般地面招；火系好用但需留意敵方地面／岩石招。巨鍛匠太晶鋼後火地面格鬥2倍。"
+        "青銅鐘飄浮、鋼鎧鴉飛行都免疫一般地面招；火系好用但需留意敵方地面／岩石招。巨鍛匠太晶鋼後火地面格鬥2倍。"
       ],
       "matchups": [
         {
@@ -131,7 +131,7 @@ export const scarletVioletLeague = {
           "counters": "地面 4 倍；結實可能保留 1 HP"
         },
         {
-          "opponent": "銅鐘",
+          "opponent": "青銅鐘",
           "counters": "火／幽靈／惡；飄浮免地面"
         },
         {
@@ -203,11 +203,11 @@ export const scarletVioletLeague = {
     "champion": {
       "intro": "混合隊伍，按每隻切換打點；晶光花最後太晶岩石。",
       "tips": [
-        "也慈使用多種屬性的隊伍。冰岩怪是一般形態純冰，輕身鱈水／超能；最後晶光花太晶岩石，水草格鬥地面鋼2倍。仆刀將軍格鬥4倍，火地面2倍。超能艷鴕可跟上對手能力提升，別無腦強化。"
+        "也慈使用多種屬性的隊伍。冰岩怪是一般形態純冰，輕身鱈水／超能；最後晶光花太晶岩石，水草格鬥地面鋼2倍。仆斬將軍格鬥4倍，火地面2倍。超能豔鴕可跟上對手能力提升，別無腦強化。"
       ],
       "matchups": [
         {
-          "opponent": "超能艷鴕",
+          "opponent": "超能豔鴕",
           "counters": "惡／幽靈／蟲；小心跟上能力提升"
         },
         {
@@ -223,7 +223,7 @@ export const scarletVioletLeague = {
           "counters": "火／格鬥／岩石／鋼；優先特殊攻擊"
         },
         {
-          "opponent": "仆刀將軍",
+          "opponent": "仆斬將軍",
           "counters": "格鬥 4 倍，火／地面 2 倍"
         },
         {
@@ -242,7 +242,7 @@ export const scarletVioletLeague = {
     {
       "battle": "波琵",
       "leads": "烈箭鷹火招",
-      "backup": "巴布土撥格鬥；銅鐘不可用地面"
+      "backup": "巴布土撥格鬥；青銅鐘不可用地面"
     },
     {
       "battle": "青木",
@@ -257,7 +257,7 @@ export const scarletVioletLeague = {
     {
       "battle": "也慈",
       "leads": "依場上對手換打點",
-      "backup": "格鬥留給仆刀將軍、水草留給晶光花"
+      "backup": "格鬥留給仆斬將軍、水草留給晶光花"
     }
   ],
   "starterLineups": [
@@ -317,7 +317,7 @@ export const scarletVioletLeague = {
           "moveNote": "鋼招處理謎擬Ｑ；妖精招打龍。"
         }
       ],
-      "summary": "御三家只占一格，其餘五隻均可在帕底亞主線取得。確認草招處理儲水土王、火招處理鋼隊、冰／妖精打龍，格鬥打仆刀將軍；不需另外交換其他御三家。"
+      "summary": "御三家只占一格，其餘五隻均可在帕底亞主線取得。確認草招處理儲水土王、火招處理鋼隊、冰／妖精打龍，格鬥打仆斬將軍；不需另外交換其他御三家。"
     },
     {
       "starter": "呆火鱷",
@@ -375,7 +375,7 @@ export const scarletVioletLeague = {
           "moveNote": "鋼招處理謎擬Ｑ；妖精招打龍。"
         }
       ],
-      "summary": "御三家只占一格，其餘五隻均可在帕底亞主線取得。確認草招處理儲水土王、火招處理鋼隊、冰／妖精打龍，格鬥打仆刀將軍；不需另外交換其他御三家。"
+      "summary": "御三家只占一格，其餘五隻均可在帕底亞主線取得。確認草招處理儲水土王、火招處理鋼隊、冰／妖精打龍，格鬥打仆斬將軍；不需另外交換其他御三家。"
     },
     {
       "starter": "潤水鴨",
@@ -433,7 +433,7 @@ export const scarletVioletLeague = {
           "moveNote": "鋼招處理謎擬Ｑ；妖精招打龍。"
         }
       ],
-      "summary": "御三家只占一格，其餘五隻均可在帕底亞主線取得。確認草招處理儲水土王、火招處理鋼隊、冰／妖精打龍，格鬥打仆刀將軍；不需另外交換其他御三家。"
+      "summary": "御三家只占一格，其餘五隻均可在帕底亞主線取得。確認草招處理儲水土王、火招處理鋼隊、冰／妖精打龍，格鬥打仆斬將軍；不需另外交換其他御三家。"
     }
   ],
   "moveSets": [
@@ -450,7 +450,7 @@ export const scarletVioletLeague = {
         },
         {
           "name": "近身戰",
-          "use": "打鋼與仆刀將軍；使用後雙防降低",
+          "use": "打鋼與仆斬將軍；使用後雙防降低",
           "source": "level",
           "sourceDetail": "Lv.44",
           "type": "fighting"
@@ -484,7 +484,7 @@ export const scarletVioletLeague = {
         },
         {
           "name": "暗影球",
-          "use": "打超能艷鴕與銅鐘",
+          "use": "打超能豔鴕與青銅鐘",
           "source": "level",
           "sourceDetail": "Lv.38",
           "type": "ghost"
@@ -659,7 +659,7 @@ export const scarletVioletLeague = {
   ],
   "pitfalls": [
     "把拿滿八徽章當成已完成整個本篇。",
-    "用水招打辛俐儲水土王，或用地面招打飄浮銅鐘。",
+    "用水招打辛俐儲水土王，或用地面招打飄浮青銅鐘。",
     "忽略太晶後的防守屬性，仍按原本雙屬性選招。",
     "一隊塞入多隻開局御三家卻沒有交換來源。",
     "把青木道館隊伍和四天王隊伍混為一談。"

@@ -561,6 +561,7 @@ async function loadMoves(pokemon, gen) {
         const detail = getLatestVersionGroupDetail(m.version_group_details, method);
         return {
           name: getChineseName(data.names),
+          slug: m.move.name,
           level: detail?.level_learned_at || 0,
           type: data.type?.name || '',
         };
@@ -580,7 +581,7 @@ async function loadMoves(pokemon, gen) {
           const typeLabel = typeNamesCN[move.type] || move.type;
           return `<div class="move-item">
             <div class="move-info">
-              <span class="move-name">${move.name}</span>
+              <span class="move-name"><a class="ability-name-link" href="./moves.html?open=${encodeURIComponent(move.slug)}" title="在招式圖鑑查看">${move.name}</a></span>
               ${move.type ? `<span class="type-badge move-type" style="${typeBadgeStyle(move.type)}">${typeLabel}</span>` : ''}
             </div>
             ${move.level > 0 ? `<span class="move-level">${move.level}級</span>` : ''}

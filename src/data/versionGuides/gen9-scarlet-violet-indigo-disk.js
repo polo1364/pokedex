@@ -1631,7 +1631,7 @@ export const indigoDiskExpansion = {
               "moveNote": "升級地面招對鋼／毒／電；拖拖蚓的食土會吸收地面招。"
             },
             {
-              "name": "仆刀將軍",
+              "name": "仆斬將軍",
               "types": [
                 "dark",
                 "steel"

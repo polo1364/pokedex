@@ -3,6 +3,7 @@
 攻略「對戰看板」排版：橫幅、編號步驟、對手（圖片佔位、等級、當代弱點、王牌）、推薦隊伍標籤。
 寶可夢圖片來自外部圖庫，這裡全部封鎖，確認沒有圖片時版面仍完整。
 """
+import re
 import sys
 from playwright.sync_api import sync_playwright, expect
 
@@ -50,6 +51,17 @@ with sync_playwright() as p:
         assert allies.nth(1).locator('.gb-k').all_text_contents() == ['取得', '招式']
         expect(allies.nth(1).locator('.gb-ver--red')).to_have_text('紅版')
         expect(allies.nth(2).locator('.gb-ver--blue')).to_have_text('藍版')
+        # 連結：對手連到圖鑑詳情、招式連到招式圖鑑、推薦隊伍可帶到隊伍分析
+        expect(foes.nth(1).locator('a.gb-mon-link')).to_have_attribute('href', './?id=121')
+        expect(allies.locator('a.gb-mon-link')).to_have_count(3)
+        moves = detail.locator('a.gb-move-link')
+        expect(moves).not_to_have_count(0)
+        move_hrefs = moves.evaluate_all('n => n.map(a => a.getAttribute("href"))')
+        assert all(re.fullmatch(r'\./moves\.html\?open=[a-z0-9-]+', h) for h in move_hrefs), move_hrefs
+        analyze = detail.locator('a.gb-team-analyze')
+        expect(analyze).to_have_count(2)
+        team_hrefs = analyze.evaluate_all('n => n.map(a => a.getAttribute("href"))')
+        assert all(re.fullmatch(r'\./team\.html\?t=\d+(,\d+)*', h) for h in team_hrefs), team_hrefs
         if width >= 900:
             foe_box = detail.locator('.gb-sec--foes').bounding_box()
             step_box = detail.locator('.gb-sec--steps').bounding_box()
@@ -77,7 +89,24 @@ with sync_playwright() as p:
         expect(island.locator('.gx-tag')).to_have_text(['重要地點', '流程', '重點'])
         expect(island.locator('.gx-flow > li')).to_have_count(3)
 
+        # 實際點過去：招式圖鑑打開該招式、隊伍分析頁帶入整隊
+        detail = open_battle(page, 'red-blue', 'gym:2')
+        move_link = detail.locator('a.gb-move-link').first
+        expect(move_link).to_be_visible()
+        move_name = move_link.inner_text()
+        move_link.click()
+        expect(page).to_have_url(re.compile(r'/moves\.html\?open='))
+        expect(page.locator('body')).to_contain_text(move_name)
+        detail = open_battle(page, 'red-blue', 'gym:2')
+        team_link = detail.locator('a.gb-team-analyze').first
+        expect(team_link).to_be_visible()
+        expected = len(team_link.get_attribute('href').split('=')[1].split(','))
+        team_link.click()
+        expect(page.locator('.team-slot-name')).to_have_count(expected)
+        expect(page.locator('#teamLinked')).to_be_hidden()
+        page.evaluate('localStorage.clear()')
+
         assert not errors, errors
-        print(f'PASS {width}x{height}: hero, steps, era weaknesses, tera, ace, image fallback, role/version tags, chapter tags')
+        print(f'PASS {width}x{height}: hero, steps, era weaknesses, tera, ace, image fallback, role/version tags, chapter tags, links to dex/moves/team')
         context.close()
     browser.close()

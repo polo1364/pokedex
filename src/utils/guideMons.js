@@ -13,18 +13,11 @@ const REGIONS = [
 ];
 
 /**
- * 攻略資料中與官方譯名不同的寫法，或無法由名稱規則推得的形態（值為 pokemon id）。
- * 物種：大比鳥 18、焰后蜥 758、勇基拉 64、火爆獸 157、超能豔鴕 956、青銅鐘 437、仆斬將軍 983、普隆隆姆 966
- * 形態：究極奈克洛茲瑪 10157（奈克洛茲瑪 800）、解放胡帕 10086（胡帕 720）
+ * 無法由名稱規則推得的寫法（值為 [pokemon id, 物種 id]）。
+ * 攻略資料一律使用官方繁中譯名（由 tests/guide-board.test.js 把關），這裡只放不是物種名稱的項目：
+ * 天星隊車是普隆隆姆（966）改裝的載具；究極奈克洛茲瑪 10157（奈克洛茲瑪 800）、解放胡帕 10086（胡帕 720）是形態。
  */
 const ALIASES = {
-  比雕: [18, 18],
-  焰後蜥: [758, 758],
-  勇吉拉: [64, 64],
-  火暴獸: [157, 157],
-  超能艷鴕: [956, 956],
-  銅鐘: [437, 437],
-  仆刀將軍: [983, 983],
   天星隊車: [966, 966],
   究極奈克洛茲瑪: [10157, 800],
   解放胡帕: [10086, 720],
@@ -113,4 +106,58 @@ export function splitVersionPrefix(text) {
   const hit = VERSION_TAGS.find(([zh]) => zh === m[1]);
   if (!hit) return null;
   return { tag: `${m[1]}版`, key: hit[1], rest: m[2] };
+}
+
+/* ---------- 連到其他頁面 ---------- */
+
+/** 圖鑑詳情的連結（形態一律連到所屬物種）。 */
+export function monDetailHref(resolved) {
+  return resolved?.speciesId ? `./?id=${resolved.speciesId}` : '';
+}
+
+/**
+ * 隊伍分析頁的連結：去掉對不到與重複的成員，最多 6 隻；沒有任何成員時回傳空字串。
+ * @param {Array<{speciesId:number}|null>} resolvedList
+ */
+export function teamAnalysisHref(resolvedList) {
+  const ids = [];
+  for (const mon of resolvedList || []) {
+    if (mon?.speciesId && !ids.includes(mon.speciesId)) ids.push(mon.speciesId);
+    if (ids.length >= 6) break;
+  }
+  return ids.length ? `./team.html?t=${ids.join(',')}` : '';
+}
+
+/**
+ * 建立「把文字裡的招式名稱找出來」的函式。
+ * 名稱長的優先（「十萬伏特」不會被拆成別的招式），只認兩個字以上的名稱。
+ * @param {Array<{n:string, zh:string}>} moves 招式索引的項目
+ * @param {string[]} ignore 不當成招式的詞：寶可夢名稱（「噴火駝」裡的「噴火」）與和招式同名的一般用語
+ * @returns {(text:string) => Array<string | {text:string, slug:string}>} 依原順序排列的文字與招式片段
+ */
+export function createMoveMatcher(moves, ignore = []) {
+  const slugByName = new Map();
+  for (const move of moves || []) {
+    if (move?.zh && move.n && Array.from(move.zh).length >= 2 && !slugByName.has(move.zh)) slugByName.set(move.zh, move.n);
+  }
+  if (!slugByName.size) return (text) => [String(text ?? '')];
+  ignore.forEach((word) => slugByName.delete(word));
+  // 忽略的詞也放進比對式（長的優先），整個詞被當成一般文字吃掉，裡面的招式名稱就不會被拆出來
+  const names = [...new Set([...slugByName.keys(), ...ignore.filter(Boolean)])].sort((a, b) => b.length - a.length);
+  if (!names.length) return (text) => [String(text ?? '')];
+  const pattern = new RegExp(names.map((name) => name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'g');
+  return (text) => {
+    const source = String(text ?? '');
+    const parts = [];
+    let last = 0;
+    for (const match of source.matchAll(pattern)) {
+      const slug = slugByName.get(match[0]);
+      if (!slug) continue;
+      if (match.index > last) parts.push(source.slice(last, match.index));
+      parts.push({ text: match[0], slug });
+      last = match.index + match[0].length;
+    }
+    if (last < source.length) parts.push(source.slice(last));
+    return parts;
+  };
 }

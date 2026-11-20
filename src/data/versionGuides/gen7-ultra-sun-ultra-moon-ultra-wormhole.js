@@ -2352,7 +2352,7 @@ export const ultraSunUltraMoonUltraWormholeExpansion = {
               ]
             },
             {
-              "name": "焰後蜥",
+              "name": "焰后蜥",
               "types": [
                 "poison",
                 "fire"
@@ -2397,7 +2397,7 @@ export const ultraSunUltraMoonUltraWormholeExpansion = {
               ]
             },
             {
-              "name": "焰後蜥",
+              "name": "焰后蜥",
               "types": [
                 "poison",
                 "fire"

@@ -7908,3 +7908,50 @@
     #guideContentRoot .gx-tips > li::marker {
       color: #ffb648;
     }
+
+    /* 對戰看板：連到圖鑑、招式圖鑑與隊伍分析 */
+    #guideContentRoot .gb-mon-link,
+    #guideContentRoot .gb-move-link {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dashed color-mix(in srgb, currentColor 55%, transparent);
+    }
+
+    #guideContentRoot .gb-move-link {
+      color: #d2a8ff;
+      font-weight: 700;
+    }
+
+    #guideContentRoot .gb-mon-link:hover,
+    #guideContentRoot .gb-mon-link:focus-visible,
+    #guideContentRoot .gb-move-link:hover,
+    #guideContentRoot .gb-move-link:focus-visible {
+      border-bottom-style: solid;
+      color: var(--accent-primary);
+    }
+
+    #guideContentRoot .gb-team-analyze {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 40px;
+      margin-top: 12px;
+      padding: 0 16px;
+      border: 1px solid color-mix(in srgb, var(--accent-primary) 55%, transparent);
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+      color: var(--text-primary);
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    #guideContentRoot .gb-team-analyze::after {
+      content: '→';
+    }
+
+    #guideContentRoot .gb-team-analyze:hover,
+    #guideContentRoot .gb-team-analyze:focus-visible {
+      background: color-mix(in srgb, var(--accent-primary) 24%, transparent);
+      border-color: var(--accent-primary);
+    }

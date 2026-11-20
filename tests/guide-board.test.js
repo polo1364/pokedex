@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { typeEra, eraTypes, eraMultiplier, weaknessesFor } from '../src/utils/typeEra.js';
-import { createMonResolver, monImageUrl, splitVersionPrefix } from '../src/utils/guideMons.js';
+import {
+  createMonResolver, monImageUrl, splitVersionPrefix, monDetailHref, teamAnalysisHref, createMoveMatcher,
+} from '../src/utils/guideMons.js';
 import { GUIDE_VERSIONS, getVersionGuide } from '../src/data/versionGuides/index.js';
 
 const index = JSON.parse(fs.readFileSync(new URL('../public/data/species-index.json', import.meta.url), 'utf8'));
@@ -52,7 +54,7 @@ test('guide Pokémon names resolve to artwork ids', () => {
   assert.equal(resolve('九尾（阿羅拉）').id, index.forms.find((f) => f.n === 'ninetales-alola').id);
   assert.equal(resolve('阿羅拉臭臭泥').id, index.forms.find((f) => f.n === 'muk-alola').id);
   assert.equal(resolve('鬃岩狼人（黑夜）').speciesId, 745, 'other bracket notes fall back to the species');
-  assert.equal(resolve('比雕').id, 18, 'non-official spellings used in guide data are aliased');
+  assert.equal(resolve('比雕'), null, 'non-official spellings are fixed in the data, not aliased');
   assert.equal(resolve('天星隊車（火）').id, 966);
   assert.equal(resolve('究極奈克洛茲瑪').id, 10157);
   assert.equal(resolve('你的御三家'), null);
@@ -81,4 +83,55 @@ test('version-exclusive obtain notes split into a tag', () => {
   assert.deepEqual(splitVersionPrefix('藍版：24／25 號道路。'), { tag: '藍版', key: 'blue', rest: '24／25 號道路。' });
   assert.equal(splitVersionPrefix('常青森林低機率出現。'), null);
   assert.equal(splitVersionPrefix('取得：常青森林'), null);
+});
+
+/** 攻略裡所有的對手與推薦寶可夢（party／pokemon 陣列中帶 name 的項目）。 */
+function collectGuideMons(node, key, out) {
+  if (Array.isArray(node)) {
+    if ((key === 'party' || key === 'pokemon') && node.every((x) => x && typeof x === 'object' && typeof x.name === 'string')) {
+      node.forEach((mon) => out.push(mon.name));
+    }
+    node.forEach((x) => collectGuideMons(x, key, out));
+  } else if (node && typeof node === 'object') {
+    for (const [k, v] of Object.entries(node)) collectGuideMons(v, k, out);
+  }
+  return out;
+}
+
+test('every Pokémon named in a guide uses the official name and resolves to the dex', () => {
+  // 不是特定寶可夢的寫法（由玩家自選或遊戲隨機決定）
+  const generic = /御三家|隨機(租借)?寶可夢|屬性猴/;
+  const unresolved = new Map();
+  let total = 0;
+  for (const version of GUIDE_VERSIONS) {
+    for (const name of collectGuideMons(getVersionGuide(version.id), '', [])) {
+      total += 1;
+      if (!generic.test(name) && !resolve(name)) unresolved.set(name, version.id);
+    }
+  }
+  assert.ok(total > 3000, `expected thousands of guide Pokémon, found ${total}`);
+  assert.deepEqual([...unresolved], [], 'use the official Traditional Chinese name from species-index.json');
+});
+
+test('guide links to the dex, the team page and the move catalog', () => {
+  assert.equal(monDetailHref(resolve('寶石海星')), './?id=121');
+  assert.equal(monDetailHref(resolve('超級噴火龍X')), './?id=6', 'forms link to their species');
+  assert.equal(monDetailHref(null), '');
+
+  const team = ['皮卡丘', '你的御三家', '皮卡丘', '暴鯉龍', '九尾（阿羅拉）'].map(resolve);
+  assert.equal(teamAnalysisHref(team), './team.html?t=25,130,38', 'skips unresolved and duplicate members');
+  assert.equal(teamAnalysisHref(Array.from({ length: 8 }, (_, i) => ({ speciesId: i + 1 }))), './team.html?t=1,2,3,4,5,6');
+  assert.equal(teamAnalysisHref([null]), '');
+
+  const moves = JSON.parse(fs.readFileSync(new URL('../public/data/moves-index.json', import.meta.url), 'utf8')).entries;
+  const match = createMoveMatcher(moves);
+  assert.deepEqual(match('學會十萬伏特後主攻，衝浪補水系。'), [
+    '學會', { text: '十萬伏特', slug: 'thunderbolt' }, '後主攻，', { text: '衝浪', slug: 'surf' }, '補水系。',
+  ]);
+  assert.deepEqual(match('沒有招式名稱'), ['沒有招式名稱']);
+  assert.equal(match('水招打噴火駝；需換場').filter((x) => typeof x !== 'string').length, 2, 'without an ignore list these are false matches');
+  const careful = createMoveMatcher(moves, ['換場', ...index.entries.map((e) => e.zh)]);
+  assert.deepEqual(careful('水招打噴火駝；需換場'), ['水招打噴火駝；需換場']);
+  assert.deepEqual(careful('噴火龍用噴射火焰'), ['噴火龍用', { text: '噴射火焰', slug: 'flamethrower' }]);
+  assert.deepEqual(createMoveMatcher([])('十萬伏特'), ['十萬伏特']);
 });

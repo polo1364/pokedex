@@ -200,6 +200,9 @@ def run():
 
             select_tab(page, '招式')
             expect(page.locator('#movesList')).to_contain_text('電擊')
+            # 招式名稱連到招式圖鑑（測試資料的招式代碼就是編號）
+            move_link = page.locator('#movesList .move-name a').filter(has_text='電擊').first
+            assert move_link.get_attribute('href').startswith('./moves.html?open='), move_link.get_attribute('href')
             select_tab(page, '進化')
             expect(page.locator('#evolutionChain .evolution-name')).to_have_text('皮卡丘')
             select_tab(page, '相剋')

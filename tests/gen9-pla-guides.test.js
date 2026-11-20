@@ -31,7 +31,7 @@ test('Levitate and Water Absorb remain explicit exceptions to type-only advice',
   assert.deepEqual(roster(rika), ['鯰魚王:57', '噴火駝:57', '頓甲:57', '三地鼠:57', '土王:58']);
   assert.equal(rika.party.at(-1).teraType, 'ground');
   assert.match(rika.notes, /儲水.*水招.*無效/);
-  assert.match(sv.eliteFour[1].notes, /銅鐘飄浮.*免疫.*地面招/);
+  assert.match(sv.eliteFour[1].notes, /青銅鐘飄浮.*免疫.*地面招/);
   assert.deepEqual(sv.gyms[3].party.find(p => p.name === '三海地鼠').types, ['water']);
 });
 
@@ -41,7 +41,7 @@ test('Paldea final battles retain their actual parties and defensive Tera change
   assert.match(sv.eliteFour[3].notes, /格鬥鋼等倍/);
   assert.match(sv.eliteFour[3].notes, /熱交換.*燒傷/);
   assert.equal(sv.champion.specialty, 'mixed');
-  assert.deepEqual(roster(sv.champion), ['超能艷鴕:61', '坐騎山羊:61', '輕身鱈:61', '冰岩怪:61', '仆刀將軍:61', '晶光花:62']);
+  assert.deepEqual(roster(sv.champion), ['超能豔鴕:61', '坐騎山羊:61', '輕身鱈:61', '冰岩怪:61', '仆斬將軍:61', '晶光花:62']);
   assert.deepEqual(sv.champion.party.find(p => p.name === '冰岩怪').types, ['ice']);
   assert.equal(sv.champion.party.at(-1).teraType, 'rock');
 });

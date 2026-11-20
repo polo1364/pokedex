@@ -34,6 +34,13 @@
             <button type="button" class="team-btn" id="teamClear" disabled>清空</button>
           </div>
         </div>
+        <div class="team-linked" id="teamLinked" hidden>
+          <p>這是連結帶入的隊伍，你原本儲存的隊伍還在。修改成員或按「存成我的隊伍」才會取代它。</p>
+          <div class="team-linked-actions">
+            <button type="button" class="team-btn" id="teamLinkedKeep">存成我的隊伍</button>
+            <button type="button" class="team-btn" id="teamLinkedBack">回到我的隊伍</button>
+          </div>
+        </div>
         <div class="team-picker" id="teamPicker">
           <label class="sr-only" for="teamSearch">搜尋寶可夢加入隊伍</label>
           <input type="search" class="search-box team-search" id="teamSearch" placeholder="搜尋名稱或編號加入隊伍（如：噴火龍、garchomp、445）" autocomplete="off"

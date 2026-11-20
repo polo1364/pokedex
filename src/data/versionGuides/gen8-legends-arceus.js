@@ -73,7 +73,7 @@ const nobleLilligant = {
   "recommendedTeams": [
     {
       "label": "飛行四倍",
-      "reason": "姆克鳥／姆克鷹飛行系四倍剋制；火暴獸／小火馬火系剋草。",
+      "reason": "姆克鳥／姆克鷹飛行系四倍剋制；火爆獸／小火馬火系剋草。",
       "pokemon": [
         {
           "name": "姆克兒",
@@ -89,7 +89,7 @@ const nobleLilligant = {
           ]
         },
         {
-          "name": "勇吉拉",
+          "name": "勇基拉",
           "types": [
             "psychic"
           ]
@@ -161,10 +161,10 @@ const nobleElectrode = {
   "recommendedTeams": [
     {
       "label": "火冰剋草",
-      "reason": "火暴獸／烈焰馬火系；冰系寶可夢剋草。",
+      "reason": "火爆獸／烈焰馬火系；冰系寶可夢剋草。",
       "pokemon": [
         {
-          "name": "火暴獸",
+          "name": "火爆獸",
           "types": [
             "fire",
             "ghost"
@@ -353,7 +353,7 @@ export const legendsArceusGuide = {
       variant: 'hisui',
       rows: [
         { label: '水水獺', value: '最穩；前期水系好用，大劍鬼（水／惡）打點廣' },
-        { label: '火球鼠', value: '泛用；火暴獸（火／幽靈）特攻輸出舒服' },
+        { label: '火球鼠', value: '泛用；火爆獸（火／幽靈）特攻輸出舒服' },
         { label: '木木梟', value: '稍吃操作；狙射樹梟（草／格鬥）打點特殊但弱點多' },
         { label: '建議', value: '順通關選水水獺或火球鼠；木木梟需較熟悉屬性剋制' },
       ],

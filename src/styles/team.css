@@ -230,3 +230,20 @@
 @media (prefers-reduced-motion: reduce) {
   .team-status { transition: none; }
 }
+
+/* 連結帶入的隊伍（尚未取代已儲存的隊伍） */
+.team-linked {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 209, 102, 0.45);
+  border-radius: 12px;
+  background: rgba(255, 209, 102, 0.1);
+}
+.team-linked[hidden] { display: none; }
+.team-linked p { margin: 0; flex: 1 1 260px; font-size: 14px; line-height: 1.6; color: var(--text-primary); }
+.team-linked-actions { display: flex; flex-wrap: wrap; gap: 8px; }

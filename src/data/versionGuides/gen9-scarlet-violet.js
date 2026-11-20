@@ -434,7 +434,7 @@ const gymTulip = {
       "level": 44
     },
     {
-      "name": "超能艷鴕",
+      "name": "超能豔鴕",
       "types": [
         "psychic"
       ],
@@ -633,7 +633,7 @@ const elitePoppy = {
       "level": 58
     },
     {
-      "name": "銅鐘",
+      "name": "青銅鐘",
       "types": [
         "steel",
         "psychic"
@@ -658,7 +658,7 @@ const elitePoppy = {
       "teraType": "steel"
     }
   ],
-  "notes": "銅鐘飄浮、鋼鎧鴉飛行都免疫一般地面招；火系好用但需留意敵方地面／岩石招。巨鍛匠太晶鋼後火地面格鬥2倍。"
+  "notes": "青銅鐘飄浮、鋼鎧鴉飛行都免疫一般地面招；火系好用但需留意敵方地面／岩石招。巨鍛匠太晶鋼後火地面格鬥2倍。"
 };
 assertBattle(elitePoppy);
 
@@ -771,7 +771,7 @@ const championGeeta = {
   "specialty": "mixed",
   "party": [
     {
-      "name": "超能艷鴕",
+      "name": "超能豔鴕",
       "types": [
         "psychic"
       ],
@@ -800,7 +800,7 @@ const championGeeta = {
       "level": 61
     },
     {
-      "name": "仆刀將軍",
+      "name": "仆斬將軍",
       "types": [
         "dark",
         "steel"
@@ -817,7 +817,7 @@ const championGeeta = {
       "teraType": "rock"
     }
   ],
-  "notes": "也慈使用多種屬性的隊伍。冰岩怪是一般形態純冰，輕身鱈水／超能；最後晶光花太晶岩石，水草格鬥地面鋼2倍。仆刀將軍格鬥4倍，火地面2倍。超能艷鴕可跟上對手能力提升，別無腦強化。"
+  "notes": "也慈使用多種屬性的隊伍。冰岩怪是一般形態純冰，輕身鱈水／超能；最後晶光花太晶岩石，水草格鬥地面鋼2倍。仆斬將軍格鬥4倍，火地面2倍。超能豔鴕可跟上對手能力提升，別無腦強化。"
 };
 assertBattle(championGeeta);
 

@@ -53,9 +53,15 @@ function multiplierClass(m) {
 
 /* ---------- 狀態與網址 ---------- */
 
-function setTeam(ids, { syncUrl = true } = {}) {
+/**
+ * @param {number[]} ids
+ * @param {{ syncUrl?: boolean, persist?: boolean }} options persist 為 false 時只顯示、不覆蓋已儲存的隊伍
+ */
+function setTeam(ids, { syncUrl = true, persist = true } = {}) {
   teamIds = parseTeamIds(ids.filter((id) => byId.has(id)).join(','));
-  setTeamIds(teamIds);
+  if (persist) setTeamIds(teamIds);
+  const linked = $('teamLinked');
+  if (linked) linked.hidden = persist;
   if (syncUrl) {
     const url = new URL(location.href);
     if (teamIds.length) url.searchParams.set('t', teamIds.join(','));
@@ -300,6 +306,14 @@ export async function initTeamPage() {
   }
   byId = new Map(entries.map((e) => [e.id, e]));
   $('teamSearch').disabled = false;
-  const fromUrl = parseTeamIds(new URLSearchParams(location.search).get('t'));
-  setTeam(fromUrl.length ? fromUrl : getTeamIds());
+  const fromUrl = parseTeamIds(new URLSearchParams(location.search).get('t')).filter((id) => byId.has(id));
+  const saved = getTeamIds();
+  // 從連結（分享連結、攻略的推薦隊伍）帶入的隊伍先只顯示，不直接蓋掉使用者原本存的隊伍
+  const differs = fromUrl.length && saved.length && fromUrl.join(',') !== saved.join(',');
+  $('teamLinkedKeep')?.addEventListener('click', () => {
+    setTeam(teamIds);
+    flash('已存成我的隊伍');
+  });
+  $('teamLinkedBack')?.addEventListener('click', () => setTeam(getTeamIds()));
+  setTeam(fromUrl.length ? fromUrl : saved, { persist: !differs });
 }

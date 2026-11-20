@@ -5,7 +5,9 @@
  */
 import { typeColors, typeNamesCN } from '../config.js';
 import { weaknessesFor } from '../utils/typeEra.js';
-import { createMonResolver, monImageUrl, splitVersionPrefix } from '../utils/guideMons.js';
+import {
+  createMonResolver, monImageUrl, splitVersionPrefix, monDetailHref, teamAnalysisHref, createMoveMatcher,
+} from '../utils/guideMons.js';
 
 let boardGeneration = null;
 
@@ -128,7 +130,7 @@ export function renderBoardAlly(p) {
     <span class="guide-pokemon-name">${p.name}</span>
     <span class="guide-type-badges">${(p.types || []).map(typeBadge).join('')}</span>
     ${p.obtain ? `<span class="guide-pokemon-note gb-fact"><strong class="gb-k gb-k--get">取得</strong><span>${obtainHtml(p.obtain)}</span></span>` : ''}
-    ${p.moveNote ? `<span class="guide-pokemon-note gb-fact"><strong class="gb-k gb-k--move">招式</strong><span>${p.moveNote}</span></span>` : ''}
+    ${p.moveNote ? `<span class="guide-pokemon-note gb-fact"><strong class="gb-k gb-k--move">招式</strong><span data-move-note>${p.moveNote}</span></span>` : ''}
   </li>`;
 }
 
@@ -142,24 +144,117 @@ export function teamRoleTag(index, total) {
 
 /* ---------- 圖片 ---------- */
 
+let speciesIndexPromise = null;
 let resolverPromise = null;
 
-function loadResolver() {
-  resolverPromise ||= fetch('./data/species-index.json')
+function loadSpeciesIndex() {
+  speciesIndexPromise ||= fetch('./data/species-index.json')
     .then((res) => (res.ok ? res.json() : null))
-    .then((index) => (index ? createMonResolver(index) : null))
     .catch(() => null);
+  return speciesIndexPromise;
+}
+
+function loadResolver() {
+  resolverPromise ||= loadSpeciesIndex().then((index) => (index ? createMonResolver(index) : null));
   return resolverPromise;
 }
 
-/** 補上寶可夢圖片；對不到名稱或圖片載入失敗時保留屬性色佔位圖。 */
+/** 和招式同名、但在攻略裡是一般用語的詞。 */
+const MOVE_WORDS_IGNORED = ['換場'];
+
+let moveMatcherPromise = null;
+
+function loadMoveMatcher() {
+  moveMatcherPromise ||= Promise.all([
+    fetch('./data/moves-index.json').then((res) => (res.ok ? res.json() : null)),
+    loadSpeciesIndex(),
+  ])
+    .then(([index, species]) => (index
+      ? createMoveMatcher(index.entries, [...MOVE_WORDS_IGNORED, ...(species?.entries || []).map((e) => e.zh)])
+      : null))
+    .catch(() => null);
+  return moveMatcherPromise;
+}
+
+/** 對手與推薦隊伍的名稱連到圖鑑詳情。 */
+function linkMonName(slot, resolved) {
+  const href = monDetailHref(resolved);
+  const nameEl = slot.closest('.gb-foe, .gb-ally')?.querySelector('.guide-party-grid-name, .guide-pokemon-name');
+  if (!href || !nameEl || nameEl.querySelector('a')) return;
+  const link = document.createElement('a');
+  link.className = 'gb-mon-link';
+  link.href = href;
+  link.title = '在圖鑑查看';
+  link.append(...nameEl.childNodes);
+  nameEl.append(link);
+}
+
+/** 推薦隊伍加上「用這隊做屬性分析」，帶著整隊到隊伍分析頁。 */
+function addTeamLinks(root, resolve) {
+  const teams = [...(root.matches?.('.gb-team') ? [root] : []), ...root.querySelectorAll('.gb-team')];
+  teams.forEach((team) => {
+    if (team.dataset.teamDone) return;
+    team.dataset.teamDone = '1';
+    const members = [...team.querySelectorAll('.gb-ally [data-mon]')].map((el) => resolve(el.dataset.mon));
+    const href = teamAnalysisHref(members);
+    if (!href) return;
+    const link = document.createElement('a');
+    link.className = 'gb-team-analyze';
+    link.href = href;
+    link.textContent = '用這隊做屬性分析';
+    link.title = '帶著這組寶可夢到隊伍分析頁，查看整隊的弱點與抗性';
+    team.append(link);
+  });
+}
+
+/** 招式說明裡的招式名稱連到招式圖鑑（只處理文字節點，不動原有的標籤）。 */
+async function linkMoveNotes(root) {
+  const notes = [...root.querySelectorAll('[data-move-note]:not([data-move-done])')];
+  if (!notes.length) return;
+  notes.forEach((el) => { el.dataset.moveDone = '1'; });
+  const match = await loadMoveMatcher();
+  if (!match) return;
+  notes.forEach((note) => {
+    const walker = document.createTreeWalker(note, NodeFilter.SHOW_TEXT);
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+    textNodes.forEach((node) => {
+      if (node.parentElement?.closest('a')) return;
+      const parts = match(node.nodeValue);
+      if (!parts.some((part) => typeof part !== 'string')) return;
+      const fragment = document.createDocumentFragment();
+      parts.forEach((part) => {
+        if (typeof part === 'string') {
+          fragment.append(part);
+          return;
+        }
+        const link = document.createElement('a');
+        link.className = 'gb-move-link';
+        link.href = `./moves.html?open=${encodeURIComponent(part.slug)}`;
+        link.title = '在招式圖鑑查看';
+        link.textContent = part.text;
+        fragment.append(link);
+      });
+      node.replaceWith(fragment);
+    });
+  });
+}
+
+/**
+ * 補上寶可夢圖片與各頁連結；對不到名稱或圖片載入失敗時保留屬性色佔位圖。
+ */
 export async function hydrateGuideArt(root) {
-  const slots = [...(root?.querySelectorAll('[data-mon]:not([data-mon-done])') || [])];
+  if (!root) return;
+  linkMoveNotes(root);
+  const slots = [...root.querySelectorAll('[data-mon]:not([data-mon-done])')];
   if (!slots.length) return;
   slots.forEach((el) => { el.dataset.monDone = '1'; });
   const resolve = await loadResolver();
+  if (resolve) addTeamLinks(root, resolve);
   slots.forEach((el) => {
-    const url = monImageUrl(resolve?.(el.dataset.mon));
+    const resolved = resolve?.(el.dataset.mon);
+    linkMonName(el, resolved);
+    const url = monImageUrl(resolved);
     if (!url) {
       el.classList.add('is-empty');
       return;

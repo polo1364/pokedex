@@ -59,6 +59,29 @@ with sync_playwright() as p:
         expect(slots).to_have_text(['噴火龍', '水箭龜', '天蠍'])
         assert page.evaluate('location.search') == '?t=6,9,207'
 
+        # 連結帶入不同的隊伍：只預覽，不蓋掉已儲存的隊伍；可以回到原隊伍，也可以存下來
+        linked = page.locator('#teamLinked')
+        expect(linked).to_be_hidden()
+        page.goto(f'{BASE}/team.html?t=25,26')
+        expect(slots).to_have_text(['皮卡丘', '雷丘'])
+        expect(linked).to_be_visible()
+        page.locator('#teamLinkedBack').click()
+        expect(slots).to_have_text(['噴火龍', '水箭龜', '天蠍'])
+        expect(linked).to_be_hidden()
+        assert page.evaluate('location.search') == '?t=6,9,207'
+        page.goto(f'{BASE}/team.html?t=25,26')
+        page.locator('#teamLinkedKeep').click()
+        expect(linked).to_be_hidden()
+        page.goto(f'{BASE}/team.html')
+        expect(slots).to_have_text(['皮卡丘', '雷丘'])
+        # 修改成員也算採用連結帶入的隊伍
+        page.goto(f'{BASE}/team.html?t=6,9,207,130')
+        expect(linked).to_be_visible()
+        page.locator('[data-remove="130"]').click()
+        expect(linked).to_be_hidden()
+        page.goto(f'{BASE}/team.html')
+        expect(slots).to_have_text(['噴火龍', '水箭龜', '天蠍'])
+
         # 打擊面：龍屬性沒有人能用本系招式剋制
         dragon = page.locator('.team-cover').filter(has_text='龍').first
         expect(dragon).to_have_class('team-cover is-gap')
@@ -71,6 +94,6 @@ with sync_playwright() as p:
 
         assert not api_requests, f'Team page must not call PokeAPI: {api_requests[:3]}'
         assert not errors, errors
-        print(f'PASS {width}x{height}: URL restore, weaknesses, search+keyboard add, duplicate guard, remove, storage, coverage, clear, no PokeAPI')
+        print(f'PASS {width}x{height}: URL restore, weaknesses, search+keyboard add, duplicate guard, remove, storage, linked-team preview, coverage, clear, no PokeAPI')
         context.close()
     browser.close()
