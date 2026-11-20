@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "node --test",
+    "test:browser": "python tests/run_browser_tests.py",
     "dev": "concurrently \"vite\" \"node server/index.js\"",
     "dev:server": "node server/index.js",
     "build": "vite build",

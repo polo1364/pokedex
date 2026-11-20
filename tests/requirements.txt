@@ -1,0 +1,3 @@
+# Browser tests (tests/*_browser.py). Install with:
+#   pip install -r tests/requirements.txt && python -m playwright install chromium
+playwright==1.61.0

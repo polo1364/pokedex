@@ -18797,7 +18797,7 @@
           "kind": "land"
         }
       ],
-      "terrain": "kanto-gen1.png",
+      "terrain": "kanto-gen1.webp",
       "scope": "區域地圖；標記表示城鎮或區域位置，不表示建築內部、洞窟樓層或逐格步行路線。",
       "version": "寶可夢 紅／藍",
       "note": "紅／藍與黃版採相同原作區域座標；道館連結分別對應版本攻略。",
@@ -19685,7 +19685,7 @@
           "kind": "land"
         }
       ],
-      "terrain": "kanto-gen1.png",
+      "terrain": "kanto-gen1.webp",
       "scope": "區域地圖；標記表示城鎮或區域位置，不表示建築內部、洞窟樓層或逐格步行路線。",
       "version": "寶可夢 黃",
       "note": "紅／藍與黃版採相同原作區域座標；道館連結分別對應版本攻略。",

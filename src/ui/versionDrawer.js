@@ -1,4 +1,4 @@
-import { getAllGuideVersions } from '../data/versionGuides/index.js';
+import { getAllGuideVersions } from '../data/versionGuides/guideCore.js';
 
 /** 側欄「版本」抽屜：列出版本連結，攻略內容在 guide.html */
 export function initVersionDrawer() {

@@ -84,6 +84,7 @@ function fitWidth(){
 function canvasWidth(){return $('canvas').getBoundingClientRect().width;}
 
 function updateZoomUi(){
+  if(!current)return;
   const fit=fitWidth(),width=canvasWidth();
   $('zoom-out').disabled=width<=fit+1;
   $('zoom-in').disabled=width>=MAX_WIDTH-1;
@@ -92,6 +93,7 @@ function updateZoomUi(){
 }
 
 function fitMap(){
+  if(!current)return;
   viewMode='fit';
   clearTimeout(redrawTimer);
   const viewport=$('viewport');
@@ -102,6 +104,7 @@ function fitMap(){
 }
 
 function readableMap(){
+  if(!current)return;
   viewMode='readable';
   clearTimeout(redrawTimer);
   $('canvas').style.width=`${Math.max(1100,$('viewport').clientWidth-2)}px`;
@@ -114,6 +117,7 @@ function readableMap(){
  * immediate=false 用於滾輪／兩指連續縮放：先即時縮放畫面，停手後再重新排版地名。
  */
 function zoomTo(width,anchor,immediate=true){
+  if(!current)return;
   const viewport=$('viewport'),canvas=$('canvas');
   const fit=fitWidth();
   const next=Math.max(fit,Math.min(MAX_WIDTH,width));
@@ -146,6 +150,7 @@ function wrapLabel(text,font,maxWidth){
 }
 
 function draw(){
+  if(!current)return;
   const map=$('map');map.replaceChildren();
   const scale=2000/current.width, height=200+current.height*scale;
   const pos=(p)=>[100+p.x*scale,100+p.y*scale];
@@ -232,8 +237,30 @@ function draw(){
   if(selected)showPlace(selected);
 }
 
-function chooseMap(id){
-  current=atlas.maps[id];if(!current)return;
+/**
+ * 地圖資料按需載入：index.json 只有版本與地圖清單，單張地圖在選到時才下載並快取。
+ * 內嵌整包資料（window.ATLAS_DATA，離線預覽用）或舊版 atlas-data.json 時，地圖已經在記憶體裡。
+ */
+const loadedMaps=new Map();
+let mapRequest=0;
+async function loadMap(id){
+  if(atlas.maps?.[id])return atlas.maps[id];
+  if(!atlas.mapTitles?.[id])return null;
+  if(!loadedMaps.has(id)){
+    loadedMaps.set(id,fetch(`data/maps/${id}.json?v=${atlas.dataVersion}`).then(r=>{if(!r.ok)throw new Error('地圖資料載入失敗');return r.json();}).catch(error=>{loadedMaps.delete(id);throw error;}));
+  }
+  return loadedMaps.get(id);
+}
+function mapTitle(id){return atlas.mapTitles?.[id]||atlas.maps?.[id]?.title||id;}
+
+async function chooseMap(id){
+  const request=++mapRequest;
+  let next;
+  try{next=await loadMap(id);}
+  catch(error){if(request===mapRequest)$('version-note').textContent=error.message;return;}
+  // 載入期間使用者又選了別張地圖：放棄這次結果
+  if(request!==mapRequest||!next)return;
+  current=next;
   $('title').textContent=current.title;$('version-note').textContent=current.version||'';
   $('map-note').textContent=current.note||'';$('scope').textContent=current.scope;
   $('projection').hidden=current.layout!=='connections';
@@ -247,12 +274,14 @@ function chooseMap(id){
 }
 function chooseVersion(id,mapId){
   version=id;$('version').value=id;$('region').replaceChildren();
-  for(const key of atlas.versionMaps[id]){const option=document.createElement('option');option.value=key;option.textContent=atlas.maps[key].title;$('region').append(option);}
+  for(const key of atlas.versionMaps[id]){const option=document.createElement('option');option.value=key;option.textContent=mapTitle(key);$('region').append(option);}
   const choice=atlas.versionMaps[id].includes(mapId)?mapId:atlas.versionMaps[id][0];$('region').value=choice;
   chooseMap(choice);
 }
 async function start(){
-  atlas=window.ATLAS_DATA||await fetch('atlas-data.json?v=pokemmo-1').then(r=>{if(!r.ok)throw new Error('地圖資料載入失敗');return r.json();});
+  atlas=window.ATLAS_DATA
+    ||await fetch('data/index.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null)
+    ||await fetch('atlas-data.json?v=pokemmo-1').then(r=>{if(!r.ok)throw new Error('地圖資料載入失敗');return r.json();});
   for(const v of atlas.versions){if(!atlas.versionMaps[v.id])continue;const o=document.createElement('option');o.value=v.id;o.textContent=v.displayGeneration==null?v.title:`第 ${v.displayGeneration} 世代 · ${v.title.replace('寶可夢 ','')}`;$('version').append(o);}
   const id=params.get('version');chooseVersion(atlas.versionMaps[id]?id:'gold-silver',params.get('map'));
   $('version').addEventListener('change',e=>chooseVersion(e.target.value));$('region').addEventListener('change',e=>chooseMap(e.target.value));
@@ -262,6 +291,7 @@ async function start(){
   $('zoom-in').addEventListener('click',()=>zoomTo(canvasWidth()*ZOOM_STEP));
   $('zoom-out').addEventListener('click',()=>{const next=canvasWidth()/ZOOM_STEP;if(next<=fitWidth()+1)fitMap();else zoomTo(next);});
   window.addEventListener('resize',()=>{
+    if(!current)return;
     if(viewMode==='fit'||canvasWidth()<fitWidth())fitMap();
     else if(viewMode==='readable')readableMap();
     else{draw();updateZoomUi();}
@@ -354,6 +384,7 @@ async function start(){
       const height=Number(e.data.height);
       if(!Number.isFinite(height)||height<200)return;
       document.documentElement.style.setProperty('--host-height',`${Math.round(height)}px`);
+      if(!current)return;
       if(viewMode==='fit'||canvasWidth()<fitWidth())fitMap();else updateZoomUi();
     });
     window.parent.postMessage({type:'atlas:ready'},location.origin);

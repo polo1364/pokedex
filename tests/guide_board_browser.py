@@ -74,7 +74,7 @@ with sync_playwright() as p:
         # 章節區塊：色塊小標與編號流程
         page.goto(f'{BASE}/guide.html?version=emerald&part=battle-frontier')
         island = page.locator('.guide-expansion-island').first
-        assert island.locator('.gx-tag').all_text_contents() == ['重要地點', '流程', '重點']
+        expect(island.locator('.gx-tag')).to_have_text(['重要地點', '流程', '重點'])
         expect(island.locator('.gx-flow > li')).to_have_count(3)
 
         assert not errors, errors

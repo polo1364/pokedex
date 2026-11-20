@@ -44,5 +44,7 @@ with sync_playwright() as pw:
             results.append({'version':version,'part':part,'map':map_id,'point':point_id,'width':width})
         page.close()
     browser.close()
-(ROOT/'output/guide-review/missing-guides/browser/map-link-results.json').write_text(json.dumps(results,indent=2),encoding='utf-8')
+OUT=ROOT/'output/guide-review/missing-guides/browser'
+OUT.mkdir(parents=True,exist_ok=True)
+(OUT/'map-link-results.json').write_text(json.dumps(results,indent=2),encoding='utf-8')
 print('PASS',len(results),'embedded map links')

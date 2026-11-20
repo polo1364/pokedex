@@ -1,5 +1,5 @@
 import { sendGuideChat } from '../api/guideChat.js';
-import { isPlaceholder } from '../data/versionGuides/index.js';
+import { isPlaceholder } from '../data/versionGuides/guideCore.js';
 import { loadChatHistory, saveChatHistory } from '../storage/guideChatHistory.js';
 import { updateGuideBackToTop } from './guideBackToTop.js';
 

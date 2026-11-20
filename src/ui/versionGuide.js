@@ -2,10 +2,11 @@ import { typeColors, typeNamesCN } from '../config.js';
 import { MOVE_SOURCE_META } from '../data/versionGuides/helpers.js';
 import { resolveMoveType } from '../data/moveTypes.js';
 import {
-  getAllGuideVersions, getVersionGuide, getVersionMeta,
+  getAllGuideVersions, getVersionMeta,
   getLeagueOpponents, getGuideExpansion, getGuidePartTabs,
   hasExpansionContent, hasMainGuideContent,
-} from '../data/versionGuides/index.js';
+} from '../data/versionGuides/guideCore.js';
+import { loadVersionGuide } from '../data/versionGuides/guideLoader.js';
 import { setGuideChatVersion } from './guideChat.js';
 import { updateGuideBackToTop } from './guideBackToTop.js';
 import {
@@ -78,11 +79,27 @@ function populateVersionSelect(select) {
   });
 }
 
-function renderGuidePage(versionId, root, titleEl, partId = 'main') {
-  activeVersionId = versionId;
+let renderRequest = 0;
 
+/** 只下載正在看的版本；切換版本時若前一次還沒載完，以最後一次選擇為準。 */
+async function renderGuidePage(versionId, root, titleEl, partId = 'main') {
+  const request = ++renderRequest;
+  activeVersionId = versionId;
+  let guide;
+  try {
+    guide = await loadVersionGuide(versionId);
+  } catch {
+    if (request === renderRequest) {
+      root.innerHTML = '<p class="guide-placeholder-msg guide-page-empty">攻略資料載入失敗，請檢查網路後重新整理頁面。</p>';
+    }
+    return;
+  }
+  if (request !== renderRequest) return;
+  renderLoadedGuide(guide, versionId, root, titleEl, partId);
+}
+
+function renderLoadedGuide(guide, versionId, root, titleEl, partId) {
   const meta = getVersionMeta(versionId);
-  const guide = getVersionGuide(versionId);
 
   if (!guide) {
     root.innerHTML = '<p class="guide-placeholder-msg guide-page-empty">找不到攻略資料。</p>';

@@ -1,4 +1,8 @@
-import { GUIDE_VERSIONS } from './guideVersions.js';
+/**
+ * 全部版本的攻略（同步取得）。伺服器的 AI 問答、測試與工具腳本使用。
+ * 攻略頁請改用 guideLoader.js，只下載正在看的那個版本。
+ */
+import { assembleGuide, composeScarletViolet, composeLegendsZa } from './guideCore.js';
 import { pokemmoGuide } from './pokemmo/index.js';
 import { redBlueGuide } from './gen1-red-blue.js';
 import { yellowGuide } from './gen1-yellow.js';
@@ -20,7 +24,6 @@ import { swordShieldGuide } from './gen8-sword-shield.js';
 import { brilliantDiamondShiningPearlGuide } from './gen8-brilliant-diamond-shining-pearl.js';
 import { scarletVioletGuide } from './gen9-scarlet-violet.js';
 import { legendsArceusGuide } from './gen8-legends-arceus.js';
-import { VERSION_DLC_PLACEHOLDERS } from './versionDlc.js';
 
 import { goldSilverKantoExpansion, crystalKantoExpansion } from './gen2-kanto.js';
 import { diamondPearlBattleZoneExpansion } from './gen4-diamond-pearl-battle-zone.js';
@@ -71,154 +74,19 @@ const COMPLETE_GUIDES = {
   'ultra-sun-ultra-moon': ultraSunUltraMoonGuide,
   'sword-shield': swordShieldGuide,
   'brilliant-diamond-shining-pearl': brilliantDiamondShiningPearlGuide,
-  'scarlet-violet': {
-    ...scarletVioletGuide,
-    sections: [...(scarletVioletGuide.sections || []), ...scarletVioletStory.sections],
-    adventureBattles: scarletVioletStory.battles,
-    sources: [...(scarletVioletGuide.sources || []), ...(scarletVioletStory.sources || [])],
-    chapterNavigation: true,
-  },
-  'legends-za': { ...legendsZaGuide, chapterNavigation: true },
+  'scarlet-violet': composeScarletViolet(scarletVioletGuide, scarletVioletStory),
+  'legends-za': composeLegendsZa(legendsZaGuide),
   'legends-arceus': legendsArceusGuide,
 };
 
-function attachDlcPlaceholders(guide, versionId) {
-  if (!guide) return null;
-
-  const defaults = VERSION_DLC_PLACEHOLDERS[versionId] || [];
-  const authored = ADDITIONAL_EXPANSIONS[versionId] || [];
-  const authoredIds = new Set(authored.map((expansion) => expansion.id));
-  const existing = [
-    ...(guide.expansions || []).filter((expansion) => !authoredIds.has(expansion.id)),
-    ...authored,
-  ].map((expansion) => expansion.sources?.length
-    ? { ...expansion, chapterNavigation: true }
-    : expansion);
-  const existingIds = new Set(existing.map((e) => e.id));
-  const merged = [
-    ...existing,
-    ...defaults.filter((d) => !existingIds.has(d.id)),
-  ];
-
-  if (!merged.length && !existing.length) return guide;
-  return { ...guide, expansions: merged.length ? merged : existing };
-}
-
-export function getAllGuideVersions() {
-  return GUIDE_VERSIONS;
-}
-
 export function getVersionGuide(versionId) {
-  const complete = COMPLETE_GUIDES[versionId];
-  if (complete) return attachDlcPlaceholders(complete, versionId);
-
-  const meta = GUIDE_VERSIONS.find((v) => v.id === versionId);
-  if (!meta) return null;
-
-  return attachDlcPlaceholders({
-    id: meta.id,
-    title: meta.title,
-    displayGeneration: meta.displayGeneration,
-    status: meta.status,
-    gyms: [],
-  }, versionId);
+  return assembleGuide(versionId, COMPLETE_GUIDES[versionId] || null, ADDITIONAL_EXPANSIONS[versionId] || []);
 }
 
-export function isPlaceholder(versionId) {
-  const meta = GUIDE_VERSIONS.find((v) => v.id === versionId);
-  return !meta || meta.status === 'placeholder';
-}
+/** 各版本的資料來源（guideLoader.js 的動態載入表必須與此一致，由測試把關）。 */
+export const GUIDE_VERSION_IDS_WITH_DATA = Object.keys(COMPLETE_GUIDES);
 
-export function getVersionMeta(versionId) {
-  return GUIDE_VERSIONS.find((v) => v.id === versionId) ?? null;
-}
-
-/**
- * @param {string} battleRef - gym:1 | league | expansion:sevii:1 | eliteFour:2 | champion
- * @param {object} guide
- */
-export function resolveBattle(battleRef, guide) {
-  if (!guide || !battleRef) return null;
-  if (battleRef === 'league') return guide.league ?? null;
-  if (battleRef === 'champion') return guide.champion ?? null;
-
-  const expansionMatch = battleRef.match(/^expansion:([^:]+):(\d+)$/);
-  if (expansionMatch) {
-    const [, expId, orderStr] = expansionMatch;
-    const order = parseInt(orderStr, 10);
-    const expansion = guide.expansions?.find((e) => e.id === expId);
-    return expansion?.gyms?.find((b) => b.order === order) ?? null;
-  }
-
-  const [role, orderStr] = battleRef.split(':');
-  const order = parseInt(orderStr, 10);
-  if (role === 'gym') return guide.gyms?.find((b) => b.order === order) ?? null;
-  if (role === 'noble') return guide.nobles?.find((b) => b.order === order) ?? null;
-  if (role === 'eliteFour') return guide.eliteFour?.find((b) => b.order === order) ?? null;
-  if (role === 'story') return guide.storyBattles?.find((b) => b.order === order) ?? null;
-  if (role === 'adventure') return guide.adventureBattles?.find((b) => b.order === order) ?? null;
-  return null;
-}
-
-/** @param {object} guide */
-export function getLeagueOpponents(guide) {
-  const list = [];
-  guide.eliteFour?.forEach((b) => list.push({ battle: b, battleRef: `eliteFour:${b.order}` }));
-  guide.storyBattles?.forEach((b) => list.push({ battle: b, battleRef: `story:${b.order}` }));
-  if (guide.champion) list.push({ battle: guide.champion, battleRef: 'champion' });
-  return list;
-}
-
-/**
- * 本體攻略是否已有道館或聯盟內容
- * @param {object} guide
- */
-export function hasMainGuideContent(guide) {
-  if (!guide) return false;
-  if (guide.gyms?.length > 0 || guide.nobles?.length > 0) return true;
-  if (guide.sections?.length || guide.prerequisites?.length || guide.hms?.length) return true;
-  return Boolean(guide.league?.recommendedTeams?.length);
-}
-
-/**
- * 擴充地區是否已有攻略內容（道館或聯盟）
- * @param {object} expansion
- */
-export function hasExpansionContent(expansion) {
-  if (!expansion) return false;
-  if (expansion.gyms?.length > 0) return true;
-  if (expansion.sections?.length || expansion.prerequisites?.length || expansion.hms?.length) return true;
-  const league = expansion.league;
-  return Boolean(league?.recommendedTeams?.length);
-}
-
-/**
- * 攻略頁書籤：本體 + DLC／擴充地區（含尚無資料的暫位項目）
- * @param {object} guide
- * @returns {{ id: string, label: string, isPlaceholder?: boolean }[] | null}
- */
-export function getGuidePartTabs(guide) {
-  if (!guide) return null;
-
-  const expansions = guide.expansions || [];
-  if (!expansions.length) return null;
-
-  const tabs = [{ id: 'main', label: guide.mainPartLabel || '本體' }];
-  expansions.forEach((e) => {
-    tabs.push({
-      id: e.id,
-      label: e.tabLabel || e.title,
-      isPlaceholder: !hasExpansionContent(e),
-    });
-  });
-
-  return tabs.length > 1 ? tabs : null;
-}
-
-/** @param {object} guide @param {string} partId */
-export function getGuideExpansion(guide, partId) {
-  if (!guide || !partId || partId === 'main') return null;
-  return guide.expansions?.find((e) => e.id === partId) ?? null;
-}
-
-export { GUIDE_VERSIONS } from './guideVersions.js';
+export {
+  GUIDE_VERSIONS, getAllGuideVersions, isPlaceholder, getVersionMeta, resolveBattle, getLeagueOpponents,
+  hasMainGuideContent, hasExpansionContent, getGuidePartTabs, getGuideExpansion,
+} from './guideCore.js';

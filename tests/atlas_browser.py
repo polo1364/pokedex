@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 DATA=json.loads((ROOT/'public/atlas/atlas-data.json').read_text(encoding='utf-8'))
 BASE=sys.argv[1] if len(sys.argv)>1 else 'http://127.0.0.1:5173'
 OUT=ROOT/'output/map-previews/qa'
-OUT.mkdir(exist_ok=True)
+OUT.mkdir(parents=True,exist_ok=True)
 results=[]
 catalog=json.loads(subprocess.check_output(['node','--input-type=module','-e',"import {GUIDE_VERSIONS,getVersionGuide} from './src/data/versionGuides/index.js';import {getExpansionMap} from './src/data/versionGuides/guideMaps.js';console.log(JSON.stringify(GUIDE_VERSIONS.map(v=>({id:v.id,expansions:(getVersionGuide(v.id).expansions||[]).map(e=>({id:e.id,...getExpansionMap(e.id,v.id)}))}))))"],cwd=ROOT,encoding='utf-8'))
 integrations=0
@@ -175,21 +175,24 @@ with sync_playwright() as playwright:
             section=f'#expansion-section-{part}-{linked["guideSection"]}'
             expect(page.locator(section)).to_be_visible()
         page.close()
-    page=browser.new_page()
-    page.goto((ROOT/'output/map-previews/index.html').as_uri())
-    expect(page.locator('#version option')).to_have_count(len(DATA['versionMaps']))
-    page.select_option('#version','scarlet-violet')
-    expect(page.locator('#title')).to_have_text('帕底亞')
-    page.locator('#search').fill('Glaseado Gym')
-    expect(page.locator('#place-name')).to_have_text('霜抹山道館')
-    page.select_option('#version','sword-shield')
-    page.select_option('#region','isle-of-armor')
-    expect(page.locator('#title')).to_have_text('鎧之孤島')
-    page.wait_for_function("""async()=>{const img=new Image();img.src=document.querySelector('#map image').getAttribute('href');await img.decode();return img.naturalWidth>0;}""")
-    page.select_option('#version','platinum')
-    page.select_option('#region','distortion-world')
-    expect(page.locator('#projection')).to_be_visible()
-    assert page.locator('#map [data-connection]').count()==7
+    # The offline preview copy lives in the git-ignored output/ folder, so it only exists locally.
+    offline=ROOT/'output/map-previews/index.html'
+    if offline.exists():
+        page=browser.new_page()
+        page.goto((ROOT/'output/map-previews/index.html').as_uri())
+        expect(page.locator('#version option')).to_have_count(len(DATA['versionMaps']))
+        page.select_option('#version','scarlet-violet')
+        expect(page.locator('#title')).to_have_text('帕底亞')
+        page.locator('#search').fill('Glaseado Gym')
+        expect(page.locator('#place-name')).to_have_text('霜抹山道館')
+        page.select_option('#version','sword-shield')
+        page.select_option('#region','isle-of-armor')
+        expect(page.locator('#title')).to_have_text('鎧之孤島')
+        page.wait_for_function("""async()=>{const img=new Image();img.src=document.querySelector('#map image').getAttribute('href');await img.decode();return img.naturalWidth>0;}""")
+        page.select_option('#version','platinum')
+        page.select_option('#region','distortion-world')
+        expect(page.locator('#projection')).to_be_visible()
+        assert page.locator('#map [data-connection]').count()==7
     browser.close()
 (OUT/'browser-results.json').write_text(json.dumps(results,ensure_ascii=False,indent=2),encoding='utf-8')
-print(f'PASS: {len(results)} atlas views, map interaction (fit, zoom, wheel, drag, card, centring), auto-sized embed, {integrations} guide integrations, 8 guide/expansion links, Z-A selection, and offline preview')
+print(f'PASS: {len(results)} atlas views, map interaction (fit, zoom, wheel, drag, card, centring), auto-sized embed, {integrations} guide integrations, 8 guide/expansion links, Z-A selection' + (', and offline preview' if offline.exists() else ' (offline preview copy not present, skipped)'))
