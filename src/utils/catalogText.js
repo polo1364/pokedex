@@ -1,5 +1,5 @@
 import { isPlaceholderTranslation } from './i18n.js';
-import { versionGroupScore } from './versions.js';
+import { versionGroupScore, getVersionGroupDisplayName } from './versions.js';
 
 function usable(entry, field, language) {
   return entry.language?.name?.toLowerCase() === language
@@ -7,9 +7,18 @@ function usable(entry, field, language) {
     && !/\[VAR[^\]]*\]/i.test(entry[field]);
 }
 
-function clean(text) {
-  return text.replace(/\s+/g, ' ').trim();
+const CJK = '　-〿㐀-鿿＀-￯';
+const CJK_GAP = new RegExp(`([${CJK}])\\s+(?=[${CJK}])`, 'g');
+
+/**
+ * 整理說明文字：原始資料用換行排版，換成單一空格；
+ * 中文字（含全形標點）之間不需要空格，直接接起來（「攜帶後，\n可以回復」→「攜帶後，可以回復」）。
+ */
+export function cleanFlavorText(text) {
+  return String(text ?? '').replace(/\s+/g, ' ').replace(CJK_GAP, '$1').trim();
 }
+
+const clean = cleanFlavorText;
 
 /**
  * 取得指定版本的說明文字：先找該版本的繁中，再找該版本的英文。
@@ -41,4 +50,13 @@ export function getVersionedFlavor(entries = [], versionGroup, field = 'text', {
     if (other) result.reference = { text: clean(other[field]), versionGroup: other.version_group.name };
   }
   return result;
+}
+
+function escapeText(text) {
+  return String(text ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/** 道具頁與招式機頁共用：中文參考的 HTML（出處標籤＋說明）。 */
+export function renderChineseReference(reference) {
+  return `<span class="catalog-reference-tag" title="這個版本沒有中文說明；效果可能隨版本改變，請以上方本版原文為準">中文參考・${escapeText(getVersionGroupDisplayName(reference.versionGroup))}</span>${escapeText(reference.text)}`;
 }

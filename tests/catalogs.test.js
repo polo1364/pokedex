@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { getItemGenerations, getItemVersionDetails, getHistoricalItemName, formatItemPrice, VERSION_GROUP_TO_GEN } from '../src/utils/items.js';
-import { getVersionedFlavor } from '../src/utils/catalogText.js';
+import { getVersionedFlavor, cleanFlavorText, renderChineseReference } from '../src/utils/catalogText.js';
 import { getMoveTypeForVersion, buildMachineEntry, KIND_TIPS_CN } from '../src/utils/machines.js';
 import { versionGroupScore } from '../src/utils/versions.js';
 import { buildEntriesForItem, loadMachinesCatalog } from '../src/data/machines.js';
@@ -207,3 +207,23 @@ for (const [name, loader, slug] of [['items', loadItemsCatalog, 'potion'], ['mac
     assert.ok(catalog.byGen);
   });
 }
+
+test('flavor text drops the layout whitespace between Chinese characters only', () => {
+  assert.equal(cleanFlavorText('讓寶可夢攜帶後，\n可以回復少量ＨＰ。'), '讓寶可夢攜帶後，可以回復少量ＨＰ。');
+  assert.equal(cleanFlavorText('回復 30 HP\nin battle'), '回復 30 HP in battle', 'spaces next to Latin text are kept');
+  assert.equal(cleanFlavorText('  A hold item\n that  heals. '), 'A hold item that heals.');
+  assert.equal(getVersionedFlavor([flavor('x-y', '攜帶後，\n可以回復')], 'x-y').text, '攜帶後，可以回復');
+  assert.match(renderChineseReference({ versionGroup: 'sun-moon', text: 'a<b' }), /中文參考・太陽／月亮<\/span>a&lt;b$/);
+});
+
+test('machines keep the game\'s own move text and add a labelled Chinese reference', () => {
+  const move = { name: 'cut', names: [], type: ref('normal'), flavor_text_entries: [
+    { version_group: ref('red-blue'), language: ref('en'), flavor_text: 'Cuts the foe.' },
+    { version_group: ref('sword-shield'), language: ref('zh-hant'), flavor_text: '用鐮刀或爪子等\n切斬對手進行攻擊。' },
+  ] };
+  const entry = buildMachineEntry({ name: 'hm01', sprites: {} }, 'hm01', 1, { version_group: ref('red-blue') }, move);
+  assert.equal(entry.moveEffect, 'Cuts the foe.');
+  assert.deepEqual(entry.effectReference, { text: '用鐮刀或爪子等切斬對手進行攻擊。', versionGroup: 'sword-shield' });
+  const modern = buildMachineEntry({ name: 'hm01', sprites: {} }, 'hm01', 8, { version_group: ref('sword-shield') }, move);
+  assert.equal(modern.effectReference, null);
+});

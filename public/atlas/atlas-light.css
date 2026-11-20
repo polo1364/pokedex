@@ -1,0 +1,65 @@
+/* 由 scripts/build-guide-light.mjs 從 atlas.css 產生，請勿手動修改；改完 atlas.css 的顏色後重跑腳本。 */
+:where(html.atlas-light) body {
+    background: #e2f0f2;
+    color: #1b170b
+}
+:where(html.atlas-light) p {
+    color: #2b3934
+}
+:where(html.atlas-light) .eyebrow {
+    color: #654e1e
+}
+:where(html.atlas-light) a {
+    color: #684c0b
+}
+:where(html.atlas-light) button,
+:where(html.atlas-light) select,
+:where(html.atlas-light) input {
+    border: 1px solid #526a62;
+    color: #1d1809;
+    background: #d6e6e8
+}
+:where(html.atlas-light) button:hover {
+    background: #6ea7a1
+}
+:where(html.atlas-light) .check input {
+    accent-color: #906712
+}
+:where(html.atlas-light) .legend {
+    color: #232d21
+}
+:where(html.atlas-light) .details {
+    background: #ddeced;
+    border: 1px solid #6e988e
+}
+:where(html.atlas-light) #place-en {
+    color: #36493d
+}
+:where(html.atlas-light) button:focus-visible,
+:where(html.atlas-light) select:focus-visible,
+:where(html.atlas-light) input:focus-visible,
+:where(html.atlas-light) a:focus-visible {
+    outline: 3px solid #876308
+}
+
+html.atlas-light {
+  color-scheme: light;
+}
+
+/* 地圖畫面與疊在上面的控制鈕、地點卡片維持深色，裡面的文字要用回原本的淺色（否則會繼承到頁面的深色字） */
+html.atlas-light .map-stage {
+  color: #f4f0e4;
+  color-scheme: dark;
+}
+
+html.atlas-light .map-stage button {
+  color: #f6f1e2;
+}
+
+html.atlas-light .map-stage p {
+  color: #c6d4cf;
+}
+
+html.atlas-light .map-stage a {
+  color: #f4d897;
+}

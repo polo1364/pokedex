@@ -1,5 +1,6 @@
 import { getMachineIcon, renderCatalogIcon, bindCatalogIconFallbacks } from '../utils/catalogIcons.js';
 import '../styles/catalogs.css';
+import { renderChineseReference as renderReference } from '../utils/catalogText.js';
 import { getVersionGroupDisplayName, versionGroupScore } from '../utils/versions.js';
 import { loadMachinesCatalog } from '../data/machines.js';
 import { typeColors, TYPE_ORDER, typeNamesCN } from '../config.js';
@@ -497,6 +498,7 @@ function renderMachineCard(entry) {
     ${typeChip}
     <p class="catalog-version-badge">${escapeHtml(getVersionGroupDisplayName(entry.versionGroup))}</p>
     ${entry.effectLanguage ? `<p class="item-card-effect machine-card-effect">${escapeHtml(entry.moveEffect)}</p>` : ''}
+    ${entry.effectReference ? `<p class="catalog-reference">${renderReference(entry.effectReference)}</p>` : ''}
     <button type="button" class="machine-card-filter-link"
       data-version-group="${escapeHtml(entry.versionGroup)}"
       data-move-slug="${escapeHtml(entry.moveSlug)}"
@@ -507,6 +509,7 @@ function renderMachineCard(entry) {
       ${entry.effectLanguage ? `<div class="item-detail-section">
         <div class="item-detail-title">招式效果</div>
         <p class="item-detail-effect">${escapeHtml(entry.moveEffect)}</p>
+        ${entry.effectReference ? `<p class="catalog-reference">${renderReference(entry.effectReference)}</p>` : ''}
       </div>` : ''}
       <div class="item-detail-meta">
         ${englishRow}

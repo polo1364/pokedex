@@ -14,1613 +14,1626 @@ html.guide-light {
     --bg-input: rgba(0, 0, 0, 0.08);
     --bg-button: rgba(0, 0, 0, 0.08)
 }
-html.guide-light body::before {
+:where(html.guide-light) body::before {
     background: radial-gradient(circle at 20% 50%, rgba(0, 169, 199, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 80% 80%, rgba(199, 0, 86, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 40% 20%, rgba(73, 15, 155, 0.1) 0%, transparent 50%)
 }
-html.guide-light .sidebar::-webkit-scrollbar-track {
+:where(html.guide-light) .sidebar::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.05)
 }
-html.guide-light .search-box:focus {
+:where(html.guide-light) .search-box:focus {
     background: rgba(0, 0, 0, 0.12)
 }
-html.guide-light .filter-btn:hover {
+:where(html.guide-light) .filter-btn:hover {
     background: rgba(0, 0, 0, 0.14);
     border-color: rgba(0, 169, 199, 0.4)
 }
-html.guide-light .filter-btn.active {
+:where(html.guide-light) .filter-btn.active {
     color: #ececf7
 }
-html.guide-light .type-btn {
+:where(html.guide-light) .type-btn {
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: #000000
 }
-html.guide-light .type-btn--all:hover {
+:where(html.guide-light) .type-btn--all:hover {
     background: rgba(0, 0, 0, 0.14);
     border-color: rgba(0, 169, 199, 0.4)
 }
-html.guide-light .type-btn--all.active {
+:where(html.guide-light) .type-btn--all.active {
     color: #ececf7
 }
-html.guide-light .type-btn.active {
+:where(html.guide-light) .type-btn.active {
     border: 2px solid #000000
 }
-html.guide-light .stat-tag {
+:where(html.guide-light) .stat-tag {
     background: rgba(0, 0, 0, 0.08);
     border: 1px solid rgba(0, 0, 0, 0.12);
     color: #131327
 }
-html.guide-light .stat-tag--type {
+:where(html.guide-light) .stat-tag--type {
     color: #000000
 }
-html.guide-light .stat-tag--favorites {
+:where(html.guide-light) .stat-tag--favorites {
     background: rgba(191, 136, 0, 0.15);
     border-color: rgba(191, 136, 0, 0.35);
-    color: #997300
+    color: #664d00
 }
-html.guide-light .stat-tag--search {
+:where(html.guide-light) .stat-tag--search {
     background: rgba(0, 169, 199, 0.1);
     border-color: rgba(0, 169, 199, 0.25);
     color: #005261
 }
-html.guide-light .stat-tag--gen {
+:where(html.guide-light) .stat-tag--gen {
     background: rgba(73, 15, 155, 0.15);
     border-color: rgba(73, 15, 155, 0.35);
     color: #1c0047
 }
-html.guide-light .stat-tag--item {
+:where(html.guide-light) .stat-tag--item {
     background: rgba(191, 76, 0, 0.12);
     border-color: rgba(191, 76, 0, 0.3);
     color: #7f3300
 }
-html.guide-light .stat-tag--tm {
+:where(html.guide-light) .stat-tag--tm {
     background: rgba(43, 149, 118, 0.12);
     border-color: rgba(43, 149, 118, 0.3);
-    color: #177151
+    color: #135c42
 }
-html.guide-light .view-btn:hover {
+:where(html.guide-light) .view-btn:hover {
     background: rgba(0, 0, 0, 0.14);
     border-color: rgba(0, 169, 199, 0.4)
 }
-html.guide-light .loader {
+:where(html.guide-light) .loader {
     border: 4px solid rgba(0, 169, 199, 0.2)
 }
-html.guide-light .progress-container {
+:where(html.guide-light) .progress-container {
     background: rgba(0, 0, 0, 0.1)
 }
-html.guide-light .pokemon-card::before {
+:where(html.guide-light) .pokemon-card::before {
     background: radial-gradient(circle, rgba(0, 169, 199, 0.1) 0%, transparent 70%)
 }
-html.guide-light .pokemon-id {
+:where(html.guide-light) .pokemon-id {
     background: rgba(255, 255, 255, 0.45)
 }
-html.guide-light .load-more-btn {
+:where(html.guide-light) .load-more-btn {
     color: #ececf7
 }
-html.guide-light .modal {
+:where(html.guide-light) .modal {
     background: rgba(255, 255, 255, 0.8)
 }
-html.guide-light .modal-content::-webkit-scrollbar-track {
+:where(html.guide-light) .modal-content::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.05)
 }
-html.guide-light .close-btn {
+:where(html.guide-light) .close-btn {
     background: rgba(0, 0, 0, 0.1);
     color: #000000
 }
-html.guide-light .species-badge-tip {
+:where(html.guide-light) .species-badge-tip {
     background: rgba(239, 240, 244, 0.96)
 }
-html.guide-light .species-badge--legendary {
+:where(html.guide-light) .species-badge--legendary {
     background: rgba(191, 136, 0, 0.18);
     border: 1px solid rgba(191, 136, 0, 0.45);
-    color: #997300
+    color: #664d00
 }
-html.guide-light .species-badge--mythical {
+:where(html.guide-light) .species-badge--mythical {
     background: rgba(73, 15, 155, 0.18);
     border: 1px solid rgba(73, 15, 155, 0.45);
     color: #1c0047
 }
-html.guide-light .species-badge--baby {
+:where(html.guide-light) .species-badge--baby {
     background: rgba(150, 0, 75, 0.15);
     border: 1px solid rgba(150, 0, 75, 0.4);
     color: #470022
 }
-html.guide-light .modal-flavor {
+:where(html.guide-light) .modal-flavor {
     background: rgba(0, 0, 0, 0.05)
 }
-html.guide-light .info-card--height {
+:where(html.guide-light) .info-card--height {
     --info-accent: #004ea7
 }
-html.guide-light .info-card--weight {
+:where(html.guide-light) .info-card--weight {
     --info-accent: #1c9796
 }
-html.guide-light .info-card--generation {
+:where(html.guide-light) .info-card--generation {
     --info-accent: #3a088e
 }
-html.guide-light .info-card--experience {
+:where(html.guide-light) .info-card--experience {
     --info-accent: #97450c
 }
-html.guide-light .info-card--egg {
+:where(html.guide-light) .info-card--egg {
     --info-accent: #940032
 }
-html.guide-light .info-card--gender {
+:where(html.guide-light) .info-card--gender {
     --info-accent: #0583a9
 }
-html.guide-light .info-card--hatch {
+:where(html.guide-light) .info-card--hatch {
     --info-accent: #349842
 }
-html.guide-light .info-card--capture {
+:where(html.guide-light) .info-card--capture {
     --info-accent: #b3821d
 }
-html.guide-light .info-card--happiness {
+:where(html.guide-light) .info-card--happiness {
     --info-accent: #87084a
 }
-html.guide-light .info-card--growth {
+:where(html.guide-light) .info-card--growth {
     --info-accent: #07127e
 }
-html.guide-light .info-card--infertile {
+:where(html.guide-light) .info-card--infertile {
     --info-accent: #4c535a
 }
-html.guide-light .info-card--habitat {
+:where(html.guide-light) .info-card--habitat {
     --info-accent: #349842
 }
-html.guide-light .info-card--held {
+:where(html.guide-light) .info-card--held {
     --info-accent: #b3821d
 }
-html.guide-light .info-card--pokedex {
+:where(html.guide-light) .info-card--pokedex {
     --info-accent: #3a088e
 }
-html.guide-light .info-tip {
+:where(html.guide-light) .info-tip {
     background: rgba(239, 240, 244, 0.96)
 }
-html.guide-light .info-tip::after {
+:where(html.guide-light) .info-tip::after {
     border-top-color: rgba(239, 240, 244, 0.96)
 }
-html.guide-light .held-tip {
+:where(html.guide-light) .held-tip {
     border: 1px solid rgba(179, 130, 29, 0.22);
     background: rgba(239, 240, 244, 0.42)
 }
-html.guide-light .held-tip-section + .held-tip-section {
+:where(html.guide-light) .held-tip-section + .held-tip-section {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     background: rgba(0, 0, 0, 0.035)
 }
-html.guide-light .held-tip-title {
-    color: #b4850f
+:where(html.guide-light) .held-tip-title {
+    color: #644a08
 }
-html.guide-light .held-tip-row {
+:where(html.guide-light) .held-tip-row {
     background: rgba(0, 0, 0, 0.055)
 }
-html.guide-light .held-tip-row strong {
-    color: #996b00
+:where(html.guide-light) .held-tip-row strong {
+    color: #6b4b00
 }
-html.guide-light .held-tip-more {
+:where(html.guide-light) .held-tip-more {
     background: rgba(179, 130, 29, 0.12);
-    color: #b4850f
+    color: #644a08
 }
-html.guide-light .info-tier--very-easy {
+:where(html.guide-light) .info-tier--very-easy {
     background: rgba(52, 152, 66, 0.2);
-    color: #188121
+    color: #125f18
 }
-html.guide-light .info-tier--easy {
+:where(html.guide-light) .info-tier--easy {
     background: rgba(5, 131, 169, 0.18);
-    color: #006786
+    color: #005772
 }
-html.guide-light .info-tier--normal {
+:where(html.guide-light) .info-tier--normal {
     background: rgba(179, 130, 29, 0.18);
-    color: #b4850f
+    color: #644a08
 }
-html.guide-light .info-tier--hard {
+:where(html.guide-light) .info-tier--hard {
     background: rgba(142, 7, 7, 0.16);
     color: #570000
 }
-html.guide-light .info-tier--very-hard {
+:where(html.guide-light) .info-tier--very-hard {
     background: rgba(182, 15, 7, 0.2);
     color: #780400
 }
-html.guide-light .section-tip {
+:where(html.guide-light) .section-tip {
     background: rgba(239, 240, 244, 0.96)
 }
-html.guide-light .encounter-version-select {
+:where(html.guide-light) .encounter-version-select {
     background: #eaebf3;
     border: 1px solid rgba(0, 169, 199, 0.45);
     color: #00020a
 }
-html.guide-light .encounter-version-select option {
+:where(html.guide-light) .encounter-version-select option {
     background: #eaebf3;
     color: #00020a
 }
-html.guide-light .encounter-row {
+:where(html.guide-light) .encounter-row {
     background: rgba(0, 0, 0, 0.06)
 }
-html.guide-light .encounter-row--header {
+:where(html.guide-light) .encounter-row--header {
     background: rgba(0, 169, 199, 0.08)
 }
-html.guide-light .encounter-region {
+:where(html.guide-light) .encounter-region {
     background: rgba(58, 8, 142, 0.16);
     color: #1c0047
 }
-html.guide-light .encounter-method {
+:where(html.guide-light) .encounter-method {
     background: rgba(5, 131, 169, 0.16);
-    color: #006786
+    color: #005772
 }
-html.guide-light .encounter-chance {
-    color: #b4850f
+:where(html.guide-light) .encounter-chance {
+    color: #644a08
 }
-html.guide-light .ability-item--hidden {
+:where(html.guide-light) .ability-item--hidden {
     border-left-color: #bf8800;
     background: rgba(191, 136, 0, 0.06)
 }
-html.guide-light .info-item {
+:where(html.guide-light) .info-item {
     background: rgba(0, 0, 0, 0.05)
 }
-html.guide-light .description {
+:where(html.guide-light) .description {
     background: rgba(0, 0, 0, 0.06)
 }
-html.guide-light .stat-bar-container {
+:where(html.guide-light) .stat-bar-container {
     background: rgba(0, 0, 0, 0.1)
 }
-html.guide-light .move-item {
+:where(html.guide-light) .move-item {
     background: rgba(0, 0, 0, 0.08)
 }
-html.guide-light .move-item:hover {
+:where(html.guide-light) .move-item:hover {
     background: rgba(0, 0, 0, 0.1)
 }
-html.guide-light .version-tag {
+:where(html.guide-light) .version-tag {
     background: rgba(0, 0, 0, 0.1)
 }
-html.guide-light .version-tag:hover {
+:where(html.guide-light) .version-tag:hover {
     background: rgba(0, 169, 199, 0.2)
 }
-html.guide-light .ability-item {
+:where(html.guide-light) .ability-item {
     background: rgba(0, 0, 0, 0.05)
 }
-html.guide-light .sidebar-overlay {
+:where(html.guide-light) .sidebar-overlay {
     background: rgba(255, 255, 255, 0.5)
 }
-html.guide-light .sort-select {
+:where(html.guide-light) .sort-select {
     border: 1px solid rgba(0, 169, 199, 0.45)
 }
-html.guide-light .sort-select:hover {
+:where(html.guide-light) .sort-select:hover {
     background-color: #dfdfec
 }
-html.guide-light .modal-action-btn:hover {
+:where(html.guide-light) .modal-action-btn:hover {
     background: rgba(0, 0, 0, 0.14);
     border-color: rgba(0, 169, 199, 0.4)
 }
-html.guide-light .type-chart-cell {
+:where(html.guide-light) .type-chart-cell {
     background: rgba(0, 0, 0, 0.08)
 }
-html.guide-light .type-chart-cell.strong {
+:where(html.guide-light) .type-chart-cell.strong {
     background: rgba(0, 242, 121, 0.28);
     border-color: rgba(0, 242, 121, 0.4)
 }
-html.guide-light .type-chart-cell.weak {
+:where(html.guide-light) .type-chart-cell.weak {
     background: rgba(155, 0, 0, 0.28);
     border-color: rgba(155, 0, 0, 0.4)
 }
-html.guide-light .type-chart-cell.immune {
+:where(html.guide-light) .type-chart-cell.immune {
     background: rgba(90, 90, 105, 0.35);
     border-color: rgba(55, 55, 75, 0.3)
 }
-html.guide-light .clear-cache-btn {
+:where(html.guide-light) .clear-cache-btn {
     background: rgba(199, 0, 86, 0.2);
     color: #700035
 }
-html.guide-light .show-more-moves:hover {
+:where(html.guide-light) .show-more-moves:hover {
     background: rgba(0, 0, 0, 0.14)
 }
-html.guide-light .sidebar-drawer {
+:where(html.guide-light) .sidebar-drawer {
     background: rgba(255, 255, 255, 0.15)
 }
-html.guide-light .sidebar-drawer-toggle:hover {
+:where(html.guide-light) .sidebar-drawer-toggle:hover {
     background: rgba(0, 0, 0, 0.12)
 }
-html.guide-light .guide-gen-toggle {
+:where(html.guide-light) .guide-gen-toggle {
     background: rgba(0, 0, 0, 0.05)
 }
-html.guide-light .guide-version-toggle.is-open,
-html.guide-light .guide-battle-toggle.is-open {
+:where(html.guide-light) .guide-version-toggle.is-open,
+:where(html.guide-light) .guide-battle-toggle.is-open {
     border-color: rgba(0, 169, 199, 0.5)
 }
-html.guide-light .guide-battle-detail {
+:where(html.guide-light) .guide-battle-detail {
     background: rgba(255, 255, 255, 0.2)
 }
-html.guide-light .guide-team-block {
+:where(html.guide-light) .guide-team-block {
     background: rgba(0, 0, 0, 0.03)
 }
-html.guide-light .guide-chat-msg.user {
+:where(html.guide-light) .guide-chat-msg.user {
     background: rgba(0, 169, 199, 0.15)
 }
-html.guide-light .guide-chat-msg.assistant {
+:where(html.guide-light) .guide-chat-msg.assistant {
     background: rgba(0, 0, 0, 0.06)
 }
-html.guide-light .guide-chat-msg.error {
+:where(html.guide-light) .guide-chat-msg.error {
     background: rgba(199, 0, 86, 0.15);
     color: #700035
 }
-html.guide-light .guide-chat-send {
+:where(html.guide-light) .guide-chat-send {
     color: #ececf7
 }
-html.guide-light .version-drawer-link:hover {
+:where(html.guide-light) .version-drawer-link:hover {
     background: rgba(0, 0, 0, 0.1)
 }
-html.guide-light .version-drawer-badge {
+:where(html.guide-light) .version-drawer-badge {
     background: rgba(0, 0, 0, 0.08)
 }
-html.guide-light .sidebar-catalog-link {
+:where(html.guide-light) .sidebar-catalog-link {
     background: rgba(255, 255, 255, 0.15)
 }
-html.guide-light .sidebar-catalog-link--items {
+:where(html.guide-light) .sidebar-catalog-link--items {
     --catalog-accent: #97450c
 }
-html.guide-light .sidebar-catalog-link--machines {
+:where(html.guide-light) .sidebar-catalog-link--machines {
     --catalog-accent: #004ea7
 }
-html.guide-light .sidebar-catalog-link--team {
+:where(html.guide-light) .sidebar-catalog-link--team {
     --catalog-accent: #349842
 }
-html.guide-light .sidebar-catalog-link--moves {
+:where(html.guide-light) .sidebar-catalog-link--moves {
     --catalog-accent: #2a0057
 }
-html.guide-light .sidebar-catalog-link:hover,
-html.guide-light .sidebar-catalog-link:focus-visible {
+:where(html.guide-light) .sidebar-catalog-link:hover,
+:where(html.guide-light) .sidebar-catalog-link:focus-visible {
     background: color-mix(in srgb, var(--catalog-accent) 12%, rgba(0, 0, 0, 0.06))
 }
-html.guide-light .sidebar-catalog-icon {
+:where(html.guide-light) .sidebar-catalog-icon {
     background: color-mix(in srgb, var(--catalog-accent) 18%, rgba(0, 0, 0, 0.05))
 }
-html.guide-light .sidebar-catalog-tip {
+:where(html.guide-light) .sidebar-catalog-tip {
     background: rgba(239, 240, 244, 0.96)
 }
-html.guide-light .items-gen-nav {
+:where(html.guide-light) .items-gen-nav {
     background: linear-gradient(180deg, rgba(236, 236, 247, 0.98) 70%, rgba(236, 236, 247, 0))
 }
-html.guide-light .items-gen-pill {
+:where(html.guide-light) .items-gen-pill {
     border: 1px solid rgba(0, 0, 0, 0.12);
     background: rgba(0, 0, 0, 0.06)
 }
-html.guide-light .items-gen-pill:hover {
+:where(html.guide-light) .items-gen-pill:hover {
     background: rgba(0, 0, 0, 0.1)
 }
-html.guide-light .items-back-to-top,
-html.guide-light .machines-back-to-top,
-html.guide-light .back-to-top {
+:where(html.guide-light) .items-back-to-top,
+:where(html.guide-light) .machines-back-to-top,
+:where(html.guide-light) .back-to-top {
     border: 1px solid rgba(0, 169, 199, 0.45);
     background: rgba(233, 233, 245, 0.92)
 }
-html.guide-light .items-back-to-top:hover,
-html.guide-light .machines-back-to-top:hover,
-html.guide-light .back-to-top:hover {
+:where(html.guide-light) .items-back-to-top:hover,
+:where(html.guide-light) .machines-back-to-top:hover,
+:where(html.guide-light) .back-to-top:hover {
     background: rgba(0, 169, 199, 0.15)
 }
-html.guide-light .items-gen-section {
+:where(html.guide-light) .items-gen-section {
     background: rgba(255, 255, 255, 0.15)
 }
-html.guide-light .items-gen-header:hover {
+:where(html.guide-light) .items-gen-header:hover {
     background: rgba(0, 0, 0, 0.1)
 }
-html.guide-light .item-card {
+:where(html.guide-light) .item-card {
     background: rgba(0, 0, 0, 0.04)
 }
-html.guide-light .item-card:hover,
-html.guide-light .item-card:focus-visible,
-html.guide-light .item-card.is-expanded {
+:where(html.guide-light) .item-card:hover,
+:where(html.guide-light) .item-card:focus-visible,
+:where(html.guide-light) .item-card.is-expanded {
     border-color: rgba(0, 169, 199, 0.35)
 }
-html.guide-light .item-card-sprite-wrap {
+:where(html.guide-light) .item-card-sprite-wrap {
     background: rgba(0, 0, 0, 0.05)
 }
-html.guide-light .item-card-category {
+:where(html.guide-light) .item-card-category {
     color: #000000;
     background: var(--item-accent, #4c535a)
 }
-html.guide-light .item-filter-link {
+:where(html.guide-light) .item-filter-link {
     border: 1px solid rgba(0, 169, 199, 0.35);
     background: rgba(0, 169, 199, 0.1);
     color: #005261
 }
-html.guide-light .item-filter-link:hover {
+:where(html.guide-light) .item-filter-link:hover {
     background: rgba(0, 169, 199, 0.18)
 }
-html.guide-light .machines-kind-pill {
+:where(html.guide-light) .machines-kind-pill {
     border: 1px solid rgba(0, 0, 0, 0.12);
     background: rgba(0, 0, 0, 0.06)
 }
-html.guide-light .machines-kind-pill.is-active {
+:where(html.guide-light) .machines-kind-pill.is-active {
     background: color-mix(in srgb, var(--kind-accent) 18%, rgba(0, 0, 0, 0.06))
 }
-html.guide-light .machines-kind-tip {
+:where(html.guide-light) .machines-kind-tip {
     background: rgba(239, 240, 244, 0.96)
 }
-html.guide-light .machines-gen-type-filter-btn {
+:where(html.guide-light) .machines-gen-type-filter-btn {
     border: 1px solid rgba(0, 0, 0, 0.14);
     background: rgba(0, 0, 0, 0.06)
 }
-html.guide-light .machines-gen-type-filter-btn:hover {
+:where(html.guide-light) .machines-gen-type-filter-btn:hover {
     border-color: rgba(0, 169, 199, 0.4);
     background: rgba(0, 169, 199, 0.1)
 }
-html.guide-light .machines-gen-type-filter-btn.is-active {
+:where(html.guide-light) .machines-gen-type-filter-btn.is-active {
     border-color: rgba(0, 169, 199, 0.5);
     background: rgba(0, 169, 199, 0.16);
     color: #005261
 }
-html.guide-light .machines-type-drawer-backdrop {
+:where(html.guide-light) .machines-type-drawer-backdrop {
     background: rgba(245, 245, 253, 0.55)
 }
-html.guide-light .machines-type-drawer-panel {
+:where(html.guide-light) .machines-type-drawer-panel {
     background: linear-gradient(180deg, rgba(234, 234, 246, 0.99), rgba(240, 240, 248, 0.99));
     border-left: 1px solid rgba(0, 169, 199, 0.3)
 }
-html.guide-light .machines-type-drawer-close {
+:where(html.guide-light) .machines-type-drawer-close {
     background: rgba(0, 0, 0, 0.06)
 }
-html.guide-light .machines-type-drawer-close:hover {
+:where(html.guide-light) .machines-type-drawer-close:hover {
     background: rgba(0, 0, 0, 0.12)
 }
-html.guide-light .machines-gen-sort-group {
+:where(html.guide-light) .machines-gen-sort-group {
     background: rgba(0, 0, 0, 0.04)
 }
-html.guide-light .machines-gen-sort-btn:hover {
+:where(html.guide-light) .machines-gen-sort-btn:hover {
     background: rgba(0, 0, 0, 0.06)
 }
-html.guide-light .machines-gen-sort-btn.is-active {
+:where(html.guide-light) .machines-gen-sort-btn.is-active {
     background: rgba(0, 169, 199, 0.18);
     color: #005261
 }
-html.guide-light .machine-card-kind {
+:where(html.guide-light) .machine-card-kind {
     color: #000000;
     background: var(--machine-kind-accent, #004ea7)
 }
-html.guide-light .machine-card-type {
+:where(html.guide-light) .machine-card-type {
     color: #000000
 }
-html.guide-light .machine-card-filter-link {
+:where(html.guide-light) .machine-card-filter-link {
     border: 1px solid rgba(0, 169, 199, 0.35);
     background: rgba(0, 169, 199, 0.1);
     color: #005261
 }
-html.guide-light .machine-card-filter-link:hover {
+:where(html.guide-light) .machine-card-filter-link:hover {
     background: rgba(0, 169, 199, 0.18)
 }
-html.guide-light .learners-modal-backdrop {
+:where(html.guide-light) .learners-modal-backdrop {
     background: rgba(245, 245, 253, 0.75)
 }
-html.guide-light .learners-modal-panel {
+:where(html.guide-light) .learners-modal-panel {
     background: linear-gradient(160deg, rgba(234, 234, 246, 0.98), rgba(229, 229, 243, 0.99));
     border: 1px solid rgba(0, 169, 199, 0.35)
 }
-html.guide-light .learners-modal-close {
+:where(html.guide-light) .learners-modal-close {
     background: rgba(0, 0, 0, 0.06)
 }
-html.guide-light .learners-modal-close:hover {
+:where(html.guide-light) .learners-modal-close:hover {
     background: rgba(0, 0, 0, 0.12)
 }
-html.guide-light .learners-chip-btn {
+:where(html.guide-light) .learners-chip-btn {
     border: 1px solid rgba(0, 0, 0, 0.1);
     background: rgba(0, 0, 0, 0.04)
 }
-html.guide-light .learners-chip-btn:hover {
+:where(html.guide-light) .learners-chip-btn:hover {
     background: rgba(0, 169, 199, 0.12);
     border-color: rgba(0, 169, 199, 0.35)
 }
-html.guide-light .learners-modal-dex-link {
+:where(html.guide-light) .learners-modal-dex-link {
     color: #005261
 }
-html.guide-light .guide-back-link {
-    color: #006a81;
+:where(html.guide-light) .guide-back-link {
+    color: #00596d;
     border: 1px solid rgba(0, 169, 199, 0.35);
     background: rgba(0, 169, 199, 0.08)
 }
-html.guide-light .guide-back-link:hover {
+:where(html.guide-light) .guide-back-link:hover {
     background: rgba(0, 169, 199, 0.15)
 }
-html.guide-light .guide-version-select {
+:where(html.guide-light) .guide-version-select {
     background-color: #e1e1f0;
     border: 1px solid rgba(0, 169, 199, 0.6);
     color: #000007
 }
-html.guide-light .guide-version-select:hover {
+:where(html.guide-light) .guide-version-select:hover {
     background-color: #d7d7eb
 }
-html.guide-light .guide-version-select:focus {
+:where(html.guide-light) .guide-version-select:focus {
     background-color: #d7d7eb
 }
-html.guide-light .guide-version-select option {
+:where(html.guide-light) .guide-version-select option {
     background-color: #e9e9f4;
     color: #00000b
 }
-html.guide-light .guide-version-select option:disabled {
-    color: #575771
+:where(html.guide-light) .guide-version-select option:disabled {
+    color: #4e4e65
 }
-html.guide-light .guide-page-subtitle {
+:where(html.guide-light) .guide-page-subtitle {
     color: #1f1f37
 }
-html.guide-light .guide-page-notes {
+:where(html.guide-light) .guide-page-notes {
     background: rgba(0, 169, 199, 0.1);
     border: 1px solid rgba(0, 169, 199, 0.28);
     color: #070717
 }
-html.guide-light .guide-page-section-heading {
+:where(html.guide-light) .guide-page-section-heading {
     border-bottom: 2px solid rgba(0, 169, 199, 0.35)
 }
-html.guide-light .guide-atlas-frame {
+:where(html.guide-light) .guide-atlas-frame {
     border: 1px solid var(--border-color, #6e988e);
     background: #e2f0f2
 }
-html.guide-light .guide-region-map--wide .guide-region-map-scroll {
+:where(html.guide-light) .guide-region-map--wide .guide-region-map-scroll {
     scrollbar-color: rgba(0, 169, 199, 0.45) rgba(0, 0, 0, 0.06)
 }
-html.guide-light .guide-map-enlarge:hover {
-    color: #006a81
+:where(html.guide-light) .guide-map-enlarge:hover {
+    color: #00596d
 }
-html.guide-light .guide-region-map--battle-frontier .guide-map-hotspot-wrap--island .guide-map-hotspot:hover,
-html.guide-light .guide-region-map--battle-frontier .guide-map-hotspot-wrap--island .guide-map-hotspot:focus-visible,
-html.guide-light .guide-region-map--battle-frontier .guide-map-hotspot-wrap--island.is-focused .guide-map-hotspot {
+:where(html.guide-light) .guide-region-map--battle-frontier .guide-map-hotspot-wrap--island .guide-map-hotspot:hover,
+:where(html.guide-light) .guide-region-map--battle-frontier .guide-map-hotspot-wrap--island .guide-map-hotspot:focus-visible,
+:where(html.guide-light) .guide-region-map--battle-frontier .guide-map-hotspot-wrap--island.is-focused .guide-map-hotspot {
     background: rgba(0, 169, 199, 0.22);
     border-color: rgba(0, 169, 199, 0.65)
 }
-html.guide-light .guide-region-map--battle-frontier .guide-map-hotspot-wrap--story .guide-map-hotspot:hover,
-html.guide-light .guide-region-map--battle-frontier .guide-map-hotspot-wrap--story .guide-map-hotspot:focus-visible,
-html.guide-light .guide-region-map--battle-frontier .guide-map-hotspot-wrap--story.is-focused .guide-map-hotspot {
+:where(html.guide-light) .guide-region-map--battle-frontier .guide-map-hotspot-wrap--story .guide-map-hotspot:hover,
+:where(html.guide-light) .guide-region-map--battle-frontier .guide-map-hotspot-wrap--story .guide-map-hotspot:focus-visible,
+:where(html.guide-light) .guide-region-map--battle-frontier .guide-map-hotspot-wrap--story.is-focused .guide-map-hotspot {
     background: rgba(41, 0, 95, 0.2);
     border-color: rgba(41, 0, 95, 0.55)
 }
-html.guide-light .guide-region-map--legends-arceus .guide-map-hotspot-wrap--island .guide-map-hotspot:hover,
-html.guide-light .guide-region-map--legends-arceus .guide-map-hotspot-wrap--island .guide-map-hotspot:focus-visible,
-html.guide-light .guide-region-map--legends-arceus .guide-map-hotspot-wrap--island.is-focused .guide-map-hotspot,
-html.guide-light .guide-region-map--daybreak .guide-map-hotspot-wrap--island .guide-map-hotspot:hover,
-html.guide-light .guide-region-map--daybreak .guide-map-hotspot-wrap--island .guide-map-hotspot:focus-visible,
-html.guide-light .guide-region-map--daybreak .guide-map-hotspot-wrap--island.is-focused .guide-map-hotspot {
+:where(html.guide-light) .guide-region-map--legends-arceus .guide-map-hotspot-wrap--island .guide-map-hotspot:hover,
+:where(html.guide-light) .guide-region-map--legends-arceus .guide-map-hotspot-wrap--island .guide-map-hotspot:focus-visible,
+:where(html.guide-light) .guide-region-map--legends-arceus .guide-map-hotspot-wrap--island.is-focused .guide-map-hotspot,
+:where(html.guide-light) .guide-region-map--daybreak .guide-map-hotspot-wrap--island .guide-map-hotspot:hover,
+:where(html.guide-light) .guide-region-map--daybreak .guide-map-hotspot-wrap--island .guide-map-hotspot:focus-visible,
+:where(html.guide-light) .guide-region-map--daybreak .guide-map-hotspot-wrap--island.is-focused .guide-map-hotspot {
     background: rgba(145, 89, 18, 0.22);
     border-color: rgba(145, 89, 18, 0.6)
 }
-html.guide-light .guide-region-map--legends-arceus .guide-map-hotspot-wrap--story .guide-map-hotspot:hover,
-html.guide-light .guide-region-map--legends-arceus .guide-map-hotspot-wrap--story .guide-map-hotspot:focus-visible,
-html.guide-light .guide-region-map--legends-arceus .guide-map-hotspot-wrap--story.is-focused .guide-map-hotspot,
-html.guide-light .guide-region-map--daybreak .guide-map-hotspot-wrap--story .guide-map-hotspot:hover,
-html.guide-light .guide-region-map--daybreak .guide-map-hotspot-wrap--story .guide-map-hotspot:focus-visible,
-html.guide-light .guide-region-map--daybreak .guide-map-hotspot-wrap--story.is-focused .guide-map-hotspot {
+:where(html.guide-light) .guide-region-map--legends-arceus .guide-map-hotspot-wrap--story .guide-map-hotspot:hover,
+:where(html.guide-light) .guide-region-map--legends-arceus .guide-map-hotspot-wrap--story .guide-map-hotspot:focus-visible,
+:where(html.guide-light) .guide-region-map--legends-arceus .guide-map-hotspot-wrap--story.is-focused .guide-map-hotspot,
+:where(html.guide-light) .guide-region-map--daybreak .guide-map-hotspot-wrap--story .guide-map-hotspot:hover,
+:where(html.guide-light) .guide-region-map--daybreak .guide-map-hotspot-wrap--story .guide-map-hotspot:focus-visible,
+:where(html.guide-light) .guide-region-map--daybreak .guide-map-hotspot-wrap--story.is-focused .guide-map-hotspot {
     background: rgba(178, 106, 0, 0.2);
     border-color: rgba(178, 106, 0, 0.55)
 }
-html.guide-light .guide-map-tooltip-phase--hisui {
+:where(html.guide-light) .guide-map-tooltip-phase--hisui {
     background: rgba(145, 89, 18, 0.35);
     color: var(--text-primary, #0a0a0a)
 }
-html.guide-light .guide-map-hotspot:hover,
-html.guide-light .guide-map-hotspot:focus-visible,
-html.guide-light .guide-map-hotspot-wrap.is-focused .guide-map-hotspot {
+:where(html.guide-light) .guide-map-hotspot:hover,
+:where(html.guide-light) .guide-map-hotspot:focus-visible,
+:where(html.guide-light) .guide-map-hotspot-wrap.is-focused .guide-map-hotspot {
     background: rgba(0, 169, 199, 0.16);
     border-color: rgba(0, 169, 199, 0.5)
 }
-html.guide-light .guide-map-hotspot-wrap--league .guide-map-hotspot:hover,
-html.guide-light .guide-map-hotspot-wrap--league .guide-map-hotspot:focus-visible,
-html.guide-light .guide-map-hotspot-wrap--league.is-focused .guide-map-hotspot {
+:where(html.guide-light) .guide-map-hotspot-wrap--league .guide-map-hotspot:hover,
+:where(html.guide-light) .guide-map-hotspot-wrap--league .guide-map-hotspot:focus-visible,
+:where(html.guide-light) .guide-map-hotspot-wrap--league.is-focused .guide-map-hotspot {
     background: rgba(73, 15, 155, 0.2);
     border-color: rgba(73, 15, 155, 0.55)
 }
-html.guide-light .guide-map-hotspot--story {
+:where(html.guide-light) .guide-map-hotspot--story {
     border: 2px solid rgba(133, 62, 0, 0.55);
     background: rgba(195, 80, 0, 0.08)
 }
-html.guide-light .guide-map-hotspot-wrap--story .guide-map-hotspot:hover,
-html.guide-light .guide-map-hotspot-wrap--story .guide-map-hotspot:focus-visible,
-html.guide-light .guide-map-hotspot-wrap--story.is-focused .guide-map-hotspot {
+:where(html.guide-light) .guide-map-hotspot-wrap--story .guide-map-hotspot:hover,
+:where(html.guide-light) .guide-map-hotspot-wrap--story .guide-map-hotspot:focus-visible,
+:where(html.guide-light) .guide-map-hotspot-wrap--story.is-focused .guide-map-hotspot {
     background: rgba(195, 80, 0, 0.22);
     border-color: rgba(133, 62, 0, 0.85)
 }
-html.guide-light .guide-map-hotspot-wrap--island .guide-map-hotspot:hover,
-html.guide-light .guide-map-hotspot-wrap--island .guide-map-hotspot:focus-visible,
-html.guide-light .guide-map-hotspot-wrap--island.is-focused .guide-map-hotspot {
+:where(html.guide-light) .guide-map-hotspot-wrap--island .guide-map-hotspot:hover,
+:where(html.guide-light) .guide-map-hotspot-wrap--island .guide-map-hotspot:focus-visible,
+:where(html.guide-light) .guide-map-hotspot-wrap--island.is-focused .guide-map-hotspot {
     background: rgba(0, 169, 199, 0.12);
     border-color: rgba(0, 169, 199, 0.45)
 }
-html.guide-light .guide-map-tooltip-phase--tri {
+:where(html.guide-light) .guide-map-tooltip-phase--tri {
     background: rgba(0, 169, 199, 0.15);
     border: 1px solid rgba(0, 169, 199, 0.4)
 }
-html.guide-light .guide-map-tooltip-phase--rainbow {
+:where(html.guide-light) .guide-map-tooltip-phase--rainbow {
     background: rgba(73, 15, 155, 0.15);
     color: #29005f;
     border: 1px solid rgba(73, 15, 155, 0.4)
 }
-html.guide-light .guide-map-tooltip-phase--story {
+:where(html.guide-light) .guide-map-tooltip-phase--story {
     background: rgba(195, 80, 0, 0.15);
-    color: #853e00;
+    color: #803c00;
     border: 1px solid rgba(195, 80, 0, 0.4)
 }
-html.guide-light .guide-map-tooltip-phase--frontier {
+:where(html.guide-light) .guide-map-tooltip-phase--frontier {
     background: rgba(0, 169, 199, 0.12);
     border: 1px solid rgba(0, 169, 199, 0.35)
 }
-html.guide-light .guide-map-tooltip-order--story {
-    color: #853e00
+:where(html.guide-light) .guide-map-tooltip-order--story {
+    color: #803c00
 }
-html.guide-light .guide-map-tooltip-places,
-html.guide-light .guide-map-tooltip-battles {
+:where(html.guide-light) .guide-map-tooltip-places,
+:where(html.guide-light) .guide-map-tooltip-battles {
     color: #131327
 }
-html.guide-light .guide-map-tooltip {
+:where(html.guide-light) .guide-map-tooltip {
     background: rgba(233, 233, 245, 0.96);
     border: 1px solid rgba(0, 0, 0, 0.12)
 }
-html.guide-light .guide-map-tooltip-divider {
+:where(html.guide-light) .guide-map-tooltip-divider {
     background: rgba(0, 0, 0, 0.08)
 }
-html.guide-light .guide-map-tooltip-party li {
+:where(html.guide-light) .guide-map-tooltip-party li {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05)
 }
-html.guide-light .guide-map-tooltip-hint {
+:where(html.guide-light) .guide-map-tooltip-hint {
     border-top: 1px solid rgba(0, 0, 0, 0.08)
 }
-html.guide-light .guide-page-body .guide-battle-toggle {
+:where(html.guide-light) .guide-page-body .guide-battle-toggle {
     background: rgba(230, 230, 241, 0.95);
     color: #0b0b1f
 }
-html.guide-light .guide-page-body .guide-battle-toggle:hover {
+:where(html.guide-light) .guide-page-body .guide-battle-toggle:hover {
     border-color: rgba(0, 169, 199, 0.5);
     background: rgba(0, 0, 0, 0.06)
 }
-html.guide-light .guide-page-body .guide-battle-toggle.is-open {
+:where(html.guide-light) .guide-page-body .guide-battle-toggle.is-open {
     background: rgba(0, 169, 199, 0.1);
     color: #000000
 }
-html.guide-light .guide-page-body .guide-battle-detail {
+:where(html.guide-light) .guide-page-body .guide-battle-detail {
     background: rgba(240, 240, 250, 0.6)
 }
-html.guide-light .guide-page-body .guide-leader-name {
+:where(html.guide-light) .guide-page-body .guide-leader-name {
     color: #000000
 }
-html.guide-light .guide-meta-chip {
+:where(html.guide-light) .guide-meta-chip {
     color: #0f0f27;
     background: rgba(0, 0, 0, 0.08)
 }
-html.guide-light .guide-page-body .guide-section-title {
+:where(html.guide-light) .guide-page-body .guide-section-title {
     color: #002a61
 }
-html.guide-light .guide-party-row,
-html.guide-light .guide-team-row {
+:where(html.guide-light) .guide-party-row,
+:where(html.guide-light) .guide-team-row {
     background: rgba(0, 0, 0, 0.05)
 }
-html.guide-light .guide-level {
-    color: #934c00;
+:where(html.guide-light) .guide-level {
+    color: #7f4100;
     background: rgba(147, 76, 0, 0.12)
 }
-html.guide-light .guide-page-body .guide-team-block {
+:where(html.guide-light) .guide-page-body .guide-team-block {
     background: rgba(73, 15, 155, 0.08);
     border: 1px solid rgba(73, 15, 155, 0.35)
 }
-html.guide-light .guide-page-body .guide-team-label {
+:where(html.guide-light) .guide-page-body .guide-team-label {
     color: #16004c
 }
-html.guide-light .guide-page-body .guide-team-reason {
+:where(html.guide-light) .guide-page-body .guide-team-reason {
     color: #17172f
 }
-html.guide-light .guide-page-body .guide-chat {
+:where(html.guide-light) .guide-page-body .guide-chat {
     background: linear-gradient(145deg, rgba(0, 169, 199, 0.06), rgba(73, 15, 155, 0.08));
     border: 1px solid rgba(0, 169, 199, 0.3)
 }
-html.guide-light .guide-chat-desc {
+:where(html.guide-light) .guide-chat-desc {
     color: #2b2b47
 }
-html.guide-light .guide-page-body .guide-chat-messages {
+:where(html.guide-light) .guide-page-body .guide-chat-messages {
     background: rgba(255, 255, 255, 0.25)
 }
-html.guide-light .guide-chat-empty {
+:where(html.guide-light) .guide-chat-empty {
     color: #373757
 }
-html.guide-light .guide-chat-role {
+:where(html.guide-light) .guide-chat-role {
     color: #3f3f5f
 }
-html.guide-light .guide-page-body .guide-chat-msg.user .guide-chat-role {
-    color: #006a81
+:where(html.guide-light) .guide-page-body .guide-chat-msg.user .guide-chat-role {
+    color: #00596d
 }
-html.guide-light .guide-page-body .guide-chat-msg.assistant .guide-chat-role,
-html.guide-light .guide-page-body .guide-chat-msg.loading .guide-chat-role {
+:where(html.guide-light) .guide-page-body .guide-chat-msg.assistant .guide-chat-role,
+:where(html.guide-light) .guide-page-body .guide-chat-msg.loading .guide-chat-role {
     color: #16004c
 }
-html.guide-light .guide-page-body .guide-chat-msg.user .guide-chat-bubble {
+:where(html.guide-light) .guide-page-body .guide-chat-msg.user .guide-chat-bubble {
     background: rgba(0, 169, 199, 0.18);
     border: 1px solid rgba(0, 169, 199, 0.35);
     color: #00080f
 }
-html.guide-light .guide-page-body .guide-chat-msg.assistant .guide-chat-bubble,
-html.guide-light .guide-page-body .guide-chat-msg.loading .guide-chat-bubble {
+:where(html.guide-light) .guide-page-body .guide-chat-msg.assistant .guide-chat-bubble,
+:where(html.guide-light) .guide-page-body .guide-chat-msg.loading .guide-chat-bubble {
     background: rgba(0, 0, 0, 0.08);
     color: #070713
 }
-html.guide-light .guide-page-body .guide-chat-msg.error .guide-chat-bubble {
+:where(html.guide-light) .guide-page-body .guide-chat-msg.error .guide-chat-bubble {
     background: rgba(199, 0, 86, 0.15);
     border: 1px solid rgba(199, 0, 86, 0.4);
     color: #370018
 }
-html.guide-light .guide-chat-bubble strong {
+:where(html.guide-light) .guide-chat-bubble strong {
     color: #000000
 }
-html.guide-light .guide-chat-list {
+:where(html.guide-light) .guide-chat-list {
     color: #070713
 }
-html.guide-light .guide-page-body .guide-chat-input {
+:where(html.guide-light) .guide-page-body .guide-chat-input {
     background: rgba(0, 0, 0, 0.1)
 }
-html.guide-light .guide-page-body .guide-chat-input::placeholder {
+:where(html.guide-light) .guide-page-body .guide-chat-input::placeholder {
     color: #474767
 }
-html.guide-light .guide-page-empty {
+:where(html.guide-light) .guide-page-empty {
     color: #33334f
 }
-html.guide-light .guide-back-to-top {
+:where(html.guide-light) .guide-back-to-top {
     border: 1px solid rgba(0, 169, 199, 0.45);
     background: rgba(233, 233, 245, 0.92)
 }
-html.guide-light .guide-back-to-top:hover {
+:where(html.guide-light) .guide-back-to-top:hover {
     background: rgba(0, 169, 199, 0.15)
 }
-html.guide-light .guide-league-note {
+:where(html.guide-light) .guide-league-note {
     background: rgba(193, 145, 0, 0.08);
     border: 1px solid rgba(193, 145, 0, 0.35);
     color: #372d0f
 }
-html.guide-light .guide-expansion-legend {
+:where(html.guide-light) .guide-expansion-legend {
     background: rgba(0, 0, 0, 0.04);
     border: 1px solid rgba(0, 0, 0, 0.1)
 }
-html.guide-light .guide-expansion-legend-label {
+:where(html.guide-light) .guide-expansion-legend-label {
     color: #131327
 }
-html.guide-light .guide-expansion-legend-chip--item {
-    color: #853e00;
+:where(html.guide-light) .guide-expansion-legend-chip--item {
+    color: #803c00;
     border-color: rgba(133, 62, 0, 0.35)
 }
-html.guide-light .guide-expansion-legend-chip--hm,
-html.guide-light .guide-expansion-legend-chip--prep {
+:where(html.guide-light) .guide-expansion-legend-chip--hm,
+:where(html.guide-light) .guide-expansion-legend-chip--prep {
     border-color: rgba(0, 169, 199, 0.35)
 }
-html.guide-light .guide-expansion-legend-chip--pass {
+:where(html.guide-light) .guide-expansion-legend-chip--pass {
     color: #29005f;
     border-color: rgba(41, 0, 95, 0.35)
 }
-html.guide-light .guide-expansion-legend-chip--place {
+:where(html.guide-light) .guide-expansion-legend-chip--place {
     border-color: rgba(199, 0, 86, 0.3)
 }
-html.guide-light .guide-expansion-legend-chip--mechanic {
-    color: #755600;
+:where(html.guide-light) .guide-expansion-legend-chip--mechanic {
+    color: #664b00;
     border-color: rgba(117, 86, 0, 0.35)
 }
-html.guide-light .guide-expansion-legend-chip--npc {
-    color: #177555;
+:where(html.guide-light) .guide-expansion-legend-chip--npc {
+    color: #125b42;
     border-color: rgba(23, 117, 85, 0.35)
 }
-html.guide-light .guide-expansion-phase--tri {
+:where(html.guide-light) .guide-expansion-phase--tri {
     background: rgba(0, 169, 199, 0.06)
 }
-html.guide-light .guide-expansion-phase--rainbow {
+:where(html.guide-light) .guide-expansion-phase--rainbow {
     background: rgba(73, 15, 155, 0.08)
 }
-html.guide-light .guide-expansion-phase--frontier {
+:where(html.guide-light) .guide-expansion-phase--frontier {
     background: linear-gradient(135deg, rgba(0, 169, 199, 0.07), rgba(73, 15, 155, 0.08))
 }
-html.guide-light .guide-expansion-phase--hisui {
+:where(html.guide-light) .guide-expansion-phase--hisui {
     background: rgba(141, 111, 42, 0.08);
     border-left: 4px solid #8d6f2a
 }
-html.guide-light .guide-expansion-phase--daybreak {
+:where(html.guide-light) .guide-expansion-phase--daybreak {
     background: rgba(178, 106, 0, 0.08);
     border-left: 4px solid #915912
 }
-html.guide-light .guide-expansion-guide--legends-arceus .guide-expansion-island-num,
-html.guide-light .guide-expansion-island--hisui .guide-expansion-island-num {
+:where(html.guide-light) .guide-expansion-guide--legends-arceus .guide-expansion-island-num,
+:where(html.guide-light) .guide-expansion-island--hisui .guide-expansion-island-num {
     background: linear-gradient(135deg, rgba(141, 111, 42, 0.45), rgba(195, 127, 61, 0.35));
     border-color: rgba(141, 111, 42, 0.55)
 }
-html.guide-light .guide-expansion-island--daybreak .guide-expansion-island-num {
+:where(html.guide-light) .guide-expansion-island--daybreak .guide-expansion-island-num {
     background: linear-gradient(135deg, rgba(178, 106, 0, 0.45), rgba(145, 89, 18, 0.35));
     border-color: rgba(145, 89, 18, 0.55)
 }
-html.guide-light .guide-battle-card--noble {
+:where(html.guide-light) .guide-battle-card--noble {
     border-left: 4px solid #8d6f2a
 }
-html.guide-light .guide-expansion-guide--battle-frontier .guide-expansion-island {
+:where(html.guide-light) .guide-expansion-guide--battle-frontier .guide-expansion-island {
     border-color: rgba(0, 169, 199, 0.2)
 }
-html.guide-light .guide-expansion-tag--required {
+:where(html.guide-light) .guide-expansion-tag--required {
     background: rgba(0, 169, 199, 0.15);
     border: 1px solid rgba(0, 169, 199, 0.4)
 }
-html.guide-light .guide-expansion-tag--optional {
+:where(html.guide-light) .guide-expansion-tag--optional {
     background: rgba(0, 0, 0, 0.06);
     border: 1px solid rgba(0, 0, 0, 0.12)
 }
-html.guide-light .guide-expansion-island {
+:where(html.guide-light) .guide-expansion-island {
     background: rgba(230, 230, 241, 0.55)
 }
-html.guide-light .guide-expansion-island-header {
+:where(html.guide-light) .guide-expansion-island-header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.08)
 }
-html.guide-light .guide-expansion-island-num {
+:where(html.guide-light) .guide-expansion-island-num {
     background: linear-gradient(135deg, rgba(0, 169, 199, 0.25), rgba(199, 0, 86, 0.2));
     border: 1px solid rgba(0, 169, 199, 0.45)
 }
-html.guide-light .guide-expansion-island-title {
+:where(html.guide-light) .guide-expansion-island-title {
     color: #00000b
 }
-html.guide-light .guide-expansion-island-intro {
+:where(html.guide-light) .guide-expansion-island-intro {
     color: #131327
 }
-html.guide-light .guide-expansion-flow-list,
-html.guide-light .guide-expansion-tips {
+:where(html.guide-light) .guide-expansion-flow-list,
+:where(html.guide-light) .guide-expansion-tips {
     color: #131327
 }
-html.guide-light .guide-expansion-priority {
+:where(html.guide-light) .guide-expansion-priority {
     background: rgba(0, 0, 0, 0.06)
 }
-html.guide-light .guide-expansion-priority--high {
+:where(html.guide-light) .guide-expansion-priority--high {
     background: rgba(195, 80, 0, 0.15);
-    color: #853e00;
+    color: #803c00;
     border: 1px solid rgba(195, 80, 0, 0.35)
 }
-html.guide-light .guide-expansion-priority--extreme {
+:where(html.guide-light) .guide-expansion-priority--extreme {
     background: rgba(148, 0, 0, 0.15);
     color: #940000;
     border: 1px solid rgba(148, 0, 0, 0.4)
 }
-html.guide-light .guide-expansion-priority--medium-high {
+:where(html.guide-light) .guide-expansion-priority--medium-high {
     background: rgba(117, 86, 0, 0.12);
-    color: #755600;
+    color: #664b00;
     border: 1px solid rgba(117, 86, 0, 0.35)
 }
-html.guide-light .guide-expansion-priority--medium {
+:where(html.guide-light) .guide-expansion-priority--medium {
     background: rgba(0, 169, 199, 0.12);
     border: 1px solid rgba(0, 169, 199, 0.35)
 }
-html.guide-light .guide-expansion-tier--top {
+:where(html.guide-light) .guide-expansion-tier--top {
     background: rgba(168, 113, 0, 0.18);
-    color: #a87100;
+    color: #6b4800;
     border: 1px solid rgba(168, 113, 0, 0.45)
 }
-html.guide-light .guide-expansion-tier--mid {
+:where(html.guide-light) .guide-expansion-tier--mid {
     background: rgba(0, 169, 199, 0.12);
     border: 1px solid rgba(0, 169, 199, 0.35)
 }
-html.guide-light .guide-expansion-tier--low {
+:where(html.guide-light) .guide-expansion-tier--low {
     background: rgba(0, 0, 0, 0.06);
     border: 1px solid rgba(0, 0, 0, 0.15)
 }
-html.guide-light .guide-expansion-checklist--vertical .guide-expansion-step-line {
+:where(html.guide-light) .guide-expansion-checklist--vertical .guide-expansion-step-line {
     border-left: 2px solid rgba(0, 169, 199, 0.35)
 }
-html.guide-light .guide-expansion-checklist--vertical .guide-expansion-step-line li {
+:where(html.guide-light) .guide-expansion-checklist--vertical .guide-expansion-step-line li {
     background: rgba(0, 0, 0, 0.03);
     color: #131327
 }
-html.guide-light .guide-expansion-checklist--vertical .guide-expansion-step-line li:nth-child(odd) {
+:where(html.guide-light) .guide-expansion-checklist--vertical .guide-expansion-step-line li:nth-child(odd) {
     background: rgba(0, 0, 0, 0.05)
 }
-html.guide-light .guide-expansion-faq-item {
+:where(html.guide-light) .guide-expansion-faq-item {
     background: rgba(193, 145, 0, 0.06);
     border: 1px solid rgba(193, 145, 0, 0.25)
 }
-html.guide-light .guide-expansion-faq-a {
+:where(html.guide-light) .guide-expansion-faq-a {
     color: #131327
 }
-html.guide-light .guide-expansion-conclusion {
+:where(html.guide-light) .guide-expansion-conclusion {
     background: linear-gradient(rgba(240, 240, 250, 0.85), rgba(240, 240, 250, 0.85)) padding-box,
         linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)) border-box
 }
-html.guide-light .guide-expansion-conclusion-body {
+:where(html.guide-light) .guide-expansion-conclusion-body {
     color: #131327
 }
-html.guide-light .guide-battle-card--legendary .guide-battle-toggle {
+:where(html.guide-light) .guide-battle-card--legendary .guide-battle-toggle {
     border-left: 4px solid #c19100
 }
-html.guide-light .guide-battle-card--legendary .guide-battle-toggle.is-open {
+:where(html.guide-light) .guide-battle-card--legendary .guide-battle-toggle.is-open {
     border-left-color: #c19100
 }
-html.guide-light .guide-battle-notes {
+:where(html.guide-light) .guide-battle-notes {
     background: rgba(193, 145, 0, 0.08);
     border: 1px solid rgba(193, 145, 0, 0.3);
     color: #372d0f
 }
-html.guide-light .guide-annotate--item {
-    color: #853e00
+:where(html.guide-light) .guide-annotate--item {
+    color: #803c00
 }
-html.guide-light .guide-annotate--pass {
+:where(html.guide-light) .guide-annotate--pass {
     color: #29005f
 }
-html.guide-light .guide-annotate--mechanic {
-    color: #755600
+:where(html.guide-light) .guide-annotate--mechanic {
+    color: #664b00
 }
-html.guide-light .guide-annotate--npc {
-    color: #177555
+:where(html.guide-light) .guide-annotate--npc {
+    color: #125b42
 }
-html.guide-light .guide-annotate-float-tip {
+:where(html.guide-light) .guide-annotate-float-tip {
     background: rgba(235, 235, 246, 0.98);
     border: 1px solid rgba(0, 0, 0, 0.18);
     color: #070717
 }
-html.guide-light .guide-annotate-float-tip[data-placement='top']::after {
+:where(html.guide-light) .guide-annotate-float-tip[data-placement='top']::after {
     border-top-color: rgba(235, 235, 246, 0.98)
 }
-html.guide-light .guide-annotate-float-tip[data-placement='bottom']::after {
+:where(html.guide-light) .guide-annotate-float-tip[data-placement='bottom']::after {
     border-bottom-color: rgba(235, 235, 246, 0.98)
 }
-html.guide-light .guide-expansion-phase--requests {
+:where(html.guide-light) .guide-expansion-phase--requests {
     background: rgba(23, 117, 85, 0.06);
     border-left: 4px solid #177555
 }
-html.guide-light .guide-expansion-guide--requests {
-    --req-main: #8d6f2a;
+:where(html.guide-light) .guide-expansion-guide--requests {
+    --req-main: #624d1d;
     --req-postgame: #29005f;
-    --req-daybreak: #915912;
-    --req-path: #177da1
+    --req-daybreak: #71460e;
+    --req-path: #105770
 }
-html.guide-light .guide-requests-sticky {
+:where(html.guide-light) .guide-requests-sticky {
     border: 1px solid rgba(0, 0, 0, 0.1);
     background: rgba(240, 240, 248, 0.92)
 }
-html.guide-light .guide-requests-search-input {
+:where(html.guide-light) .guide-requests-search-input {
     border: 1px solid rgba(0, 0, 0, 0.15);
     background: rgba(0, 0, 0, 0.06);
     color: #00000b
 }
-html.guide-light .guide-requests-search-input::placeholder {
+:where(html.guide-light) .guide-requests-search-input::placeholder {
     color: rgba(0, 0, 0, 0.45)
 }
-html.guide-light .guide-requests-search-clear {
+:where(html.guide-light) .guide-requests-search-clear {
     background: rgba(0, 0, 0, 0.1);
     color: #00000b
 }
-html.guide-light .guide-requests-count {
+:where(html.guide-light) .guide-requests-count {
     color: #2f2f47
 }
-html.guide-light .guide-requests-cat-chip {
+:where(html.guide-light) .guide-requests-cat-chip {
     border: 1px solid rgba(0, 0, 0, 0.15);
     background: rgba(0, 0, 0, 0.04);
     color: #0f0f1f
 }
-html.guide-light .guide-requests-cat-chip.active {
+:where(html.guide-light) .guide-requests-cat-chip.active {
     background: rgba(0, 169, 199, 0.12)
 }
-html.guide-light .guide-requests-cat-chip--main.active {
+:where(html.guide-light) .guide-requests-cat-chip--main.active {
     background: rgba(141, 111, 42, 0.15)
 }
-html.guide-light .guide-requests-cat-chip--postgame.active {
+:where(html.guide-light) .guide-requests-cat-chip--postgame.active {
     background: rgba(41, 0, 95, 0.12)
 }
-html.guide-light .guide-requests-cat-chip--daybreak.active {
+:where(html.guide-light) .guide-requests-cat-chip--daybreak.active {
     background: rgba(145, 89, 18, 0.12)
 }
-html.guide-light .guide-requests-cat-chip--path.active {
+:where(html.guide-light) .guide-requests-cat-chip--path.active {
     background: rgba(23, 125, 161, 0.12)
 }
-html.guide-light .guide-requests-empty {
-    color: #853e00
+:where(html.guide-light) .guide-requests-empty {
+    color: #803c00
 }
-html.guide-light .guide-requests-nav-pill {
+:where(html.guide-light) .guide-requests-nav-pill {
     border: 1px solid rgba(0, 0, 0, 0.12);
     color: #0f0f1f
 }
-html.guide-light .guide-requests-nav-pill--main {
+:where(html.guide-light) .guide-requests-nav-pill--main {
     border-color: rgba(141, 111, 42, 0.45)
 }
-html.guide-light .guide-requests-nav-pill--postgame {
+:where(html.guide-light) .guide-requests-nav-pill--postgame {
     border-color: rgba(41, 0, 95, 0.45)
 }
-html.guide-light .guide-requests-nav-pill--daybreak {
+:where(html.guide-light) .guide-requests-nav-pill--daybreak {
     border-color: rgba(145, 89, 18, 0.45)
 }
-html.guide-light .guide-requests-nav-pill--path {
+:where(html.guide-light) .guide-requests-nav-pill--path {
     border-color: rgba(23, 125, 161, 0.45)
 }
-html.guide-light .guide-expansion-request {
+:where(html.guide-light) .guide-expansion-request {
     border: 1px solid rgba(0, 0, 0, 0.1);
     background: rgba(230, 230, 241, 0.65)
 }
-html.guide-light .guide-expansion-request--main .guide-expansion-request-num {
+:where(html.guide-light) .guide-expansion-request--main .guide-expansion-request-num {
     background: rgba(141, 111, 42, 0.25);
     border: 1px solid rgba(141, 111, 42, 0.45)
 }
-html.guide-light .guide-expansion-request--postgame .guide-expansion-request-num {
+:where(html.guide-light) .guide-expansion-request--postgame .guide-expansion-request-num {
     background: rgba(41, 0, 95, 0.2);
     border: 1px solid rgba(41, 0, 95, 0.4)
 }
-html.guide-light .guide-expansion-request--daybreak .guide-expansion-request-num {
+:where(html.guide-light) .guide-expansion-request--daybreak .guide-expansion-request-num {
     background: rgba(145, 89, 18, 0.2);
     border: 1px solid rgba(145, 89, 18, 0.4)
 }
-html.guide-light .guide-expansion-request--path .guide-expansion-request-num {
+:where(html.guide-light) .guide-expansion-request--path .guide-expansion-request-num {
     background: rgba(23, 125, 161, 0.2);
     border: 1px solid rgba(23, 125, 161, 0.4)
 }
-html.guide-light .guide-expansion-request-title {
+:where(html.guide-light) .guide-expansion-request-title {
     color: #00000b
 }
-html.guide-light .guide-request-row-label--place {
+:where(html.guide-light) .guide-request-row-label--place {
     background: rgba(199, 0, 86, 0.12);
     border: 1px solid rgba(199, 0, 86, 0.25)
 }
-html.guide-light .guide-request-row-label--goal {
+:where(html.guide-light) .guide-request-row-label--goal {
     background: rgba(0, 0, 0, 0.08);
     color: #00000f;
     border: 1px solid rgba(0, 0, 0, 0.12)
 }
-html.guide-light .guide-request-row-label--solution {
+:where(html.guide-light) .guide-request-row-label--solution {
     background: rgba(0, 169, 199, 0.1);
     border: 1px solid rgba(0, 169, 199, 0.25)
 }
-html.guide-light .guide-request-row-label--warn {
+:where(html.guide-light) .guide-request-row-label--warn {
     background: rgba(133, 62, 0, 0.12);
-    color: #853e00;
+    color: #803c00;
     border: 1px solid rgba(133, 62, 0, 0.3)
 }
-html.guide-light .guide-request-row-label--condition {
+:where(html.guide-light) .guide-request-row-label--condition {
     background: rgba(41, 0, 95, 0.12);
     color: #29005f;
     border: 1px solid rgba(41, 0, 95, 0.3)
 }
-html.guide-light .guide-request-row-label--default {
+:where(html.guide-light) .guide-request-row-label--default {
     background: rgba(0, 0, 0, 0.06);
     color: #17172f;
     border: 1px solid rgba(0, 0, 0, 0.1)
 }
-html.guide-light .guide-request-row-value {
+:where(html.guide-light) .guide-request-row-value {
     color: #0f0f1f
 }
-html.guide-light .guide-request-mark {
+:where(html.guide-light) .guide-request-mark {
     background: rgba(175, 140, 0, 0.35);
     color: #231c00
 }
-html.guide-light .guide-request-float-tip {
+:where(html.guide-light) .guide-request-float-tip {
     border: 1px solid rgba(0, 169, 199, 0.35);
     background: rgba(235, 235, 246, 0.98);
     color: #0b0b17
 }
-html.guide-light .guide-request-tip-title {
+:where(html.guide-light) .guide-request-tip-title {
     color: #00000b
 }
-html.guide-light .guide-request-tip-hint {
+:where(html.guide-light) .guide-request-tip-hint {
     color: #2f2f47
 }
-html.guide-light .guide-timeline-index {
+:where(html.guide-light) .guide-timeline-index {
     background: color-mix(in srgb, var(--timeline-accent, #5d5d5d) 22%, transparent);
     border: 2px solid var(--timeline-accent, #5d5d5d);
     color: #00000f
 }
-html.guide-light .guide-timeline-index--champion {
+:where(html.guide-light) .guide-timeline-index--champion {
     background: rgba(191, 136, 0, 0.2);
     border-color: #bf8800;
-    color: #997300
+    color: #664d00
 }
-html.guide-light .guide-timeline-index--dot {
+:where(html.guide-light) .guide-timeline-index--dot {
     background: var(--timeline-accent, #5d5d5d);
     border: 2px solid var(--timeline-accent, #5d5d5d)
 }
-html.guide-light .guide-timeline-item:not(:last-child) .guide-timeline-marker::after {
+:where(html.guide-light) .guide-timeline-item:not(:last-child) .guide-timeline-marker::after {
     background: linear-gradient(
         to bottom,
         var(--timeline-accent, rgba(0, 0, 0, 0.2)),
         rgba(0, 0, 0, 0.08)
       )
 }
-html.guide-light .guide-timeline-item--champion .guide-opponent-toggle.is-open,
-html.guide-light .guide-timeline-item--champion .guide-opponent-detail:not([hidden]) {
+:where(html.guide-light) .guide-timeline-item--champion .guide-opponent-toggle.is-open,
+:where(html.guide-light) .guide-timeline-item--champion .guide-opponent-detail:not([hidden]) {
     border-color: rgba(191, 136, 0, 0.45)
 }
-html.guide-light .guide-opponent-toggle {
+:where(html.guide-light) .guide-opponent-toggle {
     background: rgba(230, 230, 241, 0.95);
     color: #0b0b1f
 }
-html.guide-light .guide-opponent-toggle:hover {
+:where(html.guide-light) .guide-opponent-toggle:hover {
     border-color: rgba(0, 169, 199, 0.45);
     background: rgba(0, 0, 0, 0.06)
 }
-html.guide-light .guide-opponent-toggle.is-open {
+:where(html.guide-light) .guide-opponent-toggle.is-open {
     background: rgba(0, 169, 199, 0.08)
 }
-html.guide-light .guide-opponent-role {
-    color: #4f4f6f
+:where(html.guide-light) .guide-opponent-role {
+    color: #4d4d6c
 }
-html.guide-light .guide-opponent-name {
+:where(html.guide-light) .guide-opponent-name {
     color: #000000
 }
-html.guide-light .guide-opponent-location {
+:where(html.guide-light) .guide-opponent-location {
     color: #4a4a63
 }
-html.guide-light .guide-opponent-preview {
+:where(html.guide-light) .guide-opponent-preview {
     color: #3f3f57
 }
-html.guide-light .guide-opponent-detail {
+:where(html.guide-light) .guide-opponent-detail {
     background: rgba(240, 240, 250, 0.65)
 }
-html.guide-light .guide-opponent-summary {
+:where(html.guide-light) .guide-opponent-summary {
     background: rgba(0, 169, 199, 0.06);
     color: #131327
 }
-html.guide-light .guide-party-grid-row {
+:where(html.guide-light) .guide-party-grid-row {
     background: rgba(0, 0, 0, 0.04);
     border: 1px solid rgba(0, 0, 0, 0.08)
 }
-html.guide-light .guide-party-grid-row--lead {
+:where(html.guide-light) .guide-party-grid-row--lead {
     border-color: rgba(191, 136, 0, 0.35);
     background: rgba(191, 136, 0, 0.06)
 }
-html.guide-light .guide-party-grid-name {
+:where(html.guide-light) .guide-party-grid-name {
     color: #070717
 }
-html.guide-light .guide-party-grid-row .guide-level {
-    color: #4f4f6f
+:where(html.guide-light) .guide-party-grid-row .guide-level {
+    color: #4d4d6c
 }
-html.guide-light .guide-battle-tip {
+:where(html.guide-light) .guide-battle-tip {
     background: rgba(0, 0, 0, 0.04);
     color: #232337
 }
-html.guide-light .guide-league-table th,
-html.guide-light .guide-league-table td {
+:where(html.guide-light) .guide-league-table th,
+:where(html.guide-light) .guide-league-table td {
     border-bottom: 1px solid rgba(0, 0, 0, 0.08)
 }
-html.guide-light .guide-league-table td {
+:where(html.guide-light) .guide-league-table td {
     color: #131327
 }
-html.guide-light .guide-league-table tbody tr:hover td {
+:where(html.guide-light) .guide-league-table tbody tr:hover td {
     background: rgba(0, 0, 0, 0.03)
 }
-html.guide-light .guide-league-tips {
+:where(html.guide-light) .guide-league-tips {
     color: #232337
 }
-html.guide-light .guide-league-conclusion {
+:where(html.guide-light) .guide-league-conclusion {
     background: rgba(0, 169, 199, 0.06);
     color: #0b0b1f
 }
-html.guide-light .guide-league-collapsible {
+:where(html.guide-light) .guide-league-collapsible {
     background: rgba(230, 230, 241, 0.5)
 }
-html.guide-light .guide-league-collapsible-summary {
+:where(html.guide-light) .guide-league-collapsible-summary {
     color: #0b0b1f
 }
-html.guide-light .guide-starter-card {
+:where(html.guide-light) .guide-starter-card {
     background: rgba(240, 240, 250, 0.55)
 }
-html.guide-light .guide-starter-slots li {
+:where(html.guide-light) .guide-starter-slots li {
     color: #1b1b2f
 }
-html.guide-light .guide-starter-num {
+:where(html.guide-light) .guide-starter-num {
     background: rgba(0, 169, 199, 0.15)
 }
-html.guide-light .guide-starter-summary {
+:where(html.guide-light) .guide-starter-summary {
     color: #3f3f57
 }
-html.guide-light .guide-move-source-legend {
+:where(html.guide-light) .guide-move-source-legend {
     background: rgba(240, 240, 250, 0.45)
 }
-html.guide-light .guide-move-source-legend-label {
+:where(html.guide-light) .guide-move-source-legend-label {
     color: #3f3f57
 }
-html.guide-light .guide-move-source--level {
+:where(html.guide-light) .guide-move-source--level {
     background: rgba(61, 141, 64, 0.22);
-    color: #177117;
+    color: #135c13;
     border: 1px solid rgba(61, 141, 64, 0.45)
 }
-html.guide-light .guide-move-source--tm {
+:where(html.guide-light) .guide-move-source--tm {
     background: rgba(0, 169, 199, 0.18);
-    color: #006a81;
+    color: #00596d;
     border: 1px solid rgba(0, 169, 199, 0.4)
 }
-html.guide-light .guide-move-source--hm {
+:where(html.guide-light) .guide-move-source--hm {
     background: rgba(56, 0, 155, 0.22);
     color: #1c0057;
     border: 1px solid rgba(56, 0, 155, 0.45)
 }
-html.guide-light .guide-move-source--tutor {
+:where(html.guide-light) .guide-move-source--tutor {
     background: rgba(191, 88, 0, 0.2);
-    color: #934c00;
+    color: #7f4100;
     border: 1px solid rgba(191, 88, 0, 0.45)
 }
-html.guide-light .guide-move-source--egg {
+:where(html.guide-light) .guide-move-source--egg {
     background: rgba(150, 0, 75, 0.18);
     color: #61002f;
     border: 1px solid rgba(150, 0, 75, 0.4)
 }
-html.guide-light .guide-moveset-card {
+:where(html.guide-light) .guide-moveset-card {
     background: rgba(240, 240, 250, 0.55)
 }
-html.guide-light .guide-moveset-role {
-    color: #4f4f6f
+:where(html.guide-light) .guide-moveset-role {
+    color: #4d4d6c
 }
-html.guide-light .guide-move-row {
+:where(html.guide-light) .guide-move-row {
     border-bottom: 1px solid rgba(0, 0, 0, 0.06)
 }
-html.guide-light .guide-move-name {
+:where(html.guide-light) .guide-move-name {
     color: #070717
 }
-html.guide-light .guide-move-use {
+:where(html.guide-light) .guide-move-use {
     color: #3f3f57
 }
-html.guide-light .guide-moveset-note {
+:where(html.guide-light) .guide-moveset-note {
     border-top: 1px solid rgba(0, 0, 0, 0.08);
-    color: #4f4f6f
+    color: #4d4d6c
 }
-html.guide-light .guide-league-collapsible:has(.guide-movesets) {
+:where(html.guide-light) .guide-league-collapsible:has(.guide-movesets) {
     border: 1px solid rgba(0, 169, 199, 0.28);
     background: rgba(237, 237, 248, 0.55)
 }
-html.guide-light .guide-champion-intro {
+:where(html.guide-light) .guide-champion-intro {
     color: #232337
 }
-html.guide-light .guide-variant-panel {
+:where(html.guide-light) .guide-variant-panel {
     background: rgba(240, 240, 250, 0.4)
 }
-html.guide-light .guide-variant-label {
+:where(html.guide-light) .guide-variant-label {
     color: #070717
 }
-html.guide-light .guide-variant-sub {
+:where(html.guide-light) .guide-variant-sub {
     color: #47475f
 }
-html.guide-light .guide-chat-fab {
+:where(html.guide-light) .guide-chat-fab {
     border: 1px solid rgba(0, 169, 199, 0.45);
     background: linear-gradient(145deg, rgba(232, 232, 245, 0.97), rgba(223, 223, 240, 0.98));
     color: #00000b
 }
-html.guide-light .guide-chat-backdrop {
+:where(html.guide-light) .guide-chat-backdrop {
     background: rgba(245, 245, 253, 0.75)
 }
-html.guide-light .guide-chat-panel {
+:where(html.guide-light) .guide-chat-panel {
     background: linear-gradient(160deg, rgba(234, 234, 246, 0.98), rgba(229, 229, 243, 0.99));
     border: 1px solid rgba(0, 169, 199, 0.35)
 }
-html.guide-light .guide-chat-close {
+:where(html.guide-light) .guide-chat-close {
     background: rgba(0, 0, 0, 0.05);
     color: #0f0f1f
 }
-html.guide-light .guide-chat-close:hover {
+:where(html.guide-light) .guide-chat-close:hover {
     background: rgba(0, 0, 0, 0.1);
     border-color: rgba(0, 169, 199, 0.4)
 }
-html.guide-light .guide-chat-modal .guide-chat-messages {
+:where(html.guide-light) .guide-chat-modal .guide-chat-messages {
     background: rgba(255, 255, 255, 0.28)
 }
-html.guide-light .guide-chat-modal .guide-chat-msg.user .guide-chat-role {
-    color: #006a81
+:where(html.guide-light) .guide-chat-modal .guide-chat-msg.user .guide-chat-role {
+    color: #00596d
 }
-html.guide-light .guide-chat-modal .guide-chat-msg.assistant .guide-chat-role,
-html.guide-light .guide-chat-modal .guide-chat-msg.loading .guide-chat-role {
+:where(html.guide-light) .guide-chat-modal .guide-chat-msg.assistant .guide-chat-role,
+:where(html.guide-light) .guide-chat-modal .guide-chat-msg.loading .guide-chat-role {
     color: #16004c
 }
-html.guide-light .guide-chat-modal .guide-chat-msg.user .guide-chat-bubble {
+:where(html.guide-light) .guide-chat-modal .guide-chat-msg.user .guide-chat-bubble {
     background: rgba(0, 169, 199, 0.18);
     border: 1px solid rgba(0, 169, 199, 0.35);
     color: #00080f
 }
-html.guide-light .guide-chat-modal .guide-chat-msg.assistant .guide-chat-bubble,
-html.guide-light .guide-chat-modal .guide-chat-msg.loading .guide-chat-bubble {
+:where(html.guide-light) .guide-chat-modal .guide-chat-msg.assistant .guide-chat-bubble,
+:where(html.guide-light) .guide-chat-modal .guide-chat-msg.loading .guide-chat-bubble {
     background: rgba(0, 0, 0, 0.08);
     color: #070713
 }
-html.guide-light .guide-chat-modal .guide-chat-msg.error .guide-chat-bubble {
+:where(html.guide-light) .guide-chat-modal .guide-chat-msg.error .guide-chat-bubble {
     background: rgba(175, 0, 0, 0.12);
     border: 1px solid rgba(155, 0, 0, 0.35);
     color: #2f0000
 }
-html.guide-light .guide-chat-modal .guide-chat-input {
+:where(html.guide-light) .guide-chat-modal .guide-chat-input {
     background: rgba(255, 255, 255, 0.3);
     color: #07070f
 }
-html.guide-light .guide-chat-modal .guide-chat-input:focus {
+:where(html.guide-light) .guide-chat-modal .guide-chat-input:focus {
     border-color: rgba(0, 169, 199, 0.55)
 }
-html.guide-light .guide-chat-modal .guide-chat-send {
+:where(html.guide-light) .guide-chat-modal .guide-chat-send {
     background: linear-gradient(135deg, #00c2e5, #00b3ef);
     color: #000000
 }
-html.guide-light .guide-page--kanto .guide-quick-nav button {
+:where(html.guide-light) .guide-page--kanto .guide-quick-nav button {
     border: 1px solid var(--border-color, #161c27)
 }
-html.guide-light #guideContentRoot .guide-gym-strategy {
+:where(html.guide-light) #guideContentRoot .guide-gym-strategy {
     background: var(--bg-secondary, #05080d)
 }
-html.guide-light #guideContentRoot .guide-pokemon-note {
-    color: var(--text-secondary, #63728e)
+:where(html.guide-light) #guideContentRoot .guide-pokemon-note {
+    color: var(--text-secondary, #465064)
 }
-html.guide-light .guide-chapter-nav {
+:where(html.guide-light) .guide-chapter-nav {
     border: 1px solid var(--border-color, #7183ae)
 }
-html.guide-light .guide-chapter-nav a,
-html.guide-light .guide-sources a {
-    color: var(--accent-primary, #1090ab)
+:where(html.guide-light) .guide-chapter-nav a,
+:where(html.guide-light) .guide-sources a {
+    color: var(--accent-primary, #0a596a)
 }
-html.guide-light #guideContentRoot.guide-page--pokemmo {
-    --reading-flow: #107086;
-    --reading-warning: #7d560a;
+:where(html.guide-light) #guideContentRoot.guide-page--pokemmo {
+    --reading-flow: #0d596b;
+    --reading-warning: #6a4908;
     --reading-battle: #5e1100;
-    --reading-obtain: #226e4d;
+    --reading-obtain: #1c5b3f;
     --reading-place: #170b46
 }
-html.guide-light .guide-page--pokemmo .guide-expansion-island {
+:where(html.guide-light) .guide-page--pokemmo .guide-expansion-island {
     border-color: #788fab;
     background: #e4e7f0
 }
-html.guide-light .guide-page--pokemmo .guide-expansion-island-num {
+:where(html.guide-light) .guide-page--pokemmo .guide-expansion-island-num {
     background: #d9e6ed;
     border-color: #4a8494
 }
-html.guide-light .guide-page--pokemmo .guide-expansion-island-intro {
+:where(html.guide-light) .guide-page--pokemmo .guide-expansion-island-intro {
     background: #dddde9;
     color: #110a26
 }
-html.guide-light .guide-page--pokemmo .guide-expansion-tips {
+:where(html.guide-light) .guide-page--pokemmo .guide-expansion-tips {
     background: #e8e6e5;
     color: #47330c
 }
-html.guide-light .guide-page--pokemmo .guide-annotate--place,
-html.guide-light .guide-page--pokemmo .guide-expansion-legend-chip--place {
+:where(html.guide-light) .guide-page--pokemmo .guide-annotate--place,
+:where(html.guide-light) .guide-page--pokemmo .guide-expansion-legend-chip--place {
     border-color: #594c77
 }
-html.guide-light #guideContentRoot.guide-page--pokemmo .guide-battle-toggle {
+:where(html.guide-light) #guideContentRoot.guide-page--pokemmo .guide-battle-toggle {
     border-color: #916259;
     background: #ece5eb
 }
-html.guide-light #guideContentRoot.guide-page--pokemmo .guide-battle-toggle:is(:hover, .is-open) {
+:where(html.guide-light) #guideContentRoot.guide-page--pokemmo .guide-battle-toggle:is(:hover, .is-open) {
     background: #e7dfe4
 }
-html.guide-light #guideContentRoot.guide-page--pokemmo .guide-battle-detail {
+:where(html.guide-light) #guideContentRoot.guide-page--pokemmo .guide-battle-detail {
     border-color: #916259
 }
-html.guide-light #guideContentRoot.guide-page--pokemmo .guide-gym-strategy {
+:where(html.guide-light) #guideContentRoot.guide-page--pokemmo .guide-gym-strategy {
     background: #ece5eb
 }
-html.guide-light .guide-page--pokemmo .guide-battle-tip {
+:where(html.guide-light) .guide-page--pokemmo .guide-battle-tip {
     color: #230f13
 }
-html.guide-light .guide-page--pokemmo .guide-battle-notes {
+:where(html.guide-light) .guide-page--pokemmo .guide-battle-notes {
     background: #e8e6e5
 }
-html.guide-light #guideContentRoot.guide-page--pokemmo .guide-team-block {
+:where(html.guide-light) #guideContentRoot.guide-page--pokemmo .guide-team-block {
     background: #e5f0f1;
     border-color: #5ca38e
 }
-html.guide-light #guideContentRoot.guide-page--pokemmo .guide-pokemon-note {
+:where(html.guide-light) #guideContentRoot.guide-page--pokemmo .guide-pokemon-note {
     color: #192e23
 }
-html.guide-light .guide-page--pokemmo .guide-sources {
+:where(html.guide-light) .guide-page--pokemmo .guide-sources {
     border-top: 1px solid #788fab;
     color: #252f41
 }
-html.guide-light ::selection {
+:where(html.guide-light) ::selection {
     background: rgba(0, 169, 199, 0.35);
     color: #000000
 }
 html.guide-light {
     scrollbar-color: rgba(0, 169, 199, 0.4) rgba(0, 0, 0, 0.04)
 }
-html.guide-light .pokemon-card {
+:where(html.guide-light) .pokemon-card {
     background: linear-gradient(160deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0) 45%),
         var(--bg-card);
     border-color: rgba(0, 169, 199, 0.18)
 }
-html.guide-light .pokemon-image-container::after {
+:where(html.guide-light) .pokemon-image-container::after {
     background: radial-gradient(circle, rgba(0, 0, 0, 0.07) 0%, transparent 70%)
 }
-html.guide-light .pokemon-list-row:hover,
-html.guide-light .pokemon-list-row:focus-visible {
+:where(html.guide-light) .pokemon-list-row:hover,
+:where(html.guide-light) .pokemon-list-row:focus-visible {
     background-color: rgba(0, 169, 199, 0.06)
 }
-html.guide-light .stat-tag-clear {
+:where(html.guide-light) .stat-tag-clear {
     background: rgba(0, 0, 0, 0.14)
 }
-html.guide-light .stat-tag-clear:hover,
-html.guide-light .stat-tag-clear:focus-visible {
+:where(html.guide-light) .stat-tag-clear:hover,
+:where(html.guide-light) .stat-tag-clear:focus-visible {
     background: rgba(199, 0, 86, 0.55)
 }
-html.guide-light #advAbilityHint:not(:empty) {
+:where(html.guide-light) #advAbilityHint:not(:empty) {
     color: #4c001c
 }
-html.guide-light .stat-tag--stat,
-html.guide-light .stat-tag--ability,
-html.guide-light .stat-tag--egg {
+:where(html.guide-light) .stat-tag--stat,
+:where(html.guide-light) .stat-tag--ability,
+:where(html.guide-light) .stat-tag--egg {
     border-color: rgba(0, 169, 199, 0.35)
 }
-html.guide-light .guide-progress-bar {
+:where(html.guide-light) .guide-progress-bar {
     border: 1px solid rgba(52, 152, 66, 0.35);
     background: linear-gradient(135deg, rgba(52, 152, 66, 0.1), rgba(0, 169, 199, 0.05))
 }
-html.guide-light .guide-progress-title {
-    color: #178141
+:where(html.guide-light) .guide-progress-title {
+    color: #105a2d
 }
-html.guide-light .guide-progress-percent {
-    color: #178141
+:where(html.guide-light) .guide-progress-percent {
+    color: #105a2d
 }
-html.guide-light .guide-progress-meter {
+:where(html.guide-light) .guide-progress-meter {
     background: rgba(0, 0, 0, 0.08)
 }
-html.guide-light .guide-progress-fill {
+:where(html.guide-light) .guide-progress-fill {
     background: linear-gradient(90deg, #22a765, #178141)
 }
-html.guide-light .guide-progress-hide input {
+:where(html.guide-light) .guide-progress-hide input {
     accent-color: #22a765
 }
-html.guide-light .guide-progress-reset {
+:where(html.guide-light) .guide-progress-reset {
     border: 1px dashed rgba(0, 0, 0, 0.2)
 }
-html.guide-light .guide-done-toggle {
+:where(html.guide-light) .guide-done-toggle {
     border: 2px solid rgba(0, 0, 0, 0.35);
     background: rgba(255, 255, 255, 0.2);
     color: #e8f7ee
 }
-html.guide-light .guide-done-toggle:hover {
+:where(html.guide-light) .guide-done-toggle:hover {
     border-color: #178141
 }
-html.guide-light .guide-done-toggle:focus-visible {
+:where(html.guide-light) .guide-done-toggle:focus-visible {
     outline: 2px solid #178141
 }
-html.guide-light .guide-done-toggle[aria-pressed="true"] {
+:where(html.guide-light) .guide-done-toggle[aria-pressed="true"] {
     border-color: #22a765
 }
-html.guide-light .guide-timeline-item.is-done .guide-opponent-name,
-html.guide-light .guide-expansion-island.is-done .guide-expansion-island-title,
-html.guide-light .guide-expansion-request.is-done .guide-expansion-request-title {
+:where(html.guide-light) .guide-timeline-item.is-done .guide-opponent-name,
+:where(html.guide-light) .guide-expansion-island.is-done .guide-expansion-island-title,
+:where(html.guide-light) .guide-expansion-request.is-done .guide-expansion-request-title {
     text-decoration-color: rgba(23, 129, 65, 0.7)
 }
-html.guide-light .form-badge--mega {
+:where(html.guide-light) .form-badge--mega {
     background: rgba(199, 0, 86, 0.25);
     color: #63002a
 }
-html.guide-light .form-badge--regional {
+:where(html.guide-light) .form-badge--regional {
     background: rgba(52, 152, 66, 0.25);
-    color: #166423
+    color: #145c20
 }
-html.guide-light .form-badge--gmax {
+:where(html.guide-light) .form-badge--gmax {
     background: rgba(195, 30, 0, 0.28);
     color: #5c1000
 }
-html.guide-light .form-badge--other {
+:where(html.guide-light) .form-badge--other {
     background: rgba(73, 15, 155, 0.28);
     color: #1a0047
 }
-html.guide-light .backup-open-btn {
+:where(html.guide-light) .backup-open-btn {
     border: 1px solid rgba(0, 169, 199, 0.45);
     background: rgba(0, 169, 199, 0.1);
     color: #005261
 }
-html.guide-light .backup-open-btn:hover {
+:where(html.guide-light) .backup-open-btn:hover {
     background: rgba(0, 169, 199, 0.18)
 }
-html.guide-light .backup-dialog {
+:where(html.guide-light) .backup-dialog {
     border: 1px solid rgba(0, 169, 199, 0.35);
     background: #e7e7f2
 }
-html.guide-light .backup-dialog::backdrop {
+:where(html.guide-light) .backup-dialog::backdrop {
     background: rgba(255, 255, 255, 0.7)
 }
-html.guide-light .backup-close:hover {
+:where(html.guide-light) .backup-close:hover {
     background: rgba(0, 0, 0, 0.1)
 }
-html.guide-light .backup-current {
+:where(html.guide-light) .backup-current {
     background: rgba(0, 0, 0, 0.05)
 }
-html.guide-light .backup-section {
+:where(html.guide-light) .backup-section {
     border-top: 1px solid rgba(0, 0, 0, 0.08)
 }
-html.guide-light .backup-btn {
+:where(html.guide-light) .backup-btn {
     border: 1px solid rgba(0, 0, 0, 0.2);
     background: rgba(0, 0, 0, 0.06)
 }
-html.guide-light .backup-btn--primary {
+:where(html.guide-light) .backup-btn--primary {
     color: #000000
 }
-html.guide-light .backup-status[data-kind="ok"] {
-    color: #178141
+:where(html.guide-light) .backup-status[data-kind="ok"] {
+    color: #105a2d
 }
-html.guide-light .backup-status[data-kind="error"] {
+:where(html.guide-light) .backup-status[data-kind="error"] {
     color: #700021
 }
-html.guide-light #guideContentRoot .gb-art {
+:where(html.guide-light) #guideContentRoot .gb-art {
     background: radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--gb-c, #4a4f75) 38%, transparent) 0%, color-mix(in srgb, var(--gb-c, #4a4f75) 10%, transparent) 62%, transparent 70%)
 }
-html.guide-light #guideContentRoot .gb-art.is-empty::after {
-    color: color-mix(in srgb, var(--gb-c, #4a4f75) 70%, #000000)
+:where(html.guide-light) #guideContentRoot .gb-art.is-empty::after {
+    color: color-mix(in srgb, var(--gb-c, #484d72) 70%, #000000)
 }
-html.guide-light #guideContentRoot .gb-foes .gb-foe {
+:where(html.guide-light) #guideContentRoot .gb-foes .gb-foe {
     border: 1px solid rgba(0, 0, 0, 0.1);
     background: #dbddef
 }
-html.guide-light #guideContentRoot .gb-foes .gb-foe--ace {
+:where(html.guide-light) #guideContentRoot .gb-foes .gb-foe--ace {
     border-color: #a17900;
     background: linear-gradient(120deg, rgba(161, 121, 0, 0.14), #dbddef 60%)
 }
-html.guide-light #guideContentRoot .gb-lv .guide-level {
-    color: #755600
+:where(html.guide-light) #guideContentRoot .gb-lv .guide-level {
+    color: #664b00
 }
-html.guide-light #guideContentRoot .gb-lv i {
+:where(html.guide-light) #guideContentRoot .gb-lv i {
     background: rgba(0, 0, 0, 0.1)
 }
-html.guide-light #guideContentRoot .gb-lv i::after {
+:where(html.guide-light) #guideContentRoot .gb-lv i::after {
     background: linear-gradient(90deg, #b76e00, #755600)
 }
-html.guide-light #guideContentRoot .gb-weak-chip {
+:where(html.guide-light) #guideContentRoot .gb-weak-chip {
     color: color-mix(in srgb, var(--gb-c) 72%, #000000)
 }
-html.guide-light #guideContentRoot .gb-weak-chip.is-quad {
+:where(html.guide-light) #guideContentRoot .gb-weak-chip.is-quad {
     color: #000000
 }
-html.guide-light #guideContentRoot .gb-step {
+:where(html.guide-light) #guideContentRoot .gb-step {
     --c: #22a765;
     background: #dbddef
 }
-html.guide-light #guideContentRoot .gb-step--prep {
+:where(html.guide-light) #guideContentRoot .gb-step--prep {
     --c: #006ca3
 }
-html.guide-light #guideContentRoot .gb-step--do {
+:where(html.guide-light) #guideContentRoot .gb-step--do {
     --c: #22a765
 }
-html.guide-light #guideContentRoot .gb-step--warn {
+:where(html.guide-light) #guideContentRoot .gb-step--warn {
     --c: #a31e00;
     background: rgba(165, 30, 0, 0.1)
 }
-html.guide-light #guideContentRoot .gb .guide-battle-tips > .guide-battle-tip {
+:where(html.guide-light) #guideContentRoot .gb .guide-battle-tips > .guide-battle-tip {
     border-left: 5px solid #a31e00;
     background: rgba(165, 30, 0, 0.1)
 }
-html.guide-light #guideContentRoot .gb-role--alt {
+:where(html.guide-light) #guideContentRoot .gb-role--alt {
     background: #1b0063;
     color: #e3dcf6
 }
-html.guide-light #guideContentRoot .gb-allies .gb-ally {
+:where(html.guide-light) #guideContentRoot .gb-allies .gb-ally {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-top: 4px solid #22a765;
     background: #dbddef
 }
-html.guide-light #guideContentRoot .gb-team:not(:first-child) .gb-ally {
+:where(html.guide-light) #guideContentRoot .gb-team:not(:first-child) .gb-ally {
     border-top-color: #1b0063
 }
-html.guide-light #guideContentRoot .gb-k--get {
+:where(html.guide-light) #guideContentRoot .gb-k--get {
     background: rgba(0, 108, 163, 0.15);
     color: #005580
 }
-html.guide-light #guideContentRoot .gb-k--move {
+:where(html.guide-light) #guideContentRoot .gb-k--move {
     background: rgba(27, 0, 99, 0.18);
     color: #14004a
 }
-html.guide-light #guideContentRoot .gx-tag--places {
+:where(html.guide-light) #guideContentRoot .gx-tag--places {
     background: rgba(0, 108, 163, 0.16);
     color: #004970
 }
-html.guide-light #guideContentRoot .gx-tag--flow {
+:where(html.guide-light) #guideContentRoot .gx-tag--flow {
     background: rgba(34, 167, 101, 0.16);
-    color: #178141
+    color: #105a2d
 }
-html.guide-light #guideContentRoot .gx-tag--tips {
+:where(html.guide-light) #guideContentRoot .gx-tag--tips {
     background: rgba(183, 110, 0, 0.18);
-    color: #7a4a00
+    color: #754700
 }
-html.guide-light #guideContentRoot .gx-flow > li {
+:where(html.guide-light) #guideContentRoot .gx-flow > li {
     border-left: 4px solid #22a765;
     background: rgba(0, 0, 0, 0.04)
 }
-html.guide-light #guideContentRoot .gx-tips {
+:where(html.guide-light) #guideContentRoot .gx-tips {
     border: 1px solid rgba(183, 110, 0, 0.35);
     background: rgba(183, 110, 0, 0.08)
 }
-html.guide-light #guideContentRoot .gx-tips > li::marker {
-    color: #b76e00
+:where(html.guide-light) #guideContentRoot .gx-tips > li::marker {
+    color: #754600
 }
-html.guide-light #guideContentRoot .gb-move-link {
+:where(html.guide-light) #guideContentRoot .gb-move-link {
     color: #2a0057
 }
-html.guide-light #guideContentRoot .gb-counter {
+:where(html.guide-light) #guideContentRoot .gb-counter {
     border-top: 1px dashed rgba(0, 0, 0, 0.14)
 }
-html.guide-light #guideContentRoot .gb-counter-label {
+:where(html.guide-light) #guideContentRoot .gb-counter-label {
     background: rgba(34, 167, 101, 0.18);
-    color: #178141
+    color: #105a2d
 }
-html.guide-light #guideContentRoot .gb-step--care {
+:where(html.guide-light) #guideContentRoot .gb-step--care {
     --c: #b76e00
 }
 
 html.guide-light {
   color-scheme: light;
-  --accent-primary: #007a99;
-  --accent-secondary: #c2185b;
+  --accent-primary: #00607a;
+  --accent-secondary: #a3144d;
   --accent-tertiary: #5b21b6;
+}
+
+/* 顏色來自變數（步驟的主題色、行內指定的屬性色）的文字，自動轉換看不到實際顏色，在這裡混入黑色壓深 */
+:where(html.guide-light) #guideContentRoot .gb-step h4 {
+  color: color-mix(in srgb, var(--c) 55%, #000);
+}
+
+:where(html.guide-light) #guideContentRoot .gb-weak-chip {
+  color: color-mix(in srgb, var(--gb-c, #8a8fb5) 42%, #000);
+}
+
+:where(html.guide-light) #guideContentRoot .gb-counter-label {
+  color: #0a5a32;
 }

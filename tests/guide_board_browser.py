@@ -116,11 +116,23 @@ with sync_playwright() as p:
         assert max(r, g, b) < 90, ('names must be dark on the light theme', name_color)
         assert badge.evaluate('n => getComputedStyle(n).backgroundColor') == badge_color
         assert detail.locator('.gb-art').first.evaluate('n => getComputedStyle(n).filter') == 'none'
+        # 嵌入的地圖跟著變淺色，地圖畫面本身維持深色
+        atlas_frame = page.locator('iframe.guide-atlas-frame').first
+        atlas_frame.scroll_into_view_if_needed()
+        atlas = page.frame_locator('iframe.guide-atlas-frame').first
+        expect(atlas.locator('html')).to_have_class(re.compile('atlas-light'), timeout=20000)
+        expect(atlas.locator('#place-select')).to_be_visible(timeout=20000)
+        body_bg = atlas.locator('body').evaluate('n => getComputedStyle(n).backgroundColor')
+        assert min(int(x) for x in re.findall(r'\d+', body_bg)[:3]) > 200, ('atlas page must be light', body_bg)
+        stage_color = atlas.locator('.map-controls button').first.evaluate('n => getComputedStyle(n).color')
+        assert min(int(x) for x in re.findall(r'\d+', stage_color)[:3]) > 200, ('map controls keep light text', stage_color)
         detail = open_battle(page, 'red-blue', 'eliteFour:1')
         expect(page.locator('html')).to_have_class(re.compile('guide-light'))
         expect(page.locator('#guideThemeToggle')).to_have_attribute('aria-pressed', 'true')
         page.locator('#guideThemeToggle').click()
         expect(page.locator('html')).not_to_have_class(re.compile('guide-light'))
+        page.locator('iframe.guide-atlas-frame').first.scroll_into_view_if_needed()
+        expect(page.frame_locator('iframe.guide-atlas-frame').first.locator('html')).not_to_have_class(re.compile('atlas-light'))
         assert page.evaluate('localStorage.getItem("pokedex_guide_theme")') == 'dark'
 
         # 實際點過去：招式圖鑑打開該招式、隊伍分析頁帶入整隊

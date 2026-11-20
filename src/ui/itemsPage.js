@@ -1,5 +1,6 @@
 import { getItemIcon, renderCatalogIcon, bindCatalogIconFallbacks } from '../utils/catalogIcons.js';
 import '../styles/catalogs.css';
+import { renderChineseReference as renderReference } from '../utils/catalogText.js';
 import { getVersionGroupDisplayName } from '../utils/versions.js';
 import { loadItemsCatalog, countVisibleCards } from '../data/items.js';
 import { escapeHtml } from '../utils/infoCards.js';
@@ -240,11 +241,6 @@ function renderHoldersLink(item) {
   const params = new URLSearchParams({ heldItem: item.slug, heldItemLabel: item.currentName || item.displayName });
   return `<a class="machine-card-filter-link item-card-holders-link" href="./index.html?${escapeHtml(params.toString())}"
     title="在主圖鑑列出野生時會攜帶此道具的寶可夢（跨版本）">查看攜帶者（${item.heldByCount} 種）→</a>`;
-}
-
-/** 這個版本只有英文說明時附上的中文參考（取自其他版本，效果可能不同）。 */
-function renderReference(reference) {
-  return `<span class="catalog-reference-tag" title="這個版本沒有中文說明；效果可能隨版本改變，請以上方本版原文為準">中文參考・${escapeHtml(getVersionGroupDisplayName(reference.versionGroup))}</span>${escapeHtml(reference.text)}`;
 }
 
 function renderItemCard(item) {

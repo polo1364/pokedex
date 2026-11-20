@@ -78,7 +78,8 @@ export function buildMachineEntry(itemData, slug, gen, machineRef, moveData) {
   const names = resolveMoveNames(moveData, moveSlug);
   const sprite = getItemSpriteUrl(itemData, slug);
   const hasSprite = Boolean(itemData?.sprites?.default);
-  const effect = getVersionedFlavor(moveData?.flavor_text_entries, machineRef?.version_group?.name, 'flavor_text');
+  const effect = getVersionedFlavor(moveData?.flavor_text_entries, machineRef?.version_group?.name, 'flavor_text',
+    { chineseReference: true });
   const moveEffect = effect.text;
 
   return {
@@ -94,6 +95,7 @@ export function buildMachineEntry(itemData, slug, gen, machineRef, moveData) {
     moveNameEn: names.moveNameEn,
     moveEffect,
     effectLanguage: effect.language,
+    effectReference: effect.reference || null,
     type,
     typeLabel: typeNamesCN[type] || type || '屬性未提供',
     generation: gen,

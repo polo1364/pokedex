@@ -8,7 +8,7 @@ import {
   parseMachineSlug,
 } from '../utils/machines.js';
 
-const INDEX_CACHE_KEY = 'machines_by_gen_v4';
+const INDEX_CACHE_KEY = 'machines_by_gen_v5';
 const FETCH_CONCURRENCY = 25;
 
 function machineCacheKey(url) {

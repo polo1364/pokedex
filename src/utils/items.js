@@ -1,6 +1,6 @@
 import { getValidChineseName, isPlaceholderTranslation } from './i18n.js';
 import { versionGroupScore } from './versions.js';
-import { getVersionedFlavor } from './catalogText.js';
+import { getVersionedFlavor, cleanFlavorText } from './catalogText.js';
 
 export const VERSION_GROUP_TO_GEN = {
   'red-blue': 1, 'red-green-japan': 1, 'blue-japan': 1, yellow: 1,
@@ -207,10 +207,7 @@ export function getLatestItemEffect(itemData) {
     return curScore >= bestScore ? current : best;
   });
 
-  const text = latest.text
-    .replace(/\s+/g, ' ')
-    .replace(/\[VAR[^\]]*]/gi, '寶可夢')
-    .trim();
+  const text = cleanFlavorText(latest.text.replace(/\[VAR[^\]]*]/gi, '寶可夢'));
   return isPlaceholderTranslation(text) ? '無繁中效果說明' : text;
 }
 

@@ -1,14 +1,23 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { buildLightCss, invertLightness, transformValue } from '../scripts/build-guide-light.mjs';
+import {
+  buildAll, buildLightCss, invertLightness, transformValue, readableTextColor, contrastRatio,
+} from '../scripts/build-guide-light.mjs';
 import { stepLabel } from '../src/ui/guideBoard.js';
 
 const read = (rel) => fs.readFileSync(new URL(`../${rel}`, import.meta.url), 'utf8');
 
-test('guide-light.css is in sync with main.css', () => {
-  assert.equal(read('src/styles/guide-light.css'), buildLightCss(read('src/styles/main.css')),
-    'run node scripts/build-guide-light.mjs after changing colours in main.css');
+test('generated light stylesheets are in sync with their sources', () => {
+  for (const [rel, css] of buildAll()) {
+    assert.equal(read(rel), css, `${rel} is stale — run node scripts/build-guide-light.mjs`);
+  }
+});
+
+test('the atlas light theme restyles the page chrome but not the map', () => {
+  const css = read('public/atlas/atlas-light.css');
+  assert.match(css, /:where\(html\.atlas-light\) body \{[^}]*background: #[0-9a-f]{6}/);
+  assert.doesNotMatch(css, /#map|\.map-controls|\.place-card|\.viewport|\.zoom-level/);
 });
 
 test('light theme flips lightness but keeps hue, alpha and non-colour text', () => {
@@ -38,10 +47,10 @@ test('light theme leaves type-coloured components and accent pills as they are',
   assert.match(css, /html\.guide-light \{\s*--bg: #ffffff\s*\}/);
   assert.doesNotMatch(css, /--shadow|box-shadow|width: 10px|keyframes/);
   assert.doesNotMatch(css, /type-badge|gb-hero/);
-  assert.match(css, /html\.guide-light \.pill \{\s*border-color: [^;}]+\s*\}/, 'pill keeps its own fill and text colour');
+  assert.match(css, /:where\(html\.guide-light\) \.pill \{\s*border-color: [^;}]+\s*\}/, 'pill keeps its own fill and text colour');
   assert.doesNotMatch(css, /\.step::before/);
-  assert.match(css, /html\.guide-light \.card \{\s*background: rgba\(\d+, \d+, \d+, 0\.9\)\s*\}/);
-  assert.match(css, /@media \(max-width: 600px\) \{\s*html\.guide-light \.card/);
+  assert.match(css, /:where\(html\.guide-light\) \.card \{\s*background: rgba\(\d+, \d+, \d+, 0\.9\)\s*\}/);
+  assert.match(css, /@media \(max-width: 600px\) \{\s*:where\(html\.guide-light\) \.card/);
 });
 
 test('strategy steps are labelled by what they say', () => {
@@ -51,4 +60,20 @@ test('strategy steps are labelled by what they say', () => {
   assert.equal(stepLabel('貓頭夜鷹不眠，不要用催眠浪費回合。', 1, 2), '留意');
   assert.equal(stepLabel('分別用水招與草招處理。', 1, 2), '接著', '「分別」不是提醒');
   assert.equal(stepLabel('以飛行或火招打草系，並準備解麻與解毒道具。', 0, 1), '打法');
+});
+
+test('light theme darkens accent text until it is readable', () => {
+  const rgb = (hex) => hex.match(/[0-9a-f]{2}/g).map((v) => parseInt(v, 16) / 255);
+  const surface = rgb('d8d8ea');
+  for (const token of ['#00d9ff', '#2bd17e', '#ffd966', '#ff7a5c', '#c9b3ff']) {
+    const result = readableTextColor(token);
+    assert.ok(contrastRatio(rgb(result.slice(1)), surface) >= 5.5, `${token} → ${result}`);
+  }
+  assert.equal(readableTextColor('#f4f4ff'), invertLightness('#f4f4ff'), 'already readable text is only flipped');
+  assert.equal(readableTextColor('rgba(255, 255, 255, 0.45)'), 'rgba(0, 0, 0, 0.45)', 'translucent text is only flipped');
+  const css = buildLightCss('.a { color: #00d9ff; border-color: #00d9ff; } :root { --req-main: #ffd966; --fill: #ffd966; }');
+  const [text, border] = [...css.matchAll(/(?:^|\s)(?:color|border-color): (#[0-9a-f]{6})/g)].map((m) => m[1]);
+  assert.notEqual(text, border, 'only text colours are pushed darker');
+  const [reqMain, fill] = [css.match(/--req-main: (#[0-9a-f]{6})/)[1], css.match(/--fill: (#[0-9a-f]{6})/)[1]];
+  assert.ok(contrastRatio(rgb(reqMain.slice(1)), surface) >= 5.5 && reqMain !== fill, 'text-only variables are treated like text');
 });
