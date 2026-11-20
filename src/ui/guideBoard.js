@@ -26,7 +26,7 @@ function typeBadge(type) {
 
 function art(name, types, extraClass = '') {
   const color = typeColors[types?.[0]] || '#8a8fb5';
-  return `<span class="gb-art ${extraClass}" data-mon="${esc(name)}" style="--gb-c:${color}" aria-hidden="true"></span>`;
+  return `<span class="gb-art ${extraClass}" data-mon="${esc(name)}" data-types="${esc((types || []).join(','))}" style="--gb-c:${color}" aria-hidden="true"></span>`;
 }
 
 /* ---------- 橫幅 ---------- */
@@ -212,13 +212,27 @@ function addTeamLinks(root, resolve) {
     if (team.dataset.teamDone) return;
     team.dataset.teamDone = '1';
     const members = [...team.querySelectorAll('.gb-ally [data-mon]')].map((el) => resolve(el.dataset.mon));
-    const href = teamAnalysisHref(members);
+    // 推薦隊伍和對手在同一張看板裡時，把這場的對手一起帶過去（有版本分支時取第一組）
+    const board = team.closest('.gb');
+    const foes = [...(board?.querySelector('.gb-foes')?.querySelectorAll('.gb-foe [data-mon]') || [])];
+    const opponents = foes.map((el) => ({
+      speciesId: resolve(el.dataset.mon)?.speciesId,
+      types: (el.dataset.types || '').split(',').filter(Boolean),
+    }));
+    const href = teamAnalysisHref(members, {
+      opponents,
+      name: board?.querySelector('.gb-hero-name')?.textContent.trim(),
+      generation: boardGeneration,
+    });
     if (!href) return;
     const link = document.createElement('a');
     link.className = 'gb-team-analyze';
     link.href = href;
-    link.textContent = '用這隊做屬性分析';
-    link.title = '帶著這組寶可夢到隊伍分析頁，查看整隊的弱點與抗性';
+    const versus = href.includes('&vs=');
+    link.textContent = versus ? '用這隊分析這場對戰' : '用這隊做屬性分析';
+    link.title = versus
+      ? '帶著這組寶可夢和這場的對手到隊伍分析頁，看誰能剋對手、誰要小心'
+      : '帶著這組寶可夢到隊伍分析頁，查看整隊的弱點與抗性';
     team.append(link);
   });
 }

@@ -2,6 +2,7 @@
 
 隊伍屬性分析頁：只用預建物種索引，PokéAPI 與圖片全部封鎖也必須能運作。
 """
+import re
 import sys
 from playwright.sync_api import sync_playwright, expect
 
@@ -82,6 +83,31 @@ with sync_playwright() as p:
         page.goto(f'{BASE}/team.html')
         expect(slots).to_have_text(['噴火龍', '水箭龜', '天蠍'])
 
+        # 從攻略帶入對戰：逐隻對手列出誰能剋、誰要小心；用該世代的相剋表；可以取消
+        page.goto(f'{BASE}/team.html?t=6,9,207&vs=121.water.psychic,95.rock.ground,999999.fire&vsName=%E6%B8%AC%E8%A9%A6&gen=1')
+        expect(page.locator('#teamBattleTitle')).to_have_text('對這場對戰：測試')
+        rows = page.locator('.team-battle-row')
+        expect(rows).to_have_count(2)
+        starmie = rows.nth(0)
+        expect(starmie.locator('.team-battle-foe strong')).to_have_text('寶石海星')
+        expect(starmie).to_have_class(re.compile('is-unanswered'))
+        expect(starmie.locator('.team-battle-col').first).to_contain_text('沒有人能用本系招式剋制')
+        expect(starmie.locator('.team-battle-col').nth(1)).to_contain_text('噴火龍')
+        onix = rows.nth(1)
+        expect(onix.locator('.team-battle-col').first.locator('li')).to_have_text(['水箭龜×4', '天蠍×2'])
+        expect(onix.locator('.team-battle-col').nth(1).locator('li')).to_have_text(['噴火龍×4'])
+        expect(page.locator('.team-battle .team-card-desc')).to_contain_text('有 1 隻對手沒有人能用本系招式剋制')
+        # 改隊伍後對戰分析還在、網址仍保留對手
+        page.locator('[data-remove="207"]').click()
+        expect(onix.locator('.team-battle-col').first.locator('li')).to_have_text(['水箭龜×4'])
+        assert 'vs=121.water.psychic' in page.evaluate('location.search')
+        page.locator('#teamSearch').fill('gligar')
+        page.locator('#teamSearch').press('Enter')
+        assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), 'battle overflow'
+        page.locator('[data-battle-clear]').click()
+        expect(page.locator('.team-battle')).to_have_count(0)
+        assert page.evaluate('location.search') == '?t=6,9,207', page.evaluate('location.search')
+
         # 打擊面：龍屬性沒有人能用本系招式剋制
         dragon = page.locator('.team-cover').filter(has_text='龍').first
         expect(dragon).to_have_class('team-cover is-gap')
@@ -94,6 +120,6 @@ with sync_playwright() as p:
 
         assert not api_requests, f'Team page must not call PokeAPI: {api_requests[:3]}'
         assert not errors, errors
-        print(f'PASS {width}x{height}: URL restore, weaknesses, search+keyboard add, duplicate guard, remove, storage, linked-team preview, coverage, clear, no PokeAPI')
+        print(f'PASS {width}x{height}: URL restore, weaknesses, search+keyboard add, duplicate guard, remove, storage, linked-team preview, battle matchups, coverage, clear, no PokeAPI')
         context.close()
     browser.close()

@@ -122,6 +122,16 @@ test('guide links to the dex, the team page and the move catalog', () => {
   assert.equal(teamAnalysisHref(team), './team.html?t=25,130,38', 'skips unresolved and duplicate members');
   assert.equal(teamAnalysisHref(Array.from({ length: 8 }, (_, i) => ({ speciesId: i + 1 }))), './team.html?t=1,2,3,4,5,6');
   assert.equal(teamAnalysisHref([null]), '');
+  const misty = { name: '小霞', generation: 1, opponents: [
+    { speciesId: 120, types: ['water'] }, { speciesId: 121, types: ['water', 'psychic'] },
+    { speciesId: 120, types: ['water'] }, { types: ['fire'] }, { speciesId: 7, types: [] },
+  ] };
+  assert.equal(teamAnalysisHref([resolve('皮卡丘')], misty),
+    './team.html?t=25&vs=120.water,121.water.psychic&vsName=%E5%B0%8F%E9%9C%9E&gen=1',
+    'duplicate and unresolved opponents are dropped');
+  assert.match(teamAnalysisHref([resolve('皮卡丘')], { opponents: misty.opponents, generation: null }), /&gen=5$/, 'guides without a generation use the gen 5 chart');
+  assert.equal(teamAnalysisHref([resolve('皮卡丘')], { opponents: [], name: '小霞', generation: 1 }), './team.html?t=25');
+  assert.equal(teamAnalysisHref([null], misty), '', 'no team, no link');
 
   const moves = JSON.parse(fs.readFileSync(new URL('../public/data/moves-index.json', import.meta.url), 'utf8')).entries;
   const match = createMoveMatcher(moves);

@@ -62,7 +62,8 @@ with sync_playwright() as p:
         analyze = detail.locator('a.gb-team-analyze')
         expect(analyze).to_have_count(2)
         team_hrefs = analyze.evaluate_all('n => n.map(a => a.getAttribute("href"))')
-        assert all(re.fullmatch(r'\./team\.html\?t=\d+(,\d+)*', h) for h in team_hrefs), team_hrefs
+        assert all(re.fullmatch(r'\./team\.html\?t=\d+(,\d+)*&vs=120\.water,121\.water\.psychic&vsName=[^&]+&gen=1', h) for h in team_hrefs), team_hrefs
+        expect(analyze.first).to_have_text('用這隊分析這場對戰')
         if width >= 900:
             foe_box = detail.locator('.gb-sec--foes').bounding_box()
             step_box = detail.locator('.gb-sec--steps').bounding_box()
@@ -146,10 +147,18 @@ with sync_playwright() as p:
         detail = open_battle(page, 'red-blue', 'gym:2')
         team_link = detail.locator('a.gb-team-analyze').first
         expect(team_link).to_be_visible()
-        expected = len(team_link.get_attribute('href').split('=')[1].split(','))
+        expected = len(re.search(r'[?&]t=([\d,]+)', team_link.get_attribute('href')).group(1).split(','))
         team_link.click()
         expect(page.locator('.team-slot-name')).to_have_count(expected)
         expect(page.locator('#teamLinked')).to_be_hidden()
+        # 隊伍頁顯示這場對戰：對手是小霞的兩隻，皮卡丘的電招能剋
+        expect(page.locator('#teamBattleTitle')).to_have_text('對這場對戰：小霞')
+        expect(page.locator('.team-battle .team-card-desc')).to_contain_text('第 1 世代的相剋表')
+        battle_rows = page.locator('.team-battle-row')
+        expect(battle_rows).to_have_count(2)
+        expect(battle_rows.nth(1).locator('.team-battle-foe strong')).to_have_text('寶石海星')
+        expect(battle_rows.nth(1).locator('.team-battle-col').first).to_contain_text('皮卡丘')
+        assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (width, 'team battle overflow')
         page.evaluate('localStorage.clear()')
 
         assert not errors, errors

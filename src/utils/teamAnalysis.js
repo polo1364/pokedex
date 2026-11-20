@@ -107,3 +107,39 @@ export function suggestOffensiveTypes(uncovered, limit = 4) {
     .sort((a, b) => b.covers.length - a.covers.length || TYPE_ORDER.indexOf(a.type) - TYPE_ORDER.indexOf(b.type))
     .slice(0, limit);
 }
+
+/* ---------- 針對一場對戰 ---------- */
+
+/**
+ * 解析 ?vs=121.water.psychic,120.water：物種編號加上該場對戰裡的屬性（攻略當代的屬性，可能和現行不同）。
+ * 編號不是正整數、沒有合法屬性的項目略過；最多 6 隻。
+ * @returns {{ id: number, types: string[] }[]}
+ */
+export function parseOpponents(value) {
+  if (!value) return [];
+  const opponents = [];
+  for (const part of String(value).split(',')) {
+    const [rawId, ...rawTypes] = part.trim().split('.');
+    const id = Number(rawId);
+    const types = [...new Set(rawTypes.filter((type) => TYPE_ORDER.includes(type)))].slice(0, 2);
+    if (Number.isInteger(id) && id > 0 && types.length) opponents.push({ id, types });
+    if (opponents.length >= TEAM_SIZE) break;
+  }
+  return opponents;
+}
+
+/**
+ * 隊伍對上每一隻對手：誰的本系招式能剋牠（hitters）、誰會被牠的本系招式剋（threatened），都附上最高倍率。
+ * @param {string[][]} team 隊伍成員的屬性
+ * @param {string[][]} opponents 對手的屬性
+ * @param {(attack: string, defenseTypes: string[]) => number} multiplier 相剋倍率（預設現行相剋表）
+ */
+export function battleMatchups(team, opponents, multiplier = getEffectiveness) {
+  const best = (attackTypes, defenseTypes) => (attackTypes.length && defenseTypes.length
+    ? Math.max(...attackTypes.map((attack) => multiplier(attack, defenseTypes)))
+    : 1);
+  return opponents.map((foe) => ({
+    hitters: team.map((member, index) => ({ index, mult: best(member, foe) })).filter((row) => row.mult > 1),
+    threatened: team.map((member, index) => ({ index, mult: best(foe, member) })).filter((row) => row.mult > 1),
+  }));
+}

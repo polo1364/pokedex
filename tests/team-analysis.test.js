@@ -65,3 +65,28 @@ test('suggestions pick types that cover the most problems', () => {
   assert.ok(['fighting', 'ice', 'fairy', 'fire', 'ground'].includes(offensive[0].type));
   assert.ok(offensive.every((s) => s.covers.length >= 1));
 });
+
+test('battle links carry the opponents with the types used in that battle', async () => {
+  const { parseOpponents, battleMatchups } = await import('../src/utils/teamAnalysis.js');
+  const { eraMultiplier } = await import('../src/utils/typeEra.js');
+  assert.deepEqual(parseOpponents('121.water.psychic,120.water,x.fire,5.bogus,7,9.water.water.ice.fire'), [
+    { id: 121, types: ['water', 'psychic'] }, { id: 120, types: ['water'] }, { id: 9, types: ['water', 'ice'] },
+  ], 'bad ids, unknown types and extra types are dropped');
+  assert.deepEqual(parseOpponents(''), []);
+  assert.equal(parseOpponents(Array.from({ length: 9 }, (_, i) => `${i + 1}.fire`).join(',')).length, 6);
+
+  // 皮卡丘、走路草、小火龍 對 寶石海星（水／超能力）
+  const [starmie] = battleMatchups([['electric'], ['grass', 'poison'], ['fire']], [['water', 'psychic']]);
+  assert.deepEqual(starmie.hitters, [{ index: 0, mult: 2 }, { index: 1, mult: 2 }]);
+  assert.deepEqual(starmie.threatened, [{ index: 1, mult: 2 }, { index: 2, mult: 2 }], 'psychic hits poison, water hits fire');
+
+  // 第 1 世代：幽靈打超能力無效、蟲打毒有效；現行相剋表則相反
+  const gen1 = (attack, defense) => defense.reduce((m, d) => m * eraMultiplier(attack, d, 'gen1'), 1);
+  assert.deepEqual(battleMatchups([['ghost', 'poison'], ['bug']], [['psychic'], ['poison']], gen1).map((row) => row.hitters), [
+    [{ index: 1, mult: 2 }], [{ index: 1, mult: 2 }],
+  ]);
+  assert.deepEqual(battleMatchups([['ghost', 'poison'], ['bug']], [['psychic'], ['poison']]).map((row) => row.hitters), [
+    [{ index: 0, mult: 2 }, { index: 1, mult: 2 }], [],
+  ]);
+  assert.deepEqual(battleMatchups([[]], [['fire']]), [{ hitters: [], threatened: [] }], 'a member with no usable type is neither');
+});

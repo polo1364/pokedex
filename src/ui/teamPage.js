@@ -10,7 +10,9 @@ import { getTeamIds, setTeamIds } from '../state/team.js';
 import {
   TEAM_SIZE, parseTeamIds, addTeamId, defensiveMatrix, sharedWeaknesses,
   offensiveCoverage, uncoveredTypes, suggestDefensiveTypes, suggestOffensiveTypes,
+  parseOpponents, battleMatchups,
 } from '../utils/teamAnalysis.js';
+import { typeEra, eraTypes, eraMultiplier } from '../utils/typeEra.js';
 
 const INDEX_URL = './data/species-index.json';
 const ARTWORK = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork';
@@ -20,6 +22,8 @@ let entries = [];
 let byId = new Map();
 let teamIds = [];
 let activeSuggestion = -1;
+/** 從攻略帶過來的對戰：{ opponents: [{id, types}], name, generation }；沒有就是 null。 */
+let battle = null;
 
 const $ = (id) => document.getElementById(id);
 
@@ -237,6 +241,67 @@ function renderCoverage(members, team) {
   </section>`;
 }
 
+/** 讀取網址上的對戰（?vs=…&vsName=…&gen=…）。 */
+function readBattle(search) {
+  const params = new URLSearchParams(search);
+  const opponents = parseOpponents(params.get('vs')).filter((foe) => byId.has(foe.id));
+  if (!opponents.length) return null;
+  const generation = Number(params.get('gen'));
+  return {
+    opponents,
+    name: (params.get('vsName') || '').trim().slice(0, 30),
+    generation: Number.isInteger(generation) && generation >= 1 && generation <= 9 ? generation : null,
+  };
+}
+
+function clearBattle() {
+  battle = null;
+  const url = new URL(location.href);
+  ['vs', 'vsName', 'gen'].forEach((key) => url.searchParams.delete(key));
+  history.replaceState(null, '', url.href.replace(/([?&]t=)([^&#]*)/, (_, k, v) => k + v.replace(/%2C/gi, ',')));
+  render();
+}
+
+/** 對這場對戰：每隻對手列出隊上誰能剋牠、誰要小心，用該世代的相剋表。 */
+function renderBattle(members) {
+  if (!battle) return '';
+  const era = typeEra(battle.generation ?? 9);
+  const available = eraTypes(era);
+  const inEra = (types) => types.filter((type) => available.includes(type));
+  const multiplier = (attack, defenseTypes) => defenseTypes.reduce((m, defense) => m * eraMultiplier(attack, defense, era), 1);
+  const team = members.map((member) => inEra(member.t));
+  const rows = battleMatchups(team, battle.opponents.map((foe) => inEra(foe.types)), multiplier);
+
+  const people = (list, emptyText) => (list.length
+    ? `<ul class="team-battle-people">${list.map(({ index, mult }) => `<li><img src="${imageUrl(members[index])}" alt="" loading="lazy" onerror="this.remove()">${escapeHtml(members[index].zh)}<small class="${mult >= 4 ? 'is-quad' : ''}">×${mult}</small></li>`).join('')}</ul>`
+    : `<p class="team-battle-none">${emptyText}</p>`);
+
+  const list = battle.opponents.map((foe, i) => {
+    const entry = byId.get(foe.id);
+    return `<li class="team-battle-row${rows[i].hitters.length ? '' : ' is-unanswered'}">
+      <div class="team-battle-foe">
+        <img src="${imageUrl(entry)}" alt="" loading="lazy" onerror="this.remove()">
+        <div><strong>${escapeHtml(entry.zh)}</strong><span class="team-battle-types">${foe.types.map((type) => typeBadge(type)).join('')}</span></div>
+      </div>
+      <div class="team-battle-col"><span class="team-battle-k team-battle-k--hit">能剋牠</span>${people(rows[i].hitters, '沒有人能用本系招式剋制')}</div>
+      <div class="team-battle-col"><span class="team-battle-k team-battle-k--risk">要小心</span>${people(rows[i].threatened, '沒有人被牠的本系招式剋制')}</div>
+    </li>`;
+  }).join('');
+
+  const unanswered = rows.filter((row) => !row.hitters.length).length;
+  const chart = battle.generation ? `第 ${battle.generation} 世代的相剋表` : '現行相剋表';
+  return `<section class="team-card team-battle" aria-labelledby="teamBattleTitle">
+    <div class="team-battle-head">
+      <h2 id="teamBattleTitle">對這場對戰${battle.name ? `：${escapeHtml(battle.name)}` : ''}</h2>
+      <button type="button" class="team-btn" data-battle-clear>取消對戰分析</button>
+    </div>
+    <p class="team-card-desc">以雙方自身屬性的招式估算，使用${chart}。${unanswered
+    ? `<strong class="team-battle-warn">有 ${unanswered} 隻對手沒有人能用本系招式剋制。</strong>`
+    : '每隻對手都有人能用本系招式剋制。'}</p>
+    <ul class="team-battle-list">${list}</ul>
+  </section>`;
+}
+
 function render() {
   renderSlots();
   const root = $('teamAnalysis');
@@ -246,7 +311,7 @@ function render() {
     return;
   }
   const team = members.map((m) => m.t);
-  root.innerHTML = renderSummary(members, team) + renderDefenseTable(members, team) + renderCoverage(members, team);
+  root.innerHTML = renderBattle(members) + renderSummary(members, team) + renderDefenseTable(members, team) + renderCoverage(members, team);
 }
 
 /* ---------- 啟動 ---------- */
@@ -306,6 +371,10 @@ export async function initTeamPage() {
   }
   byId = new Map(entries.map((e) => [e.id, e]));
   $('teamSearch').disabled = false;
+  battle = readBattle(location.search);
+  $('teamAnalysis').addEventListener('click', (e) => {
+    if (e.target.closest('[data-battle-clear]')) clearBattle();
+  });
   const fromUrl = parseTeamIds(new URLSearchParams(location.search).get('t')).filter((id) => byId.has(id));
   const saved = getTeamIds();
   // 從連結（分享連結、攻略的推薦隊伍）帶入的隊伍先只顯示，不直接蓋掉使用者原本存的隊伍

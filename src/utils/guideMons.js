@@ -117,15 +117,33 @@ export function monDetailHref(resolved) {
 
 /**
  * 隊伍分析頁的連結：去掉對不到與重複的成員，最多 6 隻；沒有任何成員時回傳空字串。
+ * 帶上 battle 時，連結會多出這場的對手（vs=物種編號.屬性.屬性,…，屬性用攻略裡當代的寫法）、
+ * 對手名稱與世代，隊伍頁就能顯示「對這場對戰」的分析。
  * @param {Array<{speciesId:number}|null>} resolvedList
+ * @param {{ opponents?: Array<{speciesId?:number, types?:string[]}>, name?: string, generation?: number|null }|null} battle
  */
-export function teamAnalysisHref(resolvedList) {
+export function teamAnalysisHref(resolvedList, battle = null) {
   const ids = [];
   for (const mon of resolvedList || []) {
     if (mon?.speciesId && !ids.includes(mon.speciesId)) ids.push(mon.speciesId);
     if (ids.length >= 6) break;
   }
-  return ids.length ? `./team.html?t=${ids.join(',')}` : '';
+  if (!ids.length) return '';
+  let href = `./team.html?t=${ids.join(',')}`;
+  const foes = [];
+  for (const foe of battle?.opponents || []) {
+    if (!foe?.speciesId || !foe.types?.length) continue;
+    const token = `${foe.speciesId}.${foe.types.join('.')}`;
+    if (!foes.includes(token)) foes.push(token);
+    if (foes.length >= 6) break;
+  }
+  if (foes.length) {
+    href += `&vs=${foes.join(',')}`;
+    if (battle.name) href += `&vsName=${encodeURIComponent(battle.name)}`;
+    // 沒有世代的攻略（PokeMMO）沒有妖精屬性，和弱點標示一樣當成第 5 世代
+    href += `&gen=${Number.isInteger(battle.generation) ? battle.generation : 5}`;
+  }
+  return href;
 }
 
 /**
